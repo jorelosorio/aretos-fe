@@ -53,10 +53,3 @@ Prettier is configured once at the root and applies to the whole tree:
 npm run format         # write
 npm run format:check   # verify, for CI
 ```
-
-## A note on `apps/mobile`
-
-`apps/mobile` currently contains its own `.git` directory, which makes it an *embedded*
-repository rather than a workspace the root repo tracks. Git will not descend into it, so its
-files show up as excluded and its history stays separate. It should be folded into this repo
-(or registered as a proper submodule) before the monorepo is treated as the source of truth.
