@@ -1,0 +1,21 @@
+{
+  "name": "aretos",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/core"
+  ],
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "3.9.6"
+  },
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
