@@ -27,9 +27,21 @@
     "plugins": [
       "expo-router",
       [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Nunito-Regular.ttf",
+            "./assets/fonts/Nunito-Medium.ttf",
+            "./assets/fonts/Nunito-SemiBold.ttf",
+            "./assets/fonts/Nunito-Bold.ttf",
+            "./assets/fonts/Caprasimo-Regular.ttf"
+          ]
+        }
+      ],
+      [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#f7efe2",
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
         }

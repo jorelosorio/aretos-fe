@@ -1,111 +1,217 @@
-import { createV5Theme, defaultChildrenThemes } from '@tamagui/config/v5';
-import { v5ComponentThemes } from '@tamagui/themes/v5';
-import {
-  yellow,
-  yellowDark,
-  red,
-  redDark,
-  green,
-  greenDark,
-} from '@tamagui/colors';
+import { createV5Theme } from '@tamagui/config/v5';
+
+const lightPalette = [
+  '#fffaf1',
+  '#f7efe2',
+  '#efe3ce',
+  '#ded3c0',
+  '#cfc4b0',
+  '#c2b6a2',
+  '#a69b8b',
+  '#948976',
+  '#8a8073',
+  '#686054',
+  '#474036',
+  '#2a211b',
+];
 
 const darkPalette = [
-  'hsla(0, 15%, 1%, 1)',
-  'hsla(0, 15%, 6%, 1)',
-  'hsla(0, 15%, 12%, 1)',
-  'hsla(0, 15%, 17%, 1)',
-  'hsla(0, 15%, 23%, 1)',
-  'hsla(0, 15%, 28%, 1)',
-  'hsla(0, 15%, 34%, 1)',
-  'hsla(0, 15%, 39%, 1)',
-  'hsla(0, 15%, 45%, 1)',
-  'hsla(0, 15%, 50%, 1)',
-  'hsla(0, 15%, 93%, 1)',
-  'hsla(0, 15%, 99%, 1)',
-];
-const lightPalette = [
-  'hsla(0, 15%, 99%, 1)',
-  'hsla(0, 15%, 94%, 1)',
-  'hsla(0, 15%, 88%, 1)',
-  'hsla(0, 15%, 83%, 1)',
-  'hsla(0, 15%, 77%, 1)',
-  'hsla(0, 15%, 72%, 1)',
-  'hsla(0, 15%, 66%, 1)',
-  'hsla(0, 15%, 61%, 1)',
-  'hsla(0, 15%, 55%, 1)',
-  'hsla(0, 15%, 50%, 1)',
-  'hsla(0, 15%, 15%, 1)',
-  'hsla(0, 15%, 1%, 1)',
+  '#171310',
+  '#1d1712',
+  '#2a221c',
+  '#332b23',
+  '#3e352c',
+  '#4d4238',
+  '#5f5346',
+  '#7a6e5f',
+  '#9a8f80',
+  '#ada093',
+  '#c1b4a7',
+  '#f5eade',
 ];
 
-// Your custom accent color theme
 const accentLight = {
-  accent1: 'hsla(250, 50%, 40%, 1)',
-  accent2: 'hsla(250, 50%, 43%, 1)',
-  accent3: 'hsla(250, 50%, 46%, 1)',
-  accent4: 'hsla(250, 50%, 48%, 1)',
-  accent5: 'hsla(250, 50%, 51%, 1)',
-  accent6: 'hsla(250, 50%, 54%, 1)',
-  accent7: 'hsla(250, 50%, 57%, 1)',
-  accent8: 'hsla(250, 50%, 59%, 1)',
-  accent9: 'hsla(250, 50%, 62%, 1)',
-  accent10: 'hsla(250, 50%, 65%, 1)',
-  accent11: 'hsla(250, 50%, 95%, 1)',
-  accent12: 'hsla(250, 50%, 95%, 1)',
+  accent1: '#8f431c',
+  accent2: '#b65b33',
+  accent3: '#c25a33',
+  accent4: '#cd6539',
+  accent5: '#d5764a',
+  accent6: '#e08f5c',
+  accent7: '#e9a879',
+  accent8: '#efb894',
+  accent9: '#f7dcc4',
+  accent10: '#ffdcc7',
+  accent11: '#fff1e8',
+  accent12: '#ffffff',
 };
 
 const accentDark = {
-  accent1: 'hsla(250, 50%, 35%, 1)',
-  accent2: 'hsla(250, 50%, 38%, 1)',
-  accent3: 'hsla(250, 50%, 41%, 1)',
-  accent4: 'hsla(250, 50%, 43%, 1)',
-  accent5: 'hsla(250, 50%, 46%, 1)',
-  accent6: 'hsla(250, 50%, 49%, 1)',
-  accent7: 'hsla(250, 50%, 52%, 1)',
-  accent8: 'hsla(250, 50%, 54%, 1)',
-  accent9: 'hsla(250, 50%, 57%, 1)',
-  accent10: 'hsla(250, 50%, 60%, 1)',
-  accent11: 'hsla(250, 50%, 90%, 1)',
-  accent12: 'hsla(250, 50%, 95%, 1)',
+  accent1: '#f0a879',
+  accent2: '#e58b5a',
+  accent3: '#d9834a',
+  accent4: '#cd7a44',
+  accent5: '#c96a3a',
+  accent6: '#ad6033',
+  accent7: '#93502b',
+  accent8: '#7a4423',
+  accent9: '#5c3219',
+  accent10: '#472a1e',
+  accent11: '#392319',
+  accent12: '#1d1712',
 };
 
-const builtThemes = createV5Theme({
-  darkPalette,
+const lightRoles = {
+  card: '#fffaf1',
+  cardForeground: '#2a211b',
+  popover: '#fffaf1',
+  popoverForeground: '#2a211b',
+
+  primary: '#b65b33',
+  primaryForeground: '#ffffff',
+  secondary: '#efe3ce',
+  secondaryForeground: '#2a211b',
+  muted: '#efe3ce',
+  mutedForeground: '#474036',
+  accentSurface: '#fff1e8',
+  accentSurfaceForeground: '#67301a',
+  destructive: '#c4443c',
+  destructiveForeground: '#ffffff',
+
+  border: '#ded3c0',
+  input: '#c2b6a2',
+  ring: '#d5764a',
+
+  sidebar: '#f0e8d9',
+  sidebarForeground: '#2a211b',
+  sidebarPrimary: '#b65b33',
+  sidebarPrimaryForeground: '#ffffff',
+  sidebarAccent: '#fff1e8',
+  sidebarAccentForeground: '#67301a',
+  sidebarBorder: '#ded3c0',
+  sidebarRing: '#d5764a',
+
+  deco1: '#ffdcc7',
+  deco2: '#e1edc9',
+  deco3: '#fbe7bb',
+  deco1Vivid: '#f89a5c',
+  deco2Vivid: '#8fbf5a',
+  deco3Vivid: '#f0b23c',
+  deco1Shade: '#a8501f',
+  deco2Shade: '#4a6b28',
+  seedEmberInk: '#8f4322',
+  seedMossInk: '#3c4e2a',
+
+  chart1: '#c25a33',
+  chart2: '#008f80',
+  chart3: '#d9a020',
+  chart4: '#bf4f78',
+  chart5: '#5b4199',
+  chart6: '#a8443c',
+  chart7: '#1f5da8',
+  chart8: '#7d9a3c',
+
+  vizAxis: '#8a8073',
+  vizGrid: '#e9e0d1',
+  vizBaseline: '#cfc4b0',
+  vizEmpty: '#f0e8db',
+  vizTrack: '#f5e4d2',
+
+  seq1: '#f7dcc4',
+  seq2: '#efb894',
+  seq3: '#e08f5c',
+  seq4: '#c2652f',
+  seq5: '#8f431c',
+
+  good: '#2f8a1e',
+  warning: '#e0a01c',
+  serious: '#e07a45',
+  critical: '#c4443c',
+  successInk: '#1f6b12',
+
+  outcomeDone: '#2f8a1e',
+  outcomeMissed: '#e0a01c',
+  outcomeSkipped: '#8a8073',
+  outcomeBlank: '#cfc4b0',
+};
+
+const darkRoles: typeof lightRoles = {
+  card: '#2a221c',
+  cardForeground: '#f5eade',
+  popover: '#2a221c',
+  popoverForeground: '#f5eade',
+
+  primary: '#e58b5a',
+  primaryForeground: '#1d1712',
+  secondary: '#171310',
+  secondaryForeground: '#f5eade',
+  muted: '#171310',
+  mutedForeground: '#c1b4a7',
+  accentSurface: '#392319',
+  accentSurfaceForeground: '#f6c6a3',
+  destructive: '#e66767',
+  destructiveForeground: '#0b0b0b',
+
+  border: 'rgba(245, 234, 222, 0.12)',
+  input: 'rgba(245, 234, 222, 0.16)',
+  ring: '#f0a879',
+
+  sidebar: '#171310',
+  sidebarForeground: '#f5eade',
+  sidebarPrimary: '#e58b5a',
+  sidebarPrimaryForeground: '#1d1712',
+  sidebarAccent: '#392319',
+  sidebarAccentForeground: '#f6c6a3',
+  sidebarBorder: 'rgba(245, 234, 222, 0.1)',
+  sidebarRing: '#f0a879',
+
+  deco1: '#472a1e',
+  deco2: '#2e3d24',
+  deco3: '#4a3616',
+  deco1Vivid: '#c96a3a',
+  deco2Vivid: '#6f9445',
+  deco3Vivid: '#b8802a',
+  deco1Shade: '#1a0d06',
+  deco2Shade: '#0d1408',
+  seedEmberInk: '#f6c6a3',
+  seedMossInk: '#a8c084',
+
+  chart1: '#d9713d',
+  chart2: '#17a695',
+  chart3: '#c98500',
+  chart4: '#c94374',
+  chart5: '#9085e9',
+  chart6: '#e66767',
+  chart7: '#2f7cdc',
+  chart8: '#6b9e32',
+
+  vizAxis: '#9a8f80',
+  vizGrid: '#332b23',
+  vizBaseline: '#3e352c',
+  vizEmpty: '#281f18',
+  vizTrack: '#3d2717',
+
+  seq1: '#4a2a18',
+  seq2: '#7a4423',
+  seq3: '#ad6033',
+  seq4: '#d9834a',
+  seq5: '#f0ab77',
+
+  good: '#4f9e35',
+  warning: '#e0a01c',
+  serious: '#e58b5a',
+  critical: '#d9615c',
+  successInk: '#5cb347',
+
+  outcomeDone: '#4f9e35',
+  outcomeMissed: '#e0a01c',
+  outcomeSkipped: '#968a7c',
+  outcomeBlank: '#4d4238',
+};
+
+export const themes = createV5Theme({
   lightPalette,
-  componentThemes: v5ComponentThemes,
-  accent: {
-    light: accentLight,
-    dark: accentDark,
-  },
-  childrenThemes: {
-    // Include default color themes (blue, red, green, yellow, etc.)
-    ...defaultChildrenThemes,
-
-    // Semantic color themes for warnings, errors, and success states
-    warning: {
-      light: yellow,
-      dark: yellowDark,
-    },
-    error: {
-      light: red,
-      dark: redDark,
-    },
-    success: {
-      light: green,
-      dark: greenDark,
-    },
-  },
+  darkPalette,
+  accent: { light: accentLight, dark: accentDark },
+  childrenThemes: {},
+  getTheme: ({ scheme }) => (scheme === 'dark' ? darkRoles : lightRoles),
 });
-
-export type Themes = typeof builtThemes;
-
-// the process.env conditional here is optional but saves web client-side bundle
-// size by leaving out themes JS. tamagui automatically hydrates themes from CSS
-// back into JS for you, and the bundler plugins set TAMAGUI_ENVIRONMENT. so
-// long as you are using the Vite, Next, Webpack plugins this should just work,
-// but if not you can just export builtThemes directly as themes:
-export const themes: Themes =
-  process.env.TAMAGUI_ENVIRONMENT === 'client' &&
-  process.env.NODE_ENV === 'production'
-    ? ({} as any)
-    : (builtThemes as any);
