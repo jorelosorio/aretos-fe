@@ -7,12 +7,15 @@ import {
   Target,
 } from '@tamagui/lucide-icons-2';
 
+import { useTranslations } from '@/i18n';
+
 // matches the reference sidebar: the active icon takes --primary, the rest --muted-foreground
 const iconColor = (focused: boolean) =>
   focused ? '$primary' : '$mutedForeground';
 
 export default function TabsLayout() {
   const theme = useTheme();
+  const { t } = useTranslations();
 
   return (
     <Tabs
@@ -34,7 +37,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Inicio',
+          title: t('tabs.home'),
           tabBarIcon: ({ focused }) => (
             <House color={iconColor(focused)} size={22} />
           ),
@@ -43,7 +46,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="progress"
         options={{
-          title: 'Progreso',
+          title: t('tabs.progress'),
           tabBarIcon: ({ focused }) => (
             <ChartNoAxesColumn color={iconColor(focused)} size={22} />
           ),
@@ -52,7 +55,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="diary"
         options={{
-          title: 'Diario',
+          title: t('tabs.diary'),
           tabBarIcon: ({ focused }) => (
             <NotebookPen color={iconColor(focused)} size={22} />
           ),
@@ -61,7 +64,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="goals"
         options={{
-          title: 'Mis Metas',
+          title: t('tabs.goals'),
           tabBarIcon: ({ focused }) => (
             <Target color={iconColor(focused)} size={22} />
           ),
