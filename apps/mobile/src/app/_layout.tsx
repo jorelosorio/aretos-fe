@@ -10,6 +10,7 @@ function RootStack() {
   return (
     <Stack
       screenOptions={{
+        headerShown: false,
         contentStyle: { backgroundColor: theme.background.val },
       }}
     />

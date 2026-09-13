@@ -7,6 +7,10 @@ export const config = createTamagui({
   ...defaultConfig,
   fonts,
   themes,
+  defaultProps: {
+    // the web app's button base class is `font-heading ... rounded-4xl`
+    Button: { fontFamily: '$heading', rounded: '$xl4' },
+  },
   tokens: {
     ...defaultConfig.tokens,
     radius: {
