@@ -9,6 +9,7 @@ import { config } from '../../tamagui.config';
 
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { useSession, useSessionAutoRefresh } from '@/features/auth';
+import { usePreferences } from '@/lib/preferences';
 import { QueryProvider } from '@/providers/query-provider';
 
 // Closes the auth popup left over from a redirect on web. No-op on native.
@@ -57,9 +58,14 @@ function RootNavigator() {
 
 export default function RootLayout() {
   const scheme = useColorScheme();
+  const { theme } = usePreferences();
+
+  // The stored preference is read synchronously at module load, so this is
+  // already the right theme on the first paint — no flash of the device's.
+  const resolved = theme === 'system' ? (scheme ?? 'light') : theme;
 
   return (
-    <TamaguiProvider config={config} defaultTheme={scheme ?? 'light'}>
+    <TamaguiProvider config={config} defaultTheme={resolved}>
       <QueryProvider>
         <RootNavigator />
       </QueryProvider>

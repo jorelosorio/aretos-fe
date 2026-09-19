@@ -7,6 +7,7 @@ export const es = {
     progress: 'Progreso',
     diary: 'Diario',
     goals: 'Mis Metas',
+    settings: 'Ajustes',
   },
   home: {
     logEntry: 'Registrar',
@@ -44,6 +45,13 @@ export const es = {
       sessionExpired: 'Tu sesión terminó. Inicia sesión de nuevo.',
       generic: 'Algo salió mal. Inténtalo de nuevo.',
     },
+  },
+  settings: {
+    appearance: 'Apariencia',
+    light: 'Claro',
+    dark: 'Oscuro',
+    system: 'Automático',
+    language: 'Idioma',
   },
 } satisfies TranslationTree;
 

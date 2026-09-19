@@ -4,10 +4,10 @@ import {
   ChartNoAxesColumn,
   House,
   NotebookPen,
+  Settings,
   Target,
 } from '@tamagui/lucide-icons-2';
 
-import { SignOutButton } from '@/components/auth/sign-out-button';
 import { useTranslations } from '@/lib/i18n';
 
 // matches the reference sidebar: the active icon takes --primary, the rest --muted-foreground
@@ -33,7 +33,6 @@ export default function TabsLayout() {
         headerShadowVisible: false,
         headerTintColor: theme.color.val,
         headerTitleStyle: { fontFamily: 'Caprasimo-Regular', fontSize: 20 },
-        headerRight: () => <SignOutButton />,
       }}
     >
       <Tabs.Screen
@@ -69,6 +68,15 @@ export default function TabsLayout() {
           title: t('tabs.goals'),
           tabBarIcon: ({ focused }) => (
             <Target color={iconColor(focused)} size={22} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: t('tabs.settings'),
+          tabBarIcon: ({ focused }) => (
+            <Settings color={iconColor(focused)} size={22} />
           ),
         }}
       />

@@ -6,6 +6,7 @@ export const en = {
     progress: 'Progress',
     diary: 'Diary',
     goals: 'My Goals',
+    settings: 'Settings',
   },
   home: {
     logEntry: 'Log entry',
@@ -42,5 +43,12 @@ export const en = {
       sessionExpired: 'Your session ended. Please sign in again.',
       generic: 'Something went wrong. Please try again.',
     },
+  },
+  settings: {
+    appearance: 'Appearance',
+    light: 'Light',
+    dark: 'Dark',
+    system: 'Automatic',
+    language: 'Language',
   },
 } satisfies Translations;

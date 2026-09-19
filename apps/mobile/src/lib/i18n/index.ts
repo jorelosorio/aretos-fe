@@ -2,12 +2,16 @@ import { useCallback, useMemo } from 'react';
 import { useLocales } from 'expo-localization';
 import { I18n, type TranslateOptions } from 'i18n-js';
 
+import { usePreferences } from '../preferences';
 import { en } from './locales/en';
 import { es, type Translations } from './locales/es';
 
 const resources = { es, en };
 
 export type AppLocale = keyof typeof resources;
+
+/** Every locale the app ships, in the order settings should list them. */
+export const APP_LOCALES = ['en', 'es'] as const satisfies readonly AppLocale[];
 
 const DEFAULT_LOCALE: AppLocale = 'es';
 
@@ -42,7 +46,13 @@ function resolveLocale(
 }
 
 export function useTranslations() {
-  const locale = resolveLocale(useLocales());
+  const { locale: preference } = usePreferences();
+  const device = useLocales();
+
+  // An explicit choice wins; `'system'` falls back to the device's own order
+  // of preferred languages, which is the behaviour before anyone visits
+  // settings and the default this app ships with.
+  const locale = preference === 'system' ? resolveLocale(device) : preference;
 
   const t = useCallback<TranslateFn>(
     (key, options) => i18n.t(key, { locale, ...options }),
