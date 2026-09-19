@@ -2,12 +2,14 @@ import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
 import * as WebBrowser from 'expo-web-browser';
 
 import { TamaguiProvider, useTheme } from '@tamagui/core';
 import { config } from '../../tamagui.config';
 
 import { ScreenLoader } from '@/components/common/screen-loader';
+import { useTranslations } from '@/lib/i18n';
 import { useSession, useSessionAutoRefresh } from '@/features/auth';
 import { usePreferences } from '@/lib/preferences';
 import { QueryProvider } from '@/providers/query-provider';
@@ -21,6 +23,7 @@ void SplashScreen.preventAutoHideAsync();
 
 function RootNavigator() {
   const theme = useTheme();
+  const { t } = useTranslations();
   const { isAuthenticated, isRestoring } = useSession();
 
   // Above the guard, so the timer survives navigation between groups.
@@ -32,11 +35,17 @@ function RootNavigator() {
 
   if (isRestoring) return <ScreenLoader />;
 
+  const modalOptions = { presentation: 'modal', headerShown: true } as const;
+
   return (
     <Stack
       screenOptions={{
         headerShown: false,
         contentStyle: { backgroundColor: theme.background.val },
+        headerStyle: { backgroundColor: theme.background.val },
+        headerShadowVisible: false,
+        headerTintColor: theme.color.val,
+        headerTitleStyle: { fontFamily: 'Caprasimo-Regular', fontSize: 20 },
       }}
     >
       {/*
@@ -47,6 +56,15 @@ function RootNavigator() {
       */}
       <Stack.Protected guard={isAuthenticated}>
         <Stack.Screen name="(tabs)" />
+
+        <Stack.Screen
+          name="goals/new"
+          options={{ ...modalOptions, title: t('goals.form.newTitle') }}
+        />
+        <Stack.Screen
+          name="goals/[id]"
+          options={{ ...modalOptions, title: t('goals.form.editTitle') }}
+        />
       </Stack.Protected>
 
       <Stack.Protected guard={!isAuthenticated}>
@@ -66,6 +84,8 @@ export default function RootLayout() {
 
   return (
     <TamaguiProvider config={config} defaultTheme={resolved}>
+      <StatusBar style={resolved === 'dark' ? 'light' : 'dark'} />
+
       <QueryProvider>
         <RootNavigator />
       </QueryProvider>

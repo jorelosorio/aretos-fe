@@ -2,7 +2,9 @@ import { Languages, Moon, Smartphone, Sun } from '@tamagui/lucide-icons-2';
 import { ScrollView, YStack } from 'tamagui';
 
 import { SignOutButton } from '@/components/auth/sign-out-button';
+import { OptionGroup, type Option } from '@/components/common/option-group';
 import { APP_LOCALES, useTranslations } from '@/lib/i18n';
+import { SPACING } from '@/constants/layout';
 import {
   setPreferences,
   usePreferences,
@@ -10,12 +12,6 @@ import {
   type ThemePreference,
 } from '@/lib/preferences';
 
-import { OptionGroup, type Option } from './option-group';
-
-/**
- * Endonyms, and deliberately not translation keys: someone who has the app in
- * a language they cannot read needs to find their own language in this list.
- */
 const LOCALE_LABELS: Record<(typeof APP_LOCALES)[number], string> = {
   en: 'English',
   es: 'Español',
@@ -42,7 +38,7 @@ export function SettingsScreen() {
 
   return (
     <ScrollView flex={1} bg="$background" contentContainerStyle={{ grow: 1 }}>
-      <YStack flex={1} p="$4" gap="$6">
+      <YStack flex={1} p={SPACING.screen} gap={SPACING.section}>
         <OptionGroup
           title={t('settings.appearance')}
           options={themeOptions}
@@ -57,8 +53,6 @@ export function SettingsScreen() {
           onChange={(value) => setPreferences({ locale: value })}
         />
 
-        {/* Holds sign-out against the bottom on a tall screen without letting
-            it ride up over the groups on a short one. */}
         <YStack flex={1} minH="$6" />
 
         <SignOutButton />

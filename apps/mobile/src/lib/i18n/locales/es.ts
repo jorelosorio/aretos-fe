@@ -21,6 +21,62 @@ export const es = {
   },
   goals: {
     title: 'Mis Metas',
+    tagline:
+      'Cada meta es algo grande. Dentro van las acciones concretas que la vuelven real.',
+    new: 'Nueva meta',
+    actions: 'Opciones',
+    archive: 'Archivar',
+    restore: 'Restaurar',
+    filter: {
+      active: 'Activas',
+      archived: 'Archivadas',
+    },
+    delete: 'Eliminar',
+    deleteConfirmTitle: '¿Eliminar esta meta?',
+    deleteConfirmBody:
+      'Se borran también sus hábitos y registros. Esta acción no se puede deshacer.',
+    empty: {
+      title: 'Todavía no hay ninguna meta',
+      body: 'Empieza por la meta grande, aunque suene abstracta. Después la traduces en acciones que puedas marcar sin dudar.',
+      archivedTitle: 'No hay metas archivadas',
+      archivedBody:
+        'Las metas que archives aparecen aquí, con su historial intacto.',
+    },
+    form: {
+      newTitle: 'Nueva meta',
+      editTitle: 'Editar meta',
+      name: 'Nombre',
+      namePlaceholder: 'Ej. Trabaja con excelencia',
+      description: 'Descripción (opcional)',
+      descriptionPlaceholder: '¿Por qué te importa esta meta?',
+      frequency: 'Tu cadencia',
+      streakRule: '¿Qué mantiene viva la racha?',
+      threshold: 'Mínimo',
+      create: 'Crear meta',
+      save: 'Guardar cambios',
+    },
+    frequency: {
+      daily: 'Diaria',
+      dailyHint: 'Cada día cuenta como un periodo para la racha.',
+      weekly: 'Semanal',
+      weeklyHint: 'Cada semana cuenta como un periodo para la racha.',
+      flexible: 'Flexible',
+      flexibleHint: 'Registra cuando quieras; la racha se mide por semana.',
+    },
+    streak: {
+      logged: 'Registrar, aunque sea parcial',
+      loggedHint: 'Presentarte cuenta. La opción más sostenible.',
+      threshold: 'Alcanzar un mínimo',
+      thresholdHint:
+        'El periodo cuenta solo si llegas al porcentaje que elijas.',
+    },
+    errors: {
+      title: 'Algo salió mal',
+      limitReached: 'Tu plan no permite más metas.',
+      notFound: 'Esa meta ya no existe.',
+      network: 'No pudimos conectar con el servidor. Revisa tu conexión.',
+      generic: 'Algo salió mal. Inténtalo de nuevo.',
+    },
   },
   auth: {
     title: 'Aretos',
