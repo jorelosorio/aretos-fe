@@ -35,6 +35,15 @@ export const es = {
     deleteConfirmTitle: '¿Eliminar esta meta?',
     deleteConfirmBody:
       'Se borran también sus hábitos y registros. Esta acción no se puede deshacer.',
+    limit: {
+      usage: '%{used} de %{limit} metas de tu plan',
+      title: 'Sigue varias metas a la vez',
+      reached:
+        'Estás usando %{used} de %{limit}. Puedes añadir todas las acciones que quieras a las que ya tienes; con Premium sigues varias metas a la vez y ves cuál avanza y cuál se queda atrás.',
+      blockedTitle: 'Empieza por tu primera meta',
+      blocked:
+        'Tu plan todavía no incluye metas. Actualízalo para empezar a seguir lo que te importa.',
+    },
     empty: {
       title: 'Todavía no hay ninguna meta',
       body: 'Empieza por la meta grande, aunque suene abstracta. Después la traduces en acciones que puedas marcar sin dudar.',

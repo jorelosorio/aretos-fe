@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { limitKeys } from '@/features/limits';
 import { ApiError } from '@/lib/api';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
 
@@ -54,10 +55,18 @@ export function useGoal(id: string) {
  * A goal moves between the active and archived lists, and the server assigns
  * `color_slot` and orders by it, so the lists a write touches are not
  * knowable from the response alone.
+ *
+ * The plan's limits go with it: creating and deleting move the usage count
+ * behind `can_create`, which is what the goals screen reads to decide
+ * whether to offer another one.
  */
 function useInvalidateGoals() {
   const queryClient = useQueryClient();
-  return () => queryClient.invalidateQueries({ queryKey: goalKeys.all });
+
+  return async () => {
+    await queryClient.invalidateQueries({ queryKey: goalKeys.all });
+    await queryClient.invalidateQueries({ queryKey: limitKeys.all });
+  };
 }
 
 export function useCreateGoal() {

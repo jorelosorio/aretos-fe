@@ -33,6 +33,15 @@ export const en = {
     delete: 'Delete',
     deleteConfirmTitle: 'Delete this goal?',
     deleteConfirmBody: 'Its habits and logs go with it. This cannot be undone.',
+    limit: {
+      usage: '%{used} of %{limit} goals on your plan',
+      title: 'Track several goals at once',
+      reached:
+        'You are using %{used} of %{limit}. You can add as many actions as you like to the ones you have; with Premium you follow several goals at once and see which is moving and which is stalling.',
+      blockedTitle: 'Start with your first goal',
+      blocked:
+        'Your plan does not include goals yet. Upgrade it to start tracking what matters to you.',
+    },
     empty: {
       title: 'No goals yet',
       body: 'Start with the big one, even if it sounds abstract. You will turn it into actions you can tick without second-guessing.',

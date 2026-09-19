@@ -12,10 +12,12 @@ import {
   type Segment,
 } from '@/components/common/segmented-control';
 import { SPACING } from '@/constants/layout';
+import { useAllowance } from '@/features/limits';
 import { useGoalErrorMessage, useGoals } from '@/features/goals';
 import { useTranslations } from '@/lib/i18n';
 
 import { GoalCard } from './goal-card';
+import { PlanLimitNotice } from './plan-limit-notice';
 
 type Filter = 'active' | 'archived';
 
@@ -27,6 +29,9 @@ export function GoalsScreen() {
 
   const [filter, setFilter] = useState<Filter>('active');
   const archived = filter === 'archived';
+
+  const allowance = useAllowance('goal');
+  const canCreate = allowance.canCreate;
 
   const {
     data: goals,
@@ -64,6 +69,8 @@ export function GoalsScreen() {
 
         <ErrorNotice message={toMessage(error)} />
 
+        {!archived && <PlanLimitNotice allowance={allowance} />}
+
         {isPending ? (
           <ScreenLoader />
         ) : goals?.length === 0 ? (
@@ -74,6 +81,7 @@ export function GoalsScreen() {
             )}
             body={t(archived ? 'goals.empty.archivedBody' : 'goals.empty.body')}
             onCreate={archived ? undefined : () => router.push('/goals/new')}
+            canCreate={canCreate}
           />
         ) : (
           <>
@@ -97,6 +105,8 @@ export function GoalsScreen() {
                 size="$5"
                 theme="accent"
                 icon={Plus}
+                disabled={!canCreate}
+                opacity={canCreate ? 1 : 0.5}
                 onPress={() => router.push('/goals/new')}
               >
                 {t('goals.new')}
@@ -114,11 +124,13 @@ function EmptyGoals({
   title,
   body,
   onCreate,
+  canCreate = true,
 }: {
   Icon: typeof Target;
   title: string;
   body: string;
   onCreate?: () => void;
+  canCreate?: boolean;
 }) {
   const { t } = useTranslations();
 
@@ -151,7 +163,14 @@ function EmptyGoals({
       </YStack>
 
       {onCreate && (
-        <Button size="$4" theme="accent" icon={Plus} onPress={onCreate}>
+        <Button
+          size="$4"
+          theme="accent"
+          icon={Plus}
+          disabled={!canCreate}
+          opacity={canCreate ? 1 : 0.5}
+          onPress={onCreate}
+        >
           {t('goals.new')}
         </Button>
       )}
