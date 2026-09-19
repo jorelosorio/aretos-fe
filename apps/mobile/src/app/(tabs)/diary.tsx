@@ -1,6 +1,6 @@
 import { H1, YStack } from 'tamagui';
 
-import { useTranslations } from '@/i18n';
+import { useTranslations } from '@/lib/i18n';
 
 export default function Diario() {
   const { t } = useTranslations();

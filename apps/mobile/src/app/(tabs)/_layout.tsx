@@ -7,7 +7,8 @@ import {
   Target,
 } from '@tamagui/lucide-icons-2';
 
-import { useTranslations } from '@/i18n';
+import { SignOutButton } from '@/components/auth/sign-out-button';
+import { useTranslations } from '@/lib/i18n';
 
 // matches the reference sidebar: the active icon takes --primary, the rest --muted-foreground
 const iconColor = (focused: boolean) =>
@@ -32,6 +33,7 @@ export default function TabsLayout() {
         headerShadowVisible: false,
         headerTintColor: theme.color.val,
         headerTitleStyle: { fontFamily: 'Caprasimo-Regular', fontSize: 20 },
+        headerRight: () => <SignOutButton />,
       }}
     >
       <Tabs.Screen
