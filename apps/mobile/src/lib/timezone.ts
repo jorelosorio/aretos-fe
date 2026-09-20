@@ -19,14 +19,32 @@
  * what that looks like — indistinguishable from a device genuinely set to
  * UTC, so it is not worth sending.
  */
+/**
+ * Zones that name an offset rather than a place.
+ *
+ * All of them are valid IANA names the server would accept, and every one of
+ * them is what an unconfigured device reports — a simulator says `GMT`, a
+ * container says `UTC` or `Etc/UTC`. None carries daylight saving, so sending
+ * one silently pins the user to a fixed offset and moves their day boundary
+ * twice a year. Dropping them falls through to `users.timezone`, which is a
+ * zone somebody actually chose.
+ *
+ * A user genuinely in London reports `Europe/London`, not `GMT`, so this
+ * costs nothing real.
+ */
+const isPlaceless = (zone: string) =>
+  zone === 'UTC' ||
+  zone === 'GMT' ||
+  zone === 'Local' ||
+  zone.startsWith('Etc/');
+
 export function deviceTimezone(): string | undefined {
   try {
     const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    // `Local` is refused by the server, which resolves it to whatever zone
-    // the container runs in; it should never appear here, but sending it
-    // would turn a working request into a 400.
-    if (!zone || zone === 'UTC' || zone === 'Local') return undefined;
+    // `Local` in particular is refused outright by the server, which would
+    // otherwise resolve it to whatever zone the container runs in.
+    if (!zone || isPlaceless(zone)) return undefined;
 
     return zone;
   } catch {

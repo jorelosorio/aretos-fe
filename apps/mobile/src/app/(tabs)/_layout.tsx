@@ -16,7 +16,6 @@ const iconColor = (focused: boolean) =>
   focused ? '$primary' : '$mutedForeground';
 
 const FAB_SIZE = 56;
-const FAB_LIFT = 28;
 
 function LogTabButton({
   label,
@@ -38,7 +37,6 @@ function LogTabButton({
       <YStack
         width={FAB_SIZE}
         height={FAB_SIZE}
-        mt={-FAB_LIFT}
         items="center"
         justify="center"
         rounded={FAB_SIZE / 2}
