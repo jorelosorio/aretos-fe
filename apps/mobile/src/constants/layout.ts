@@ -22,4 +22,13 @@ export const SPACING = {
   text: '$1',
   /** Padding inside a card. */
   card: '$4',
+  /**
+   * Padding inside a card that repeats down a dense list.
+   *
+   * On the home screen every goal gets a card, so how many fit on a phone is
+   * the whole point of the screen — and past a handful of goals the padding
+   * costs more rows than the content does. Reach for this only where that is
+   * true; a card the user reads one of still wants `card`.
+   */
+  cardTight: '$3',
 } as const;

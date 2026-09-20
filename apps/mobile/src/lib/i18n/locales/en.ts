@@ -3,20 +3,86 @@ import type { Translations } from './es';
 export const en = {
   tabs: {
     home: 'Home',
-    progress: 'Progress',
+    log: 'Log',
     diary: 'Diary',
     goals: 'My Goals',
     settings: 'Settings',
   },
   home: {
-    logEntry: 'Log entry',
-    viewProgress: 'View my progress',
-  },
-  progress: {
-    title: 'Progress',
+    title: 'Today',
+    week: {
+      summary: '%{logged} of %{total} days logged this week',
+    },
+    logged: 'Logged',
+    notLogged: 'Not logged',
+    progress: '%{answered} of %{total}',
+    noHabits: 'No habits yet',
+    empty: {
+      title: 'Nothing to log yet',
+      body: 'Create your first goal and the habits that make it real. This is where each period will show up.',
+      action: 'Create a goal',
+    },
   },
   diary: {
     title: 'Diary',
+  },
+  logs: {
+    mood: {
+      question: 'How did you feel?',
+      optional: '(optional)',
+      scaleLabel: 'How you felt, from 1 to 5',
+      clearHint: 'Tap again to clear your answer',
+      scale: {
+        '1': 'Very bad',
+        '2': 'Bad',
+        '3': 'Okay',
+        '4': 'Good',
+        '5': 'Very good',
+      },
+    },
+    optional: '(optional)',
+    pickTitle: 'Log',
+    pickGoal: 'Which goal are you logging?',
+    period: {
+      previous: 'Previous period',
+      next: 'Next period',
+      today: 'Today',
+      week: 'Week of %{date}',
+    },
+    editing: "You're editing a saved entry",
+    progress: '%{answered} of %{total}',
+    save: 'Save entry',
+    update: 'Update entry',
+    note: 'Note',
+    notePlaceholder: 'What made it go this way?',
+    entry: {
+      done: 'Done',
+      notDone: 'Not today',
+      skip: "Doesn't apply",
+      unskip: 'It does apply',
+      skipped: "Doesn't apply this period",
+      target: 'Target: %{target} %{unit}',
+      plan: 'My plan',
+      clear: 'Tap again to clear your answer',
+    },
+    empty: {
+      noGoalsTitle: 'You need a goal first',
+      noGoalsBody:
+        'An entry is always about a goal. Create one and add the habits you want to track.',
+      noGoalsAction: 'Create a goal',
+      noHabitsTitle: 'This goal has no habits',
+      noHabitsBody:
+        'A goal is logged through its habits. Add the first one and come back.',
+      noHabitsAction: 'Add a habit',
+    },
+    errors: {
+      title: 'Something went wrong',
+      limitReached: 'Your plan does not allow more entries.',
+      notFound: 'That entry no longer exists.',
+      loadFailed: "We couldn't open this period. Try again.",
+      network: "We couldn't reach the server. Check your connection.",
+      generic: 'Something went wrong. Try again.',
+    },
   },
   goals: {
     title: 'My Goals',

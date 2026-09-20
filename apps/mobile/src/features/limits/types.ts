@@ -8,8 +8,14 @@ import type { Tier } from '@/features/auth';
  * uses, so what the app is told and what a POST enforces cannot drift.
  */
 
-/** Resources the endpoint answers for — its `reportedResources`. */
-export type LimitedResource = 'goal' | 'habit';
+/**
+ * Resources the endpoint answers for — its `reportedResources`.
+ *
+ * `habit_log` is capped on rows owned, like the other two: it counts every log
+ * the user has ever written, not this month's. The cap is checked before the
+ * upsert, so at the limit even rewriting an existing period is refused.
+ */
+export type LimitedResource = 'goal' | 'habit' | 'habit_log';
 
 export type WireResourceLimit = {
   used: number;

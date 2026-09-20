@@ -74,6 +74,12 @@ function RootNavigator() {
           name="habits/[id]"
           options={{ ...modalOptions, title: t('habits.form.editTitle') }}
         />
+
+        <Stack.Screen
+          name="logs/new"
+          options={{ ...modalOptions, title: t('logs.pickTitle') }}
+        />
+        <Stack.Screen name="logs/[goalId]" options={modalOptions} />
       </Stack.Protected>
 
       <Stack.Protected guard={!isAuthenticated}>

@@ -1,12 +1,13 @@
-import { Tabs } from 'expo-router';
+import { Tabs, useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
 import {
-  ChartNoAxesColumn,
   House,
   NotebookPen,
+  Plus,
   Settings,
   Target,
 } from '@tamagui/lucide-icons-2';
+import { YStack } from 'tamagui';
 
 import { useTranslations } from '@/lib/i18n';
 
@@ -14,8 +15,47 @@ import { useTranslations } from '@/lib/i18n';
 const iconColor = (focused: boolean) =>
   focused ? '$primary' : '$mutedForeground';
 
+const FAB_SIZE = 56;
+const FAB_LIFT = 28;
+
+function LogTabButton({
+  label,
+  onPress,
+}: {
+  label: string;
+  onPress: () => void;
+}) {
+  return (
+    <YStack
+      flex={1}
+      items="center"
+      justify="flex-start"
+      onPress={onPress}
+      pressStyle={{ opacity: 0.8 }}
+      accessibilityRole="button"
+      accessibilityLabel={label}
+    >
+      <YStack
+        width={FAB_SIZE}
+        height={FAB_SIZE}
+        mt={-FAB_LIFT}
+        items="center"
+        justify="center"
+        rounded={FAB_SIZE / 2}
+        bg="$primary"
+        borderWidth={4}
+        borderColor="$sidebar"
+        elevation={4}
+      >
+        <Plus size={28} color="$primaryForeground" />
+      </YStack>
+    </YStack>
+  );
+}
+
 export default function TabsLayout() {
   const theme = useTheme();
+  const router = useRouter();
   const { t } = useTranslations();
 
   return (
@@ -27,6 +67,7 @@ export default function TabsLayout() {
         tabBarStyle: {
           backgroundColor: theme.sidebar.val,
           borderTopColor: theme.sidebarBorder.val,
+          overflow: 'visible',
         },
         tabBarLabelStyle: { fontFamily: 'Nunito-SemiBold', fontSize: 12 },
         headerStyle: { backgroundColor: theme.background.val },
@@ -38,18 +79,10 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: t('tabs.home'),
+          title: t('home.title'),
+          tabBarLabel: t('tabs.home'),
           tabBarIcon: ({ focused }) => (
             <House color={iconColor(focused)} size={22} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="progress"
-        options={{
-          title: t('tabs.progress'),
-          tabBarIcon: ({ focused }) => (
-            <ChartNoAxesColumn color={iconColor(focused)} size={22} />
           ),
         }}
       />
@@ -59,6 +92,18 @@ export default function TabsLayout() {
           title: t('tabs.diary'),
           tabBarIcon: ({ focused }) => (
             <NotebookPen color={iconColor(focused)} size={22} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="log"
+        options={{
+          title: t('tabs.log'),
+          tabBarButton: () => (
+            <LogTabButton
+              label={t('tabs.log')}
+              onPress={() => router.push('/logs/new')}
+            />
           ),
         }}
       />

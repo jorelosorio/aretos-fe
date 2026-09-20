@@ -4,20 +4,86 @@ type TranslationTree = { [key: string]: string | TranslationTree };
 export const es = {
   tabs: {
     home: 'Inicio',
-    progress: 'Progreso',
+    log: 'Registrar',
     diary: 'Diario',
     goals: 'Mis Metas',
     settings: 'Ajustes',
   },
   home: {
-    logEntry: 'Registrar',
-    viewProgress: 'Ver mi progreso',
-  },
-  progress: {
-    title: 'Progreso',
+    title: 'Hoy',
+    week: {
+      summary: '%{logged} de %{total} días registrados esta semana',
+    },
+    logged: 'Registrado',
+    notLogged: 'Sin registrar',
+    progress: '%{answered} de %{total}',
+    noHabits: 'Sin hábitos todavía',
+    empty: {
+      title: 'Aún no hay nada que registrar',
+      body: 'Crea tu primera meta y los hábitos que la vuelven real. Aquí verás cómo va cada período.',
+      action: 'Crear una meta',
+    },
   },
   diary: {
     title: 'Diario',
+  },
+  logs: {
+    mood: {
+      question: '¿Cómo te sentiste?',
+      optional: '(opcional)',
+      scaleLabel: 'Cómo te sentiste, del 1 al 5',
+      clearHint: 'Toca de nuevo para quitar la respuesta',
+      scale: {
+        '1': 'Muy mal',
+        '2': 'Mal',
+        '3': 'Normal',
+        '4': 'Bien',
+        '5': 'Muy bien',
+      },
+    },
+    optional: '(opcional)',
+    pickTitle: 'Registrar',
+    pickGoal: '¿Sobre qué meta quieres registrar?',
+    period: {
+      previous: 'Período anterior',
+      next: 'Período siguiente',
+      today: 'Hoy',
+      week: 'Semana del %{date}',
+    },
+    editing: 'Estás editando un registro guardado',
+    progress: '%{answered} de %{total}',
+    save: 'Guardar registro',
+    update: 'Actualizar registro',
+    note: 'Nota',
+    notePlaceholder: '¿Qué hizo que fuera así?',
+    entry: {
+      done: 'Hecho',
+      notDone: 'Hoy no',
+      skip: 'No aplica',
+      unskip: 'Sí aplica',
+      skipped: 'No aplica en este período',
+      target: 'Meta: %{target} %{unit}',
+      plan: 'Mi plan',
+      clear: 'Toca de nuevo para quitar la respuesta',
+    },
+    empty: {
+      noGoalsTitle: 'Primero necesitas una meta',
+      noGoalsBody:
+        'Un registro siempre es sobre una meta. Crea una y añade los hábitos que quieres seguir.',
+      noGoalsAction: 'Crear una meta',
+      noHabitsTitle: 'Esta meta no tiene hábitos',
+      noHabitsBody:
+        'Una meta se registra a través de sus hábitos. Añade el primero y vuelve aquí.',
+      noHabitsAction: 'Añadir un hábito',
+    },
+    errors: {
+      title: 'Algo salió mal',
+      limitReached: 'Tu plan no permite más registros.',
+      notFound: 'Ese registro ya no existe.',
+      loadFailed: 'No pudimos abrir este período. Inténtalo de nuevo.',
+      network: 'No pudimos conectar con el servidor. Revisa tu conexión.',
+      generic: 'Algo salió mal. Inténtalo de nuevo.',
+    },
   },
   goals: {
     title: 'Mis Metas',
