@@ -10,7 +10,18 @@ export const en = {
   },
   home: {
     title: 'Today',
+    greeting: 'Hello, %{name}',
+    welcomeBack: 'Welcome back',
+    streaks: {
+      days: '%{count} d',
+      none: 'No streak',
+      label: '%{count} day streak',
+    },
+    today: {
+      title: 'Today',
+    },
     week: {
+      complete: '%{count} complete',
       summary: '%{logged} of %{total} days logged this week',
     },
     logged: 'Logged',

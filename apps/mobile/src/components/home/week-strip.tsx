@@ -1,45 +1,46 @@
 import { Check } from '@tamagui/lucide-icons-2';
-import { XStack, YStack } from 'tamagui';
+import { Circle, XStack } from 'tamagui';
 
-import type { Goal } from '@/features/goals';
-import type { Log } from '@/features/logs';
+import { ICON } from '@/constants/layout';
 
-import { weekCells } from './week-days';
+import type { DayCell } from './week-days';
 
-const DOT_SIZE = 14;
-const TODAY_SIZE = 20;
+const DAY_SIZE = '$1';
+const TODAY_SIZE = '$1.5';
+const CORE_SIZE = '$0.75';
 
-export function WeekStrip({
-  goal,
-  logs,
-}: {
-  goal: Goal;
-  logs: readonly Log[];
-}) {
-  const cells = weekCells(goal, logs);
-
+export function WeekStrip({ cells }: { cells: readonly DayCell[] }) {
   return (
     <XStack items="center" gap="$1.5">
       {cells.map((cell) => {
-        const size = cell.isToday ? TODAY_SIZE : DOT_SIZE;
+        const complete = cell.status === 'complete';
+        const ringed = cell.status !== 'none' || cell.isToday;
 
         return (
-          <YStack
+          <Circle
             key={cell.date}
-            width={size}
-            height={size}
+            size={cell.isToday ? TODAY_SIZE : DAY_SIZE}
             items="center"
             justify="center"
-            rounded={size / 2}
-            bg={cell.logged ? '$primary' : '$muted'}
-            borderWidth={cell.isToday && !cell.logged ? 2 : 0}
-            borderColor="$primary"
+            bg={complete ? '$primary' : '$muted'}
+            borderWidth={ringed && !complete ? 2 : 0}
+            borderColor={
+              cell.status === 'missed' ? '$outcomeMissed' : '$primary'
+            }
             opacity={cell.isFuture && !cell.logged ? 0.4 : 1}
           >
-            {cell.logged && (
-              <Check size={cell.isToday ? 13 : 9} color="$primaryForeground" />
+            {complete && (
+              <Check
+                size={ICON.inline}
+                color="$primaryForeground"
+                strokeWidth={3}
+              />
             )}
-          </YStack>
+
+            {cell.status === 'partial' && (
+              <Circle size={CORE_SIZE} bg="$primary" />
+            )}
+          </Circle>
         );
       })}
     </XStack>

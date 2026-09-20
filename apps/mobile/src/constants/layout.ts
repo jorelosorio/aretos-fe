@@ -32,3 +32,24 @@ export const SPACING = {
    */
   cardTight: '$3',
 } as const;
+
+/**
+ * Icon sizes, in points.
+ *
+ * These are not Tamagui `size` tokens, and deliberately so: that scale runs
+ * 8, 20, 24, 28 — spaced for controls, not for glyphs — so every icon in the
+ * app would have to round to 20 or to 8. Anything that *is* a box (a dot, a
+ * tile, an avatar) should still take a `size` token; only the glyph drawn
+ * inside one comes from here.
+ *
+ * Named by the role the icon plays, so a screen picks a job rather than a
+ * number, and the three can move together.
+ */
+export const ICON = {
+  /** Sits on a line of body text, like the flame beside a streak. */
+  inline: 13,
+  /** The icon of a row or a header action, read at arm's length. */
+  row: 18,
+  /** The subject of a tile or an empty state, not an annotation of one. */
+  feature: 24,
+} as const;

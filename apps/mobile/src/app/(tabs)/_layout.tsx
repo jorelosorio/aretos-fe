@@ -80,6 +80,7 @@ export default function TabsLayout() {
         name="index"
         options={{
           title: t('home.title'),
+          headerShown: false,
           tabBarLabel: t('tabs.home'),
           tabBarIcon: ({ focused }) => (
             <House color={iconColor(focused)} size={22} />

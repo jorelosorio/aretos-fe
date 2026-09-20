@@ -1,100 +1,127 @@
-import { useTheme } from '@tamagui/core';
-import { Check, ChevronRight } from '@tamagui/lucide-icons-2';
-import { Circle, SizableText, XStack, YStack } from 'tamagui';
+import { Flame } from '@tamagui/lucide-icons-2';
+import { SizableText, XStack, YStack } from 'tamagui';
 
-import { MoodFace } from '@/components/logs/mood-face';
-import { slotColor } from '@/components/goals/slot-color';
-import { SPACING } from '@/constants/layout';
-import { useTranslations } from '@/lib/i18n';
+import { ICON, SPACING } from '@/constants/layout';
+import type { Goal } from '@/features/goals';
+import type { MoodScore } from '@/features/logs';
+import { useTranslations, type TranslationKey } from '@/lib/i18n';
 
+import { GoalMark } from './goal-mark';
 import type { GoalStatus } from './today-status';
 import { weekCells } from './week-days';
 import { WeekStrip } from './week-strip';
 
-const MOOD_FACE_SIZE = 32;
+const FREQUENCY_LABELS: Record<Goal['trackingFrequency'], TranslationKey> = {
+  daily: 'goals.frequency.daily',
+  weekly: 'goals.frequency.weekly',
+  flexible: 'goals.frequency.flexible',
+};
+
+const MOOD_LABELS: Record<MoodScore, TranslationKey> = {
+  1: 'logs.mood.scale.1',
+  2: 'logs.mood.scale.2',
+  3: 'logs.mood.scale.3',
+  4: 'logs.mood.scale.4',
+  5: 'logs.mood.scale.5',
+};
 
 export function GoalStatusCard({
   status,
+  streak,
   onPress,
 }: {
   status: GoalStatus;
+  streak: number;
   onPress: () => void;
 }) {
   const { t } = useTranslations();
-  const theme = useTheme();
 
   const { goal, log, weekLogs, habits, answered, total } = status;
   const logged = log !== undefined;
-  const hasHabits = habits.length > 0;
 
-  const cells = weekCells(goal, weekLogs);
+  const context = `${t(total === 1 ? 'habits.countOne' : 'habits.countMany', {
+    count: total,
+  })} · ${t(FREQUENCY_LABELS[goal.trackingFrequency])}`;
+
+  const cells = weekCells(goal, habits, weekLogs);
   const loggedDays = cells.filter((cell) => cell.logged).length;
+  const completeDays = cells.filter(
+    (cell) => cell.status === 'complete',
+  ).length;
+
+  const label = [
+    goal.name,
+    context,
+    t(logged ? 'home.logged' : 'home.notLogged'),
+    ...(total > 0 ? [t('home.progress', { answered, total })] : []),
+    streak === 0
+      ? t('home.streaks.none')
+      : t('home.streaks.label', { count: streak }),
+    ...(log?.mood != null ? [t(MOOD_LABELS[log.mood])] : []),
+    t('home.week.summary', { logged: loggedDays, total: cells.length }),
+    t('home.week.complete', { count: completeDays }),
+  ].join('. ');
 
   return (
     <YStack
-      onPress={onPress}
-      pressStyle={{ bg: '$muted' }}
-      gap={SPACING.group}
-      p={SPACING.cardTight}
+      gap={SPACING.items}
+      p={SPACING.card}
       bg="$card"
       rounded="$xl2"
       borderWidth={1}
       borderColor="$border"
+      onPress={onPress}
+      pressStyle={{ bg: '$muted' }}
       accessibilityRole="button"
-      accessibilityLabel={`${goal.name}. ${t(
-        logged ? 'home.logged' : 'home.notLogged',
-      )}. ${t('home.week.summary', { logged: loggedDays, total: cells.length })}`}
+      accessibilityLabel={label}
     >
-      <XStack items="center" gap={SPACING.group}>
-        <Circle size={8} bg={slotColor(goal.colorSlot)} />
+      <XStack items="flex-start" gap={SPACING.items}>
+        <GoalMark colorSlot={goal.colorSlot} mood={log?.mood} />
 
-        <SizableText
-          flex={1}
-          size="$4"
-          fontFamily="$heading"
-          color="$cardForeground"
-          numberOfLines={1}
-        >
-          {goal.name}
-        </SizableText>
-
-        {log?.mood != null && (
-          <MoodFace
-            score={log.mood}
-            size={MOOD_FACE_SIZE}
-            color={theme.mutedForeground.val}
-          />
-        )}
-
-        <ChevronRight size={16} color="$mutedForeground" />
-      </XStack>
-
-      <XStack items="center" gap={SPACING.group}>
-        <XStack flex={1} items="center" gap="$1.5">
-          {logged && <Check size={12} color="$primary" />}
+        <YStack flex={1} gap={SPACING.text}>
           <SizableText
-            size="$2"
-            color={logged ? '$primary' : '$mutedForeground'}
-            fontWeight={logged ? '600' : '400'}
-            numberOfLines={1}
+            size="$5"
+            fontFamily="$heading"
+            color="$cardForeground"
+            numberOfLines={2}
           >
-            {t(logged ? 'home.logged' : 'home.notLogged')}
+            {goal.name}
           </SizableText>
 
-          {hasHabits && (
-            <SizableText size="$2" color="$mutedForeground" numberOfLines={1}>
-              {`· ${t('home.progress', { answered, total })}`}
+          <XStack items="center" gap="$1.5">
+            <SizableText
+              shrink={1}
+              size="$2"
+              color="$mutedForeground"
+              numberOfLines={1}
+            >
+              {`${context} ·`}
             </SizableText>
-          )}
-        </XStack>
 
-        {hasHabits ? (
-          <WeekStrip goal={goal} logs={weekLogs} />
-        ) : (
-          <SizableText size="$2" color="$mutedForeground">
-            {t('home.noHabits')}
-          </SizableText>
-        )}
+            <Flame
+              size={ICON.inline}
+              color={streak === 0 ? '$mutedForeground' : '$primary'}
+            />
+
+            <SizableText
+              size="$2"
+              fontWeight="600"
+              color={streak === 0 ? '$mutedForeground' : '$primary'}
+            >
+              {t('home.streaks.days', { count: streak })}
+            </SizableText>
+          </XStack>
+
+          <YStack mt="$2">
+            {habits.length > 0 ? (
+              <WeekStrip cells={cells} />
+            ) : (
+              <SizableText size="$1" color="$mutedForeground">
+                {t('home.noHabits')}
+              </SizableText>
+            )}
+          </YStack>
+        </YStack>
       </XStack>
     </YStack>
   );

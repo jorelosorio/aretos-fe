@@ -26,14 +26,29 @@ export type FaceShape = {
 /** The head every face shares, in the same units the paths were traced in. */
 export const FACE_HEAD = { cx: 80, cy: 72, r: 36 } as const;
 
+export type FaceBox = { viewBox: string; aspect: number };
+
 /**
- * Cropped to the drawing rather than to the 160-unit grid it was traced on:
- * the shapes only ever occupy x 44-116 and y 36-137, so a square box around
- * them would render the head at 45% of the footprint the caller paid for. The
- * box is the artwork's bounds plus room for the stroke, which is why it is
- * portrait — the chin arc sits well below the head.
+ * The whole drawing, cropped to it rather than to the 160-unit grid it was
+ * traced on: the shapes only ever occupy x 44-116 and y 36-137, so a square
+ * box around them would render the head at 45% of the footprint the caller
+ * paid for. The box is the artwork's bounds plus room for the stroke, which
+ * is why it is portrait — the chin arc sits well below the head.
  */
-export const FACE_VIEW_BOX = '42 33 76 108';
+export const FACE_BOX: FaceBox = { viewBox: '42 33 76 108', aspect: 76 / 108 };
+
+/**
+ * The head alone, for a face used as a small badge beside text.
+ *
+ * At picker size the chin arc is clearly a chin. Shrunk to sit inline it stops
+ * reading as part of the face and becomes a stray mark floating under a circle,
+ * which is exactly the wrong signal on a card that is mostly text. Dropping it
+ * also makes the box square, so the badge takes the width it looks like it
+ * takes instead of being a tall portrait sliver.
+ *
+ * Bounds are the head circle (cx 80, cy 72, r 36) plus half the stroke.
+ */
+export const FACE_HEAD_BOX: FaceBox = { viewBox: '42 34 76 76', aspect: 1 };
 
 /**
  * Scales with the art, so the weight reads the same at every size. 1.6 was

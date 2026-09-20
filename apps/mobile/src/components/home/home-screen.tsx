@@ -1,4 +1,5 @@
 import { FlatList, RefreshControl } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
 import { Target } from '@tamagui/lucide-icons-2';
@@ -11,17 +12,23 @@ import { SPACING } from '@/constants/layout';
 import { useGoalErrorMessage, useGoals } from '@/features/goals';
 import { useHabits } from '@/features/habits';
 import { useLogs } from '@/features/logs';
+import { useGoalStreaks } from '@/features/streaks';
 import { useTranslations } from '@/lib/i18n';
 
 import { GoalStatusCard } from './goal-status-card';
+import { HomeHeader } from './home-header';
+import { HomeSection } from './home-section';
 import { toGoalStatus } from './today-status';
 import { currentWeekWindow } from './week-days';
+
+const HEADER_TOP_GAP = 8;
 
 export function HomeScreen() {
   const { t } = useTranslations();
   const theme = useTheme();
   const router = useRouter();
   const toMessage = useGoalErrorMessage();
+  const insets = useSafeAreaInsets();
 
   const goals = useGoals();
   const habits = useHabits();
@@ -41,6 +48,11 @@ export function HomeScreen() {
     habits.data ?? [],
     logs.data ?? [],
   );
+
+  const streaks = useGoalStreaks(statuses.map((status) => status.goal.id));
+
+  const openLog = (goalId: string) =>
+    router.push({ pathname: '/logs/[goalId]', params: { goalId } });
 
   if (isPending) return <ScreenLoader />;
 
@@ -72,24 +84,26 @@ export function HomeScreen() {
       }
       ListHeaderComponent={
         <YStack
-          gap={SPACING.group}
-          px={SPACING.screen}
-          pt={SPACING.screen}
+          gap={SPACING.section}
+          pt={insets.top + HEADER_TOP_GAP}
           pb={SPACING.items}
         >
-          <ErrorNotice message={toMessage(error)} />
+          <YStack gap={SPACING.group} px={SPACING.screen}>
+            <HomeHeader />
+            <ErrorNotice message={toMessage(error)} />
+          </YStack>
+
+          <YStack px={SPACING.screen}>
+            <HomeSection title={t('home.today.title')} />
+          </YStack>
         </YStack>
       }
       renderItem={({ item }) => (
         <YStack px={SPACING.screen} pb={SPACING.items}>
           <GoalStatusCard
             status={item}
-            onPress={() =>
-              router.push({
-                pathname: '/logs/[goalId]',
-                params: { goalId: item.goal.id },
-              })
-            }
+            streak={streaks[item.goal.id] ?? 0}
+            onPress={() => openLog(item.goal.id)}
           />
         </YStack>
       )}

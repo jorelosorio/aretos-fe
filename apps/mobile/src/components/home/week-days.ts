@@ -12,14 +12,30 @@
  */
 
 import type { Goal } from '@/features/goals';
+import type { Habit } from '@/features/habits';
 import {
   dateKey,
+  outcomeOf,
   periodKey,
   todayKey,
   type DateKey,
   type Log,
 } from '@/features/logs';
 const DAYS_IN_WEEK = 7;
+
+/**
+ * How well the period behind a day went.
+ *
+ * `logged` alone was too coarse: a day where one habit of four was met drew
+ * the same full dot as a day where all four were, so a week of scraping by
+ * looked identical to a perfect one. These four states are the least that
+ * distinguishes them.
+ *
+ * `missed` and `none` stay apart for the same reason `outcomeOf` keeps
+ * `missed` and `pending` apart — a period the person opened and met nothing
+ * in is a different thing from one they never opened.
+ */
+export type DayStatus = 'complete' | 'partial' | 'missed' | 'none';
 
 /**
  * No day letter rides along.
@@ -31,6 +47,7 @@ const DAYS_IN_WEEK = 7;
  */
 export type DayCell = {
   date: DateKey;
+  status: DayStatus;
   /** The period this day belongs to has a saved log. */
   logged: boolean;
   isToday: boolean;
@@ -60,19 +77,65 @@ export function currentWeekWindow(): { from: DateKey; to: DateKey } {
 }
 
 /**
- * Whether each day of the week has been logged for this goal.
+ * How much of a period's weight was actually met.
  *
- * A day is "logged" when *its period* has a log, not when a log falls on that
- * date — which is what makes the strip honest for a weekly goal. All seven of
- * its days map to the same Monday, so one saved week lights the whole row
- * rather than one square, because the person really did account for the week.
+ * Weighted rather than counted, because `weight` is the goal's own statement
+ * of how much each habit matters — treating a weight-3 habit as one of four
+ * would contradict what the person configured.
+ *
+ * Skipped habits leave the denominator: a period consciously passed on is not
+ * a shortfall, and counting it as one would punish the person for using the
+ * feature. A period where everything was skipped therefore has no measurable
+ * weight at all, which `null` says and the caller reads as `missed` — nothing
+ * was met, but nothing was neglected either.
  */
-export function weekCells(goal: Goal, logs: readonly Log[]): DayCell[] {
+function metRatio(habits: readonly Habit[], log: Log): number | null {
+  const entries = new Map(log.entries.map((entry) => [entry.habitId, entry]));
+
+  let total = 0;
+  let met = 0;
+
+  for (const habit of habits) {
+    const entry = entries.get(habit.id);
+    const outcome = entry && outcomeOf(habit, entry);
+
+    if (outcome === 'skipped') continue;
+
+    total += habit.weight;
+    if (outcome === 'done') met += habit.weight;
+  }
+
+  return total === 0 ? null : met / total;
+}
+
+function statusOf(habits: readonly Habit[], log: Log | undefined): DayStatus {
+  if (log === undefined) return 'none';
+
+  const ratio = metRatio(habits, log);
+  if (ratio === null || ratio === 0) return 'missed';
+  return ratio === 1 ? 'complete' : 'partial';
+}
+
+/**
+ * How each day of the week went for this goal.
+ *
+ * A day takes the state of *its period*, not of a log falling on that date —
+ * which is what makes the strip honest for a weekly goal. All seven of its
+ * days map to the same Monday, so one saved week lights the whole row rather
+ * than one square, because the person really did account for the week.
+ */
+export function weekCells(
+  goal: Goal,
+  habits: readonly Habit[],
+  logs: readonly Log[],
+): DayCell[] {
   const today = todayKey();
   const monday = parse(weekStart());
 
-  const logged = new Set(
-    logs.filter((log) => log.goalId === goal.id).map((log) => log.entryDate),
+  const byPeriod = new Map(
+    logs
+      .filter((log) => log.goalId === goal.id)
+      .map((log) => [log.entryDate, log]),
   );
 
   return Array.from({ length: DAYS_IN_WEEK }, (_, offset) => {
@@ -80,9 +143,12 @@ export function weekCells(goal: Goal, logs: readonly Log[]): DayCell[] {
     day.setDate(day.getDate() + offset);
     const date = dateKey(day);
 
+    const log = byPeriod.get(periodKey(date, goal.trackingFrequency));
+
     return {
       date,
-      logged: logged.has(periodKey(date, goal.trackingFrequency)),
+      status: statusOf(habits, log),
+      logged: log !== undefined,
       isToday: date === today,
       isFuture: date > today,
     };

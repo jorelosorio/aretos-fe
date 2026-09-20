@@ -3,30 +3,32 @@ import { Circle, G, Path, Svg } from 'react-native-svg';
 import type { MoodScore } from '@/features/logs';
 
 import {
+  FACE_BOX,
   FACE_HEAD,
+  FACE_HEAD_BOX,
   FACE_STROKE_WIDTH,
-  FACE_VIEW_BOX,
   MOOD_FACES,
 } from './mood-faces';
-
-const ASPECT = 76 / 108;
 
 export function MoodFace({
   score,
   size,
   color,
+  headOnly = false,
 }: {
   score: MoodScore;
   size: number;
   color: string;
+  headOnly?: boolean;
 }) {
   const face = MOOD_FACES[score];
+  const box = headOnly ? FACE_HEAD_BOX : FACE_BOX;
 
   return (
     <Svg
-      width={size * ASPECT}
+      width={size * box.aspect}
       height={size}
-      viewBox={FACE_VIEW_BOX}
+      viewBox={box.viewBox}
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
     >
@@ -37,7 +39,7 @@ export function MoodFace({
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <Path d={face.jaw} />
+        {!headOnly && <Path d={face.jaw} />}
         <Circle cx={FACE_HEAD.cx} cy={FACE_HEAD.cy} r={FACE_HEAD.r} />
         {face.brows.map((d) => (
           <Path key={d} d={d} />

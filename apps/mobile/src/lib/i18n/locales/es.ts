@@ -11,7 +11,18 @@ export const es = {
   },
   home: {
     title: 'Hoy',
+    greeting: 'Hola, %{name}',
+    welcomeBack: 'Bienvenido de vuelta',
+    streaks: {
+      days: '%{count} d',
+      none: 'Sin racha',
+      label: 'Racha de %{count} días',
+    },
+    today: {
+      title: 'Hoy',
+    },
     week: {
+      complete: '%{count} completos',
       summary: '%{logged} de %{total} días registrados esta semana',
     },
     logged: 'Registrado',
