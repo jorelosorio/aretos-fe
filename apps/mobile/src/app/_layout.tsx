@@ -61,9 +61,18 @@ function RootNavigator() {
           name="goals/new"
           options={{ ...modalOptions, title: t('goals.form.newTitle') }}
         />
+        <Stack.Screen name="goals/[id]/index" options={{ headerShown: true }} />
         <Stack.Screen
-          name="goals/[id]"
+          name="goals/[id]/edit"
           options={{ ...modalOptions, title: t('goals.form.editTitle') }}
+        />
+        <Stack.Screen
+          name="goals/[id]/habits/new"
+          options={{ ...modalOptions, title: t('habits.form.newTitle') }}
+        />
+        <Stack.Screen
+          name="habits/[id]"
+          options={{ ...modalOptions, title: t('habits.form.editTitle') }}
         />
       </Stack.Protected>
 

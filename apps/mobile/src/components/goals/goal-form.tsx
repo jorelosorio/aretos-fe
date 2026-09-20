@@ -130,6 +130,7 @@ export function GoalForm({
             </Label>
             <Input
               id="goal-name"
+              size="$5"
               value={draft.name}
               onChangeText={(value) => patch({ name: value })}
               placeholder={t('goals.form.namePlaceholder')}
@@ -139,6 +140,9 @@ export function GoalForm({
               bg="$card"
               borderColor="$border"
             />
+            <SizableText size="$2" color="$mutedForeground" px="$2">
+              {t('goals.form.nameHint')}
+            </SizableText>
           </YStack>
 
           <YStack gap={SPACING.group}>
@@ -147,12 +151,16 @@ export function GoalForm({
             </Label>
             <TextArea
               id="goal-description"
+              size="$5"
               value={draft.description}
               onChangeText={(value) => patch({ description: value })}
               placeholder={t('goals.form.descriptionPlaceholder')}
               placeholderTextColor="$mutedForeground"
               maxLength={DESCRIPTION_MAX}
-              numberOfLines={3}
+              multiline
+              numberOfLines={4}
+              minH={112}
+              verticalAlign="top"
               bg="$card"
               borderColor="$border"
             />

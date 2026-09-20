@@ -22,9 +22,10 @@ export const es = {
   goals: {
     title: 'Mis Metas',
     tagline:
-      'Cada meta es algo grande. Dentro van las acciones concretas que la vuelven real.',
+      'Cada meta es algo grande. Dentro van los hábitos concretos que la vuelven real.',
     new: 'Nueva meta',
     actions: 'Opciones',
+    edit: 'Editar meta',
     archive: 'Archivar',
     restore: 'Restaurar',
     filter: {
@@ -35,18 +36,23 @@ export const es = {
     deleteConfirmTitle: '¿Eliminar esta meta?',
     deleteConfirmBody:
       'Se borran también sus hábitos y registros. Esta acción no se puede deshacer.',
+    stats: {
+      habits: 'Hábitos',
+      frequency: 'Cadencia',
+      streak: 'Racha',
+    },
     limit: {
       usage: '%{used} de %{limit} metas de tu plan',
       title: 'Sigue varias metas a la vez',
       reached:
-        'Estás usando %{used} de %{limit}. Puedes añadir todas las acciones que quieras a las que ya tienes; con Premium sigues varias metas a la vez y ves cuál avanza y cuál se queda atrás.',
+        'Estás usando %{used} de %{limit}. Puedes añadir todos los hábitos que quieras a las metas que ya tienes; con Premium sigues varias metas a la vez y ves cuál avanza y cuál se queda atrás.',
       blockedTitle: 'Empieza por tu primera meta',
       blocked:
         'Tu plan todavía no incluye metas. Actualízalo para empezar a seguir lo que te importa.',
     },
     empty: {
       title: 'Todavía no hay ninguna meta',
-      body: 'Empieza por la meta grande, aunque suene abstracta. Después la traduces en acciones que puedas marcar sin dudar.',
+      body: 'Empieza por la meta grande, aunque suene abstracta. Después la traduces en hábitos que puedas marcar sin dudar.',
       archivedTitle: 'No hay metas archivadas',
       archivedBody:
         'Las metas que archives aparecen aquí, con su historial intacto.',
@@ -56,8 +62,9 @@ export const es = {
       editTitle: 'Editar meta',
       name: 'Nombre',
       namePlaceholder: 'Ej. Trabaja con excelencia',
+      nameHint: 'La meta grande, en tus palabras. Los detalles van después.',
       description: 'Descripción (opcional)',
-      descriptionPlaceholder: '¿Por qué te importa esta meta?',
+      descriptionPlaceholder: '¿Por qué te importa?',
       frequency: 'Tu cadencia',
       streakRule: '¿Qué mantiene viva la racha?',
       threshold: 'Mínimo',
@@ -73,6 +80,7 @@ export const es = {
       flexibleHint: 'Registra cuando quieras; la racha se mide por semana.',
     },
     streak: {
+      loggedShort: 'Registrar',
       logged: 'Registrar, aunque sea parcial',
       loggedHint: 'Presentarte cuenta. La opción más sostenible.',
       threshold: 'Alcanzar un mínimo',
@@ -83,6 +91,75 @@ export const es = {
       title: 'Algo salió mal',
       limitReached: 'Tu plan no permite más metas.',
       notFound: 'Esa meta ya no existe.',
+      network: 'No pudimos conectar con el servidor. Revisa tu conexión.',
+      generic: 'Algo salió mal. Inténtalo de nuevo.',
+    },
+  },
+  habits: {
+    section: 'Hábitos',
+    countOne: '%{count} hábito',
+    countMany: '%{count} hábitos',
+    new: 'Añadir un hábito',
+    actions: 'Opciones',
+    archive: 'Archivar',
+    restore: 'Restaurar',
+    delete: 'Eliminar',
+    deleteConfirmTitle: '¿Eliminar este hábito?',
+    deleteConfirmBody:
+      'Se borran también sus registros. Esto no se puede deshacer.',
+    weight: {
+      normal: 'Normal',
+      double: 'Media',
+      triple: 'Alta',
+      doubleBadge: 'Importancia media',
+      tripleBadge: 'Importancia alta',
+    },
+    weightBadge: '×%{weight}',
+    targetBadge: '≥ %{target} %{unit}',
+    empty: {
+      title: 'Todavía no hay hábitos',
+      body: 'Una meta se vuelve real cuando la traduces en hábitos que puedas marcar sin tener que interpretarlos.',
+    },
+    form: {
+      newTitle: 'Nuevo hábito',
+      editTitle: 'Editar hábito',
+      name: 'Hábito',
+      namePlaceholder: 'Ej. Llega a tiempo',
+      nameHint: 'Algo concreto que puedas marcar sin tener que interpretarlo.',
+      mode: '¿Cómo lo registras?',
+      target: 'Umbral de éxito',
+      targetHint: 'A partir de aquí cuenta como logrado.',
+      weight: 'Importancia',
+      weightHint:
+        'Cuanta más importancia tiene un hábito, más mueve el progreso de la meta: media cuenta el doble que normal, y alta el triple.',
+      plan: 'Plan si-entonces (opcional)',
+      planPlaceholder: 'Si… entonces…',
+      planHint:
+        'Ej. «Si son las 7:15 a.m., entonces salgo de casa aunque no haya terminado el café». Decidir de antemano cuándo y dónde lo harás es lo que más sube la probabilidad de hacerlo.',
+      create: 'Añadir hábito',
+      save: 'Guardar cambios',
+    },
+    mode: {
+      binary: 'Sí / No',
+      binaryHint:
+        'Lo hiciste o no. La menor fricción posible — ideal para hábitos de carácter.',
+      count: 'Cantidad',
+      countHint:
+        'Cuenta cuántas veces ocurrió (llamadas hechas, gracias dados).',
+      duration: 'Duración',
+      durationHint: 'Registra minutos (trabajo profundo, lectura, ejercicio).',
+      rating: 'Escala 1-5',
+      ratingHint: 'Auto-evalúa la intensidad cuando no hay un sí/no honesto.',
+    },
+    unit: {
+      count: 'veces',
+      duration: 'min',
+      rating: 'de 5',
+    },
+    errors: {
+      title: 'Algo salió mal',
+      limitReached: 'Tu plan no permite más hábitos.',
+      notFound: 'Ese hábito ya no existe.',
       network: 'No pudimos conectar con el servidor. Revisa tu conexión.',
       generic: 'Algo salió mal. Inténtalo de nuevo.',
     },

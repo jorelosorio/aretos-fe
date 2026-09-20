@@ -6,17 +6,16 @@ import {
   Archive,
   ArchiveRestore,
   EllipsisVertical,
-  Pencil,
   Trash2,
 } from '@tamagui/lucide-icons-2';
 import { Button, Separator, SizableText, XStack, YStack } from 'tamagui';
 
 import { SPACING } from '@/constants/layout';
 import {
-  useDeleteGoal,
-  useGoalErrorMessage,
-  useUpdateGoal,
-} from '@/features/goals';
+  useDeleteHabit,
+  useHabitErrorMessage,
+  useUpdateHabit,
+} from '@/features/habits';
 import { useTranslations } from '@/lib/i18n';
 
 type IconComponent = typeof Archive;
@@ -56,47 +55,42 @@ function MenuItem({
   );
 }
 
-export function GoalActionsMenu({
-  goalId,
+export function HabitActionsMenu({
+  habitId,
   archived,
 }: {
-  goalId: string;
+  habitId: string;
   archived: boolean;
 }) {
   const { t } = useTranslations();
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const toMessage = useGoalErrorMessage();
+  const toMessage = useHabitErrorMessage();
 
   const [open, setOpen] = useState(false);
 
-  const { updateGoal, isUpdating } = useUpdateGoal();
-  const { deleteGoal, isDeleting } = useDeleteGoal();
+  const { updateHabit, isUpdating } = useUpdateHabit();
+  const { deleteHabit, isDeleting } = useDeleteHabit();
 
   const report = (error: unknown) =>
-    Alert.alert(t('goals.errors.title'), toMessage(error) ?? '');
-
-  const edit = () => {
-    setOpen(false);
-    router.push({ pathname: '/goals/[id]/edit', params: { id: goalId } });
-  };
+    Alert.alert(t('habits.errors.title'), toMessage(error) ?? '');
 
   const toggleArchived = () => {
     setOpen(false);
-    void updateGoal({ id: goalId, patch: { archived: !archived } })
+    void updateHabit({ id: habitId, patch: { archived: !archived } })
       .then(() => router.back())
       .catch(report);
   };
 
   const remove = () => {
     setOpen(false);
-    Alert.alert(t('goals.deleteConfirmTitle'), t('goals.deleteConfirmBody'), [
+    Alert.alert(t('habits.deleteConfirmTitle'), t('habits.deleteConfirmBody'), [
       { text: t('auth.cancel'), style: 'cancel' },
       {
-        text: t('goals.delete'),
+        text: t('habits.delete'),
         style: 'destructive',
         onPress: () =>
-          void deleteGoal(goalId)
+          void deleteHabit(habitId)
             .then(() => router.back())
             .catch(report),
       },
@@ -111,7 +105,7 @@ export function GoalActionsMenu({
         onPress={() => setOpen(true)}
         disabled={isUpdating || isDeleting}
         icon={<EllipsisVertical size={20} color="$color" />}
-        accessibilityLabel={t('goals.actions')}
+        accessibilityLabel={t('habits.actions')}
       />
 
       <Modal
@@ -135,16 +129,14 @@ export function GoalActionsMenu({
             borderColor="$border"
             overflow="hidden"
           >
-            <MenuItem label={t('goals.edit')} Icon={Pencil} onPress={edit} />
-            <Separator borderColor="$border" />
             <MenuItem
-              label={t(archived ? 'goals.restore' : 'goals.archive')}
+              label={t(archived ? 'habits.restore' : 'habits.archive')}
               Icon={archived ? ArchiveRestore : Archive}
               onPress={toggleArchived}
             />
             <Separator borderColor="$border" />
             <MenuItem
-              label={t('goals.delete')}
+              label={t('habits.delete')}
               Icon={Trash2}
               tone="$destructive"
               onPress={remove}

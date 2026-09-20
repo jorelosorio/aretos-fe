@@ -29,6 +29,7 @@ const toGoal = (wire: WireGoal): Goal => ({
   archived: wire.archived,
   createdAt: wire.created_at,
   updatedAt: wire.updated_at,
+  habitCount: wire.habit_count,
 });
 
 /**

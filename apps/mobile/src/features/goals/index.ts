@@ -1,4 +1,5 @@
 /** Public surface of the goals feature — nothing outside it should reach deeper. */
+export { goalKeys } from './api';
 export {
   useCreateGoal,
   useDeleteGoal,

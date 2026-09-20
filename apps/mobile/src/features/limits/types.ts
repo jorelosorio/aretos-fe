@@ -9,7 +9,7 @@ import type { Tier } from '@/features/auth';
  */
 
 /** Resources the endpoint answers for — its `reportedResources`. */
-export type LimitedResource = 'goal';
+export type LimitedResource = 'goal' | 'habit';
 
 export type WireResourceLimit = {
   used: number;

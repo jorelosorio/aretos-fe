@@ -21,6 +21,8 @@ export type WireGoal = {
   archived: boolean;
   created_at: string;
   updated_at: string;
+  /** Active habits only — what the goal offers to open, not what it owns. */
+  habit_count: number;
 };
 
 export type WireGoals = { goals: WireGoal[] };
@@ -40,6 +42,12 @@ export type Goal = {
   /** ISO 8601, as the server sent it. */
   createdAt: string;
   updatedAt: string;
+  /**
+   * The goal's active habits, counted by the server and sent with the goal.
+   * Every card shows it, so it rides along rather than costing a request per
+   * row.
+   */
+  habitCount: number;
 };
 
 /**

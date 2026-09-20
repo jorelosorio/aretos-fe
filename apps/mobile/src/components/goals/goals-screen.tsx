@@ -90,6 +90,7 @@ export function GoalsScreen() {
                 <GoalCard
                   key={goal.id}
                   goal={goal}
+                  habitCount={goal.habitCount}
                   onPress={() =>
                     router.push({
                       pathname: '/goals/[id]',
