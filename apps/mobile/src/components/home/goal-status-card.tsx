@@ -1,4 +1,4 @@
-import { Flame } from '@tamagui/lucide-icons-2';
+import { ChevronRight, Flame } from '@tamagui/lucide-icons-2';
 import { SizableText, XStack, YStack } from 'tamagui';
 
 import { ICON, SPACING } from '@/constants/layout';
@@ -6,7 +6,6 @@ import type { Goal, GoalProgress } from '@/features/goals';
 import type { MoodScore } from '@/features/logs';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
 
-import { GoalMark } from './goal-mark';
 import { WeekStrip } from './week-strip';
 
 const FREQUENCY_LABELS: Record<Goal['trackingFrequency'], TranslationKey> = {
@@ -79,9 +78,7 @@ export function GoalStatusCard({
       accessibilityRole="button"
       accessibilityLabel={label}
     >
-      <XStack items="flex-start" gap={SPACING.items}>
-        <GoalMark colorSlot={goal.colorSlot} mood={mood} />
-
+      <XStack items="center" gap={SPACING.items}>
         <YStack flex={1} gap={SPACING.text}>
           <SizableText
             size="$5"
@@ -129,6 +126,7 @@ export function GoalStatusCard({
             )}
           </YStack>
         </YStack>
+        <ChevronRight size={18} color="$mutedForeground" />
       </XStack>
     </YStack>
   );

@@ -42,8 +42,6 @@ export function GoalCard({
       accessibilityRole="button"
       accessibilityLabel={`${goal.name}. ${actions}`}
     >
-      <Circle size={10} bg={slotColor(goal.colorSlot)} />
-
       <YStack flex={1} gap={SPACING.text}>
         <SizableText size="$5" fontFamily="$heading" color="$cardForeground">
           {goal.name}

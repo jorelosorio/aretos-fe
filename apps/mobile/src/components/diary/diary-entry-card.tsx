@@ -99,67 +99,32 @@ export function DiaryEntryCard({
       accessibilityRole="button"
       accessibilityLabel={label}
     >
-      <XStack items="center" gap={SPACING.group}>
-        <Circle size={10} bg={slotColor(goal.colorSlot)} />
-
-        <YStack flex={1} minW={0} gap={SPACING.text}>
-          <XStack items="center" gap="$1.5">
-            <SizableText
-              shrink={1}
-              size="$4"
-              fontFamily="$heading"
-              color="$cardForeground"
-              numberOfLines={1}
-            >
-              {goal.name}
-            </SizableText>
-
-            {goal.archived && (
-              <Archive size={ICON.inline} color="$mutedForeground" />
-            )}
-          </XStack>
-
-          <SizableText size="$2" color="$mutedForeground">
-            {when}
+      <YStack flex={1} minW={0} gap={SPACING.text}>
+        <XStack items="center" gap="$1.5">
+          <SizableText
+            shrink={1}
+            size="$4"
+            fontFamily="$heading"
+            color="$cardForeground"
+            numberOfLines={1}
+          >
+            {goal.name}
           </SizableText>
-        </YStack>
 
-        {mood !== null && (
-          <Circle size={MOOD_BADGE} bg="$secondary">
-            <MoodFace
-              score={mood}
-              size={MOOD_FACE}
-              color={theme.secondaryForeground.val}
-              headOnly
-            />
-          </Circle>
-        )}
-      </XStack>
+          {goal.archived && (
+            <Archive size={ICON.inline} color="$mutedForeground" />
+          )}
+        </XStack>
+
+        <SizableText size="$2" color="$mutedForeground">
+          {when}
+        </SizableText>
+      </YStack>
 
       {entry.note !== '' && (
         <Paragraph size="$3" color="$color" numberOfLines={NOTE_LINES}>
           {entry.note}
         </Paragraph>
-      )}
-
-      {habits.length > 0 && (
-        <>
-          <Separator borderColor="$border" />
-
-          <XStack flexWrap="wrap" gap="$1.5">
-            {shown.map((answer) => (
-              <AnswerChip key={answer.habitId} answer={answer} />
-            ))}
-
-            {hidden > 0 && (
-              <XStack items="center" px="$2" py="$1">
-                <SizableText size="$1" color="$mutedForeground">
-                  {t('diary.entry.more', { count: hidden })}
-                </SizableText>
-              </XStack>
-            )}
-          </XStack>
-        </>
       )}
     </YStack>
   );
