@@ -1,55 +1,13 @@
 import { Tabs, useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
-import {
-  House,
-  NotebookPen,
-  Plus,
-  Settings,
-  Target,
-} from '@tamagui/lucide-icons-2';
-import { YStack } from 'tamagui';
+import { House, NotebookPen, Settings, Target } from '@tamagui/lucide-icons-2';
 
+import { FloatingTabBar } from '@/components/common/floating-tab-bar';
+import { ICON } from '@/constants/layout';
 import { useTranslations } from '@/lib/i18n';
 
-// matches the reference sidebar: the active icon takes --primary, the rest --muted-foreground
 const iconColor = (focused: boolean) =>
   focused ? '$primary' : '$mutedForeground';
-
-const FAB_SIZE = 56;
-
-function LogTabButton({
-  label,
-  onPress,
-}: {
-  label: string;
-  onPress: () => void;
-}) {
-  return (
-    <YStack
-      flex={1}
-      items="center"
-      justify="flex-start"
-      onPress={onPress}
-      pressStyle={{ opacity: 0.8 }}
-      accessibilityRole="button"
-      accessibilityLabel={label}
-    >
-      <YStack
-        width={FAB_SIZE}
-        height={FAB_SIZE}
-        items="center"
-        justify="center"
-        rounded={FAB_SIZE / 2}
-        bg="$primary"
-        borderWidth={4}
-        borderColor="$sidebar"
-        elevation={4}
-      >
-        <Plus size={28} color="$primaryForeground" />
-      </YStack>
-    </YStack>
-  );
-}
 
 export default function TabsLayout() {
   const theme = useTheme();
@@ -58,16 +16,17 @@ export default function TabsLayout() {
 
   return (
     <Tabs
+      tabBar={(props) => (
+        <FloatingTabBar
+          {...props}
+          action={{
+            label: t('tabs.log'),
+            onPress: () => router.push('/logs/new'),
+          }}
+        />
+      )}
       screenOptions={{
         sceneStyle: { backgroundColor: theme.background.val },
-        tabBarActiveTintColor: theme.sidebarAccentForeground.val,
-        tabBarInactiveTintColor: theme.mutedForeground.val,
-        tabBarStyle: {
-          backgroundColor: theme.sidebar.val,
-          borderTopColor: theme.sidebarBorder.val,
-          overflow: 'visible',
-        },
-        tabBarLabelStyle: { fontFamily: 'Nunito-SemiBold', fontSize: 12 },
         headerStyle: { backgroundColor: theme.background.val },
         headerShadowVisible: false,
         headerTintColor: theme.color.val,
@@ -77,11 +36,10 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: t('home.title'),
+          title: t('tabs.home'),
           headerShown: false,
-          tabBarLabel: t('tabs.home'),
           tabBarIcon: ({ focused }) => (
-            <House color={iconColor(focused)} size={22} />
+            <House color={iconColor(focused)} size={ICON.feature} />
           ),
         }}
       />
@@ -90,28 +48,17 @@ export default function TabsLayout() {
         options={{
           title: t('tabs.diary'),
           tabBarIcon: ({ focused }) => (
-            <NotebookPen color={iconColor(focused)} size={22} />
+            <NotebookPen color={iconColor(focused)} size={ICON.feature} />
           ),
         }}
       />
-      <Tabs.Screen
-        name="log"
-        options={{
-          title: t('tabs.log'),
-          tabBarButton: () => (
-            <LogTabButton
-              label={t('tabs.log')}
-              onPress={() => router.push('/logs/new')}
-            />
-          ),
-        }}
-      />
+      <Tabs.Screen name="log" options={{ href: null }} />
       <Tabs.Screen
         name="goals"
         options={{
           title: t('tabs.goals'),
           tabBarIcon: ({ focused }) => (
-            <Target color={iconColor(focused)} size={22} />
+            <Target color={iconColor(focused)} size={ICON.feature} />
           ),
         }}
       />
@@ -120,7 +67,7 @@ export default function TabsLayout() {
         options={{
           title: t('tabs.settings'),
           tabBarIcon: ({ focused }) => (
-            <Settings color={iconColor(focused)} size={22} />
+            <Settings color={iconColor(focused)} size={ICON.feature} />
           ),
         }}
       />

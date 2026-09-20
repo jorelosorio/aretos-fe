@@ -9,7 +9,6 @@ export const en = {
     settings: 'Settings',
   },
   home: {
-    title: 'Today',
     greeting: 'Hello, %{name}',
     welcomeBack: 'Welcome back',
     streaks: {

@@ -1,7 +1,7 @@
 import { api } from '@/lib/api';
 import { deviceTimezone } from '@/lib/timezone';
 
-import { toHabit } from '@/features/habits';
+import type { Habit, WireHabit } from '@/features/habits';
 import type { MoodScore } from '@/features/logs';
 
 import type {
@@ -122,6 +122,28 @@ const toPeriod = (wire: WireGoalPeriod): GoalPeriod => ({
     amount: entry.num_value,
     achieved: entry.achieved,
   })),
+});
+
+/**
+ * Spelled out here rather than imported from `features/habits`.
+ *
+ * Importing that feature's mapper made a require cycle — goals needs habits
+ * for this, habits needs `goalKeys` to invalidate `habit_count` — and Metro
+ * resolves one of the two barrels to a half-built module at startup. The
+ * types still come from habits, and `Habit` is a closed object type, so a
+ * field added there fails to compile here rather than going quietly missing.
+ */
+const toHabit = (wire: WireHabit): Habit => ({
+  id: wire.id,
+  goalId: wire.goal_id,
+  name: wire.name,
+  trackingMode: wire.tracking_mode,
+  weight: wire.weight,
+  successThreshold: wire.success_threshold,
+  ifThenPlan: wire.if_then_plan,
+  archived: wire.archived,
+  createdAt: wire.created_at,
+  updatedAt: wire.updated_at,
 });
 
 const toProgress = (wire: WireGoalProgress): GoalProgress => ({

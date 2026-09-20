@@ -2,6 +2,7 @@ import { Languages, Moon, Smartphone, Sun } from '@tamagui/lucide-icons-2';
 import { ScrollView, YStack } from 'tamagui';
 
 import { SignOutButton } from '@/components/auth/sign-out-button';
+import { useTabBarInset } from '@/components/common/floating-tab-bar';
 import { OptionGroup, type Option } from '@/components/common/option-group';
 import { APP_LOCALES, useTranslations } from '@/lib/i18n';
 import { SPACING } from '@/constants/layout';
@@ -20,6 +21,7 @@ const LOCALE_LABELS: Record<(typeof APP_LOCALES)[number], string> = {
 export function SettingsScreen() {
   const { t } = useTranslations();
   const { theme, locale } = usePreferences();
+  const tabBarInset = useTabBarInset();
 
   const themeOptions: readonly Option<ThemePreference>[] = [
     { value: 'light', label: t('settings.light'), Icon: Sun },
@@ -37,7 +39,11 @@ export function SettingsScreen() {
   ];
 
   return (
-    <ScrollView flex={1} bg="$background" contentContainerStyle={{ grow: 1 }}>
+    <ScrollView
+      flex={1}
+      bg="$background"
+      contentContainerStyle={{ grow: 1, pb: tabBarInset }}
+    >
       <YStack flex={1} p={SPACING.screen} gap={SPACING.section}>
         <OptionGroup
           title={t('settings.appearance')}

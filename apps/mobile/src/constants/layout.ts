@@ -34,6 +34,32 @@ export const SPACING = {
 } as const;
 
 /**
+ * The floating tab bar's two metrics, in points.
+ *
+ * Plain numbers rather than `size` tokens because `height` is also the pill's
+ * corner radius — one number, or the ends stop being semicircles — and
+ * because `useTabBarInset` has to add them to a safe-area inset.
+ *
+ * The bar floats over the scene instead of taking layout space, which is what
+ * lets content pass behind it and read as floating. Scrolling screens pay for
+ * that with `useTabBarInset` as bottom padding.
+ */
+export const TAB_BAR = {
+  height: 62,
+  /** How far the pill sits above the bottom safe area. */
+  gap: 16,
+  /**
+   * The tab glyphs, which sit a step above `ICON.feature`.
+   *
+   * Their own number rather than a role from `ICON` because the bar is the
+   * one place where the icon *is* the control — there is no label beside it
+   * and nothing else in the pill to read — and because the tabs take their
+   * width from it, so it is what sets the spacing across the whole bar.
+   */
+  icon: 32,
+} as const;
+
+/**
  * Icon sizes, in points.
  *
  * These are not Tamagui `size` tokens, and deliberately so: that scale runs

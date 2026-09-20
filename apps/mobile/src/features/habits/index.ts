@@ -1,5 +1,5 @@
 /** Public surface of the habits feature — nothing outside it should reach deeper. */
-export { habitKeys, toHabit } from './api';
+export { habitKeys } from './api';
 export {
   useCreateHabit,
   useDeleteHabit,

@@ -10,7 +10,6 @@ export const es = {
     settings: 'Ajustes',
   },
   home: {
-    title: 'Hoy',
     greeting: 'Hola, %{name}',
     welcomeBack: 'Bienvenido de vuelta',
     streaks: {

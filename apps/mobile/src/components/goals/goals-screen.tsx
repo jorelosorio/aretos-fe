@@ -6,6 +6,7 @@ import { Archive, Plus, Target } from '@tamagui/lucide-icons-2';
 import { Button, Paragraph, SizableText, YStack } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
+import { useTabBarInset } from '@/components/common/floating-tab-bar';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import {
   SegmentedControl,
@@ -26,6 +27,7 @@ export function GoalsScreen() {
   const theme = useTheme();
   const router = useRouter();
   const toMessage = useGoalErrorMessage();
+  const tabBarInset = useTabBarInset();
 
   const [filter, setFilter] = useState<Filter>('active');
   const archived = filter === 'archived';
@@ -51,7 +53,7 @@ export function GoalsScreen() {
   return (
     <FlatList
       style={{ flex: 1, backgroundColor: theme.background.val }}
-      contentContainerStyle={{ flexGrow: 1 }}
+      contentContainerStyle={{ flexGrow: 1, paddingBottom: tabBarInset }}
       data={goals ?? []}
       extraData={filter}
       keyExtractor={(goal) => goal.id}

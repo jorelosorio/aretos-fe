@@ -23,11 +23,7 @@ export const habitKeys = {
   detail: (id: string) => [...habitKeys.details(), id] as const,
 };
 
-/**
- * Shared with `features/goals`, which maps the same rows out of a goal's
- * `?include=habits` block. One mapper so the two cannot drift.
- */
-export const toHabit = (wire: WireHabit): Habit => ({
+const toHabit = (wire: WireHabit): Habit => ({
   id: wire.id,
   goalId: wire.goal_id,
   name: wire.name,

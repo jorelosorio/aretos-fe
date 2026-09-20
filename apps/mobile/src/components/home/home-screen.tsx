@@ -6,6 +6,7 @@ import { Target } from '@tamagui/lucide-icons-2';
 import { YStack } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
+import { useTabBarInset } from '@/components/common/floating-tab-bar';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { EmptyLog } from '@/components/logs/empty-log';
 import { SPACING } from '@/constants/layout';
@@ -29,6 +30,7 @@ export function HomeScreen() {
   const router = useRouter();
   const toMessage = useGoalErrorMessage();
   const insets = useSafeAreaInsets();
+  const tabBarInset = useTabBarInset();
 
   const goals = useGoals({ include: ['progress'] });
 
@@ -37,10 +39,11 @@ export function HomeScreen() {
   const openLog = (goalId: string) =>
     router.push({ pathname: '/logs/[goalId]', params: { goalId } });
 
-  if (goals.isPending) return <ScreenLoader />;
-
-  if (!goals.error && scored.length === 0) {
-    return (
+  let empty = null;
+  if (goals.isPending) {
+    empty = <ScreenLoader />;
+  } else if (!goals.error) {
+    empty = (
       <EmptyLog
         Icon={Target}
         title={t('home.empty.title')}
@@ -54,7 +57,7 @@ export function HomeScreen() {
   return (
     <FlatList
       style={{ flex: 1, backgroundColor: theme.background.val }}
-      contentContainerStyle={{ flexGrow: 1 }}
+      contentContainerStyle={{ flexGrow: 1, paddingBottom: tabBarInset }}
       data={scored}
       keyExtractor={(goal) => goal.id}
       refreshControl={
@@ -76,11 +79,14 @@ export function HomeScreen() {
             <ErrorNotice message={toMessage(goals.error)} />
           </YStack>
 
-          <YStack px={SPACING.screen}>
-            <HomeSection title={t('home.today.title')} />
-          </YStack>
+          {scored.length > 0 && (
+            <YStack px={SPACING.screen}>
+              <HomeSection title={t('home.today.title')} />
+            </YStack>
+          )}
         </YStack>
       }
+      ListEmptyComponent={empty}
       renderItem={({ item }) => (
         <YStack px={SPACING.screen} pb={SPACING.items}>
           <GoalStatusCard
