@@ -61,6 +61,8 @@ export function GoalsScreen() {
       }
     >
       <YStack flex={1} p={SPACING.screen} gap={SPACING.section}>
+        {!archived && <PlanLimitNotice allowance={allowance} />}
+
         <SegmentedControl
           segments={segments}
           value={filter}
@@ -68,8 +70,6 @@ export function GoalsScreen() {
         />
 
         <ErrorNotice message={toMessage(error)} />
-
-        {!archived && <PlanLimitNotice allowance={allowance} />}
 
         {isPending ? (
           <ScreenLoader />
