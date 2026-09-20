@@ -1,6 +1,7 @@
 import { api } from '@/lib/api';
 import { deviceTimezone } from '@/lib/timezone';
 
+import { toHabit } from '@/features/habits';
 import type { MoodScore } from '@/features/logs';
 
 import type {
@@ -23,17 +24,54 @@ const paths = {
 };
 
 /**
- * What a list request asks the server for beyond the goals themselves.
+ * What a read asks the server for beyond the goal rows themselves.
  *
  * `tz` is filled in from the device unless a caller names one; it only
- * matters alongside `include: 'progress'`, which is the read whose "today"
+ * matters alongside `include: ['progress']`, which is the read whose "today"
  * depends on it.
+ *
+ * `from`/`to` narrow the progress window. Left out, the server answers for
+ * the current week in the resolved zone, which is what the home screen wants
+ * and what saves it computing a "today" the server is the authority on.
  */
-export type ListGoalsOptions = {
-  archived?: boolean;
-  include?: GoalInclude;
+export type GoalReadOptions = {
+  include?: readonly GoalInclude[];
   tz?: string;
+  from?: string;
+  to?: string;
 };
+
+export type ListGoalsOptions = GoalReadOptions & { archived?: boolean };
+
+/**
+ * The query params these options turn into, and the shape they take in a
+ * cache key — built once so a key and the request it stands for cannot
+ * describe different things.
+ */
+function readParams(options: GoalReadOptions) {
+  const include =
+    options.include === undefined || options.include.length === 0
+      ? undefined
+      : [...options.include].sort().join(',');
+
+  // Only sent with progress: a plain read has no "today" in it, and passing
+  // the zone anyway would split its cache entry per traveller for nothing.
+  const wantsToday = include?.includes('progress') ?? false;
+  const tz = wantsToday ? (options.tz ?? deviceTimezone()) : undefined;
+
+  return {
+    include: include ?? null,
+    tz: tz ?? null,
+    from: options.from ?? null,
+    to: options.to ?? null,
+  };
+}
+
+/** Drops the nulls `readParams` uses for cache keys; axios omits the rest. */
+const toQuery = (params: Record<string, string | boolean | null>) =>
+  Object.fromEntries(
+    Object.entries(params).filter(([, value]) => value !== null),
+  );
 
 /** Query keys for this feature, as a factory so they cannot drift apart. */
 export const goalKeys = {
@@ -47,14 +85,11 @@ export const goalKeys = {
   list: (options: ListGoalsOptions = {}) =>
     [
       ...goalKeys.lists(),
-      {
-        archived: options.archived,
-        include: options.include ?? null,
-        tz: options.tz ?? null,
-      },
+      { archived: options.archived ?? null, ...readParams(options) },
     ] as const,
   details: () => [...goalKeys.all, 'detail'] as const,
-  detail: (id: string) => [...goalKeys.details(), id] as const,
+  detail: (id: string, options: GoalReadOptions = {}) =>
+    [...goalKeys.details(), id, readParams(options)] as const,
 };
 
 /**
@@ -114,8 +149,10 @@ const toGoal = (wire: WireGoal): Goal => ({
   createdAt: wire.created_at,
   updatedAt: wire.updated_at,
   habitCount: wire.habit_count,
-  // Left undefined rather than defaulted: the block is absent when it was
-  // not asked for, and that is not the same as a goal with no history.
+  // Left undefined rather than defaulted: a block is absent when it was not
+  // asked for, and that is not the same as a goal with no habits or no
+  // history — a screen that did not ask must not read the gap as an answer.
+  habits: wire.habits === undefined ? undefined : wire.habits.map(toHabit),
   progress: wire.progress === undefined ? undefined : toProgress(wire.progress),
 });
 
@@ -158,23 +195,29 @@ function toBody(patch: GoalPatch): Record<string, unknown> {
 export async function listGoals(
   options: ListGoalsOptions = {},
 ): Promise<Goal[]> {
-  const { archived, include } = options;
-  const tz = options.tz ?? deviceTimezone();
-
   const { data } = await api.get<WireGoals>(paths.goals, {
-    params: {
-      ...(archived === undefined ? {} : { archived }),
-      ...(include === undefined ? {} : { include }),
-      // Only meaningful with progress, and omitted otherwise so a plain list
-      // keeps the one cache entry it has always had.
-      ...(include === undefined || tz === undefined ? {} : { tz }),
-    },
+    params: toQuery({
+      archived: options.archived ?? null,
+      ...readParams(options),
+    }),
   });
   return data.goals.map(toGoal);
 }
 
-export async function getGoal(id: string): Promise<Goal> {
-  const { data } = await api.get<WireGoal>(paths.goal(id));
+/**
+ * One goal, optionally with its habits and its scored calendar.
+ *
+ * `include: ['habits', 'progress']` with a one-period window is what makes
+ * the check-in a single request: the habits to render, and the period's saved
+ * answers, note and mood, in the response that also carries the goal.
+ */
+export async function getGoal(
+  id: string,
+  options: GoalReadOptions = {},
+): Promise<Goal> {
+  const { data } = await api.get<WireGoal>(paths.goal(id), {
+    params: toQuery(readParams(options)),
+  });
   return toGoal(data);
 }
 

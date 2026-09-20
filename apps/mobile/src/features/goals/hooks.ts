@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { limitKeys } from '@/features/limits';
 import { ApiError } from '@/lib/api';
+import { seedFromLists } from '@/lib/query-cache';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
 
 import {
@@ -12,6 +13,7 @@ import {
   goalKeys,
   listGoals,
   updateGoal,
+  type GoalReadOptions,
   type ListGoalsOptions,
 } from './api';
 import {
@@ -26,7 +28,7 @@ import {
  * has a list; pass `{ archived: true }` for the archive and
  * `{ archived: undefined }` for both at once.
  *
- * With `{ include: 'progress' }` every goal carries its streak and its scored
+ * With `{ include: ['progress'] }` every goal carries its streak and its scored
  * week, which is what lets the home screen be a single request.
  */
 export function useGoals(options: ListGoalsOptions = {}) {
@@ -42,17 +44,49 @@ export function useGoals(options: ListGoalsOptions = {}) {
 export function useGoal(id: string) {
   const queryClient = useQueryClient();
 
+  // The list the user tapped through is already cached, so the form opens
+  // filled in rather than spinning; the fetch behind it then confirms. A
+  // deep link with no list behind it finds nothing here and simply loads.
+  //
+  // Dated with the list's own timestamp: undated, the seed would look fresh
+  // at every mount and so refetch at every mount — see `lib/query-cache`.
+  const seed = seedFromLists<Goal>(queryClient, goalKeys.lists(), id);
+
   return useQuery({
     queryKey: goalKeys.detail(id),
     queryFn: () => getGoal(id),
-    // The list the user tapped through is already cached, so the form opens
-    // filled in rather than spinning; the fetch behind it then confirms. A
-    // deep link with no list behind it finds nothing here and simply loads.
-    initialData: () =>
-      queryClient
-        .getQueriesData<Goal[]>({ queryKey: goalKeys.lists() })
-        .flatMap(([, goals]) => goals ?? [])
-        .find((goal) => goal.id === id),
+    initialData: seed?.row,
+    initialDataUpdatedAt: seed?.updatedAt,
+  });
+}
+
+/**
+ * Everything one period's check-in needs, in one request.
+ *
+ * The goal, its active habits and that period's saved answers used to be
+ * three: `/v1/goals/:id`, `/v1/habits?goal_id=` and a one-day
+ * `/v1/habit-logs` window. `?include=habits,progress` with `from` and `to`
+ * pinned to the same day answers all three at once.
+ *
+ * `date` is sent raw. The server snaps `from` to a period start, so a weekly
+ * goal answers in whole weeks whatever day is asked for — and the period it
+ * comes back with is the authority on which one this is, rather than the
+ * device snapping first and hoping the two agree.
+ *
+ * Not seeded from a cached list: a list row carries neither block, and
+ * showing the goal while the habits are still missing would render a period
+ * with no rows in it.
+ */
+export function useGoalCheckIn(id: string, date: string) {
+  const options = {
+    include: ['habits', 'progress'],
+    from: date,
+    to: date,
+  } as const satisfies GoalReadOptions;
+
+  return useQuery({
+    queryKey: goalKeys.detail(id, options),
+    queryFn: () => getGoal(id, options),
   });
 }
 
@@ -63,21 +97,25 @@ export function useGoal(id: string) {
  * `color_slot` and orders by it, so the lists a write touches are not
  * knowable from the response alone.
  *
- * The plan's limits go with it: creating and deleting move the usage count
- * behind `can_create`, which is what the goals screen reads to decide
- * whether to offer another one.
+ * The plan's limits go with it, but only when a row appears or disappears.
+ * Creating and deleting move the usage count behind `can_create`, which is
+ * what the goals screen reads to decide whether to offer another one; an
+ * edit or an archive cannot, because the cap is on rows owned and
+ * `resourceCount` in `limits_service.go` counts archived rows too.
  */
-function useInvalidateGoals() {
+function useInvalidateGoals({ usageMoved }: { usageMoved: boolean }) {
   const queryClient = useQueryClient();
 
   return async () => {
     await queryClient.invalidateQueries({ queryKey: goalKeys.all });
-    await queryClient.invalidateQueries({ queryKey: limitKeys.all });
+    if (usageMoved) {
+      await queryClient.invalidateQueries({ queryKey: limitKeys.all });
+    }
   };
 }
 
 export function useCreateGoal() {
-  const invalidate = useInvalidateGoals();
+  const invalidate = useInvalidateGoals({ usageMoved: true });
 
   const mutation = useMutation<Goal, ApiError, GoalDraft>({
     mutationFn: createGoal,
@@ -92,7 +130,7 @@ export function useCreateGoal() {
 }
 
 export function useUpdateGoal() {
-  const invalidate = useInvalidateGoals();
+  const invalidate = useInvalidateGoals({ usageMoved: false });
 
   const mutation = useMutation<
     Goal,
@@ -111,7 +149,7 @@ export function useUpdateGoal() {
 }
 
 export function useDeleteGoal() {
-  const invalidate = useInvalidateGoals();
+  const invalidate = useInvalidateGoals({ usageMoved: true });
 
   const mutation = useMutation<void, ApiError, string>({
     mutationFn: deleteGoal,

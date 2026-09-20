@@ -1,4 +1,5 @@
 /** Public surface of the habits feature — nothing outside it should reach deeper. */
+export { habitKeys, toHabit } from './api';
 export {
   useCreateHabit,
   useDeleteHabit,
@@ -8,4 +9,10 @@ export {
   useUpdateHabit,
 } from './hooks';
 export { EMPTY_DRAFT, hasThreshold } from './types';
-export type { Habit, HabitDraft, HabitPatch, TrackingMode } from './types';
+export type {
+  Habit,
+  HabitDraft,
+  HabitPatch,
+  TrackingMode,
+  WireHabit,
+} from './types';

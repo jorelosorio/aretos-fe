@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { goalKeys } from '@/features/goals';
 import { limitKeys } from '@/features/limits';
 import { ApiError } from '@/lib/api';
+import { seedFromLists } from '@/lib/query-cache';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
 
 import {
@@ -36,33 +37,46 @@ export function useHabits(
 export function useHabit(id: string) {
   const queryClient = useQueryClient();
 
+  // Dated with the list's own timestamp — see `lib/query-cache` for why an
+  // undated seed refetches at every mount instead of never.
+  const seed = seedFromLists<Habit>(queryClient, habitKeys.lists(), id);
+
   return useQuery({
     queryKey: habitKeys.detail(id),
     queryFn: () => getHabit(id),
-    initialData: () =>
-      queryClient
-        .getQueriesData<Habit[]>({ queryKey: habitKeys.lists() })
-        .flatMap(([, habits]) => habits ?? [])
-        .find((habit) => habit.id === id),
+    initialData: seed?.row,
+    initialDataUpdatedAt: seed?.updatedAt,
   });
 }
 
 /**
- * A habit write moves two things that live elsewhere: the tier's habit usage
- * in `/v1/limits`, and `habit_count` on the goal the habit belongs to.
+ * A habit write moves things that live elsewhere, and which ones depends on
+ * the write.
+ *
+ * Always the goals: `habit_count` rides on the goal, and so does the
+ * `?include=progress` block, which scores every period against this goal's
+ * habits — editing a habit's threshold or weight rescores the whole week.
+ *
+ * `/v1/limits` only when a row appears or disappears. The plan caps rows
+ * owned, not rows in use — `resourceCount` in `limits_service.go` counts
+ * archived habits too — so an edit, archive or un-archive cannot move the
+ * usage behind `can_create`, and refetching it was one wasted request per
+ * keystroke-sized save.
  */
-function useInvalidateHabits() {
+function useInvalidateHabits({ usageMoved }: { usageMoved: boolean }) {
   const queryClient = useQueryClient();
 
   return async () => {
     await queryClient.invalidateQueries({ queryKey: habitKeys.all });
     await queryClient.invalidateQueries({ queryKey: goalKeys.all });
-    await queryClient.invalidateQueries({ queryKey: limitKeys.all });
+    if (usageMoved) {
+      await queryClient.invalidateQueries({ queryKey: limitKeys.all });
+    }
   };
 }
 
 export function useCreateHabit(goalId: string) {
-  const invalidate = useInvalidateHabits();
+  const invalidate = useInvalidateHabits({ usageMoved: true });
 
   const mutation = useMutation<Habit, ApiError, HabitDraft>({
     mutationFn: (draft) => createHabit(goalId, draft),
@@ -77,7 +91,7 @@ export function useCreateHabit(goalId: string) {
 }
 
 export function useUpdateHabit() {
-  const invalidate = useInvalidateHabits();
+  const invalidate = useInvalidateHabits({ usageMoved: false });
 
   const mutation = useMutation<
     Habit,
@@ -96,7 +110,7 @@ export function useUpdateHabit() {
 }
 
 export function useDeleteHabit() {
-  const invalidate = useInvalidateHabits();
+  const invalidate = useInvalidateHabits({ usageMoved: true });
 
   const mutation = useMutation<void, ApiError, string>({
     mutationFn: deleteHabit,

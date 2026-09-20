@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
-import { useRouter } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import {
   Check,
   ChevronLeft,
@@ -22,10 +22,14 @@ import { ErrorNotice } from '@/components/common/error-notice';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
 import { SPACING } from '@/constants/layout';
-import type { Goal } from '@/features/goals';
-import { useHabits, type Habit } from '@/features/habits';
 import {
-  isFuturePeriod,
+  useGoalCheckIn,
+  useGoalErrorMessage,
+  type Goal,
+  type GoalPeriod,
+} from '@/features/goals';
+import type { Habit } from '@/features/habits';
+import {
   shiftPeriod,
   todayKey,
   useLogDraft,
@@ -90,19 +94,36 @@ function PeriodBar({
   );
 }
 
-function CheckInForm({ goal, habits }: { goal: Goal; habits: Habit[] }) {
+function CheckInForm({
+  goal,
+  habits,
+  period,
+  today,
+  isLoaded,
+  onDateChange,
+}: {
+  goal: Goal;
+  habits: Habit[];
+  period: GoalPeriod;
+  today: string;
+  isLoaded: boolean;
+  onDateChange: (date: string) => void;
+}) {
   const { t, locale } = useTranslations();
   const router = useRouter();
   const toMessage = useLogErrorMessage();
 
-  const [date, setDate] = useState(todayKey());
-  const draft = useLogDraft({ goal, habits, date });
+  const draft = useLogDraft({
+    goalId: goal.id,
+    habits,
+    entryDate: period.entryDate,
+    existing: period.logged ? period : undefined,
+    isLoaded,
+  });
 
   const frequency = goal.trackingFrequency;
-  const canGoForward = !isFuturePeriod(
-    shiftPeriod(draft.entryDate, frequency, 1),
-    frequency,
-  );
+  const next = shiftPeriod(period.entryDate, frequency, 1);
+  const canGoForward = next <= today;
 
   const busy = draft.isLoading || draft.isSaving;
 
@@ -111,14 +132,6 @@ function CheckInForm({ goal, habits }: { goal: Goal; habits: Habit[] }) {
       .save()
       .then(() => router.back())
       .catch(() => undefined);
-
-  if (draft.loadError) {
-    return (
-      <YStack flex={1} p={SPACING.screen}>
-        <ErrorNotice message={toMessage(draft.loadError)} />
-      </YStack>
-    );
-  }
 
   return (
     <KeyboardAvoidingView
@@ -133,15 +146,15 @@ function CheckInForm({ goal, habits }: { goal: Goal; habits: Habit[] }) {
         >
           <YStack p={SPACING.screen} gap={SPACING.section}>
             <PeriodBar
-              label={periodLabel(draft.entryDate, frequency, locale, t)}
+              label={periodLabel(period.entryDate, frequency, locale, t)}
               canGoForward={canGoForward}
               onPrevious={() =>
-                setDate(shiftPeriod(draft.entryDate, frequency, -1))
+                onDateChange(shiftPeriod(period.entryDate, frequency, -1))
               }
-              onNext={() => setDate(shiftPeriod(draft.entryDate, frequency, 1))}
+              onNext={() => onDateChange(next)}
             />
 
-            {draft.existing && (
+            {period.logged && (
               <XStack items="center" gap="$2" px="$2">
                 <Check size={14} color="$primary" />
                 <SizableText size="$2" color="$mutedForeground">
@@ -218,7 +231,7 @@ function CheckInForm({ goal, habits }: { goal: Goal; habits: Habit[] }) {
             disabled={busy}
             opacity={busy ? 0.7 : 1}
           >
-            {t(draft.existing ? 'logs.update' : 'logs.save')}
+            {t(period.logged ? 'logs.update' : 'logs.save')}
           </Button>
         </YStack>
       </YStack>
@@ -226,29 +239,58 @@ function CheckInForm({ goal, habits }: { goal: Goal; habits: Habit[] }) {
   );
 }
 
-export function CheckInScreen({ goal }: { goal: Goal }) {
+export function CheckInScreen({ goalId }: { goalId: string }) {
   const { t } = useTranslations();
   const router = useRouter();
-  const { data: habits, isPending } = useHabits(goal.id);
+  const toMessage = useGoalErrorMessage();
 
-  if (isPending || !habits) return <ScreenLoader />;
+  const [date, setDate] = useState(todayKey());
+  const { data: goal, isPending, error } = useGoalCheckIn(goalId, date);
 
-  if (habits.length === 0) {
+  const period = goal?.progress?.periods[0] ?? goal?.progress?.currentPeriod;
+  const habits = goal?.habits;
+
+  if (error) {
     return (
-      <EmptyLog
-        Icon={Plus}
-        title={t('logs.empty.noHabitsTitle')}
-        body={t('logs.empty.noHabitsBody')}
-        action={t('logs.empty.noHabitsAction')}
-        onAction={() =>
-          router.replace({
-            pathname: '/goals/[id]/habits/new',
-            params: { id: goal.id },
-          })
-        }
-      />
+      <YStack flex={1} p={SPACING.screen} bg="$background">
+        <ErrorNotice message={toMessage(error)} />
+      </YStack>
     );
   }
 
-  return <CheckInForm goal={goal} habits={habits} />;
+  if (isPending || !goal || !habits || !period) return <ScreenLoader />;
+
+  if (habits.length === 0) {
+    return (
+      <>
+        <Stack.Screen options={{ title: goal.name }} />
+        <EmptyLog
+          Icon={Plus}
+          title={t('logs.empty.noHabitsTitle')}
+          body={t('logs.empty.noHabitsBody')}
+          action={t('logs.empty.noHabitsAction')}
+          onAction={() =>
+            router.replace({
+              pathname: '/goals/[id]/habits/new',
+              params: { id: goal.id },
+            })
+          }
+        />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Stack.Screen options={{ title: goal.name }} />
+      <CheckInForm
+        goal={goal}
+        habits={habits}
+        period={period}
+        today={goal.progress?.today ?? date}
+        isLoaded
+        onDateChange={setDate}
+      />
+    </>
+  );
 }

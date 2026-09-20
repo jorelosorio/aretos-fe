@@ -46,45 +46,33 @@ export function useLog(id: string) {
 }
 
 /**
- * The log for one goal's period, or `undefined` when the period is unwritten.
- *
- * Asked as a one-day window rather than by id, because the check-in knows
- * which period it is on but not whether a log exists for it. `entryDate` must
- * already be the period's first day — `periodKey` is what puts it there — or a
- * weekly goal's Wednesday will match nothing and the screen will offer to
- * write a period that is already written.
- */
-export function useLogForPeriod(goalId: string, entryDate: string) {
-  const filter = { goalId, from: entryDate, to: entryDate };
-  const query = useLogs(filter);
-
-  return { ...query, data: query.data?.[0] };
-}
-
-/**
  * A log write moves two things that live elsewhere.
  *
- * The tier's habit_log usage in `/v1/limits` — the limit is on logs owned,
- * and Save is the only thing that mints one.
+ * The goal's `?include=progress` block, always: it scores this very period,
+ * and the streak, the week and `current_period` are all read off the goal
+ * now, so a check-in that left the goals cache alone would send the user back
+ * to a home screen still showing the period they just filled in as empty.
  *
- * And the goal's `?include=progress` block, which scores this very period:
- * the streak, the week and `current_period` are all read off the goal now, so
- * a check-in that left the goals cache alone would send the user back to a
- * home screen still showing the period they just filled in as empty.
+ * The tier's habit_log usage in `/v1/limits` only when a row appears or
+ * disappears. Save mints a log the first time a period is written and
+ * Delete removes it; amending one with PATCH moves nothing, because the cap
+ * counts logs owned.
  */
-function useInvalidateLogs() {
+function useInvalidateLogs({ usageMoved }: { usageMoved: boolean }) {
   const queryClient = useQueryClient();
 
   return async () => {
     await queryClient.invalidateQueries({ queryKey: logKeys.all });
     await queryClient.invalidateQueries({ queryKey: goalKeys.all });
-    await queryClient.invalidateQueries({ queryKey: limitKeys.all });
+    if (usageMoved) {
+      await queryClient.invalidateQueries({ queryKey: limitKeys.all });
+    }
   };
 }
 
 /** Writes a whole period. The same draft twice leaves one log, not two. */
 export function useSaveLog() {
-  const invalidate = useInvalidateLogs();
+  const invalidate = useInvalidateLogs({ usageMoved: true });
 
   const mutation = useMutation<Log, ApiError, LogDraft>({
     mutationFn: saveLog,
@@ -99,7 +87,7 @@ export function useSaveLog() {
 }
 
 export function useUpdateLog() {
-  const invalidate = useInvalidateLogs();
+  const invalidate = useInvalidateLogs({ usageMoved: false });
 
   const mutation = useMutation<Log, ApiError, { id: string; patch: LogPatch }>({
     mutationFn: ({ id, patch }) => updateLog(id, patch),
@@ -114,7 +102,7 @@ export function useUpdateLog() {
 }
 
 export function useDeleteLog() {
-  const invalidate = useInvalidateLogs();
+  const invalidate = useInvalidateLogs({ usageMoved: true });
 
   const mutation = useMutation<void, ApiError, string>({
     mutationFn: deleteLog,

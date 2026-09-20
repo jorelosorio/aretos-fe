@@ -30,7 +30,7 @@ export function HomeScreen() {
   const toMessage = useGoalErrorMessage();
   const insets = useSafeAreaInsets();
 
-  const goals = useGoals({ include: 'progress' });
+  const goals = useGoals({ include: ['progress'] });
 
   const scored = (goals.data ?? []).filter(isScored);
 

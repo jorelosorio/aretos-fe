@@ -1,11 +1,10 @@
 /** Public surface of the logs feature — nothing outside it should reach deeper. */
 export { logKeys } from './api';
-export { useLogDraft } from './draft';
+export { useLogDraft, type SavedPeriod } from './draft';
 export {
   useDeleteLog,
   useLog,
   useLogErrorMessage,
-  useLogForPeriod,
   useLogs,
   useSaveLog,
   useUpdateLog,
@@ -13,7 +12,6 @@ export {
 export { OUTCOME_COLORS, outcomeOf, type Outcome } from './outcome';
 export {
   dateKey,
-  isFuturePeriod,
   periodKey,
   shiftPeriod,
   todayKey,

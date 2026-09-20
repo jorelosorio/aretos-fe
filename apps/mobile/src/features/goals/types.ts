@@ -1,3 +1,4 @@
+import type { Habit, WireHabit } from '@/features/habits';
 import type { MoodScore } from '@/features/logs';
 
 /**
@@ -25,6 +26,8 @@ export type WireGoal = {
   updated_at: string;
   /** Active habits only — what the goal offers to open, not what it owns. */
   habit_count: number;
+  /** Active habits, present only when `?include=habits` asked for them. */
+  habits?: WireHabit[];
   /** Present only when `?include=progress` asked for it. */
   progress?: WireGoalProgress;
 };
@@ -52,6 +55,13 @@ export type Goal = {
    * row.
    */
   habitCount: number;
+  /**
+   * The goal's active habits, or `undefined` when they were not asked for.
+   *
+   * The same rows `/v1/habits?goal_id=` returns and the same set
+   * `habitCount` counts, mapped by the habits feature's own `toHabit`.
+   */
+  habits?: Habit[];
   /**
    * The scored calendar, or `undefined` when it was not asked for.
    *
@@ -195,12 +205,5 @@ export type GoalProgress = {
   periods: GoalPeriod[];
 };
 
-/**
- * What `?include=` asks for.
- *
- * The server also takes `habits`, which this client does not map: nothing
- * needs the goal's habits inline yet, and offering an option whose response
- * is silently dropped is worse than not offering it. Add it here and in
- * `toGoal` together.
- */
-export type GoalInclude = 'progress';
+/** What `?include=` asks for; sent as a comma-separated list. */
+export type GoalInclude = 'habits' | 'progress';

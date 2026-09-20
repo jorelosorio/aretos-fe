@@ -66,11 +66,3 @@ export function shiftPeriod(
   date.setDate(date.getDate() + periods * (frequency === 'weekly' ? 7 : 1));
   return dateKey(date);
 }
-
-/** Whether a period is in the future, which is not a period to check in on. */
-export function isFuturePeriod(
-  key: DateKey,
-  frequency: TrackingFrequency,
-): boolean {
-  return periodKey(key, frequency) > periodKey(todayKey(), frequency);
-}
