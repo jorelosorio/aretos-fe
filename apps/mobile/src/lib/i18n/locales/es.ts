@@ -22,6 +22,7 @@ export const es = {
       title: 'Hoy',
     },
     week: {
+      counted: '%{count} cuentan para la racha',
       summary: '%{complete} de %{total} períodos completos',
     },
     logged: 'Registrado',

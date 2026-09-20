@@ -46,6 +46,10 @@ export function GoalStatusCard({
     (period) => period.status === 'complete',
   ).length;
 
+  const countedCount = progress.periods.filter(
+    (period) => period.countsForStreak,
+  ).length;
+
   const label = [
     goal.name,
     context,
@@ -59,6 +63,7 @@ export function GoalStatusCard({
       complete: completeCount,
       total: progress.periods.length,
     }),
+    t('home.week.counted', { count: countedCount }),
   ].join('. ');
 
   return (

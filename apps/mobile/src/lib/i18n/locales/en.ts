@@ -21,6 +21,7 @@ export const en = {
       title: 'Today',
     },
     week: {
+      counted: '%{count} count toward the streak',
       summary: '%{complete} of %{total} periods complete',
     },
     logged: 'Logged',
