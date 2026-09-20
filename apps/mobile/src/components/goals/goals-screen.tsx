@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { RefreshControl } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
 import { Archive, Plus, Target } from '@tamagui/lucide-icons-2';
-import { Button, Paragraph, ScrollView, SizableText, YStack } from 'tamagui';
+import { Button, Paragraph, SizableText, YStack } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
 import { ScreenLoader } from '@/components/common/screen-loader';
@@ -12,8 +12,8 @@ import {
   type Segment,
 } from '@/components/common/segmented-control';
 import { SPACING } from '@/constants/layout';
-import { useAllowance } from '@/features/limits';
 import { useGoalErrorMessage, useGoals } from '@/features/goals';
+import { useAllowance } from '@/features/limits';
 import { useTranslations } from '@/lib/i18n';
 
 import { GoalCard } from './goal-card';
@@ -46,11 +46,15 @@ export function GoalsScreen() {
     { value: 'archived', label: t('goals.filter.archived') },
   ];
 
+  const create = () => router.push('/goals/new');
+
   return (
-    <ScrollView
-      flex={1}
-      bg="$background"
-      contentContainerStyle={{ grow: 1 }}
+    <FlatList
+      style={{ flex: 1, backgroundColor: theme.background.val }}
+      contentContainerStyle={{ flexGrow: 1 }}
+      data={goals ?? []}
+      extraData={filter}
+      keyExtractor={(goal) => goal.id}
       refreshControl={
         <RefreshControl
           refreshing={isRefetching}
@@ -59,64 +63,74 @@ export function GoalsScreen() {
           colors={[theme.primary.val]}
         />
       }
-    >
-      <YStack flex={1} p={SPACING.screen} gap={SPACING.section}>
-        {!archived && <PlanLimitNotice allowance={allowance} />}
+      ListHeaderComponent={
+        <YStack
+          gap={SPACING.section}
+          px={SPACING.screen}
+          pt={SPACING.screen}
+          pb={SPACING.items}
+        >
+          <PlanLimitNotice allowance={allowance} />
 
-        <SegmentedControl
-          segments={segments}
-          value={filter}
-          onChange={setFilter}
-        />
-
-        <ErrorNotice message={toMessage(error)} />
-
-        {isPending ? (
-          <ScreenLoader />
-        ) : goals?.length === 0 ? (
-          <EmptyGoals
-            Icon={archived ? Archive : Target}
-            title={t(
-              archived ? 'goals.empty.archivedTitle' : 'goals.empty.title',
-            )}
-            body={t(archived ? 'goals.empty.archivedBody' : 'goals.empty.body')}
-            onCreate={archived ? undefined : () => router.push('/goals/new')}
-            canCreate={canCreate}
+          <SegmentedControl
+            segments={segments}
+            value={filter}
+            onChange={setFilter}
           />
-        ) : (
-          <>
-            <YStack gap={SPACING.items}>
-              {goals?.map((goal) => (
-                <GoalCard
-                  key={goal.id}
-                  goal={goal}
-                  habitCount={goal.habitCount}
-                  onPress={() =>
-                    router.push({
-                      pathname: '/goals/[id]',
-                      params: { id: goal.id },
-                    })
-                  }
-                />
-              ))}
-            </YStack>
 
-            {!archived && (
-              <Button
-                size="$5"
-                theme="accent"
-                icon={Plus}
-                disabled={!canCreate}
-                opacity={canCreate ? 1 : 0.5}
-                onPress={() => router.push('/goals/new')}
-              >
-                {t('goals.new')}
-              </Button>
-            )}
-          </>
-        )}
-      </YStack>
-    </ScrollView>
+          <ErrorNotice message={toMessage(error)} />
+        </YStack>
+      }
+      renderItem={({ item }) => (
+        <YStack px={SPACING.screen} pb={SPACING.items}>
+          <GoalCard
+            goal={item}
+            habitCount={item.habitCount}
+            onPress={() =>
+              router.push({
+                pathname: '/goals/[id]',
+                params: { id: item.id },
+              })
+            }
+          />
+        </YStack>
+      )}
+      ListEmptyComponent={
+        isPending ? (
+          <ScreenLoader />
+        ) : (
+          <YStack flex={1} px={SPACING.screen} pb={SPACING.screen}>
+            <EmptyGoals
+              Icon={archived ? Archive : Target}
+              title={t(
+                archived ? 'goals.empty.archivedTitle' : 'goals.empty.title',
+              )}
+              body={t(
+                archived ? 'goals.empty.archivedBody' : 'goals.empty.body',
+              )}
+              onCreate={archived ? undefined : create}
+              canCreate={canCreate}
+            />
+          </YStack>
+        )
+      }
+      ListFooterComponent={
+        !archived && (goals?.length ?? 0) > 0 ? (
+          <YStack px={SPACING.screen} pb={SPACING.screen} pt={SPACING.items}>
+            <Button
+              size="$5"
+              theme="accent"
+              icon={Plus}
+              disabled={!canCreate}
+              opacity={canCreate ? 1 : 0.5}
+              onPress={create}
+            >
+              {t('goals.new')}
+            </Button>
+          </YStack>
+        ) : null
+      }
+    />
   );
 }
 

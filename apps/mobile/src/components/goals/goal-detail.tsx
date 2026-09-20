@@ -1,4 +1,4 @@
-import { RefreshControl } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
 import { ListChecks, Plus } from '@tamagui/lucide-icons-2';
@@ -6,7 +6,6 @@ import {
   Button,
   Circle,
   Paragraph,
-  ScrollView,
   Separator,
   SizableText,
   XStack,
@@ -117,10 +116,11 @@ export function GoalDetail({ goal }: { goal: Goal }) {
     });
 
   return (
-    <ScrollView
-      flex={1}
-      bg="$background"
-      contentContainerStyle={{ grow: 1 }}
+    <FlatList
+      style={{ flex: 1, backgroundColor: theme.background.val }}
+      contentContainerStyle={{ flexGrow: 1 }}
+      data={habits ?? []}
+      keyExtractor={(habit) => habit.id}
       refreshControl={
         <RefreshControl
           refreshing={isRefetching}
@@ -129,49 +129,54 @@ export function GoalDetail({ goal }: { goal: Goal }) {
           colors={[theme.primary.val]}
         />
       }
-    >
-      <YStack flex={1} p={SPACING.screen} gap={SPACING.section}>
-        <GoalSummary goal={goal} habitCount={habits?.length ?? 0} />
-
-        <ErrorNotice message={toMessage(error)} />
-
-        <YStack gap={SPACING.group}>
-          <SectionTitle>{t('habits.section')}</SectionTitle>
-
-          {isPending ? (
-            <ScreenLoader />
-          ) : habits?.length === 0 ? (
-            <EmptyHabits />
-          ) : (
-            <YStack gap={SPACING.items}>
-              {habits?.map((habit) => (
-                <HabitCard
-                  key={habit.id}
-                  habit={habit}
-                  onPress={() =>
-                    router.push({
-                      pathname: '/habits/[id]',
-                      params: { id: habit.id },
-                    })
-                  }
-                />
-              ))}
-            </YStack>
-          )}
-        </YStack>
-
-        <Button
-          size="$5"
-          theme="accent"
-          icon={Plus}
-          disabled={!canCreate}
-          opacity={canCreate ? 1 : 0.5}
-          onPress={addHabit}
+      ListHeaderComponent={
+        <YStack
+          gap={SPACING.section}
+          px={SPACING.screen}
+          pt={SPACING.screen}
+          pb={SPACING.items}
         >
-          {t('habits.new')}
-        </Button>
-      </YStack>
-    </ScrollView>
+          <GoalSummary goal={goal} habitCount={habits?.length ?? 0} />
+
+          <ErrorNotice message={toMessage(error)} />
+
+          <SectionTitle>{t('habits.section')}</SectionTitle>
+        </YStack>
+      }
+      renderItem={({ item }) => (
+        <YStack px={SPACING.screen} pb={SPACING.items}>
+          <HabitCard
+            habit={item}
+            onPress={() =>
+              router.push({ pathname: '/habits/[id]', params: { id: item.id } })
+            }
+          />
+        </YStack>
+      )}
+      ListEmptyComponent={
+        isPending ? (
+          <ScreenLoader />
+        ) : (
+          <YStack px={SPACING.screen}>
+            <EmptyHabits />
+          </YStack>
+        )
+      }
+      ListFooterComponent={
+        <YStack px={SPACING.screen} pb={SPACING.screen} pt={SPACING.items}>
+          <Button
+            size="$5"
+            theme="accent"
+            icon={Plus}
+            disabled={!canCreate}
+            opacity={canCreate ? 1 : 0.5}
+            onPress={addHabit}
+          >
+            {t('habits.new')}
+          </Button>
+        </YStack>
+      }
+    />
   );
 }
 
