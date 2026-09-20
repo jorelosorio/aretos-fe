@@ -2,32 +2,44 @@ import { Check } from '@tamagui/lucide-icons-2';
 import { Circle, XStack } from 'tamagui';
 
 import { ICON } from '@/constants/layout';
+import type { GoalPeriod, PeriodStatus } from '@/features/goals';
 
-import type { DayCell } from './week-days';
-
-const DAY_SIZE = '$1';
-const TODAY_SIZE = '$1.5';
+const STEP_SIZE = '$1';
+const CURRENT_SIZE = '$1.5';
 const CORE_SIZE = '$0.75';
 
-export function WeekStrip({ cells }: { cells: readonly DayCell[] }) {
+const RING = {
+  complete: '$primary',
+  partial: '$primary',
+  missed: '$outcomeMissed',
+  skipped: '$outcomeSkipped',
+  empty: '$primary',
+} as const satisfies Record<PeriodStatus, string>;
+
+export function WeekStrip({
+  periods,
+  currentEntryDate,
+}: {
+  periods: readonly GoalPeriod[];
+  currentEntryDate: string;
+}) {
   return (
     <XStack items="center" gap="$1.5">
-      {cells.map((cell) => {
-        const complete = cell.status === 'complete';
-        const ringed = cell.status !== 'none' || cell.isToday;
+      {periods.map((period) => {
+        const isCurrent = period.entryDate === currentEntryDate;
+        const complete = period.status === 'complete';
+        const ringed = period.status !== 'empty' || isCurrent;
 
         return (
           <Circle
-            key={cell.date}
-            size={cell.isToday ? TODAY_SIZE : DAY_SIZE}
+            key={period.entryDate}
+            size={isCurrent ? CURRENT_SIZE : STEP_SIZE}
             items="center"
             justify="center"
             bg={complete ? '$primary' : '$muted'}
             borderWidth={ringed && !complete ? 2 : 0}
-            borderColor={
-              cell.status === 'missed' ? '$outcomeMissed' : '$primary'
-            }
-            opacity={cell.isFuture && !cell.logged ? 0.4 : 1}
+            borderColor={RING[period.status]}
+            opacity={period.entryDate > currentEntryDate ? 0.4 : 1}
           >
             {complete && (
               <Check
@@ -37,7 +49,7 @@ export function WeekStrip({ cells }: { cells: readonly DayCell[] }) {
               />
             )}
 
-            {cell.status === 'partial' && (
+            {period.status === 'partial' && (
               <Circle size={CORE_SIZE} bg="$primary" />
             )}
           </Circle>

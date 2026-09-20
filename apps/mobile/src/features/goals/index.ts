@@ -1,5 +1,5 @@
 /** Public surface of the goals feature — nothing outside it should reach deeper. */
-export { goalKeys } from './api';
+export { goalKeys, type ListGoalsOptions } from './api';
 export {
   useCreateGoal,
   useDeleteGoal,
@@ -12,7 +12,12 @@ export { EMPTY_DRAFT } from './types';
 export type {
   Goal,
   GoalDraft,
+  GoalInclude,
   GoalPatch,
+  GoalPeriod,
+  GoalProgress,
+  PeriodEntry,
+  PeriodStatus,
   StreakRule,
   TrackingFrequency,
 } from './types';

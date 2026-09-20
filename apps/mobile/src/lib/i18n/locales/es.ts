@@ -22,8 +22,7 @@ export const es = {
       title: 'Hoy',
     },
     week: {
-      complete: '%{count} completos',
-      summary: '%{logged} de %{total} días registrados esta semana',
+      summary: '%{complete} de %{total} períodos completos',
     },
     logged: 'Registrado',
     notLogged: 'Sin registrar',

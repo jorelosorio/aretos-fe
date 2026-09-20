@@ -21,8 +21,7 @@ export const en = {
       title: 'Today',
     },
     week: {
-      complete: '%{count} complete',
-      summary: '%{logged} of %{total} days logged this week',
+      summary: '%{complete} of %{total} periods complete',
     },
     logged: 'Logged',
     notLogged: 'Not logged',

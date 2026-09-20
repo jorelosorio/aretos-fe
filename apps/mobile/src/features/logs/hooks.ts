@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { goalKeys } from '@/features/goals';
 import { limitKeys } from '@/features/limits';
 import { ApiError } from '@/lib/api';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
@@ -61,14 +62,22 @@ export function useLogForPeriod(goalId: string, entryDate: string) {
 }
 
 /**
- * A log write moves the tier's habit_log usage in `/v1/limits` — the limit is
- * on logs owned, and Save is the only thing that mints one.
+ * A log write moves two things that live elsewhere.
+ *
+ * The tier's habit_log usage in `/v1/limits` — the limit is on logs owned,
+ * and Save is the only thing that mints one.
+ *
+ * And the goal's `?include=progress` block, which scores this very period:
+ * the streak, the week and `current_period` are all read off the goal now, so
+ * a check-in that left the goals cache alone would send the user back to a
+ * home screen still showing the period they just filled in as empty.
  */
 function useInvalidateLogs() {
   const queryClient = useQueryClient();
 
   return async () => {
     await queryClient.invalidateQueries({ queryKey: logKeys.all });
+    await queryClient.invalidateQueries({ queryKey: goalKeys.all });
     await queryClient.invalidateQueries({ queryKey: limitKeys.all });
   };
 }

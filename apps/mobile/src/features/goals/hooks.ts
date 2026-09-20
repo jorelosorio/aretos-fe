@@ -12,6 +12,7 @@ import {
   goalKeys,
   listGoals,
   updateGoal,
+  type ListGoalsOptions,
 } from './api';
 import {
   GoalErrorCode,
@@ -22,12 +23,18 @@ import {
 
 /**
  * The user's goals. Defaults to the active ones, which is every screen that
- * has a list; pass `true` for the archive and `undefined` for both at once.
+ * has a list; pass `{ archived: true }` for the archive and
+ * `{ archived: undefined }` for both at once.
+ *
+ * With `{ include: 'progress' }` every goal carries its streak and its scored
+ * week, which is what lets the home screen be a single request.
  */
-export function useGoals(archived: boolean | undefined = false) {
+export function useGoals(options: ListGoalsOptions = {}) {
+  const query: ListGoalsOptions = { archived: false, ...options };
+
   return useQuery({
-    queryKey: goalKeys.list(archived),
-    queryFn: () => listGoals(archived),
+    queryKey: goalKeys.list(query),
+    queryFn: () => listGoals(query),
   });
 }
 

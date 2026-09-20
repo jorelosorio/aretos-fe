@@ -6,7 +6,7 @@ import { useTranslations } from '@/lib/i18n';
 
 const AVATAR_SIZE = '$4';
 
-function Avatar({ name, url }: { name: string; url: string | null }) {
+function Avatar({ name, url }: { name: string; url: string }) {
   return (
     <Circle
       size={AVATAR_SIZE}
@@ -15,7 +15,7 @@ function Avatar({ name, url }: { name: string; url: string | null }) {
       bg="$accentSurface"
       overflow="hidden"
     >
-      {url === null ? (
+      {url === '' ? (
         <SizableText
           size="$5"
           fontFamily="$heading"
@@ -39,11 +39,12 @@ export function HomeHeader() {
   const { t } = useTranslations();
   const { data: profile } = useProfile();
 
-  const name = profile?.name ?? '';
+  const name = profile?.displayName ?? '';
+  const initial = name || profile?.email || '';
 
   return (
     <XStack items="center" gap={SPACING.items}>
-      <Avatar name={name} url={profile?.avatarUrl ?? null} />
+      <Avatar name={initial} url={profile?.avatarUrl ?? ''} />
 
       <YStack flex={1} gap={SPACING.text}>
         <SizableText

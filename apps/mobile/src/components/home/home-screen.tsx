@@ -9,19 +9,19 @@ import { ErrorNotice } from '@/components/common/error-notice';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { EmptyLog } from '@/components/logs/empty-log';
 import { SPACING } from '@/constants/layout';
-import { useGoalErrorMessage, useGoals } from '@/features/goals';
-import { useHabits } from '@/features/habits';
-import { useLogs } from '@/features/logs';
-import { useGoalStreaks } from '@/features/streaks';
+import { useGoalErrorMessage, useGoals, type Goal } from '@/features/goals';
 import { useTranslations } from '@/lib/i18n';
 
 import { GoalStatusCard } from './goal-status-card';
 import { HomeHeader } from './home-header';
 import { HomeSection } from './home-section';
-import { toGoalStatus } from './today-status';
-import { currentWeekWindow } from './week-days';
 
 const HEADER_TOP_GAP = 8;
+
+type ScoredGoal = Goal & { progress: NonNullable<Goal['progress']> };
+
+const isScored = (goal: Goal): goal is ScoredGoal =>
+  goal.progress !== undefined;
 
 export function HomeScreen() {
   const { t } = useTranslations();
@@ -30,33 +30,16 @@ export function HomeScreen() {
   const toMessage = useGoalErrorMessage();
   const insets = useSafeAreaInsets();
 
-  const goals = useGoals();
-  const habits = useHabits();
-  const logs = useLogs(currentWeekWindow());
+  const goals = useGoals({ include: 'progress' });
 
-  const isPending = goals.isPending || habits.isPending || logs.isPending;
-  const error = goals.error ?? habits.error ?? logs.error;
-
-  const refresh = () => {
-    void goals.refetch();
-    void habits.refetch();
-    void logs.refetch();
-  };
-
-  const statuses = toGoalStatus(
-    goals.data ?? [],
-    habits.data ?? [],
-    logs.data ?? [],
-  );
-
-  const streaks = useGoalStreaks(statuses.map((status) => status.goal.id));
+  const scored = (goals.data ?? []).filter(isScored);
 
   const openLog = (goalId: string) =>
     router.push({ pathname: '/logs/[goalId]', params: { goalId } });
 
-  if (isPending) return <ScreenLoader />;
+  if (goals.isPending) return <ScreenLoader />;
 
-  if (!error && statuses.length === 0) {
+  if (!goals.error && scored.length === 0) {
     return (
       <EmptyLog
         Icon={Target}
@@ -72,12 +55,12 @@ export function HomeScreen() {
     <FlatList
       style={{ flex: 1, backgroundColor: theme.background.val }}
       contentContainerStyle={{ flexGrow: 1 }}
-      data={statuses}
-      keyExtractor={(status) => status.goal.id}
+      data={scored}
+      keyExtractor={(goal) => goal.id}
       refreshControl={
         <RefreshControl
-          refreshing={goals.isRefetching || logs.isRefetching}
-          onRefresh={refresh}
+          refreshing={goals.isRefetching}
+          onRefresh={() => void goals.refetch()}
           tintColor={theme.primary.val}
           colors={[theme.primary.val]}
         />
@@ -90,7 +73,7 @@ export function HomeScreen() {
         >
           <YStack gap={SPACING.group} px={SPACING.screen}>
             <HomeHeader />
-            <ErrorNotice message={toMessage(error)} />
+            <ErrorNotice message={toMessage(goals.error)} />
           </YStack>
 
           <YStack px={SPACING.screen}>
@@ -101,9 +84,9 @@ export function HomeScreen() {
       renderItem={({ item }) => (
         <YStack px={SPACING.screen} pb={SPACING.items}>
           <GoalStatusCard
-            status={item}
-            streak={streaks[item.goal.id] ?? 0}
-            onPress={() => openLog(item.goal.id)}
+            goal={item}
+            progress={item.progress}
+            onPress={() => openLog(item.id)}
           />
         </YStack>
       )}

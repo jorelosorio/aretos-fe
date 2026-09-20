@@ -39,7 +39,7 @@ export function GoalsScreen() {
     error,
     refetch,
     isRefetching,
-  } = useGoals(archived);
+  } = useGoals({ archived });
 
   const segments: readonly Segment<Filter>[] = [
     { value: 'active', label: t('goals.filter.active') },
