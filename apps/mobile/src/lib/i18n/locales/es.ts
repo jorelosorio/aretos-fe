@@ -36,6 +36,30 @@ export const es = {
   },
   diary: {
     title: 'Diario',
+    entry: {
+      more: '+%{count} más',
+    },
+    answer: {
+      done: 'Hecho',
+      notDone: 'Sin hacer',
+      skipped: 'No aplicaba',
+      logged: 'Registrado',
+      pending: 'Sin responder',
+    },
+    empty: {
+      title: 'Tu diario está en blanco',
+      body: 'Cuando escribas una nota o marques cómo te sentiste al registrar un período, aparecerá aquí.',
+      action: 'Escribir una entrada',
+    },
+    cutoff: {
+      title: 'Hasta aquí llega tu plan',
+      body: 'Tu plan muestra el diario desde el %{date}. Lo anterior sigue guardado y vuelve a aparecer si mejoras tu plan.',
+    },
+    errors: {
+      badRequest: 'No pudimos leer el diario. Inténtalo de nuevo.',
+      network: 'No pudimos conectar con el servidor. Revisa tu conexión.',
+      generic: 'Algo salió mal. Inténtalo de nuevo.',
+    },
   },
   logs: {
     mood: {

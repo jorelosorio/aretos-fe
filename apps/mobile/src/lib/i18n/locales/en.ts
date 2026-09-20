@@ -35,6 +35,30 @@ export const en = {
   },
   diary: {
     title: 'Diary',
+    entry: {
+      more: '+%{count} more',
+    },
+    answer: {
+      done: 'Done',
+      notDone: 'Not done',
+      skipped: "Didn't apply",
+      logged: 'Logged',
+      pending: 'Unanswered',
+    },
+    empty: {
+      title: 'Your diary is blank',
+      body: 'Write a note or say how you felt when you log a period, and it will show up here.',
+      action: 'Write an entry',
+    },
+    cutoff: {
+      title: 'This is as far as your plan reads',
+      body: 'Your plan shows the diary from %{date}. Anything older is still saved and comes back if you upgrade.',
+    },
+    errors: {
+      badRequest: "We couldn't read the diary. Try again.",
+      network: "We couldn't reach the server. Check your connection.",
+      generic: 'Something went wrong. Try again.',
+    },
   },
   logs: {
     mood: {

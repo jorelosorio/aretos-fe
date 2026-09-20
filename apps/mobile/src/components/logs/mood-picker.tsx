@@ -3,20 +3,13 @@ import { SizableText, XStack, YStack } from 'tamagui';
 
 import { SPACING } from '@/constants/layout';
 import { MOOD_SCORES, type MoodScore } from '@/features/logs';
-import { useTranslations, type TranslationKey } from '@/lib/i18n';
+import { useTranslations } from '@/lib/i18n';
 
 import { MoodFace } from './mood-face';
+import { MOOD_LABELS } from './mood-labels';
 
 const FACE_SIZE = 48;
 const TILE_MIN_HEIGHT = 72;
-
-const MOOD_LABELS: Record<MoodScore, TranslationKey> = {
-  1: 'logs.mood.scale.1',
-  2: 'logs.mood.scale.2',
-  3: 'logs.mood.scale.3',
-  4: 'logs.mood.scale.4',
-  5: 'logs.mood.scale.5',
-};
 
 export function MoodPicker({
   value,

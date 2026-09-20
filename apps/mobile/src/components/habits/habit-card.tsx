@@ -5,6 +5,8 @@ import { SPACING } from '@/constants/layout';
 import type { Habit } from '@/features/habits';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
 
+import { UNIT_LABELS } from './unit-labels';
+
 const WEIGHT_BADGES: Record<number, TranslationKey> = {
   2: 'habits.weight.doubleBadge',
   3: 'habits.weight.tripleBadge',
@@ -15,13 +17,6 @@ const MODE_LABELS: Record<Habit['trackingMode'], TranslationKey> = {
   count: 'habits.mode.count',
   duration: 'habits.mode.duration',
   rating: 'habits.mode.rating',
-};
-
-const UNIT_LABELS: Record<Habit['trackingMode'], TranslationKey | null> = {
-  binary: null,
-  count: 'habits.unit.count',
-  duration: 'habits.unit.duration',
-  rating: 'habits.unit.rating',
 };
 
 function Badge({ children }: { children: string }) {

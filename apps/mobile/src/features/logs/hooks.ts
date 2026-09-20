@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { diaryKeys } from '@/features/diary';
 import { goalKeys } from '@/features/goals';
 import { limitKeys } from '@/features/limits';
 import { ApiError } from '@/lib/api';
@@ -46,12 +47,19 @@ export function useLog(id: string) {
 }
 
 /**
- * A log write moves two things that live elsewhere.
+ * A log write moves three things that live elsewhere.
  *
  * The goal's `?include=progress` block, always: it scores this very period,
  * and the streak, the week and `current_period` are all read off the goal
  * now, so a check-in that left the goals cache alone would send the user back
  * to a home screen still showing the period they just filled in as empty.
+ *
+ * The diary, always, and for more than the note's text. `/v1/diary` lists
+ * exactly the periods carrying a note or a mood, so a write can add a row to
+ * it, remove one, or leave the row and restate it — writing the first note on
+ * a period that was only a check-in is what turns it into a diary entry at
+ * all. The scored `progress` on every listed entry moves with the entries
+ * too, so even a save that says nothing new in words changes the page.
  *
  * The tier's habit_log usage in `/v1/limits` only when a row appears or
  * disappears. Save mints a log the first time a period is written and
@@ -64,6 +72,7 @@ function useInvalidateLogs({ usageMoved }: { usageMoved: boolean }) {
   return async () => {
     await queryClient.invalidateQueries({ queryKey: logKeys.all });
     await queryClient.invalidateQueries({ queryKey: goalKeys.all });
+    await queryClient.invalidateQueries({ queryKey: diaryKeys.all });
     if (usageMoved) {
       await queryClient.invalidateQueries({ queryKey: limitKeys.all });
     }

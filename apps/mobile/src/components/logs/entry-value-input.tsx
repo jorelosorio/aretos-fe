@@ -1,22 +1,16 @@
 import { Check, Minus, Plus, X } from '@tamagui/lucide-icons-2';
 import { Button, SizableText, XStack, YStack } from 'tamagui';
 
+import { UNIT_LABELS } from '@/components/habits/unit-labels';
 import { SPACING } from '@/constants/layout';
-import type { Habit, TrackingMode } from '@/features/habits';
+import type { Habit } from '@/features/habits';
 import type { LogEntry } from '@/features/logs';
-import { useTranslations, type TranslationKey } from '@/lib/i18n';
+import { useTranslations } from '@/lib/i18n';
 
 const COUNT_STEP = 1;
 const DURATION_STEP = 5;
 const DURATION_PRESETS = [15, 30, 60, 90];
 const RATINGS = [1, 2, 3, 4, 5];
-
-const UNIT_LABELS: Record<TrackingMode, TranslationKey | null> = {
-  binary: null,
-  count: 'habits.unit.count',
-  duration: 'habits.unit.duration',
-  rating: 'habits.unit.rating',
-};
 
 export type EntryPatch = Partial<Omit<LogEntry, 'habitId'>>;
 

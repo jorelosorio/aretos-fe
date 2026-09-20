@@ -239,12 +239,18 @@ function CheckInForm({
   );
 }
 
-export function CheckInScreen({ goalId }: { goalId: string }) {
+export function CheckInScreen({
+  goalId,
+  date: opensOn,
+}: {
+  goalId: string;
+  date?: string;
+}) {
   const { t } = useTranslations();
   const router = useRouter();
   const toMessage = useGoalErrorMessage();
 
-  const [date, setDate] = useState(todayKey());
+  const [date, setDate] = useState(opensOn ?? todayKey());
   const { data: goal, isPending, error } = useGoalCheckIn(goalId, date);
 
   const period = goal?.progress?.periods[0] ?? goal?.progress?.currentPeriod;
