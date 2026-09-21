@@ -9,7 +9,7 @@ import { MoodFace } from './mood-face';
 import { MOOD_LABELS } from './mood-labels';
 
 const FACE_SIZE = 48;
-const TILE_MIN_HEIGHT = 72;
+const TILE_MIN_HEIGHT = 80;
 
 export function MoodPicker({
   value,
@@ -22,7 +22,7 @@ export function MoodPicker({
   const theme = useTheme();
 
   return (
-    <YStack gap={SPACING.group}>
+    <YStack gap={SPACING.items}>
       <SizableText size="$3" fontWeight="600" color="$color">
         {t('logs.mood.question')}{' '}
         <SizableText size="$3" color="$mutedForeground">
@@ -31,7 +31,7 @@ export function MoodPicker({
       </SizableText>
 
       <XStack
-        gap={SPACING.text}
+        gap={SPACING.group}
         accessibilityRole="radiogroup"
         accessibilityLabel={t('logs.mood.scaleLabel')}
       >
@@ -69,7 +69,7 @@ export function MoodPicker({
         })}
       </XStack>
 
-      <XStack justify="space-between" px="$1">
+      <XStack justify="space-between">
         <SizableText size="$1" color="$mutedForeground">
           {t(MOOD_LABELS[MOOD_SCORES[0]])}
         </SizableText>

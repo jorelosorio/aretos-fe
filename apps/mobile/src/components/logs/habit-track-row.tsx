@@ -243,7 +243,7 @@ export function HabitTrackRow({
               <Paragraph
                 size="$2"
                 color="$mutedForeground"
-                p="$3"
+                p={SPACING.items}
                 bg="$muted"
                 rounded="$lg"
               >

@@ -2,9 +2,10 @@
  * What each point on the 1-5 scale is called.
  *
  * Its own file because the faces are drawn in two places that share nothing
- * else: the picker, where the label sits under the tile, and the diary card,
- * where it is all a screen reader gets — the face there is marked hidden, so a
- * missing label would make the mood invisible rather than merely unlabelled.
+ * else: the picker, where the two ends of the scale are printed under the
+ * row and the rest are spoken, and the diary card, where the face is marked
+ * hidden and this is all a screen reader gets — so a missing label would make
+ * the mood invisible rather than merely unlabelled.
  */
 
 import type { MoodScore } from '@/features/logs';

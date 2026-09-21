@@ -6,7 +6,6 @@ import {
   Button,
   Paragraph,
   ScrollView,
-  Separator,
   SizableText,
   TextArea,
   XStack,
@@ -115,7 +114,7 @@ function CheckInForm({
               onSelect={pick}
             />
 
-            <XStack items="center" justify="space-between" px="$1">
+            <XStack items="center" justify="space-between">
               <SizableText size="$4" fontFamily="$heading" color="$color">
                 {periodLabel(periodDate, goal.trackingFrequency, locale, t)}
               </SizableText>
@@ -150,8 +149,6 @@ function CheckInForm({
                   ))}
                 </YStack>
 
-                <Separator borderColor="$border" />
-
                 <MoodPicker value={draft.mood} onChange={draft.setMood} />
 
                 <YStack gap={SPACING.group}>
@@ -170,7 +167,7 @@ function CheckInForm({
                     bg="$card"
                     borderColor="$border"
                   />
-                  <Paragraph size="$2" color="$mutedForeground" px="$2">
+                  <Paragraph size="$2" color="$mutedForeground">
                     {t('logs.optional')}
                   </Paragraph>
                 </YStack>
