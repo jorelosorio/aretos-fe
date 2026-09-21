@@ -1,11 +1,9 @@
 import { ChevronRight } from '@tamagui/lucide-icons-2';
-import { Circle, Paragraph, SizableText, XStack, YStack } from 'tamagui';
+import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
 import { SPACING } from '@/constants/layout';
 import type { Goal } from '@/features/goals';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
-
-import { slotColor } from './slot-color';
 
 const FREQUENCY_LABELS: Record<Goal['trackingFrequency'], TranslationKey> = {
   daily: 'goals.frequency.daily',

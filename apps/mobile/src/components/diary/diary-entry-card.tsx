@@ -1,70 +1,14 @@
-import { useTheme } from '@tamagui/core';
 import { Archive } from '@tamagui/lucide-icons-2';
-import {
-  Circle,
-  Paragraph,
-  Separator,
-  SizableText,
-  XStack,
-  YStack,
-} from 'tamagui';
+import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
-import { slotColor } from '@/components/goals/slot-color';
-import { UNIT_LABELS } from '@/components/habits/unit-labels';
-import { MoodFace } from '@/components/logs/mood-face';
 import { MOOD_LABELS } from '@/components/logs/mood-labels';
 import { ICON, SPACING } from '@/constants/layout';
-import type { DiaryEntry, DiaryHabitAnswer } from '@/features/diary';
-import { useTranslations, type TranslateFn } from '@/lib/i18n';
+import type { DiaryEntry } from '@/features/diary';
+import { useTranslations } from '@/lib/i18n';
 
 import { periodLabel } from './diary-date';
-import { MARK_COLORS, MARK_LABELS, markOf } from './habit-answer';
 
-const MOOD_BADGE = 36;
-const MOOD_FACE = 24;
 const NOTE_LINES = 4;
-const MAX_ANSWERS = 4;
-
-function answerValue(answer: DiaryHabitAnswer, t: TranslateFn): string | null {
-  if (answer.amount === null) return null;
-
-  const unit = UNIT_LABELS[answer.trackingMode];
-  return unit === null ? `${answer.amount}` : `${answer.amount} ${t(unit)}`;
-}
-
-function AnswerChip({ answer }: { answer: DiaryHabitAnswer }) {
-  const { t } = useTranslations();
-
-  const mark = markOf(answer);
-  const value = answerValue(answer, t);
-
-  return (
-    <XStack
-      items="center"
-      gap="$1.5"
-      px="$2"
-      py="$1"
-      rounded="$lg"
-      bg="$muted"
-      opacity={mark === 'pending' ? 0.6 : 1}
-      accessibilityLabel={`${answer.name}. ${t(MARK_LABELS[mark])}${
-        value === null ? '' : `. ${value}`
-      }`}
-    >
-      <Circle size={6} bg={MARK_COLORS[mark]} />
-
-      <SizableText size="$1" color="$mutedForeground" numberOfLines={1}>
-        {answer.name}
-      </SizableText>
-
-      {value !== null && (
-        <SizableText size="$1" color="$cardForeground" fontWeight="600">
-          {value}
-        </SizableText>
-      )}
-    </XStack>
-  );
-}
 
 export function DiaryEntryCard({
   entry,
@@ -74,13 +18,9 @@ export function DiaryEntryCard({
   onPress: () => void;
 }) {
   const { t, locale } = useTranslations();
-  const theme = useTheme();
 
-  const { goal, mood, habits } = entry;
+  const { goal, mood } = entry;
   const when = periodLabel(entry.entryDate, goal.trackingFrequency, locale);
-
-  const shown = habits.slice(0, MAX_ANSWERS);
-  const hidden = habits.length - shown.length;
 
   const label = [goal.name, when, mood === null ? null : t(MOOD_LABELS[mood])]
     .filter((part) => part !== null)

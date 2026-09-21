@@ -1,4 +1,5 @@
-import axios, {
+import {
+  create,
   type AxiosInstance,
   type InternalAxiosRequestConfig,
 } from 'axios';
@@ -10,7 +11,7 @@ import { ApiError, toApiError } from './errors';
 const TIMEOUT_MS = 15_000;
 
 function createClient(): AxiosInstance {
-  const instance = axios.create({
+  const instance = create({
     baseURL: env.apiUrl,
     timeout: TIMEOUT_MS,
     headers: { 'Content-Type': 'application/json' },

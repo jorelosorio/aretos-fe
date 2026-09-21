@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { isAxiosError } from 'axios';
 
 /** Body of every non-2xx response (`internal/api/errors.ErrorResponse`). */
 type ApiErrorBody = {
@@ -46,7 +46,7 @@ function isApiErrorBody(body: unknown): body is ApiErrorBody {
 export function toApiError(error: unknown): ApiError {
   if (error instanceof ApiError) return error;
 
-  if (axios.isAxiosError(error)) {
+  if (isAxiosError(error)) {
     const { response } = error;
     if (!response)
       return new ApiError(NETWORK_ERROR, error.message, undefined, error);
