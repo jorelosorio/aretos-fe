@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
-import { Check, Plus } from '@tamagui/lucide-icons-2';
+import { Check, Maximize2, Plus } from '@tamagui/lucide-icons-2';
 import {
   Button,
   Paragraph,
@@ -36,10 +36,14 @@ import { useTranslations } from '@/lib/i18n';
 import { EmptyLog } from './empty-log';
 import { HabitTrackRow } from './habit-track-row';
 import { MoodPicker } from './mood-picker';
+import { NoteEditor } from './note-editor';
 import { periodLabel } from './period-label';
 import { WeekPicker } from './week-picker';
 
 const NOTE_MAX = 2000;
+const NOTE_LINES = 5;
+const NOTE_MIN_HEIGHT = 96;
+const NOTE_MAX_HEIGHT = 148;
 
 function CheckInForm({
   goal,
@@ -63,6 +67,8 @@ function CheckInForm({
   const { t, locale } = useTranslations();
   const router = useRouter();
   const toMessage = useLogErrorMessage();
+
+  const [noteOpen, setNoteOpen] = useState(false);
 
   const draft = useLogDraft({
     goalId: goal.id,
@@ -152,7 +158,19 @@ function CheckInForm({
                 <MoodPicker value={draft.mood} onChange={draft.setMood} />
 
                 <YStack gap={SPACING.group}>
-                  <SectionTitle>{t('logs.note')}</SectionTitle>
+                  <XStack items="center" justify="space-between">
+                    <SectionTitle>{t('logs.note')}</SectionTitle>
+
+                    <Button
+                      size="$2"
+                      circular
+                      chromeless
+                      onPress={() => setNoteOpen(true)}
+                      icon={<Maximize2 size={ICON.row} color="$color" />}
+                      accessibilityLabel={t('logs.noteEditor.open')}
+                    />
+                  </XStack>
+
                   <TextArea
                     size="$5"
                     value={draft.note}
@@ -161,8 +179,9 @@ function CheckInForm({
                     placeholderTextColor="$mutedForeground"
                     maxLength={NOTE_MAX}
                     multiline
-                    numberOfLines={3}
-                    minH={96}
+                    numberOfLines={NOTE_LINES}
+                    minH={NOTE_MIN_HEIGHT}
+                    maxH={NOTE_MAX_HEIGHT}
                     verticalAlign="top"
                     bg="$card"
                     borderColor="$border"
@@ -201,6 +220,14 @@ function CheckInForm({
           </Button>
         </YStack>
       </YStack>
+
+      <NoteEditor
+        open={noteOpen}
+        value={draft.note}
+        maxLength={NOTE_MAX}
+        onChange={draft.setNote}
+        onCollapse={() => setNoteOpen(false)}
+      />
     </KeyboardAvoidingView>
   );
 }

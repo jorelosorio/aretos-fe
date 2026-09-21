@@ -94,6 +94,10 @@ export const es = {
     save: 'Guardar registro',
     update: 'Actualizar registro',
     note: 'Nota',
+    noteEditor: {
+      open: 'Ampliar la nota',
+      collapse: 'Contraer la nota',
+    },
     notePlaceholder: '¿Qué hizo que fuera así?',
     entry: {
       done: 'Hecho',

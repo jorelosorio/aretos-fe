@@ -93,6 +93,10 @@ export const en = {
     save: 'Save entry',
     update: 'Update entry',
     note: 'Note',
+    noteEditor: {
+      open: 'Expand the note',
+      collapse: 'Collapse the note',
+    },
     notePlaceholder: 'What made it go this way?',
     entry: {
       done: 'Done',
