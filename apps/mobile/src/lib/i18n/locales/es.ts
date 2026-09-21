@@ -18,14 +18,12 @@ export const es = {
       label: 'Racha de %{count} días',
     },
     today: {
-      title: 'Hoy',
+      title: 'Tu reporte de hoy',
     },
     week: {
       counted: '%{count} cuentan para la racha',
       summary: '%{complete} de %{total} períodos completos',
     },
-    logged: 'Registrado',
-    notLogged: 'Sin registrar',
     progress: '%{answered} de %{total}',
     noHabits: 'Sin hábitos todavía',
   },
@@ -79,7 +77,7 @@ export const es = {
       partial: 'A medias',
       missed: 'Sin cumplir',
       skipped: 'Omitido',
-      empty: 'Sin registro',
+      empty: 'Sin registrar',
     },
     outcome: {
       done: 'Hecho',

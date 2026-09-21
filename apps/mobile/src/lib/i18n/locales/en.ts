@@ -17,14 +17,12 @@ export const en = {
       label: '%{count} day streak',
     },
     today: {
-      title: 'Today',
+      title: "Today's report",
     },
     week: {
       counted: '%{count} count toward the streak',
       summary: '%{complete} of %{total} periods complete',
     },
-    logged: 'Logged',
-    notLogged: 'Not logged',
     progress: '%{answered} of %{total}',
     noHabits: 'No habits yet',
   },
@@ -78,7 +76,7 @@ export const en = {
       partial: 'Partly done',
       missed: 'Missed',
       skipped: 'Skipped',
-      empty: 'Nothing logged',
+      empty: 'Not reported',
     },
     outcome: {
       done: 'Done',

@@ -20,32 +20,20 @@ import {
   weekdayIndex,
   type DateKey,
 } from '@/features/logs';
-import {
-  useTranslations,
-  type AppLocale,
-  type TranslationKey,
-} from '@/lib/i18n';
+import { useTranslations, type AppLocale } from '@/lib/i18n';
 
-import { dayNumber, weekMonthLabel, weekdayLabel } from './period-label';
+import {
+  dayNumber,
+  weekMonthLabel,
+  weekdayLabel,
+} from '@/components/common/date-label';
+import {
+  PERIOD_STATUS_COLORS,
+  PERIOD_STATUS_LABELS,
+} from '@/components/goals/period-status';
 
 const CELL = 38;
 const DOT = 6;
-
-const STATUS_COLORS = {
-  complete: '$outcomeDone',
-  partial: '$primary',
-  missed: '$outcomeMissed',
-  skipped: '$outcomeSkipped',
-  empty: 'transparent',
-} as const satisfies Record<PeriodStatus, string>;
-
-const STATUS_LABELS = {
-  complete: 'logs.status.complete',
-  partial: 'logs.status.partial',
-  missed: 'logs.status.missed',
-  skipped: 'logs.status.skipped',
-  empty: 'logs.status.empty',
-} as const satisfies Record<PeriodStatus, TranslationKey>;
 
 function weekList(first: DateKey, last: DateKey): DateKey[] {
   const weeks: DateKey[] = [];
@@ -109,7 +97,7 @@ function DayCell({
 
       <Circle
         size={DOT}
-        bg={status === null ? 'transparent' : STATUS_COLORS[status]}
+        bg={status === null ? 'transparent' : PERIOD_STATUS_COLORS[status]}
       />
     </YStack>
   );
@@ -237,7 +225,7 @@ export function WeekPicker({
                       day={day}
                       locale={locale}
                       status={status}
-                      statusLabel={t(STATUS_LABELS[status ?? 'empty'])}
+                      statusLabel={t(PERIOD_STATUS_LABELS[status ?? 'empty'])}
                       isSelected={
                         byWeek ? item === selectedWeek : day === selected
                       }

@@ -128,8 +128,8 @@ const lightRoles = {
   critical: '#c4443c',
   successInk: '#1f6b12',
 
-  outcomeDone: '#2f8a1e',
-  outcomeMissed: '#e0a01c',
+  outcomeDone: '#3c4e2a',
+  outcomeMissed: '#9a6a12',
   outcomeSkipped: '#8a8073',
   outcomeBlank: '#cfc4b0',
 };
@@ -202,8 +202,8 @@ const darkRoles: typeof lightRoles = {
   critical: '#d9615c',
   successInk: '#5cb347',
 
-  outcomeDone: '#4f9e35',
-  outcomeMissed: '#e0a01c',
+  outcomeDone: '#a8c084',
+  outcomeMissed: '#e6b45c',
   outcomeSkipped: '#968a7c',
   outcomeBlank: '#4d4238',
 };

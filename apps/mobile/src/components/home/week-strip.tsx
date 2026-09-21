@@ -1,8 +1,14 @@
 import { Check, Minus } from '@tamagui/lucide-icons-2';
-import { Circle, XStack } from 'tamagui';
+import { Circle, SizableText, XStack, YStack } from 'tamagui';
 
+import { weekdayInitial } from '@/components/common/date-label';
 import { ICON } from '@/constants/layout';
-import type { GoalPeriod, PeriodStatus } from '@/features/goals';
+import type {
+  GoalPeriod,
+  PeriodStatus,
+  TrackingFrequency,
+} from '@/features/goals';
+import { useTranslations } from '@/lib/i18n';
 
 const STEP_SIZE = '$1';
 const CURRENT_SIZE = '$1.5';
@@ -28,12 +34,21 @@ const GLYPH = {
 export function WeekStrip({
   periods,
   currentEntryDate,
+  frequency,
 }: {
   periods: readonly GoalPeriod[];
   currentEntryDate: string;
+  frequency: TrackingFrequency;
 }) {
+  const { locale } = useTranslations();
+  const byDay = frequency !== 'weekly';
+
   return (
-    <XStack items="center" gap="$1.5">
+    <XStack
+      items="flex-end"
+      justify={byDay ? 'space-between' : 'flex-start'}
+      gap="$1"
+    >
       {periods.map((period) => {
         const isCurrent = period.entryDate === currentEntryDate;
         const counted = period.countsForStreak;
@@ -46,24 +61,39 @@ export function WeekStrip({
             : null;
 
         return (
-          <Circle
+          <YStack
             key={period.entryDate}
-            size={isCurrent ? CURRENT_SIZE : STEP_SIZE}
             items="center"
-            justify="center"
-            bg={counted ? '$primary' : TRACK_FILL}
-            borderWidth={counted ? 0 : hasStatusRing ? 2 : 1}
-            borderColor={hasStatusRing ? RING[period.status] : TRACK_RING}
+            gap="$1"
             opacity={period.entryDate > currentEntryDate ? UPCOMING_OPACITY : 1}
           >
-            {Glyph !== null && (
-              <Glyph size={ICON.inline} color={ink} strokeWidth={3} />
+            {byDay && (
+              <SizableText
+                size="$1"
+                fontWeight={isCurrent ? '700' : '400'}
+                color={isCurrent ? '$color' : '$mutedForeground'}
+              >
+                {weekdayInitial(period.entryDate, locale)}
+              </SizableText>
             )}
 
-            {period.status === 'partial' && (
-              <Circle size={CORE_SIZE} bg={ink} />
-            )}
-          </Circle>
+            <Circle
+              size={isCurrent ? CURRENT_SIZE : STEP_SIZE}
+              items="center"
+              justify="center"
+              bg={counted ? '$primary' : TRACK_FILL}
+              borderWidth={counted ? 0 : hasStatusRing ? 2 : 1}
+              borderColor={hasStatusRing ? RING[period.status] : TRACK_RING}
+            >
+              {Glyph !== null && (
+                <Glyph size={ICON.inline} color={ink} strokeWidth={3} />
+              )}
+
+              {period.status === 'partial' && (
+                <Circle size={CORE_SIZE} bg={ink} />
+              )}
+            </Circle>
+          </YStack>
         );
       })}
     </XStack>
