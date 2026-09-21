@@ -46,9 +46,8 @@ export const en = {
       pending: 'Unanswered',
     },
     empty: {
-      title: 'Your diary is blank',
-      body: 'Write a note or say how you felt when you log a period, and it will show up here.',
-      action: 'Write an entry',
+      title: 'No goals created yet',
+      body: 'The diary is written as you log your goals. Create one first, and every note and mood you record will show up here.',
     },
     cutoff: {
       title: 'This is as far as your plan reads',

@@ -59,8 +59,6 @@ export function SettingsScreen() {
           onChange={(value) => setPreferences({ locale: value })}
         />
 
-        <YStack flex={1} minH="$6" />
-
         <SignOutButton />
       </YStack>
     </ScrollView>

@@ -3,7 +3,7 @@ import { useTheme } from '@tamagui/core';
 import { House, NotebookPen, Settings, Target } from '@tamagui/lucide-icons-2';
 
 import { FloatingTabBar } from '@/components/common/floating-tab-bar';
-import { ICON } from '@/constants/layout';
+import { HEADER_TITLE, ICON } from '@/constants/layout';
 import { useTranslations } from '@/lib/i18n';
 
 const iconColor = (focused: boolean) =>
@@ -30,7 +30,10 @@ export default function TabsLayout() {
         headerStyle: { backgroundColor: theme.background.val },
         headerShadowVisible: false,
         headerTintColor: theme.color.val,
-        headerTitleStyle: { fontFamily: 'Caprasimo-Regular', fontSize: 20 },
+        headerTitleStyle: {
+          fontFamily: HEADER_TITLE.fontFamily,
+          fontSize: HEADER_TITLE.fontSize,
+        },
       }}
     >
       <Tabs.Screen

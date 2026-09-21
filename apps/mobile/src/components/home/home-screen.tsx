@@ -1,5 +1,4 @@
 import { FlatList, RefreshControl } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
 import { Target } from '@tamagui/lucide-icons-2';
@@ -7,6 +6,7 @@ import { YStack } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
 import { useTabBarInset } from '@/components/common/floating-tab-bar';
+import { ScreenHeader } from '@/components/common/screen-header';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { PlanLimitNotice } from '@/components/goals/plan-limit-notice';
 import { EmptyLog } from '@/components/logs/empty-log';
@@ -19,8 +19,6 @@ import { GoalStatusCard } from './goal-status-card';
 import { HomeHeader } from './home-header';
 import { HomeSection } from './home-section';
 
-const HEADER_TOP_GAP = 8;
-
 type ScoredGoal = Goal & { progress: NonNullable<Goal['progress']> };
 
 const isScored = (goal: Goal): goal is ScoredGoal =>
@@ -31,7 +29,6 @@ export function HomeScreen() {
   const theme = useTheme();
   const router = useRouter();
   const toMessage = useGoalErrorMessage();
-  const insets = useSafeAreaInsets();
   const tabBarInset = useTabBarInset();
 
   const goals = useGoals({ include: ['progress'] });
@@ -78,13 +75,11 @@ export function HomeScreen() {
         />
       }
       ListHeaderComponent={
-        <YStack
-          gap={SPACING.section}
-          pt={insets.top + HEADER_TOP_GAP}
-          pb={SPACING.items}
-        >
+        <YStack gap={SPACING.section} pb={SPACING.items}>
           <YStack gap={SPACING.group} px={SPACING.screen}>
-            <HomeHeader />
+            <ScreenHeader>
+              <HomeHeader />
+            </ScreenHeader>
             <ErrorNotice message={toMessage(goals.error)} />
           </YStack>
 

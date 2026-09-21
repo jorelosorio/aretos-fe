@@ -2,6 +2,7 @@ import { Alert } from 'react-native';
 import { LogOut } from '@tamagui/lucide-icons-2';
 import { Button } from 'tamagui';
 
+import { ICON } from '@/constants/layout';
 import { useSignOut } from '@/features/auth';
 import { useTranslations } from '@/lib/i18n';
 
@@ -9,9 +10,9 @@ import { useTranslations } from '@/lib/i18n';
  * Confirms first — signing out is easy to hit by accident and costs a full
  * OAuth round trip to undo.
  *
- * Styled as the sign-in button's opposite number: same card-on-border shape,
- * destructive colouring on the label and icon rather than a filled red block,
- * which would pull the eye to the one thing on the screen nobody came for.
+ * Styled as the sign-in button's opposite number, card on border, and in the
+ * ordinary text colour: signing out destroys nothing, so red here would only
+ * spend the app's one alarm colour on a routine way out.
  */
 export function SignOutButton() {
   const { t } = useTranslations();
@@ -20,11 +21,7 @@ export function SignOutButton() {
   const confirm = () =>
     Alert.alert(t('auth.signOutConfirmTitle'), t('auth.signOutConfirmBody'), [
       { text: t('auth.cancel'), style: 'cancel' },
-      {
-        text: t('auth.signOut'),
-        style: 'destructive',
-        onPress: () => signOut(),
-      },
+      { text: t('auth.signOut'), onPress: () => signOut() },
     ]);
 
   return (
@@ -34,10 +31,10 @@ export function SignOutButton() {
       disabled={isSigningOut}
       opacity={isSigningOut ? 0.7 : 1}
       bg="$card"
-      color="$destructive"
+      color="$cardForeground"
       borderWidth={1}
       borderColor="$border"
-      icon={<LogOut size={18} color="$destructive" />}
+      icon={<LogOut size={ICON.row} color="$mutedForeground" />}
       accessibilityLabel={t('auth.signOut')}
     >
       {isSigningOut ? t('auth.signingOut') : t('auth.signOut')}

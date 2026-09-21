@@ -18,8 +18,8 @@ export function EmptyLog({
   Icon: IconComponent;
   title: string;
   body: string;
-  action: string;
-  onAction: () => void;
+  action?: string;
+  onAction?: () => void;
   disabled?: boolean;
   notice?: ReactNode;
 }) {
@@ -54,15 +54,17 @@ export function EmptyLog({
           </Paragraph>
         </YStack>
 
-        <Button
-          size="$4"
-          theme="accent"
-          disabled={disabled}
-          opacity={disabled ? 0.5 : 1}
-          onPress={onAction}
-        >
-          {action}
-        </Button>
+        {action && onAction ? (
+          <Button
+            size="$4"
+            theme="accent"
+            disabled={disabled}
+            opacity={disabled ? 0.5 : 1}
+            onPress={onAction}
+          >
+            {action}
+          </Button>
+        ) : null}
       </YStack>
     </YStack>
   );

@@ -116,8 +116,6 @@ export function DiaryScreen() {
             Icon={NotebookPen}
             title={t('diary.empty.title')}
             body={t('diary.empty.body')}
-            action={t('diary.empty.action')}
-            onAction={() => router.push('/logs/new')}
           />
         )
       }

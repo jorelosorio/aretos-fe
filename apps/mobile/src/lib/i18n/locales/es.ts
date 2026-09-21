@@ -47,9 +47,8 @@ export const es = {
       pending: 'Sin responder',
     },
     empty: {
-      title: 'Tu diario está en blanco',
-      body: 'Cuando escribas una nota o marques cómo te sentiste al registrar un período, aparecerá aquí.',
-      action: 'Escribir una entrada',
+      title: 'Todavía no has creado ninguna meta',
+      body: 'El diario se escribe al registrar tus metas. Crea una primero y aquí aparecerán las notas y los estados de ánimo que anotes.',
     },
     cutoff: {
       title: 'Hasta aquí llega tu plan',

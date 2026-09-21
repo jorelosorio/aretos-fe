@@ -34,6 +34,26 @@ export const SPACING = {
 } as const;
 
 /**
+ * The navigation header's title style, in points.
+ *
+ * Both navigators set it as `headerTitleStyle`, and `useHeaderMetrics` reads
+ * the same numbers to place a header a screen draws itself. One object rather
+ * than two literals because the whole point of that hook is that the greeting
+ * on home lands where a native title would — which stops being true the moment
+ * one side changes its font size alone.
+ *
+ * `lineHeight` is what the title's single line measures, not a style anyone
+ * applies: React Navigation leaves the title's line height to the font, so
+ * this is the usual ~1.3 of the size, and it only has to be close enough to
+ * centre a line inside a 44- to 64-point bar.
+ */
+export const HEADER_TITLE = {
+  fontFamily: 'Caprasimo-Regular',
+  fontSize: 20,
+  lineHeight: 26,
+} as const;
+
+/**
  * The floating tab bar's two metrics, in points.
  *
  * Plain numbers rather than `size` tokens because `height` is also the pill's

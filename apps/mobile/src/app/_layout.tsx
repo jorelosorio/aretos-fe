@@ -9,6 +9,7 @@ import { TamaguiProvider, useTheme } from '@tamagui/core';
 import { config } from '../../tamagui.config';
 
 import { ScreenLoader } from '@/components/common/screen-loader';
+import { HEADER_TITLE } from '@/constants/layout';
 import { useTranslations } from '@/lib/i18n';
 import { useSession, useSessionAutoRefresh } from '@/features/auth';
 import { usePreferences } from '@/lib/preferences';
@@ -45,7 +46,10 @@ function RootNavigator() {
         headerStyle: { backgroundColor: theme.background.val },
         headerShadowVisible: false,
         headerTintColor: theme.color.val,
-        headerTitleStyle: { fontFamily: 'Caprasimo-Regular', fontSize: 20 },
+        headerTitleStyle: {
+          fontFamily: HEADER_TITLE.fontFamily,
+          fontSize: HEADER_TITLE.fontSize,
+        },
       }}
     >
       {/*
