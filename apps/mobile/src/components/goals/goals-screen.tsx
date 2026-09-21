@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
+import type { ImageSourcePropType } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
 import { Archive, Plus, Target } from '@tamagui/lucide-icons-2';
 import { Button, Paragraph, SizableText, YStack } from 'tamagui';
 
+import { EmptyArt } from '@/components/common/empty-art';
 import { ErrorNotice } from '@/components/common/error-notice';
 import { useTabBarInset } from '@/components/common/floating-tab-bar';
 import { ScreenLoader } from '@/components/common/screen-loader';
@@ -12,13 +14,13 @@ import {
   SegmentedControl,
   type Segment,
 } from '@/components/common/segmented-control';
+import { ILLUSTRATIONS } from '@/constants/illustrations';
 import { SPACING } from '@/constants/layout';
 import { useGoalErrorMessage, useGoals } from '@/features/goals';
 import { useAllowance } from '@/features/limits';
 import { useTranslations } from '@/lib/i18n';
 
 import { GoalCard } from './goal-card';
-import { PlanLimitNotice } from './plan-limit-notice';
 
 type Filter = 'active' | 'archived';
 
@@ -32,8 +34,7 @@ export function GoalsScreen() {
   const [filter, setFilter] = useState<Filter>('active');
   const archived = filter === 'archived';
 
-  const allowance = useAllowance('goal');
-  const canCreate = allowance.canCreate;
+  const canCreate = useAllowance('goal').canCreate;
 
   const {
     data: goals,
@@ -72,8 +73,6 @@ export function GoalsScreen() {
           pt={SPACING.screen}
           pb={SPACING.items}
         >
-          <PlanLimitNotice allowance={allowance} />
-
           <SegmentedControl
             segments={segments}
             value={filter}
@@ -104,6 +103,7 @@ export function GoalsScreen() {
           <YStack flex={1} px={SPACING.screen} pb={SPACING.screen}>
             <EmptyGoals
               Icon={archived ? Archive : Target}
+              illustration={archived ? undefined : ILLUSTRATIONS.noGoals}
               title={t(
                 archived ? 'goals.empty.archivedTitle' : 'goals.empty.title',
               )}
@@ -116,34 +116,20 @@ export function GoalsScreen() {
           </YStack>
         )
       }
-      ListFooterComponent={
-        !archived && (goals?.length ?? 0) > 0 ? (
-          <YStack px={SPACING.screen} pb={SPACING.screen} pt={SPACING.items}>
-            <Button
-              size="$5"
-              theme="accent"
-              icon={Plus}
-              disabled={!canCreate}
-              opacity={canCreate ? 1 : 0.5}
-              onPress={create}
-            >
-              {t('goals.new')}
-            </Button>
-          </YStack>
-        ) : null
-      }
     />
   );
 }
 
 function EmptyGoals({
   Icon,
+  illustration,
   title,
   body,
   onCreate,
   canCreate = true,
 }: {
   Icon: typeof Target;
+  illustration?: ImageSourcePropType;
   title: string;
   body: string;
   onCreate?: () => void;
@@ -158,18 +144,14 @@ function EmptyGoals({
       justify="center"
       gap={SPACING.section}
       p={SPACING.section}
-      bg="$card"
-      rounded="$xl2"
-      borderWidth={1}
-      borderColor="$border"
     >
-      <Icon size={32} color="$primary" />
+      <EmptyArt Icon={Icon} illustration={illustration} />
 
       <YStack gap={SPACING.group} items="center">
         <SizableText
           size="$6"
           fontFamily="$heading"
-          color="$cardForeground"
+          color="$color"
           text="center"
         >
           {title}

@@ -1,11 +1,19 @@
-import { Languages, Moon, Smartphone, Sun } from '@tamagui/lucide-icons-2';
+import { useRouter } from 'expo-router';
+import {
+  ChevronRight,
+  Languages,
+  Moon,
+  Smartphone,
+  Sun,
+} from '@tamagui/lucide-icons-2';
 import { ScrollView, YStack } from 'tamagui';
 
 import { SignOutButton } from '@/components/auth/sign-out-button';
 import { useTabBarInset } from '@/components/common/floating-tab-bar';
 import { OptionGroup, type Option } from '@/components/common/option-group';
+import { RowGroup } from '@/components/settings/row-group';
 import { APP_LOCALES, useTranslations } from '@/lib/i18n';
-import { SPACING } from '@/constants/layout';
+import { ICON, SPACING } from '@/constants/layout';
 import {
   setPreferences,
   usePreferences,
@@ -22,6 +30,7 @@ export function SettingsScreen() {
   const { t } = useTranslations();
   const { theme, locale } = usePreferences();
   const tabBarInset = useTabBarInset();
+  const router = useRouter();
 
   const themeOptions: readonly Option<ThemePreference>[] = [
     { value: 'light', label: t('settings.light'), Icon: Sun },
@@ -57,6 +66,19 @@ export function SettingsScreen() {
           options={localeOptions}
           value={locale}
           onChange={(value) => setPreferences({ locale: value })}
+        />
+
+        <RowGroup
+          title={t('settings.legal')}
+          rows={[
+            {
+              label: t('settings.licenses'),
+              onPress: () => router.push('/settings/licenses'),
+              trailing: (
+                <ChevronRight size={ICON.row} color="$mutedForeground" />
+              ),
+            },
+          ]}
         />
 
         <SignOutButton />

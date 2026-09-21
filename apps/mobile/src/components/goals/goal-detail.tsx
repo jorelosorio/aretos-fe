@@ -184,22 +184,9 @@ function EmptyHabits() {
   const { t } = useTranslations();
 
   return (
-    <YStack
-      items="center"
-      gap={SPACING.group}
-      p={SPACING.section}
-      bg="$card"
-      rounded="$xl2"
-      borderWidth={1}
-      borderColor="$border"
-    >
+    <YStack items="center" gap={SPACING.group} p={SPACING.section}>
       <ListChecks size={28} color="$primary" />
-      <SizableText
-        size="$5"
-        fontFamily="$heading"
-        color="$cardForeground"
-        text="center"
-      >
+      <SizableText size="$5" fontFamily="$heading" color="$color" text="center">
         {t('habits.empty.title')}
       </SizableText>
       <Paragraph size="$3" color="$mutedForeground" text="center">

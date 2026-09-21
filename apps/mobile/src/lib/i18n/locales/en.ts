@@ -27,11 +27,6 @@ export const en = {
     notLogged: 'Not logged',
     progress: '%{answered} of %{total}',
     noHabits: 'No habits yet',
-    empty: {
-      title: 'No goals created yet',
-      body: 'Create your first goal and the habits that make it real. This is where each period will show up.',
-      action: 'Create a goal',
-    },
   },
   diary: {
     title: 'Diary',
@@ -44,10 +39,6 @@ export const en = {
       skipped: "Didn't apply",
       logged: 'Logged',
       pending: 'Unanswered',
-    },
-    empty: {
-      title: 'No goals created yet',
-      body: 'The diary is written as you log your goals. Create one first, and every note and mood you record will show up here.',
     },
     cutoff: {
       title: 'This is as far as your plan reads',
@@ -99,10 +90,6 @@ export const en = {
       clear: 'Tap again to clear your answer',
     },
     empty: {
-      noGoalsTitle: 'You need a goal first',
-      noGoalsBody:
-        'An entry is always about a goal. Create one and add the habits you want to track.',
-      noGoalsAction: 'Create a goal',
       noHabitsTitle: 'This goal has no habits',
       noHabitsBody:
         'A goal is logged through its habits. Add the first one and come back.',
@@ -148,7 +135,7 @@ export const en = {
         'Your plan does not include goals yet. Upgrade it to start tracking what matters to you.',
     },
     empty: {
-      title: 'No goals yet',
+      title: 'No goals created yet',
       body: 'Start with the big one, even if it sounds abstract. You will turn it into habits you can tick without second-guessing.',
       archivedTitle: 'No archived goals',
       archivedBody:
@@ -284,6 +271,9 @@ export const en = {
   },
   settings: {
     appearance: 'Appearance',
+    attributions: 'Attributions',
+    legal: 'Legal',
+    licenses: 'Licenses',
     light: 'Light',
     dark: 'Dark',
     system: 'Automatic',

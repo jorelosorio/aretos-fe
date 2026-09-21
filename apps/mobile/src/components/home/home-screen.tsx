@@ -10,6 +10,7 @@ import { ScreenHeader } from '@/components/common/screen-header';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { PlanLimitNotice } from '@/components/goals/plan-limit-notice';
 import { EmptyLog } from '@/components/logs/empty-log';
+import { ILLUSTRATIONS } from '@/constants/illustrations';
 import { SPACING } from '@/constants/layout';
 import { useGoalErrorMessage, useGoals, type Goal } from '@/features/goals';
 import { useAllowance } from '@/features/limits';
@@ -32,9 +33,7 @@ export function HomeScreen() {
   const tabBarInset = useTabBarInset();
 
   const goals = useGoals({ include: ['progress'] });
-
   const allowance = useAllowance('goal');
-  const canCreate = allowance.canCreate;
 
   const scored = (goals.data ?? []).filter(isScored);
 
@@ -48,14 +47,9 @@ export function HomeScreen() {
     empty = (
       <EmptyLog
         Icon={Target}
-        title={t('home.empty.title')}
-        body={t('home.empty.body')}
-        action={t('home.empty.action')}
-        onAction={() => router.push('/goals/new')}
-        disabled={!canCreate}
-        notice={
-          canCreate ? undefined : <PlanLimitNotice allowance={allowance} />
-        }
+        illustration={ILLUSTRATIONS.noGoals}
+        title={t('goals.empty.title')}
+        body={t('goals.empty.body')}
       />
     );
   }
@@ -76,11 +70,12 @@ export function HomeScreen() {
       }
       ListHeaderComponent={
         <YStack gap={SPACING.section} pb={SPACING.items}>
-          <YStack gap={SPACING.group} px={SPACING.screen}>
+          <YStack gap={SPACING.items} px={SPACING.screen}>
             <ScreenHeader>
               <HomeHeader />
             </ScreenHeader>
             <ErrorNotice message={toMessage(goals.error)} />
+            <PlanLimitNotice allowance={allowance} />
           </YStack>
 
           {scored.length > 0 && (

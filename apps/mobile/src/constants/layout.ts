@@ -34,6 +34,26 @@ export const SPACING = {
 } as const;
 
 /**
+ * The square an empty state's illustration is drawn in, in points.
+ *
+ * Measured against the screen rather than fixed, because a number that looks
+ * generous on a 6" phone is most of a small one's viewport — and an empty
+ * state has a heading, a paragraph and sometimes a plan notice to fit beside
+ * the picture. The three bounds are a floor, not a stack of preferences: the
+ * smallest wins.
+ *
+ * - `widthRatio` is how much of the screen's width the drawing may span.
+ * - `heightRatio` keeps it from crowding the text on a short screen, which
+ *   width alone cannot see.
+ * - `max` stops it ballooning on a tablet, where the ratios have room to.
+ */
+export const ILLUSTRATION_SIZE = {
+  widthRatio: 0.72,
+  heightRatio: 0.32,
+  max: 320,
+} as const;
+
+/**
  * The navigation header's title style, in points.
  *
  * Both navigators set it as `headerTitleStyle`, and `useHeaderMetrics` reads
@@ -76,7 +96,7 @@ export const TAB_BAR = {
    * and nothing else in the pill to read — and because the tabs take their
    * width from it, so it is what sets the spacing across the whole bar.
    */
-  icon: 32,
+  icon: 36,
 } as const;
 
 /**

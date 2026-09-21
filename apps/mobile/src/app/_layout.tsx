@@ -80,6 +80,11 @@ function RootNavigator() {
         />
 
         <Stack.Screen
+          name="settings/licenses"
+          options={{ headerShown: true, title: t('settings.licenses') }}
+        />
+
+        <Stack.Screen
           name="logs/new"
           options={{ ...modalOptions, title: t('logs.pickTitle') }}
         />

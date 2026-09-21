@@ -1,50 +1,43 @@
-import type { ReactNode } from 'react';
+import type { ImageSourcePropType } from 'react-native';
 import type { Check } from '@tamagui/lucide-icons-2';
 import { Button, Paragraph, SizableText, YStack } from 'tamagui';
 
+import { EmptyArt } from '@/components/common/empty-art';
 import { SPACING } from '@/constants/layout';
 
 type IconComponent = typeof Check;
 
 export function EmptyLog({
   Icon,
+  illustration,
   title,
   body,
   action,
   onAction,
-  disabled = false,
-  notice,
 }: {
   Icon: IconComponent;
+  illustration?: ImageSourcePropType;
   title: string;
   body: string;
   action?: string;
   onAction?: () => void;
-  disabled?: boolean;
-  notice?: ReactNode;
 }) {
   return (
     <YStack flex={1} p={SPACING.screen} bg="$background">
-      {notice ? <YStack pb={SPACING.section}>{notice}</YStack> : null}
-
       <YStack
         flex={1}
         items="center"
         justify="center"
         gap={SPACING.section}
         p={SPACING.section}
-        bg="$card"
-        rounded="$xl2"
-        borderWidth={1}
-        borderColor="$border"
       >
-        <Icon size={32} color="$primary" />
+        <EmptyArt Icon={Icon} illustration={illustration} />
 
         <YStack gap={SPACING.group} items="center">
           <SizableText
             size="$6"
             fontFamily="$heading"
-            color="$cardForeground"
+            color="$color"
             text="center"
           >
             {title}
@@ -55,13 +48,7 @@ export function EmptyLog({
         </YStack>
 
         {action && onAction ? (
-          <Button
-            size="$4"
-            theme="accent"
-            disabled={disabled}
-            opacity={disabled ? 0.5 : 1}
-            onPress={onAction}
-          >
+          <Button size="$4" theme="accent" onPress={onAction}>
             {action}
           </Button>
         ) : null}

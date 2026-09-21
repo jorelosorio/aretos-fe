@@ -28,11 +28,6 @@ export const es = {
     notLogged: 'Sin registrar',
     progress: '%{answered} de %{total}',
     noHabits: 'Sin hábitos todavía',
-    empty: {
-      title: 'Todavía no has creado ninguna meta',
-      body: 'Crea tu primera meta y los hábitos que la vuelven real. Aquí verás cómo va cada período.',
-      action: 'Crear una meta',
-    },
   },
   diary: {
     title: 'Diario',
@@ -45,10 +40,6 @@ export const es = {
       skipped: 'No aplicaba',
       logged: 'Registrado',
       pending: 'Sin responder',
-    },
-    empty: {
-      title: 'Todavía no has creado ninguna meta',
-      body: 'El diario se escribe al registrar tus metas. Crea una primero y aquí aparecerán las notas y los estados de ánimo que anotes.',
     },
     cutoff: {
       title: 'Hasta aquí llega tu plan',
@@ -100,10 +91,6 @@ export const es = {
       clear: 'Toca de nuevo para quitar la respuesta',
     },
     empty: {
-      noGoalsTitle: 'Primero necesitas una meta',
-      noGoalsBody:
-        'Un registro siempre es sobre una meta. Crea una y añade los hábitos que quieres seguir.',
-      noGoalsAction: 'Crear una meta',
       noHabitsTitle: 'Esta meta no tiene hábitos',
       noHabitsBody:
         'Una meta se registra a través de sus hábitos. Añade el primero y vuelve aquí.',
@@ -150,7 +137,7 @@ export const es = {
         'Tu plan todavía no incluye metas. Actualízalo para empezar a seguir lo que te importa.',
     },
     empty: {
-      title: 'Todavía no hay ninguna meta',
+      title: 'Todavía no has creado ninguna meta',
       body: 'Empieza por la meta grande, aunque suene abstracta. Después la traduces en hábitos que puedas marcar sin dudar.',
       archivedTitle: 'No hay metas archivadas',
       archivedBody:
@@ -289,6 +276,9 @@ export const es = {
   },
   settings: {
     appearance: 'Apariencia',
+    attributions: 'Atribuciones',
+    legal: 'Legal',
+    licenses: 'Licencias',
     light: 'Claro',
     dark: 'Oscuro',
     system: 'Automático',

@@ -66,8 +66,6 @@ export function FloatingTabBar({
     ];
   });
 
-  const middle = Math.ceil(tabs.length / 2);
-
   return (
     <XStack
       position="absolute"
@@ -84,11 +82,8 @@ export function FloatingTabBar({
         px="$2"
         bg="$card"
         rounded={TAB_BAR.height / 2}
-        borderWidth={1}
-        borderColor="$border"
-        elevation={4}
       >
-        {tabs.slice(0, middle)}
+        {tabs}
 
         {action !== undefined && (
           <Slot
@@ -102,8 +97,6 @@ export function FloatingTabBar({
             </Circle>
           </Slot>
         )}
-
-        {tabs.slice(middle)}
       </XStack>
     </XStack>
   );

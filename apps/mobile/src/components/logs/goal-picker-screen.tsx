@@ -8,6 +8,7 @@ import { ErrorNotice } from '@/components/common/error-notice';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
 import { GoalCard } from '@/components/goals/goal-card';
+import { ILLUSTRATIONS } from '@/constants/illustrations';
 import { SPACING } from '@/constants/layout';
 import { useGoalErrorMessage, useGoals } from '@/features/goals';
 import { useTranslations } from '@/lib/i18n';
@@ -39,10 +40,9 @@ export function GoalPickerScreen() {
     return (
       <EmptyLog
         Icon={Target}
-        title={t('logs.empty.noGoalsTitle')}
-        body={t('logs.empty.noGoalsBody')}
-        action={t('logs.empty.noGoalsAction')}
-        onAction={() => router.replace('/goals/new')}
+        illustration={ILLUSTRATIONS.noGoals}
+        title={t('goals.empty.title')}
+        body={t('goals.empty.body')}
       />
     );
   }
