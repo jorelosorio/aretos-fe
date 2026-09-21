@@ -54,9 +54,7 @@ export function WeekStrip({
             bg={counted ? '$primary' : TRACK_FILL}
             borderWidth={counted ? 0 : hasStatusRing ? 2 : 1}
             borderColor={hasStatusRing ? RING[period.status] : TRACK_RING}
-            opacity={
-              period.entryDate > currentEntryDate ? UPCOMING_OPACITY : 1
-            }
+            opacity={period.entryDate > currentEntryDate ? UPCOMING_OPACITY : 1}
           >
             {Glyph !== null && (
               <Glyph size={ICON.inline} color={ink} strokeWidth={3} />
