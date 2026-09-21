@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
-import { SizableText, XStack } from 'tamagui';
+import { XStack, YStack } from 'tamagui';
 
+import { SectionTitle } from '@/components/common/section-title';
 import { SPACING } from '@/constants/layout';
 
 export function HomeSection({
@@ -12,15 +13,9 @@ export function HomeSection({
 }) {
   return (
     <XStack items="center" gap={SPACING.items}>
-      <SizableText
-        flex={1}
-        size="$5"
-        fontFamily="$heading"
-        color="$color"
-        numberOfLines={1}
-      >
-        {title}
-      </SizableText>
+      <YStack flex={1} minW={0}>
+        <SectionTitle>{title}</SectionTitle>
+      </YStack>
 
       {children}
     </XStack>

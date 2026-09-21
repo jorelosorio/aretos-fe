@@ -3,6 +3,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Minimize2 } from '@tamagui/lucide-icons-2';
 import { Button, SizableText, TextArea, XStack, YStack } from 'tamagui';
 
+import { SectionTitle } from '@/components/common/section-title';
 import { ICON, SPACING } from '@/constants/layout';
 import { useTranslations } from '@/lib/i18n';
 
@@ -39,9 +40,7 @@ export function NoteEditor({
           px={SPACING.screen}
           py={SPACING.group}
         >
-          <SizableText size="$5" fontFamily="$heading" color="$color">
-            {t('logs.note')}
-          </SizableText>
+          <SectionTitle>{t('logs.note')}</SectionTitle>
 
           <Button
             size="$3"

@@ -121,9 +121,9 @@ function CheckInForm({
             />
 
             <XStack items="center" justify="space-between">
-              <SizableText size="$4" fontFamily="$heading" color="$color">
+              <SectionTitle>
                 {periodLabel(periodDate, goal.trackingFrequency, locale, t)}
-              </SizableText>
+              </SectionTitle>
 
               {period?.logged === true && (
                 <XStack items="center" gap="$2">
@@ -186,7 +186,7 @@ function CheckInForm({
                     bg="$card"
                     borderColor="$border"
                   />
-                  <Paragraph size="$2" color="$mutedForeground">
+                  <Paragraph size="$3" color="$mutedForeground">
                     {t('logs.optional')}
                   </Paragraph>
                 </YStack>

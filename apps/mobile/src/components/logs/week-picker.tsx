@@ -27,6 +27,7 @@ import {
   weekMonthLabel,
   weekdayLabel,
 } from '@/components/common/date-label';
+import { SectionTitle } from '@/components/common/section-title';
 import {
   PERIOD_STATUS_COLORS,
   PERIOD_STATUS_LABELS,
@@ -181,9 +182,9 @@ export function WeekPicker({
           accessibilityLabel={t('logs.period.previousWeek')}
         />
 
-        <SizableText size="$3" fontFamily="$heading" color="$color">
+        <SectionTitle>
           {weekMonthLabel(weeks[index] ?? selectedWeek, locale)}
-        </SizableText>
+        </SectionTitle>
 
         <Button
           size="$2"

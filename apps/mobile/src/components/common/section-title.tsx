@@ -1,16 +1,10 @@
+import type { ReactNode } from 'react';
 import { SizableText } from 'tamagui';
 
-export function SectionTitle({ children }: { children: string }) {
+export function SectionTitle({ children }: { children: ReactNode }) {
   return (
-    <SizableText
-      size="$2"
-      color="$mutedForeground"
-      fontFamily="$body"
-      fontWeight="600"
-      letterSpacing={0.8}
-      px="$2"
-    >
-      {children.toUpperCase()}
+    <SizableText size="$5" fontFamily="$heading" color="$color">
+      {children}
     </SizableText>
   );
 }
