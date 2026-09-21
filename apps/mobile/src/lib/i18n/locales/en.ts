@@ -28,7 +28,7 @@ export const en = {
     progress: '%{answered} of %{total}',
     noHabits: 'No habits yet',
     empty: {
-      title: 'Nothing to log yet',
+      title: 'No goals created yet',
       body: 'Create your first goal and the habits that make it real. This is where each period will show up.',
       action: 'Create a goal',
     },

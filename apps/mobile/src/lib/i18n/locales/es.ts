@@ -29,7 +29,7 @@ export const es = {
     progress: '%{answered} de %{total}',
     noHabits: 'Sin hábitos todavía',
     empty: {
-      title: 'Aún no hay nada que registrar',
+      title: 'Todavía no has creado ninguna meta',
       body: 'Crea tu primera meta y los hábitos que la vuelven real. Aquí verás cómo va cada período.',
       action: 'Crear una meta',
     },

@@ -8,9 +8,11 @@ import { YStack } from 'tamagui';
 import { ErrorNotice } from '@/components/common/error-notice';
 import { useTabBarInset } from '@/components/common/floating-tab-bar';
 import { ScreenLoader } from '@/components/common/screen-loader';
+import { PlanLimitNotice } from '@/components/goals/plan-limit-notice';
 import { EmptyLog } from '@/components/logs/empty-log';
 import { SPACING } from '@/constants/layout';
 import { useGoalErrorMessage, useGoals, type Goal } from '@/features/goals';
+import { useAllowance } from '@/features/limits';
 import { useTranslations } from '@/lib/i18n';
 
 import { GoalStatusCard } from './goal-status-card';
@@ -34,6 +36,9 @@ export function HomeScreen() {
 
   const goals = useGoals({ include: ['progress'] });
 
+  const allowance = useAllowance('goal');
+  const canCreate = allowance.canCreate;
+
   const scored = (goals.data ?? []).filter(isScored);
 
   const openLog = (goalId: string) =>
@@ -50,6 +55,10 @@ export function HomeScreen() {
         body={t('home.empty.body')}
         action={t('home.empty.action')}
         onAction={() => router.push('/goals/new')}
+        disabled={!canCreate}
+        notice={
+          canCreate ? undefined : <PlanLimitNotice allowance={allowance} />
+        }
       />
     );
   }
