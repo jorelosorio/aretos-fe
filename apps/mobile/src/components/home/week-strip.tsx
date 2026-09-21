@@ -8,6 +8,10 @@ const STEP_SIZE = '$1';
 const CURRENT_SIZE = '$1.5';
 const CORE_SIZE = '$0.75';
 
+const TRACK_FILL = '$outcomeBlank';
+const TRACK_RING = '$vizAxis';
+const UPCOMING_OPACITY = 0.6;
+
 const RING = {
   complete: '$primary',
   partial: '$primary',
@@ -33,6 +37,8 @@ export function WeekStrip({
       {periods.map((period) => {
         const isCurrent = period.entryDate === currentEntryDate;
         const counted = period.countsForStreak;
+        const hasStatusRing =
+          !counted && (period.status !== 'empty' || isCurrent);
         const ink = counted ? '$primaryForeground' : RING[period.status];
         const Glyph =
           period.status === 'complete' || period.status === 'skipped'
@@ -45,12 +51,12 @@ export function WeekStrip({
             size={isCurrent ? CURRENT_SIZE : STEP_SIZE}
             items="center"
             justify="center"
-            bg={counted ? '$primary' : '$muted'}
-            borderWidth={
-              !counted && (period.status !== 'empty' || isCurrent) ? 2 : 0
+            bg={counted ? '$primary' : TRACK_FILL}
+            borderWidth={counted ? 0 : hasStatusRing ? 2 : 1}
+            borderColor={hasStatusRing ? RING[period.status] : TRACK_RING}
+            opacity={
+              period.entryDate > currentEntryDate ? UPCOMING_OPACITY : 1
             }
-            borderColor={RING[period.status]}
-            opacity={period.entryDate > currentEntryDate ? 0.4 : 1}
           >
             {Glyph !== null && (
               <Glyph size={ICON.inline} color={ink} strokeWidth={3} />
