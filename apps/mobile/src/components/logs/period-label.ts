@@ -32,6 +32,36 @@ const shortDate = (key: DateKey, locale: AppLocale) =>
     toDate(key),
   );
 
+/** The weekday's short name, for the heading above a day in the strip. */
+export function weekdayLabel(key: DateKey, locale: AppLocale): string {
+  return new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(
+    toDate(key),
+  );
+}
+
+/** The day of the month, which is what the strip's circles carry. */
+export function dayNumber(key: DateKey): string {
+  return String(toDate(key).getDate());
+}
+
+/**
+ * The month a displayed week belongs to, named after its Thursday.
+ *
+ * A week that straddles two months has to be filed under one of them, and
+ * the ISO week — the same one `periodKey` snaps to — belongs to whichever
+ * month holds its Thursday. Taking Monday's month instead would label the
+ * last week of March as February in some years.
+ */
+export function weekMonthLabel(key: DateKey, locale: AppLocale): string {
+  const thursday = toDate(key);
+  thursday.setDate(thursday.getDate() + 3);
+
+  return new Intl.DateTimeFormat(locale, {
+    month: 'long',
+    year: 'numeric',
+  }).format(thursday);
+}
+
 /**
  * "Hoy" for the period the person is in, its date otherwise.
  *

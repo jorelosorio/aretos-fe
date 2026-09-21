@@ -1,12 +1,7 @@
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
-import {
-  Check,
-  ChevronLeft,
-  ChevronRight,
-  Plus,
-} from '@tamagui/lucide-icons-2';
+import { Check, Plus } from '@tamagui/lucide-icons-2';
 import {
   Button,
   Paragraph,
@@ -21,7 +16,7 @@ import {
 import { ErrorNotice } from '@/components/common/error-notice';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
-import { SPACING } from '@/constants/layout';
+import { ICON, SPACING } from '@/constants/layout';
 import {
   useGoalCheckIn,
   useGoalErrorMessage,
@@ -30,84 +25,41 @@ import {
 } from '@/features/goals';
 import type { Habit } from '@/features/habits';
 import {
-  shiftPeriod,
+  periodKey,
   todayKey,
   useLogDraft,
   useLogErrorMessage,
+  weekEnd,
+  type DateKey,
 } from '@/features/logs';
 import { useTranslations } from '@/lib/i18n';
 
 import { EmptyLog } from './empty-log';
-import { HabitEntryCard } from './habit-entry-card';
+import { HabitTrackRow } from './habit-track-row';
 import { MoodPicker } from './mood-picker';
 import { periodLabel } from './period-label';
+import { WeekPicker } from './week-picker';
 
 const NOTE_MAX = 2000;
-
-function PeriodBar({
-  label,
-  canGoForward,
-  onPrevious,
-  onNext,
-}: {
-  label: string;
-  canGoForward: boolean;
-  onPrevious: () => void;
-  onNext: () => void;
-}) {
-  const { t } = useTranslations();
-
-  return (
-    <XStack
-      items="center"
-      justify="space-between"
-      p="$2"
-      bg="$card"
-      rounded="$xl2"
-      borderWidth={1}
-      borderColor="$border"
-    >
-      <Button
-        size="$3"
-        circular
-        chromeless
-        onPress={onPrevious}
-        icon={<ChevronLeft size={20} color="$color" />}
-        accessibilityLabel={t('logs.period.previous')}
-      />
-
-      <SizableText size="$4" fontFamily="$heading" color="$cardForeground">
-        {label}
-      </SizableText>
-
-      <Button
-        size="$3"
-        circular
-        chromeless
-        disabled={!canGoForward}
-        opacity={canGoForward ? 1 : 0.3}
-        onPress={onNext}
-        icon={<ChevronRight size={20} color="$color" />}
-        accessibilityLabel={t('logs.period.next')}
-      />
-    </XStack>
-  );
-}
 
 function CheckInForm({
   goal,
   habits,
+  periods,
   period,
+  periodDate,
+  selected,
   today,
-  isLoaded,
-  onDateChange,
+  onSelect,
 }: {
   goal: Goal;
   habits: Habit[];
-  period: GoalPeriod;
-  today: string;
-  isLoaded: boolean;
-  onDateChange: (date: string) => void;
+  periods: readonly GoalPeriod[];
+  period: GoalPeriod | undefined;
+  periodDate: DateKey;
+  selected: DateKey;
+  today: DateKey;
+  onSelect: (date: DateKey) => void;
 }) {
   const { t, locale } = useTranslations();
   const router = useRouter();
@@ -116,14 +68,10 @@ function CheckInForm({
   const draft = useLogDraft({
     goalId: goal.id,
     habits,
-    entryDate: period.entryDate,
-    existing: period.logged ? period : undefined,
-    isLoaded,
+    entryDate: periodDate,
+    existing: period?.logged ? period : undefined,
+    isLoaded: period !== undefined,
   });
-
-  const frequency = goal.trackingFrequency;
-  const next = shiftPeriod(period.entryDate, frequency, 1);
-  const canGoForward = next <= today;
 
   const busy = draft.isLoading || draft.isSaving;
 
@@ -132,6 +80,19 @@ function CheckInForm({
       .save()
       .then(() => router.back())
       .catch(() => undefined);
+
+  const pick = (next: DateKey) => {
+    if (next === selected || draft.isSaving) return;
+    if (!draft.isDirty) {
+      onSelect(next);
+      return;
+    }
+
+    void draft
+      .save()
+      .then(() => onSelect(next))
+      .catch(() => undefined);
+  };
 
   return (
     <KeyboardAvoidingView
@@ -145,23 +106,29 @@ function CheckInForm({
           contentContainerStyle={{ grow: 1 }}
         >
           <YStack p={SPACING.screen} gap={SPACING.section}>
-            <PeriodBar
-              label={periodLabel(period.entryDate, frequency, locale, t)}
-              canGoForward={canGoForward}
-              onPrevious={() =>
-                onDateChange(shiftPeriod(period.entryDate, frequency, -1))
-              }
-              onNext={() => onDateChange(next)}
+            <WeekPicker
+              frequency={goal.trackingFrequency}
+              periods={periods}
+              selected={selected}
+              today={today}
+              createdOn={goal.createdAt.slice(0, 10)}
+              onSelect={pick}
             />
 
-            {period.logged && (
-              <XStack items="center" gap="$2" px="$2">
-                <Check size={14} color="$primary" />
-                <SizableText size="$2" color="$mutedForeground">
-                  {t('logs.editing')}
-                </SizableText>
-              </XStack>
-            )}
+            <XStack items="center" justify="space-between" px="$1">
+              <SizableText size="$4" fontFamily="$heading" color="$color">
+                {periodLabel(periodDate, goal.trackingFrequency, locale, t)}
+              </SizableText>
+
+              {period?.logged === true && (
+                <XStack items="center" gap="$2">
+                  <Check size={ICON.inline} color="$primary" />
+                  <SizableText size="$2" color="$mutedForeground">
+                    {t('logs.editing')}
+                  </SizableText>
+                </XStack>
+              )}
+            </XStack>
 
             <ErrorNotice message={toMessage(draft.saveError)} />
 
@@ -169,12 +136,14 @@ function CheckInForm({
               <ScreenLoader />
             ) : (
               <>
-                <YStack gap={SPACING.items}>
-                  {habits.map((habit) => (
-                    <HabitEntryCard
+                <YStack>
+                  {habits.map((habit, position) => (
+                    <HabitTrackRow
                       key={habit.id}
                       habit={habit}
                       entry={draft.entryFor(habit.id)}
+                      isFirst={position === 0}
+                      isLast={position === habits.length - 1}
                       onChange={(patch) => draft.setEntry(habit.id, patch)}
                       onToggleSkip={() => draft.toggleSkip(habit.id)}
                     />
@@ -231,7 +200,7 @@ function CheckInForm({
             disabled={busy}
             opacity={busy ? 0.7 : 1}
           >
-            {t(period.logged ? 'logs.update' : 'logs.save')}
+            {t(period?.logged === true ? 'logs.update' : 'logs.save')}
           </Button>
         </YStack>
       </YStack>
@@ -250,11 +219,14 @@ export function CheckInScreen({
   const router = useRouter();
   const toMessage = useGoalErrorMessage();
 
-  const [date, setDate] = useState(opensOn ?? todayKey());
-  const { data: goal, isPending, error } = useGoalCheckIn(goalId, date);
+  const [selected, setSelected] = useState(opensOn ?? todayKey());
 
-  const period = goal?.progress?.periods[0] ?? goal?.progress?.currentPeriod;
+  const from = periodKey(selected, 'weekly');
+  const to = weekEnd(selected);
+  const { data: goal, isPending, error } = useGoalCheckIn(goalId, from, to);
+
   const habits = goal?.habits;
+  const progress = goal?.progress;
 
   if (error) {
     return (
@@ -264,7 +236,7 @@ export function CheckInScreen({
     );
   }
 
-  if (isPending || !goal || !habits || !period) return <ScreenLoader />;
+  if (isPending || !goal || !habits || !progress) return <ScreenLoader />;
 
   if (habits.length === 0) {
     return (
@@ -286,16 +258,31 @@ export function CheckInScreen({
     );
   }
 
+  const periodDate = periodKey(selected, goal.trackingFrequency);
+  const periods = progress.periods;
+
+  const single =
+    periods.length === 1 &&
+    periods[0].entryDate >= from &&
+    periods[0].entryDate <= to
+      ? periods[0]
+      : undefined;
+
+  const period =
+    periods.find((entry) => entry.entryDate === periodDate) ?? single;
+
   return (
     <>
       <Stack.Screen options={{ title: goal.name }} />
       <CheckInForm
         goal={goal}
         habits={habits}
+        periods={periods}
         period={period}
-        today={goal.progress?.today ?? date}
-        isLoaded
-        onDateChange={setDate}
+        periodDate={periodDate}
+        selected={selected}
+        today={progress.today}
+        onSelect={setSelected}
       />
     </>
   );

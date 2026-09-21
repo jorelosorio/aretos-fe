@@ -66,3 +66,38 @@ export function shiftPeriod(
   date.setDate(date.getDate() + periods * (frequency === 'weekly' ? 7 : 1));
   return dateKey(date);
 }
+
+/**
+ * Which day of its week a date is, counting Monday as 0.
+ *
+ * `getDay()` counts from Sunday, so using it directly would put Sunday at the
+ * head of the week the check-in draws and on the far side of the boundary
+ * `periodKey` snaps to — the two would disagree about which week a Sunday is
+ * in.
+ */
+export function weekdayIndex(key: DateKey): number {
+  return (fromDateKey(key).getDay() + 6) % 7;
+}
+
+/**
+ * The seven days of the week a date falls in, Monday first.
+ *
+ * Built from the calendar rather than from what the server answered, because
+ * the check-in's strip draws a cell per day either way: while a week's
+ * periods are still loading the dates are already right, and the statuses
+ * simply find nothing to attach to.
+ */
+export function weekDays(key: DateKey): DateKey[] {
+  const monday = fromDateKey(periodKey(key, 'weekly'));
+
+  return Array.from({ length: 7 }, (_, offset) => {
+    const day = new Date(monday);
+    day.setDate(day.getDate() + offset);
+    return dateKey(day);
+  });
+}
+
+/** The Sunday that closes the week — the `to` of the check-in's read. */
+export function weekEnd(key: DateKey): DateKey {
+  return weekDays(key)[6];
+}

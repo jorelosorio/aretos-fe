@@ -15,6 +15,9 @@ export {
   periodKey,
   shiftPeriod,
   todayKey,
+  weekDays,
+  weekEnd,
+  weekdayIndex,
   type DateKey,
 } from './period';
 export {

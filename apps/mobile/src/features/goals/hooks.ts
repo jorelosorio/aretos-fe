@@ -1,5 +1,10 @@
 import { useCallback } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 import { limitKeys } from '@/features/limits';
 import { ApiError } from '@/lib/api';
@@ -61,32 +66,42 @@ export function useGoal(id: string) {
 }
 
 /**
- * Everything one period's check-in needs, in one request.
+ * Everything one week of check-ins needs, in one request.
  *
- * The goal, its active habits and that period's saved answers used to be
- * three: `/v1/goals/:id`, `/v1/habits?goal_id=` and a one-day
- * `/v1/habit-logs` window. `?include=habits,progress` with `from` and `to`
- * pinned to the same day answers all three at once.
+ * The goal, its active habits and the saved answers used to be three:
+ * `/v1/goals/:id`, `/v1/habits?goal_id=` and a `/v1/habit-logs` window.
+ * `?include=habits,progress` with `from` and `to` answers all three at once.
  *
- * `date` is sent raw. The server snaps `from` to a period start, so a weekly
- * goal answers in whole weeks whatever day is asked for — and the period it
- * comes back with is the authority on which one this is, rather than the
- * device snapping first and hoping the two agree.
+ * The window is a week rather than the one day being edited, because the
+ * check-in's strip shows how the whole week went and moving between its days
+ * has to be instant. Seven days cost the same request one did, and the
+ * period the screen is editing is picked out of `periods` by date — the
+ * server's own snapping stays the authority on which period that is.
+ *
+ * The window is the caller's to compute: the snapping lives in
+ * `features/logs`, and importing it here would close a require cycle through
+ * that feature's own use of `goalKeys`.
+ *
+ * `keepPreviousData` is what keeps the strip on screen while another week
+ * loads. It hands back the previous week's periods in the meantime, so a
+ * caller must match a period by date before editing it rather than assuming
+ * the block it is holding belongs to the day it is showing.
  *
  * Not seeded from a cached list: a list row carries neither block, and
  * showing the goal while the habits are still missing would render a period
  * with no rows in it.
  */
-export function useGoalCheckIn(id: string, date: string) {
+export function useGoalCheckIn(id: string, from: string, to: string) {
   const options = {
     include: ['habits', 'progress'],
-    from: date,
-    to: date,
+    from,
+    to,
   } as const satisfies GoalReadOptions;
 
   return useQuery({
     queryKey: goalKeys.detail(id, options),
     queryFn: () => getGoal(id, options),
+    placeholderData: keepPreviousData,
   });
 }
 

@@ -26,6 +26,11 @@ type EntryPatch = Partial<Omit<LogEntry, 'habitId'>>;
 
 type Entries = Record<string, LogEntry>;
 
+/** The draft's contents, as they stood at the last seed or the last save. */
+type Snapshot = { note: string; mood: MoodScore | null; entries: Entries };
+
+const EMPTY_SNAPSHOT: Snapshot = { note: '', mood: null, entries: {} };
+
 /**
  * The saved period this draft starts from, or `undefined` when unwritten.
  *
@@ -60,6 +65,39 @@ function seedEntries(
 }
 
 /**
+ * Whether the draft says anything the snapshot does not.
+ *
+ * Compared value by value over the union of both maps rather than by
+ * identity: `setEntry` replaces the object it touches, so reference equality
+ * would read a number typed and typed back again as a change — and the
+ * check-in would write a period nobody edited every time it changed day.
+ */
+function hasChanged(draft: Snapshot, saved: Snapshot): boolean {
+  if (draft.note !== saved.note) return true;
+  if (draft.mood !== saved.mood) return true;
+
+  const ids = new Set([
+    ...Object.keys(draft.entries),
+    ...Object.keys(saved.entries),
+  ]);
+
+  for (const id of ids) {
+    const left = draft.entries[id] ?? emptyEntry(id);
+    const right = saved.entries[id] ?? emptyEntry(id);
+
+    if (
+      left.skipped !== right.skipped ||
+      left.done !== right.done ||
+      left.amount !== right.amount
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
  * `entryDate` and `existing` are handed in rather than fetched.
  *
  * The check-in loads the goal, its habits and the period in one request, so
@@ -88,6 +126,12 @@ export function useLogDraft({
   const [mood, setMood] = useState<MoodScore | null>(null);
   const [entries, setEntries] = useState<Entries>({});
 
+  // What the period read as when it was seeded, and again after every save.
+  // The week strip puts all seven days one tap apart, so leaving a period is
+  // now something a person does in passing; this is what lets the check-in
+  // write the day it is leaving instead of discarding it.
+  const [saved, setSaved] = useState<Snapshot>(EMPTY_SNAPSHOT);
+
   // Set during render rather than in an effect: this is React's own answer to
   // state that has to follow a prop, and it re-renders before painting, so
   // moving to another period never shows the previous one's answers for a
@@ -97,10 +141,17 @@ export function useLogDraft({
   const seed = `${goalId}:${entryDate}`;
   const [seeded, setSeeded] = useState<string | null>(null);
   if (isLoaded && seeded !== seed) {
+    const opening = {
+      note: existing?.note ?? '',
+      mood: existing?.mood ?? null,
+      entries: seedEntries(habits, existing),
+    };
+
     setSeeded(seed);
-    setNote(existing?.note ?? '');
-    setMood(existing?.mood ?? null);
-    setEntries(seedEntries(habits, existing));
+    setNote(opening.note);
+    setMood(opening.mood);
+    setEntries(opening.entries);
+    setSaved(opening);
   }
 
   const entryFor = useCallback(
@@ -133,17 +184,21 @@ export function useLogDraft({
     [habits, entryFor],
   );
 
-  const save = useCallback(
-    () =>
-      saveLog({
-        goalId,
-        entryDate,
-        note,
-        mood,
-        entries: Object.values(entries),
-      }),
-    [saveLog, goalId, entryDate, note, mood, entries],
-  );
+  // The snapshot only moves on success. A save that failed left the server
+  // holding the old period, and calling the draft clean would let the next
+  // day change walk away from the answers it could not write.
+  const save = useCallback(async () => {
+    const written = await saveLog({
+      goalId,
+      entryDate,
+      note,
+      mood,
+      entries: Object.values(entries),
+    });
+
+    setSaved({ note, mood, entries });
+    return written;
+  }, [saveLog, goalId, entryDate, note, mood, entries]);
 
   return {
     /**
@@ -167,6 +222,9 @@ export function useLogDraft({
     /** How many of the goal's habits have an answer, for a progress line. */
     answered,
     total: habits.length,
+
+    /** Whether the period holds anything the server has not been told. */
+    isDirty: hasChanged({ note, mood, entries }, saved),
 
     save,
     isSaving,
