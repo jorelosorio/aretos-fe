@@ -29,8 +29,11 @@ export const DIARY_PAGE_SIZE = 20;
  * The shape a filter takes in a cache key — built once so a key and the
  * request it stands for cannot describe different things.
  *
- * `tz` is part of it because it decides which 90 days the server defaults to,
- * so two zones are genuinely two answers.
+ * `zone` is part of it because it decides which 90 days the server defaults
+ * to, so two zones are genuinely two answers. It is key-only: the request
+ * carries the zone as the `X-Timezone` header, which React Query cannot see,
+ * so leaving it out here would serve a traveller the previous zone's window
+ * out of the cache. Nothing sends it as a parameter.
  */
 function readParams(filter: DiaryFilter) {
   return {
@@ -38,7 +41,7 @@ function readParams(filter: DiaryFilter) {
     from: filter.from ?? null,
     to: filter.to ?? null,
     limit: filter.limit ?? DIARY_PAGE_SIZE,
-    tz: deviceTimezone() ?? null,
+    zone: deviceTimezone(),
   };
 }
 
@@ -97,17 +100,15 @@ const toEntry = (wire: WireDiaryEntry): DiaryEntry => ({
  * the server's business and a caller that built its own would keep sending it
  * after the ordering changed. `null` asks for the first page.
  *
- * `tz` is sent from the device rather than left to the stored `users.timezone`
- * for the reason `features/goals` sends it: the phone is the only thing that
- * knows the user got on a plane, and the zone is what decides which day the
- * default window ends on.
+ * The zone this is read in rides on the `X-Timezone` header rather than a
+ * parameter, and the endpoint refuses a request without it. The phone is the
+ * only thing that knows the user got on a plane, and the zone is what decides
+ * which day the default window ends on.
  */
 export async function listDiary(
   filter: DiaryFilter = {},
   cursor: string | null = null,
 ): Promise<DiaryPage> {
-  const tz = deviceTimezone();
-
   const { data } = await api.get<WireDiary>(paths.diary, {
     params: {
       limit: filter.limit ?? DIARY_PAGE_SIZE,
@@ -115,7 +116,6 @@ export async function listDiary(
       ...(filter.from === undefined ? {} : { from: filter.from }),
       ...(filter.to === undefined ? {} : { to: filter.to }),
       ...(cursor === null ? {} : { cursor }),
-      ...(tz === undefined ? {} : { tz }),
     },
   });
 

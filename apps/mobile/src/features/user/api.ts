@@ -18,7 +18,6 @@ const toProfile = (wire: WireMe): Profile => ({
   displayName: wire.display_name,
   avatarUrl: wire.avatar_url,
   tier: wire.tier,
-  timezone: wire.timezone,
   createdAt: wire.created_at,
   updatedAt: wire.updated_at,
 });
@@ -35,8 +34,6 @@ export async function updateMe(patch: ProfilePatch): Promise<Profile> {
   if (patch.displayName !== undefined) {
     body.display_name = patch.displayName.trim();
   }
-  if (patch.timezone !== undefined) body.timezone = patch.timezone;
-
   const { data } = await api.patch<WireMe>(paths.me, body);
   return toProfile(data);
 }

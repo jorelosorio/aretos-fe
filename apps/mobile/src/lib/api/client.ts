@@ -5,10 +5,14 @@ import {
 } from 'axios';
 
 import { env } from '@/lib/env';
+import { deviceTimezone } from '@/lib/timezone';
 
 import { ApiError, toApiError } from './errors';
 
 const TIMEOUT_MS = 15_000;
+
+/** `v1.TimezoneHeader` — the only way a request says where the person is. */
+const TIMEZONE_HEADER = 'X-Timezone';
 
 function createClient(): AxiosInstance {
   const instance = create({
@@ -60,9 +64,20 @@ export function connectAuth(next: AuthBridge | null) {
 const RETRIED = Symbol('retried');
 type RetryableConfig = InternalAxiosRequestConfig & { [RETRIED]?: true };
 
+/**
+ * The zone rides on every request rather than being a parameter each caller
+ * remembers.
+ *
+ * `/v1/analysis`, `/v1/diary` and `/v1/goals?include=progress` refuse a
+ * request without it — there is no stored zone left to fall back on — and a
+ * screen that forgot a query parameter would not fail loudly, it would 400.
+ * Set here, beside the token, no screen can forget. `publicApi` is left out:
+ * the endpoints that mint credentials never ask what day it is.
+ */
 api.interceptors.request.use(async (config) => {
   const token = await bridge?.getAccessToken();
   if (token) config.headers.Authorization = `Bearer ${token}`;
+  config.headers[TIMEZONE_HEADER] = deviceTimezone();
   return config;
 });
 

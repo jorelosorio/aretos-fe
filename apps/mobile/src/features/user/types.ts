@@ -15,8 +15,6 @@ export type WireMe = {
   display_name: string;
   avatar_url: string;
   tier: string;
-  /** IANA name. `UTC` until the user or a client sets one. */
-  timezone: string;
   created_at: string;
   updated_at: string;
 };
@@ -29,7 +27,6 @@ export type Profile = {
   /** Empty when the provider sent no picture — never `null` on the wire. */
   avatarUrl: string;
   tier: Tier;
-  timezone: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -38,8 +35,13 @@ export type Profile = {
  * What `PATCH /v1/me` amends. Email and tier are absent on purpose: the first
  * is the identity the provider vouched for, and nobody upgrades their own
  * plan.
+ *
+ * The timezone used to be here and is gone with the column behind it. Where a
+ * person is is a property of the request rather than of the account — it
+ * changes when they travel, and a stored copy is a second answer able to
+ * disagree with the device in their hand — so it travels as the `X-Timezone`
+ * header and is never written down.
  */
 export type ProfilePatch = {
   displayName?: string;
-  timezone?: string;
 };

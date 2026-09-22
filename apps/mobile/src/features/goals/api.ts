@@ -26,9 +26,8 @@ const paths = {
 /**
  * What a read asks the server for beyond the goal rows themselves.
  *
- * `tz` is filled in from the device unless a caller names one; it only
- * matters alongside `include: ['progress']`, which is the read whose "today"
- * depends on it.
+ * The zone is not among them. It travels as the `X-Timezone` header on every
+ * request — see `lib/api/client.ts` — so a caller neither names one nor can.
  *
  * `from`/`to` narrow the progress window. Left out, the server answers for
  * the current week in the resolved zone, which is what the home screen wants
@@ -36,7 +35,6 @@ const paths = {
  */
 export type GoalReadOptions = {
   include?: readonly GoalInclude[];
-  tz?: string;
   from?: string;
   to?: string;
 };
@@ -44,9 +42,18 @@ export type GoalReadOptions = {
 export type ListGoalsOptions = GoalReadOptions & { archived?: boolean };
 
 /**
- * The query params these options turn into, and the shape they take in a
- * cache key — built once so a key and the request it stands for cannot
- * describe different things.
+ * The shape these options take in a cache key, and — minus `zone` — the query
+ * params they turn into. Built once so a key and the request it stands for
+ * cannot describe different things.
+ *
+ * `zone` is the member that is never sent. It belongs in the key because the
+ * answer depends on it while the request carries it somewhere React Query
+ * cannot see — a header, set for every request at once — so without it here a
+ * traveller would be handed the previous zone's calendar out of the cache.
+ *
+ * Only with progress, for the same reason it was only ever sent with it: a
+ * plain read has no "today" in it, and keying one per zone would split its
+ * cache entry per traveller for nothing.
  */
 function readParams(options: GoalReadOptions) {
   const include =
@@ -54,23 +61,26 @@ function readParams(options: GoalReadOptions) {
       ? undefined
       : [...options.include].sort().join(',');
 
-  // Only sent with progress: a plain read has no "today" in it, and passing
-  // the zone anyway would split its cache entry per traveller for nothing.
   const wantsToday = include?.includes('progress') ?? false;
-  const tz = wantsToday ? (options.tz ?? deviceTimezone()) : undefined;
 
   return {
     include: include ?? null,
-    tz: tz ?? null,
+    zone: wantsToday ? deviceTimezone() : null,
     from: options.from ?? null,
     to: options.to ?? null,
   };
 }
 
-/** Drops the nulls `readParams` uses for cache keys; axios omits the rest. */
+/**
+ * Drops the nulls `readParams` uses for cache keys, and `zone` with them: the
+ * server reads the zone off the header, and a query parameter of that name is
+ * one it does not know.
+ */
 const toQuery = (params: Record<string, string | boolean | null>) =>
   Object.fromEntries(
-    Object.entries(params).filter(([, value]) => value !== null),
+    Object.entries(params).filter(
+      ([key, value]) => key !== 'zone' && value !== null,
+    ),
   );
 
 /** Query keys for this feature, as a factory so they cannot drift apart. */
