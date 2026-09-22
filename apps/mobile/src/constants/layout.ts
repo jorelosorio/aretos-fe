@@ -34,6 +34,37 @@ export const SPACING = {
 } as const;
 
 /**
+ * The two sizes running text comes in, named by the job it does.
+ *
+ * Same argument as `SPACING`: the font scale is the unit, these are the
+ * decision about which unit belongs where. Picking a token per screen is how
+ * the app ended up reading a note at `$5` on one surface, `$3` on another and
+ * a sign-in tagline at `$4` — three sizes for the same job, none of them
+ * wrong on its own.
+ *
+ * Only two, on purpose. A third tier is how the drift starts again, and
+ * anything that needs to stand out more than `body` is a heading and should
+ * say so with `SectionTitle` or a `$heading` face rather than a bigger body.
+ *
+ * One surface is exempt, and only one: the full-screen note in `NOTE_TEXT`,
+ * which is read a paragraph at a time with nothing beside it. That exemption
+ * is argued where it is taken, not granted here — a screen that wants larger
+ * prose has to make the same case.
+ */
+export const TEXT = {
+  /** Running prose: whatever is read as sentences, however short. */
+  body: '$3',
+  /**
+   * A hint or a line of metadata, pinned to something that explains it.
+   *
+   * Only legible *because* of what it sits next to — a form field, an icon,
+   * a card's title. Prose that has to stand on its own is `body`, even when
+   * it is one line.
+   */
+  caption: '$2',
+} as const;
+
+/**
  * The square an empty state's illustration is drawn in, in points.
  *
  * Measured against the screen rather than fixed, because a number that looks

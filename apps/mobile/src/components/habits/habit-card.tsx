@@ -1,7 +1,7 @@
 import { ChevronRight, Lightbulb } from '@tamagui/lucide-icons-2';
 import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
-import { SPACING } from '@/constants/layout';
+import { SPACING, TEXT } from '@/constants/layout';
 import type { Habit } from '@/features/habits';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
 
@@ -80,7 +80,7 @@ export function HabitCard({
         {habit.ifThenPlan !== '' && (
           <XStack gap="$2" items="flex-start">
             <Lightbulb size={13} color="$mutedForeground" mt={2} />
-            <Paragraph flex={1} size="$2" color="$mutedForeground">
+            <Paragraph flex={1} size={TEXT.caption} color="$mutedForeground">
               {habit.ifThenPlan}
             </Paragraph>
           </XStack>

@@ -6,7 +6,7 @@ import {
 } from '@/components/common/segmented-control';
 import { SectionTitle } from '@/components/common/section-title';
 import { Stepper } from '@/components/common/stepper';
-import { SPACING } from '@/constants/layout';
+import { SPACING, TEXT } from '@/constants/layout';
 import type { TrackingMode } from '@/features/habits';
 import { useTranslations } from '@/lib/i18n';
 
@@ -107,7 +107,7 @@ export function HabitTarget({
         />
       )}
 
-      <Paragraph size="$2" color="$mutedForeground" px="$2">
+      <Paragraph size={TEXT.caption} color="$mutedForeground" px="$2">
         {t('habits.form.targetHint')}
       </Paragraph>
     </YStack>

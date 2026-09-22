@@ -7,8 +7,6 @@ import { Button, SizableText, XStack, YStack } from 'tamagui';
 import { SectionTitle } from '@/components/common/section-title';
 import { ICON, SPACING } from '@/constants/layout';
 
-const TOOLBAR_MIN_HEIGHT = 44;
-
 type IconComponent = typeof X;
 
 export function FullScreenSheet({
@@ -39,14 +37,20 @@ export function FullScreenSheet({
     >
       <YStack flex={1} bg="$background" pt={insets.top} pb={insets.bottom}>
         <XStack
-          items="center"
+          items="flex-start"
           justify="space-between"
           gap={SPACING.items}
           px={SPACING.screen}
           py={SPACING.group}
         >
-          <YStack flex={1} minW={0}>
+          <YStack flex={1} minW={0} gap={SPACING.text}>
             <SectionTitle>{title}</SectionTitle>
+
+            {meta !== '' && (
+              <SizableText size="$2" color="$mutedForeground">
+                {meta}
+              </SizableText>
+            )}
           </YStack>
 
           <Button
@@ -57,21 +61,6 @@ export function FullScreenSheet({
             icon={<Icon size={ICON.row} color="$color" />}
             accessibilityLabel={iconLabel}
           />
-        </XStack>
-
-        <XStack
-          items="center"
-          justify="flex-end"
-          gap={SPACING.items}
-          minH={TOOLBAR_MIN_HEIGHT}
-          px={SPACING.screen}
-          borderTopWidth={1}
-          borderBottomWidth={1}
-          borderColor="$border"
-        >
-          <SizableText size="$2" color="$mutedForeground">
-            {meta}
-          </SizableText>
         </XStack>
 
         {children}

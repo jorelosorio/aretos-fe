@@ -16,7 +16,7 @@ import { ErrorNotice } from '@/components/common/error-notice';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
 import { HabitCard } from '@/components/habits/habit-card';
-import { SPACING } from '@/constants/layout';
+import { SPACING, TEXT } from '@/constants/layout';
 import type { Goal } from '@/features/goals';
 import { useHabitErrorMessage, useHabits } from '@/features/habits';
 import { useAllowance } from '@/features/limits';
@@ -73,7 +73,7 @@ function GoalSummary({ goal, habitCount }: { goal: Goal; habitCount: number }) {
       </XStack>
 
       {goal.description !== '' && (
-        <Paragraph size="$3" color="$mutedForeground">
+        <Paragraph size={TEXT.body} color="$mutedForeground">
           {goal.description}
         </Paragraph>
       )}
@@ -189,7 +189,7 @@ function EmptyHabits() {
       <SizableText size="$5" fontFamily="$heading" color="$color" text="center">
         {t('habits.empty.title')}
       </SizableText>
-      <Paragraph size="$3" color="$mutedForeground" text="center">
+      <Paragraph size={TEXT.body} color="$mutedForeground" text="center">
         {t('habits.empty.body')}
       </Paragraph>
     </YStack>

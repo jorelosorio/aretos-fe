@@ -1,7 +1,7 @@
 import { ChevronRight } from '@tamagui/lucide-icons-2';
 import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
-import { SPACING } from '@/constants/layout';
+import { SPACING, TEXT } from '@/constants/layout';
 import type { Goal } from '@/features/goals';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
 
@@ -46,7 +46,7 @@ export function GoalCard({
         </SizableText>
 
         {goal.description !== '' && (
-          <Paragraph size="$3" color="$mutedForeground" numberOfLines={2}>
+          <Paragraph size={TEXT.body} color="$mutedForeground" numberOfLines={2}>
             {goal.description}
           </Paragraph>
         )}

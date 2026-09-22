@@ -17,7 +17,7 @@ import {
 } from 'tamagui';
 
 import { UNIT_LABELS } from '@/components/habits/unit-labels';
-import { ICON, SPACING } from '@/constants/layout';
+import { ICON, SPACING, TEXT } from '@/constants/layout';
 import type { Habit } from '@/features/habits';
 import { OUTCOME_COLORS, outcomeOf, type LogEntry } from '@/features/logs';
 import { useTranslations } from '@/lib/i18n';
@@ -241,7 +241,7 @@ export function HabitTrackRow({
 
             {planOpen && (
               <Paragraph
-                size="$2"
+                size={TEXT.caption}
                 color="$mutedForeground"
                 p={SPACING.items}
                 bg="$muted"

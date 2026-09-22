@@ -2,7 +2,7 @@ import { Archive } from '@tamagui/lucide-icons-2';
 import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
 import { CompletionStatus } from '@/components/goals/completion-status';
-import { ICON, SPACING } from '@/constants/layout';
+import { ICON, SPACING, TEXT } from '@/constants/layout';
 import type { DiaryEntry } from '@/features/diary';
 import { useTranslations } from '@/lib/i18n';
 
@@ -43,7 +43,7 @@ export function DiaryEntryCard({
     >
       {preview !== '' && (
         <Paragraph
-          size="$5"
+          size={TEXT.body}
           color="$cardForeground"
           numberOfLines={NOTE_LINES}
           ellipsizeMode="tail"

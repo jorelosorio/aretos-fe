@@ -1,7 +1,7 @@
 import { History } from '@tamagui/lucide-icons-2';
 import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
-import { ICON, SPACING } from '@/constants/layout';
+import { ICON, SPACING, TEXT } from '@/constants/layout';
 import { useTranslations } from '@/lib/i18n';
 
 function toDate(key: string): Date {
@@ -42,7 +42,7 @@ export function HistoryCutoffNotice({ cutoff }: { cutoff: string }) {
         <SizableText size="$4" fontFamily="$heading" color="$cardForeground">
           {t('diary.cutoff.title')}
         </SizableText>
-        <Paragraph size="$3" color="$mutedForeground">
+        <Paragraph size={TEXT.body} color="$mutedForeground">
           {t('diary.cutoff.body', { date })}
         </Paragraph>
       </YStack>

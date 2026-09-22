@@ -15,7 +15,7 @@ import {
 import { ErrorNotice } from '@/components/common/error-notice';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
-import { ICON, SPACING } from '@/constants/layout';
+import { ICON, SPACING, TEXT } from '@/constants/layout';
 import {
   useGoalCheckIn,
   useGoalErrorMessage,
@@ -186,7 +186,7 @@ function CheckInForm({
                     bg="$card"
                     borderColor="$border"
                   />
-                  <Paragraph size="$3" color="$mutedForeground">
+                  <Paragraph size={TEXT.body} color="$mutedForeground">
                     {t('logs.optional')}
                   </Paragraph>
                 </YStack>

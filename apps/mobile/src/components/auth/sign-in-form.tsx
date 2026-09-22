@@ -1,6 +1,7 @@
 import { Button, H1, Paragraph, Spinner, YStack } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
+import { TEXT } from '@/constants/layout';
 import { useAuthErrorMessage, useSignIn } from '@/features/auth';
 import { useTranslations } from '@/lib/i18n';
 
@@ -18,7 +19,7 @@ export function SignInForm() {
         <H1 fontFamily="$heading" color="$color">
           {t('auth.title')}
         </H1>
-        <Paragraph size="$4" color="$mutedForeground" text="center">
+        <Paragraph size={TEXT.body} color="$mutedForeground" text="center">
           {t('auth.tagline')}
         </Paragraph>
       </YStack>

@@ -2,7 +2,7 @@ import { X } from '@tamagui/lucide-icons-2';
 import { Paragraph, ScrollView, YStack } from 'tamagui';
 
 import { FullScreenSheet } from '@/components/common/full-screen-sheet';
-import { SPACING } from '@/constants/layout';
+import { NOTE_TEXT } from '@/components/common/note-text';
 import type { DiaryEntry } from '@/features/diary';
 import { useTranslations } from '@/lib/i18n';
 
@@ -32,8 +32,13 @@ export function EntryViewer({
     >
       {entry !== null && (
         <ScrollView flex={1}>
-          <YStack p={SPACING.screen}>
-            <Paragraph size="$5" color="$color" selectable>
+          <YStack p={NOTE_TEXT.padding}>
+            <Paragraph
+              size={NOTE_TEXT.size}
+              lineHeight={NOTE_TEXT.lineHeight}
+              color="$color"
+              selectable
+            >
               {entry.note}
             </Paragraph>
           </YStack>

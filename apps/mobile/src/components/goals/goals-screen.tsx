@@ -15,7 +15,7 @@ import {
   type Segment,
 } from '@/components/common/segmented-control';
 import { ILLUSTRATIONS } from '@/constants/illustrations';
-import { SPACING } from '@/constants/layout';
+import { SPACING, TEXT } from '@/constants/layout';
 import { useGoalErrorMessage, useGoals } from '@/features/goals';
 import { useAllowance } from '@/features/limits';
 import { useTranslations } from '@/lib/i18n';
@@ -160,7 +160,7 @@ function EmptyGoals({
         >
           {title}
         </SizableText>
-        <Paragraph size="$3" color="$mutedForeground" text="center">
+        <Paragraph size={TEXT.body} color="$mutedForeground" text="center">
           {body}
         </Paragraph>
       </YStack>

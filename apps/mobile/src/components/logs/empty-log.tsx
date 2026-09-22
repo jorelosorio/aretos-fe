@@ -3,7 +3,7 @@ import type { Check } from '@tamagui/lucide-icons-2';
 import { Button, Paragraph, SizableText, YStack } from 'tamagui';
 
 import { EmptyArt } from '@/components/common/empty-art';
-import { SPACING } from '@/constants/layout';
+import { SPACING, TEXT } from '@/constants/layout';
 
 type IconComponent = typeof Check;
 
@@ -42,7 +42,7 @@ export function EmptyLog({
           >
             {title}
           </SizableText>
-          <Paragraph size="$3" color="$mutedForeground" text="center">
+          <Paragraph size={TEXT.body} color="$mutedForeground" text="center">
             {body}
           </Paragraph>
         </YStack>
