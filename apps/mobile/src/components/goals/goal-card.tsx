@@ -46,7 +46,11 @@ export function GoalCard({
         </SizableText>
 
         {goal.description !== '' && (
-          <Paragraph size={TEXT.body} color="$mutedForeground" numberOfLines={2}>
+          <Paragraph
+            size={TEXT.body}
+            color="$mutedForeground"
+            numberOfLines={2}
+          >
             {goal.description}
           </Paragraph>
         )}
