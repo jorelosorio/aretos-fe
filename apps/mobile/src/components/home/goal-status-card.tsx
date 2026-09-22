@@ -123,6 +123,7 @@ export function GoalStatusCard({
         <WeekStrip
           periods={progress.periods}
           currentEntryDate={currentPeriod.entryDate}
+          today={progress.today}
           frequency={goal.trackingFrequency}
         />
       ) : (

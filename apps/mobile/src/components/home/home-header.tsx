@@ -1,6 +1,8 @@
 import { Circle, Image, SizableText, XStack, YStack } from 'tamagui';
 
+import { longDateLabel } from '@/components/common/date-label';
 import { SPACING } from '@/constants/layout';
+import { todayKey } from '@/features/logs';
 import { useProfile } from '@/features/user';
 import { useTranslations } from '@/lib/i18n';
 
@@ -36,7 +38,7 @@ function Avatar({ name, url }: { name: string; url: string }) {
 }
 
 export function HomeHeader() {
-  const { t } = useTranslations();
+  const { t, locale } = useTranslations();
   const { data: profile } = useProfile();
 
   const name = profile?.displayName ?? '';
@@ -56,11 +58,9 @@ export function HomeHeader() {
           {name === '' ? t('home.welcomeBack') : t('home.greeting', { name })}
         </SizableText>
 
-        {name !== '' && (
-          <SizableText size="$2" color="$mutedForeground" numberOfLines={1}>
-            {t('home.welcomeBack')}
-          </SizableText>
-        )}
+        <SizableText size="$2" color="$mutedForeground" numberOfLines={1}>
+          {longDateLabel(todayKey(), locale)}
+        </SizableText>
       </YStack>
     </XStack>
   );

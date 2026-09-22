@@ -21,6 +21,7 @@ import { useAllowance } from '@/features/limits';
 import { useTranslations } from '@/lib/i18n';
 
 import { GoalCard } from './goal-card';
+import { PlanLimitNotice } from './plan-limit-notice';
 
 type Filter = 'active' | 'archived';
 
@@ -34,7 +35,8 @@ export function GoalsScreen() {
   const [filter, setFilter] = useState<Filter>('active');
   const archived = filter === 'archived';
 
-  const canCreate = useAllowance('goal').canCreate;
+  const allowance = useAllowance('goal');
+  const canCreate = allowance.canCreate;
 
   const {
     data: goals,
@@ -73,6 +75,8 @@ export function GoalsScreen() {
           pt={SPACING.screen}
           pb={SPACING.items}
         >
+          <PlanLimitNotice allowance={allowance} />
+
           <SegmentedControl
             segments={segments}
             value={filter}

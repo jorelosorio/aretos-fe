@@ -43,6 +43,25 @@ export function dayNumber(key: string): string {
 }
 
 /**
+ * The whole day, spelled out — what a screen's header says today is.
+ *
+ * Capitalised on the way out because Spanish writes its weekdays and months
+ * in lower case, and `Intl` is right to: "lunes, 21 de septiembre" is correct
+ * prose. It is not correct as the opening of a line, which is what this is
+ * used for, so the first letter is raised here rather than by a caller that
+ * would have to know which locales need it.
+ */
+export function longDateLabel(key: string, locale: AppLocale): string {
+  const text = new Intl.DateTimeFormat(locale, {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+  }).format(toDate(key));
+
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+/**
  * The month a displayed week belongs to, named after its Thursday.
  *
  * A week that straddles two months has to be filed under one of them, and

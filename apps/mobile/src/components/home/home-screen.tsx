@@ -8,12 +8,10 @@ import { ErrorNotice } from '@/components/common/error-notice';
 import { useTabBarInset } from '@/components/common/floating-tab-bar';
 import { ScreenHeader } from '@/components/common/screen-header';
 import { ScreenLoader } from '@/components/common/screen-loader';
-import { PlanLimitNotice } from '@/components/goals/plan-limit-notice';
 import { EmptyLog } from '@/components/logs/empty-log';
 import { ILLUSTRATIONS } from '@/constants/illustrations';
 import { SPACING } from '@/constants/layout';
 import { useGoalErrorMessage, useGoals, type Goal } from '@/features/goals';
-import { useAllowance } from '@/features/limits';
 import { useTranslations } from '@/lib/i18n';
 
 import { GoalStatusCard } from './goal-status-card';
@@ -33,7 +31,6 @@ export function HomeScreen() {
   const tabBarInset = useTabBarInset();
 
   const goals = useGoals({ include: ['progress'] });
-  const allowance = useAllowance('goal');
 
   const scored = (goals.data ?? []).filter(isScored);
 
@@ -75,7 +72,6 @@ export function HomeScreen() {
               <HomeHeader />
             </ScreenHeader>
             <ErrorNotice message={toMessage(goals.error)} />
-            <PlanLimitNotice allowance={allowance} />
           </YStack>
 
           {scored.length > 0 && (

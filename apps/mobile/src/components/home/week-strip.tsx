@@ -1,7 +1,7 @@
 import { Check, Minus } from '@tamagui/lucide-icons-2';
 import { Circle, SizableText, XStack, YStack } from 'tamagui';
 
-import { weekdayInitial } from '@/components/common/date-label';
+import { dayNumber, weekdayInitial } from '@/components/common/date-label';
 import { ICON } from '@/constants/layout';
 import type {
   GoalPeriod,
@@ -34,10 +34,12 @@ const GLYPH = {
 export function WeekStrip({
   periods,
   currentEntryDate,
+  today,
   frequency,
 }: {
   periods: readonly GoalPeriod[];
   currentEntryDate: string;
+  today: string;
   frequency: TrackingFrequency;
 }) {
   const { locale } = useTranslations();
@@ -50,10 +52,11 @@ export function WeekStrip({
       gap="$1"
     >
       {periods.map((period) => {
-        const isCurrent = period.entryDate === currentEntryDate;
+        const isNow = byDay
+          ? period.entryDate === today
+          : period.entryDate === currentEntryDate;
         const counted = period.countsForStreak;
-        const hasStatusRing =
-          !counted && (period.status !== 'empty' || isCurrent);
+        const hasStatusRing = !counted && (period.status !== 'empty' || isNow);
         const ink = counted ? '$primaryForeground' : RING[period.status];
         const Glyph =
           period.status === 'complete' || period.status === 'skipped'
@@ -65,20 +68,31 @@ export function WeekStrip({
             key={period.entryDate}
             items="center"
             gap="$1"
+            px="$1.5"
+            py="$1"
+            rounded="$lg"
+            bg={isNow ? '$muted' : 'transparent'}
             opacity={period.entryDate > currentEntryDate ? UPCOMING_OPACITY : 1}
           >
             {byDay && (
               <SizableText
                 size="$1"
-                fontWeight={isCurrent ? '700' : '400'}
-                color={isCurrent ? '$color' : '$mutedForeground'}
+                color={isNow ? '$color' : '$mutedForeground'}
               >
                 {weekdayInitial(period.entryDate, locale)}
               </SizableText>
             )}
 
+            <SizableText
+              size="$2"
+              fontWeight={isNow ? '800' : '500'}
+              color={isNow ? '$color' : '$mutedForeground'}
+            >
+              {dayNumber(period.entryDate)}
+            </SizableText>
+
             <Circle
-              size={isCurrent ? CURRENT_SIZE : STEP_SIZE}
+              size={isNow ? CURRENT_SIZE : STEP_SIZE}
               items="center"
               justify="center"
               bg={counted ? '$primary' : TRACK_FILL}
