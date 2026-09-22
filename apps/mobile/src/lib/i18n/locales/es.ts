@@ -24,7 +24,6 @@ export const es = {
       counted: '%{count} cuentan para la racha',
       summary: '%{complete} de %{total} períodos completos',
     },
-    progress: '%{answered} de %{total}',
     noHabits: 'Sin hábitos todavía',
   },
   diary: {
@@ -32,13 +31,7 @@ export const es = {
     entry: {
       more: '+%{count} más',
     },
-    answer: {
-      done: 'Hecho',
-      notDone: 'Sin hacer',
-      skipped: 'No aplicaba',
-      logged: 'Registrado',
-      pending: 'Sin responder',
-    },
+    close: 'Cerrar',
     cutoff: {
       title: 'Hasta aquí llega tu plan',
       body: 'Tu plan muestra el diario desde el %{date}. Lo anterior sigue guardado y vuelve a aparecer si mejoras tu plan.',
@@ -74,14 +67,14 @@ export const es = {
     },
     status: {
       complete: 'Completo',
-      partial: 'A medias',
-      missed: 'Sin cumplir',
-      skipped: 'Omitido',
+      partial: 'En camino',
+      missed: 'Esta vez no',
+      skipped: 'No aplicaba',
       empty: 'Sin registrar',
     },
     outcome: {
       done: 'Hecho',
-      missed: 'Sin cumplir',
+      missed: 'Esta vez no',
       skipped: 'No aplica',
       pending: 'Sin responder',
     },
@@ -128,6 +121,7 @@ export const es = {
     title: 'Mis Metas',
     tagline:
       'Cada meta es algo grande. Dentro van los hábitos concretos que la vuelven real.',
+    progress: '%{answered} de %{total}',
     new: 'Nueva meta',
     actions: 'Opciones',
     edit: 'Editar meta',

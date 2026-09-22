@@ -7,12 +7,10 @@ import type {
   DiaryEntry,
   DiaryFilter,
   DiaryGoal,
-  DiaryHabitAnswer,
   DiaryPage,
   WireDiary,
   WireDiaryEntry,
   WireDiaryGoal,
-  WireDiaryHabit,
 } from './types';
 
 /** Requests for the diary feature, mirroring `aretos-be/bruno/Diary/`. */
@@ -71,16 +69,8 @@ const toGoal = (wire: WireDiaryGoal): DiaryGoal => ({
   colorSlot: wire.color_slot,
   archived: wire.archived,
   trackingFrequency: wire.tracking_frequency,
-});
-
-const toAnswer = (wire: WireDiaryHabit): DiaryHabitAnswer => ({
-  habitId: wire.habit_id,
-  name: wire.name,
-  trackingMode: wire.tracking_mode,
-  archived: wire.archived,
-  skipped: wire.skipped,
-  done: wire.bool_value,
-  amount: wire.num_value,
+  streakRule: wire.streak_rule,
+  streakThreshold: wire.streak_threshold,
 });
 
 const toEntry = (wire: WireDiaryEntry): DiaryEntry => ({
@@ -89,7 +79,12 @@ const toEntry = (wire: WireDiaryEntry): DiaryEntry => ({
   goal: toGoal(wire.goal),
   note: wire.note,
   mood: toMood(wire.mood),
-  habits: wire.habits.map(toAnswer),
+  answered: wire.answered,
+  skipped: wire.skipped,
+  total: wire.total,
+  completion: wire.completion,
+  status: wire.status,
+  countsForStreak: wire.counts_for_streak,
   createdAt: wire.created_at,
   updatedAt: wire.updated_at,
 });

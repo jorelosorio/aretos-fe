@@ -1,12 +1,13 @@
 import { Archive } from '@tamagui/lucide-icons-2';
 import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
-import { MOOD_LABELS } from '@/components/logs/mood-labels';
+import { CompletionStatus } from '@/components/goals/completion-status';
 import { ICON, SPACING } from '@/constants/layout';
 import type { DiaryEntry } from '@/features/diary';
 import { useTranslations } from '@/lib/i18n';
 
 import { periodLabel } from './diary-date';
+import { notePreview } from './note-preview';
 
 const NOTE_LINES = 4;
 
@@ -17,12 +18,13 @@ export function DiaryEntryCard({
   entry: DiaryEntry;
   onPress: () => void;
 }) {
-  const { t, locale } = useTranslations();
+  const { locale } = useTranslations();
 
-  const { goal, mood } = entry;
+  const { goal, note, answered, total, status } = entry;
   const when = periodLabel(entry.entryDate, goal.trackingFrequency, locale);
+  const preview = notePreview(note);
 
-  const label = [goal.name, when, mood === null ? null : t(MOOD_LABELS[mood])]
+  const label = [preview === '' ? null : preview, goal.name, when]
     .filter((part) => part !== null)
     .join('. ');
 
@@ -39,13 +41,23 @@ export function DiaryEntryCard({
       accessibilityRole="button"
       accessibilityLabel={label}
     >
-      <YStack flex={1} minW={0} gap={SPACING.text}>
+      {preview !== '' && (
+        <Paragraph
+          size="$5"
+          color="$cardForeground"
+          numberOfLines={NOTE_LINES}
+          ellipsizeMode="tail"
+        >
+          {preview}
+        </Paragraph>
+      )}
+
+      <YStack gap={SPACING.text}>
         <XStack items="center" gap="$1.5">
           <SizableText
             shrink={1}
-            size="$4"
-            fontFamily="$heading"
-            color="$cardForeground"
+            size="$2"
+            color="$mutedForeground"
             numberOfLines={1}
           >
             {goal.name}
@@ -54,18 +66,16 @@ export function DiaryEntryCard({
           {goal.archived && (
             <Archive size={ICON.inline} color="$mutedForeground" />
           )}
+
+          <SizableText size="$2" color="$mutedForeground" numberOfLines={1}>
+            {`· ${when}`}
+          </SizableText>
         </XStack>
 
-        <SizableText size="$2" color="$mutedForeground">
-          {when}
-        </SizableText>
+        {total > 0 && (
+          <CompletionStatus status={status} answered={answered} total={total} />
+        )}
       </YStack>
-
-      {entry.note !== '' && (
-        <Paragraph size="$3" color="$color" numberOfLines={NOTE_LINES}>
-          {entry.note}
-        </Paragraph>
-      )}
     </YStack>
   );
 }

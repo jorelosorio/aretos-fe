@@ -19,16 +19,25 @@
  * `saveLog` applies on the way in. There is no sub-filter; `notes_only` was
  * removed from the endpoint.
  *
- * What is *not* here is the score. Completion, status and the streak come from
- * the goal's own rules — its habits' weights and thresholds, its streak rule —
- * and `/v1/goals?include=progress` is what applies them. An entry carries what
- * was saved and nothing worked out from it, so anything derived (the month it
- * falls in, a preview of the note, how wide a span the date stands for) is the
- * caller's to compute.
+ * The score rides along with each entry — `answered`, `total`, `status` and
+ * the rest, the same block `/v1/goals?include=progress` returns per period and
+ * scored by the same rules. The device never recomputes it: the weights and
+ * thresholds that decide it live on the server, and a second implementation
+ * here is what `docs/progress.md` says the block exists to prevent.
+ *
+ * What is *not* here is the per-habit answers. The endpoint stopped sending
+ * them: a diary row is what was *written*, and the tally beside it is enough
+ * to say how much of the period it covers. Reading a period habit by habit is
+ * the check-in's job, and `/v1/habit-logs` is where that lives. Anything
+ * derived from an entry (the month it falls in, a preview of the note) is
+ * still the caller's to compute.
  */
 
-import type { TrackingFrequency } from '@/features/goals';
-import type { TrackingMode } from '@/features/habits';
+import type {
+  PeriodStatus,
+  StreakRule,
+  TrackingFrequency,
+} from '@/features/goals';
 import type { MoodScore } from '@/features/logs';
 
 export type WireDiaryGoal = {
@@ -37,19 +46,8 @@ export type WireDiaryGoal = {
   color_slot: number;
   archived: boolean;
   tracking_frequency: TrackingFrequency;
-};
-
-export type WireDiaryHabit = {
-  habit_id: string;
-  name: string;
-  tracking_mode: TrackingMode;
-  /** The habit has since been shelved; its answer still stands. */
-  archived: boolean;
-  skipped: boolean;
-  /** `null` when unanswered — for a binary habit, not the same as a no. */
-  bool_value: boolean | null;
-  /** `null` when unanswered. Decimal with two places. */
-  num_value: number | null;
+  streak_rule: StreakRule;
+  streak_threshold: number;
 };
 
 export type WireDiaryEntry = {
@@ -60,8 +58,13 @@ export type WireDiaryEntry = {
   note: string;
   /** `null` when it carries only a note. */
   mood: number | null;
-  /** `[]` when the period was saved with writing and nothing else. */
-  habits: WireDiaryHabit[];
+  answered: number;
+  skipped: number;
+  total: number;
+  /** `null` when there was nothing to measure, which is not zero. */
+  completion: number | null;
+  status: PeriodStatus;
+  counts_for_streak: boolean;
   created_at: string;
   updated_at: string;
 };
@@ -97,34 +100,9 @@ export type DiaryGoal = {
   colorSlot: number;
   archived: boolean;
   trackingFrequency: TrackingFrequency;
-};
-
-/**
- * One habit's answer inside the period an entry was written about.
- *
- * Named `done`/`amount` rather than after the columns, matching `LogEntry`,
- * which this is the same answer as: `done` carries it for a `binary` habit and
- * `amount` for the measured ones. The habit's own `name` and `trackingMode`
- * come down with it because neither the value nor its meaning stands alone — a
- * bare `45` cannot be rendered without "Run" and "duration" beside it.
- *
- * `skipped` false with both values `null` is a habit that was not answered,
- * which for a binary habit is a third state and not a "no".
- *
- * What is missing on purpose is `weight` and `successThreshold`. Without them
- * a measured answer cannot be called met or missed, and that is the point: the
- * verdict is the goal's to give, not this endpoint's.
- */
-export type DiaryHabitAnswer = {
-  habitId: string;
-  name: string;
-  trackingMode: TrackingMode;
-  /** Shelved since; the answer is kept, because the diary records what was. */
-  archived: boolean;
-  /** A period consciously passed. An answer in its own right, not a blank. */
-  skipped: boolean;
-  done: boolean | null;
-  amount: number | null;
+  streakRule: StreakRule;
+  /** 0–100, and only meaningful when `streakRule` is `'threshold'`. */
+  streakThreshold: number;
 };
 
 export type DiaryEntry = {
@@ -139,8 +117,14 @@ export type DiaryEntry = {
   /** The whole note, unwrapped. `''` when the period carries only a mood. */
   note: string;
   mood: MoodScore | null;
-  /** In the order the goal lists its habits. Empty for a written-only period. */
-  habits: DiaryHabitAnswer[];
+  /** How many of the period's habits were answered, a skip included. */
+  answered: number;
+  skipped: number;
+  total: number;
+  completion: number | null;
+  /** The server's verdict on the period, scored by the goal's own rules. */
+  status: PeriodStatus;
+  countsForStreak: boolean;
   /** ISO 8601, as the server sent it. */
   createdAt: string;
   updatedAt: string;

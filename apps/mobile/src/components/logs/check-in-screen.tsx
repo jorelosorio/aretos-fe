@@ -36,7 +36,7 @@ import { useTranslations } from '@/lib/i18n';
 import { EmptyLog } from './empty-log';
 import { HabitTrackRow } from './habit-track-row';
 import { MoodPicker } from './mood-picker';
-import { NoteEditor } from './note-editor';
+import { NoteEditor } from './note-sheet';
 import { periodLabel } from './period-label';
 import { WeekPicker } from './week-picker';
 

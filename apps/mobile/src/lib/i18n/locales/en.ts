@@ -23,7 +23,6 @@ export const en = {
       counted: '%{count} count toward the streak',
       summary: '%{complete} of %{total} periods complete',
     },
-    progress: '%{answered} of %{total}',
     noHabits: 'No habits yet',
   },
   diary: {
@@ -31,13 +30,7 @@ export const en = {
     entry: {
       more: '+%{count} more',
     },
-    answer: {
-      done: 'Done',
-      notDone: 'Not done',
-      skipped: "Didn't apply",
-      logged: 'Logged',
-      pending: 'Unanswered',
-    },
+    close: 'Close',
     cutoff: {
       title: 'This is as far as your plan reads',
       body: 'Your plan shows the diary from %{date}. Anything older is still saved and comes back if you upgrade.',
@@ -73,14 +66,14 @@ export const en = {
     },
     status: {
       complete: 'Complete',
-      partial: 'Partly done',
-      missed: 'Missed',
-      skipped: 'Skipped',
+      partial: 'On the way',
+      missed: 'Not this time',
+      skipped: "Didn't apply",
       empty: 'Not reported',
     },
     outcome: {
       done: 'Done',
-      missed: 'Missed',
+      missed: 'Not this time',
       skipped: "Doesn't apply",
       pending: 'Unanswered',
     },
@@ -127,6 +120,7 @@ export const en = {
     title: 'My Goals',
     tagline:
       'Each goal is something big. Inside it go the concrete habits that make it real.',
+    progress: '%{answered} of %{total}',
     new: 'New goal',
     actions: 'Options',
     edit: 'Edit goal',

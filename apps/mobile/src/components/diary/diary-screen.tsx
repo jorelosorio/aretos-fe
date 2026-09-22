@@ -1,6 +1,5 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
-import { useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
 import { Target } from '@tamagui/lucide-icons-2';
 import { Spinner, XStack, YStack } from 'tamagui';
@@ -21,6 +20,7 @@ import { useTranslations } from '@/lib/i18n';
 
 import { monthKey, monthLabel } from './diary-date';
 import { DiaryEntryCard } from './diary-entry-card';
+import { EntryViewer } from './entry-viewer';
 import { HistoryCutoffNotice } from './history-cutoff-notice';
 
 type Row =
@@ -47,7 +47,6 @@ function toRows(entries: readonly DiaryEntry[]): Row[] {
 export function DiaryScreen() {
   const { t, locale } = useTranslations();
   const theme = useTheme();
-  const router = useRouter();
   const toMessage = useDiaryErrorMessage();
   const tabBarInset = useTabBarInset();
 
@@ -64,80 +63,80 @@ export function DiaryScreen() {
 
   const rows = useMemo(() => toRows(data?.entries ?? []), [data?.entries]);
 
-  const openEntry = (entry: DiaryEntry) =>
-    router.push({
-      pathname: '/logs/[goalId]',
-      params: { goalId: entry.goal.id, date: entry.entryDate },
-    });
+  const [viewing, setViewing] = useState<DiaryEntry | null>(null);
 
   return (
-    <FlatList
-      style={{ flex: 1, backgroundColor: theme.background.val }}
-      contentContainerStyle={{ flexGrow: 1, paddingBottom: tabBarInset }}
-      data={rows}
-      keyExtractor={(row) => row.key}
-      refreshControl={
-        <RefreshControl
-          refreshing={isRefetching}
-          onRefresh={() => void refetch()}
-          tintColor={theme.primary.val}
-          colors={[theme.primary.val]}
-        />
-      }
-      onEndReachedThreshold={0.4}
-      onEndReached={() => {
-        if (hasNextPage && !isFetchingNextPage) void fetchNextPage();
-      }}
-      ListHeaderComponent={
-        error ? (
-          <YStack px={SPACING.screen} pt={SPACING.screen} pb={SPACING.items}>
-            <ErrorNotice message={toMessage(error)} />
-          </YStack>
-        ) : null
-      }
-      renderItem={({ item }) =>
-        item.kind === 'month' ? (
-          <YStack px={SPACING.screen} pt={SPACING.section} pb={SPACING.items}>
-            <SectionTitle>{monthLabel(item.month, locale)}</SectionTitle>
-          </YStack>
-        ) : (
-          <YStack px={SPACING.screen} pb={SPACING.items}>
-            <DiaryEntryCard
-              entry={item.entry}
-              onPress={() => openEntry(item.entry)}
-            />
-          </YStack>
-        )
-      }
-      ListEmptyComponent={
-        isPending ? (
-          <ScreenLoader />
-        ) : error ? null : (
-          <EmptyLog
-            Icon={Target}
-            illustration={ILLUSTRATIONS.noGoals}
-            title={t('goals.empty.title')}
-            body={t('goals.empty.body')}
+    <>
+      <FlatList
+        style={{ flex: 1, backgroundColor: theme.background.val }}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: tabBarInset }}
+        data={rows}
+        keyExtractor={(row) => row.key}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={() => void refetch()}
+            tintColor={theme.primary.val}
+            colors={[theme.primary.val]}
           />
-        )
-      }
-      ListFooterComponent={
-        rows.length === 0 ? null : (
-          <YStack px={SPACING.screen} pb={SPACING.screen} pt={SPACING.group}>
-            {isFetchingNextPage && (
-              <XStack justify="center" py={SPACING.items}>
-                <Spinner color="$primary" />
-              </XStack>
-            )}
-
-            {!hasNextPage &&
-              !isFetchingNextPage &&
-              data?.historyCutoff != null && (
-                <HistoryCutoffNotice cutoff={data.historyCutoff} />
+        }
+        onEndReachedThreshold={0.4}
+        onEndReached={() => {
+          if (hasNextPage && !isFetchingNextPage) void fetchNextPage();
+        }}
+        ListHeaderComponent={
+          error ? (
+            <YStack px={SPACING.screen} pt={SPACING.screen} pb={SPACING.items}>
+              <ErrorNotice message={toMessage(error)} />
+            </YStack>
+          ) : null
+        }
+        renderItem={({ item }) =>
+          item.kind === 'month' ? (
+            <YStack px={SPACING.screen} pt={SPACING.section} pb={SPACING.items}>
+              <SectionTitle>{monthLabel(item.month, locale)}</SectionTitle>
+            </YStack>
+          ) : (
+            <YStack px={SPACING.screen} pb={SPACING.items}>
+              <DiaryEntryCard
+                entry={item.entry}
+                onPress={() => setViewing(item.entry)}
+              />
+            </YStack>
+          )
+        }
+        ListEmptyComponent={
+          isPending ? (
+            <ScreenLoader />
+          ) : error ? null : (
+            <EmptyLog
+              Icon={Target}
+              illustration={ILLUSTRATIONS.noGoals}
+              title={t('goals.empty.title')}
+              body={t('goals.empty.body')}
+            />
+          )
+        }
+        ListFooterComponent={
+          rows.length === 0 ? null : (
+            <YStack px={SPACING.screen} pb={SPACING.screen} pt={SPACING.group}>
+              {isFetchingNextPage && (
+                <XStack justify="center" py={SPACING.items}>
+                  <Spinner color="$primary" />
+                </XStack>
               )}
-          </YStack>
-        )
-      }
-    />
+
+              {!hasNextPage &&
+                !isFetchingNextPage &&
+                data?.historyCutoff != null && (
+                  <HistoryCutoffNotice cutoff={data.historyCutoff} />
+                )}
+            </YStack>
+          )
+        }
+      />
+
+      <EntryViewer entry={viewing} onClose={() => setViewing(null)} />
+    </>
   );
 }
