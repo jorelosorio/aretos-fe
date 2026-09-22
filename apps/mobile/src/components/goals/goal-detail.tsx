@@ -1,7 +1,7 @@
 import { FlatList, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
-import { ListChecks, Plus } from '@tamagui/lucide-icons-2';
+import { Archive, ListChecks, Plus } from '@tamagui/lucide-icons-2';
 import {
   Button,
   Circle,
@@ -16,7 +16,7 @@ import { ErrorNotice } from '@/components/common/error-notice';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
 import { HabitCard } from '@/components/habits/habit-card';
-import { SPACING, TEXT } from '@/constants/layout';
+import { ICON, SPACING, TEXT } from '@/constants/layout';
 import type { Goal } from '@/features/goals';
 import { useHabitErrorMessage, useHabits } from '@/features/habits';
 import { useAllowance } from '@/features/limits';
@@ -92,6 +92,41 @@ function GoalSummary({ goal, habitCount }: { goal: Goal; habitCount: number }) {
   );
 }
 
+function ArchivedNotice() {
+  const { t } = useTranslations();
+
+  return (
+    <XStack
+      gap={SPACING.items}
+      p={SPACING.card}
+      bg="$card"
+      rounded="$xl2"
+      borderWidth={1}
+      borderColor="$border"
+    >
+      <YStack
+        width={36}
+        height={36}
+        items="center"
+        justify="center"
+        rounded="$xl"
+        bg="$muted"
+      >
+        <Archive size={ICON.row} color="$primary" />
+      </YStack>
+
+      <YStack flex={1} gap={SPACING.text}>
+        <SizableText size="$4" fontFamily="$heading" color="$cardForeground">
+          {t('goals.archivedNotice.title')}
+        </SizableText>
+        <Paragraph size={TEXT.body} color="$mutedForeground">
+          {t('goals.archivedNotice.body')}
+        </Paragraph>
+      </YStack>
+    </XStack>
+  );
+}
+
 export function GoalDetail({ goal }: { goal: Goal }) {
   const { t } = useTranslations();
   const theme = useTheme();
@@ -138,6 +173,8 @@ export function GoalDetail({ goal }: { goal: Goal }) {
         >
           <GoalSummary goal={goal} habitCount={habits?.length ?? 0} />
 
+          {goal.archived && <ArchivedNotice />}
+
           <ErrorNotice message={toMessage(error)} />
 
           <SectionTitle>{t('habits.section')}</SectionTitle>
@@ -147,8 +184,14 @@ export function GoalDetail({ goal }: { goal: Goal }) {
         <YStack px={SPACING.screen} pb={SPACING.items}>
           <HabitCard
             habit={item}
-            onPress={() =>
-              router.push({ pathname: '/habits/[id]', params: { id: item.id } })
+            onPress={
+              goal.archived
+                ? undefined
+                : () =>
+                    router.push({
+                      pathname: '/habits/[id]',
+                      params: { id: item.id },
+                    })
             }
           />
         </YStack>
@@ -163,18 +206,20 @@ export function GoalDetail({ goal }: { goal: Goal }) {
         )
       }
       ListFooterComponent={
-        <YStack px={SPACING.screen} pb={SPACING.screen} pt={SPACING.items}>
-          <Button
-            size="$5"
-            theme="accent"
-            icon={Plus}
-            disabled={!canCreate}
-            opacity={canCreate ? 1 : 0.5}
-            onPress={addHabit}
-          >
-            {t('habits.new')}
-          </Button>
-        </YStack>
+        goal.archived ? null : (
+          <YStack px={SPACING.screen} pb={SPACING.screen} pt={SPACING.items}>
+            <Button
+              size="$5"
+              theme="accent"
+              icon={Plus}
+              disabled={!canCreate}
+              opacity={canCreate ? 1 : 0.5}
+              onPress={addHabit}
+            >
+              {t('habits.new')}
+            </Button>
+          </YStack>
+        )
       }
     />
   );

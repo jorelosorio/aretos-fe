@@ -112,6 +112,8 @@ export const en = {
       title: 'Something went wrong',
       limitReached: 'Your plan does not allow more entries.',
       notFound: 'That entry no longer exists.',
+      goalArchived:
+        'This goal is archived. Restore it before logging anything else.',
       loadFailed: "We couldn't open this period. Try again.",
       network: "We couldn't reach the server. Check your connection.",
       generic: 'Something went wrong. Try again.',
@@ -134,6 +136,10 @@ export const en = {
     delete: 'Delete',
     deleteConfirmTitle: 'Delete this goal?',
     deleteConfirmBody: 'Its habits and logs go with it. This cannot be undone.',
+    archivedNotice: {
+      title: 'This goal is archived',
+      body: 'Its habits and history stay as they are. Restore it from the menu above to make changes again.',
+    },
     stats: {
       habits: 'Habits',
       frequency: 'Cadence',
@@ -189,6 +195,7 @@ export const en = {
       title: 'Something went wrong',
       limitReached: 'Your plan does not allow more goals.',
       notFound: 'That goal no longer exists.',
+      archived: 'This goal is archived. Restore it before making changes.',
       network: "We couldn't reach the server. Check your connection.",
       generic: 'Something went wrong. Please try again.',
     },
@@ -256,6 +263,8 @@ export const en = {
       title: 'Something went wrong',
       limitReached: 'Your plan does not allow more habits.',
       notFound: 'That habit no longer exists.',
+      goalArchived:
+        'Its goal is archived. Restore the goal before making changes.',
       network: "We couldn't reach the server. Check your connection.",
       generic: 'Something went wrong. Please try again.',
     },

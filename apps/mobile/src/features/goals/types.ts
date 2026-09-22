@@ -102,6 +102,12 @@ export const GoalErrorCode = {
   LimitReached: 'GOAL_LIMIT_REACHED',
   /** Also the answer for a goal owned by someone else: ids are never confirmed. */
   NotFound: 'NOT_FOUND',
+  /**
+   * The goal is archived, so the patch was refused — `openGoal` in
+   * `internal/api/v1/service.go`, answered 409. An archived goal accepts only
+   * `{ archived }` and its own deletion, so the way out is to restore it.
+   */
+  Archived: 'GOAL_ARCHIVED',
 } as const;
 
 /**

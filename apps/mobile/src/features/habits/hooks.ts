@@ -127,6 +127,7 @@ export function useDeleteHabit() {
 const MESSAGES: Record<string, TranslationKey> = {
   [HabitErrorCode.LimitReached]: 'habits.errors.limitReached',
   [HabitErrorCode.NotFound]: 'habits.errors.notFound',
+  [HabitErrorCode.GoalArchived]: 'habits.errors.goalArchived',
 };
 
 export function useHabitErrorMessage() {

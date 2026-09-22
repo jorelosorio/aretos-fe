@@ -185,6 +185,7 @@ export function useDeleteGoal() {
 const MESSAGES: Record<string, TranslationKey> = {
   [GoalErrorCode.LimitReached]: 'goals.errors.limitReached',
   [GoalErrorCode.NotFound]: 'goals.errors.notFound',
+  [GoalErrorCode.Archived]: 'goals.errors.archived',
 };
 
 export function useGoalErrorMessage() {

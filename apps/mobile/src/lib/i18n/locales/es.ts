@@ -113,6 +113,8 @@ export const es = {
       title: 'Algo salió mal',
       limitReached: 'Tu plan no permite más registros.',
       notFound: 'Ese registro ya no existe.',
+      goalArchived:
+        'Esta meta está archivada. Restáurala antes de registrar nada más.',
       loadFailed: 'No pudimos abrir este período. Inténtalo de nuevo.',
       network: 'No pudimos conectar con el servidor. Revisa tu conexión.',
       generic: 'Algo salió mal. Inténtalo de nuevo.',
@@ -136,6 +138,10 @@ export const es = {
     deleteConfirmTitle: '¿Eliminar esta meta?',
     deleteConfirmBody:
       'Se borran también sus hábitos y registros. Esta acción no se puede deshacer.',
+    archivedNotice: {
+      title: 'Esta meta está archivada',
+      body: 'Sus hábitos y su historial se quedan como están. Restáurala desde el menú de arriba para volver a hacer cambios.',
+    },
     stats: {
       habits: 'Hábitos',
       frequency: 'Cadencia',
@@ -191,6 +197,7 @@ export const es = {
       title: 'Algo salió mal',
       limitReached: 'Tu plan no permite más metas.',
       notFound: 'Esa meta ya no existe.',
+      archived: 'Esta meta está archivada. Restáurala antes de hacer cambios.',
       network: 'No pudimos conectar con el servidor. Revisa tu conexión.',
       generic: 'Algo salió mal. Inténtalo de nuevo.',
     },
@@ -260,6 +267,8 @@ export const es = {
       title: 'Algo salió mal',
       limitReached: 'Tu plan no permite más hábitos.',
       notFound: 'Ese hábito ya no existe.',
+      goalArchived:
+        'Su meta está archivada. Restaura la meta antes de hacer cambios.',
       network: 'No pudimos conectar con el servidor. Revisa tu conexión.',
       generic: 'Algo salió mal. Inténtalo de nuevo.',
     },

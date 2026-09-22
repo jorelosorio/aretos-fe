@@ -34,7 +34,7 @@ export function HabitCard({
   onPress,
 }: {
   habit: Habit;
-  onPress: () => void;
+  onPress?: () => void;
 }) {
   const { t } = useTranslations();
   const unit = UNIT_LABELS[habit.trackingMode];
@@ -42,7 +42,7 @@ export function HabitCard({
   return (
     <XStack
       onPress={onPress}
-      pressStyle={{ bg: '$muted' }}
+      pressStyle={onPress ? { bg: '$muted' } : undefined}
       items="center"
       gap={SPACING.items}
       p={SPACING.card}
@@ -50,7 +50,7 @@ export function HabitCard({
       rounded="$xl2"
       borderWidth={1}
       borderColor="$border"
-      accessibilityRole="button"
+      accessibilityRole={onPress ? 'button' : undefined}
       accessibilityLabel={habit.name}
     >
       <YStack flex={1} gap={SPACING.group}>
@@ -87,7 +87,7 @@ export function HabitCard({
         )}
       </YStack>
 
-      <ChevronRight size={18} color="$mutedForeground" />
+      {onPress && <ChevronRight size={18} color="$mutedForeground" />}
     </XStack>
   );
 }

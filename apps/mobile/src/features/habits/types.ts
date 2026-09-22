@@ -64,4 +64,10 @@ export const HabitErrorCode = {
   LimitReached: 'HABIT_LIMIT_REACHED',
   /** Also the answer for a habit, or a goal, owned by someone else. */
   NotFound: 'NOT_FOUND',
+  /**
+   * The habit's goal is archived, which refuses every write to the habit —
+   * creating, editing, archiving, restoring and deleting alike. The app keeps
+   * those out of reach, so this is the race: archived on another device.
+   */
+  GoalArchived: 'GOAL_ARCHIVED',
 } as const;

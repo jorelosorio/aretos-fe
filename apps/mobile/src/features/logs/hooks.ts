@@ -128,6 +128,7 @@ export function useDeleteLog() {
 const MESSAGES: Record<string, TranslationKey> = {
   [LogErrorCode.LimitReached]: 'logs.errors.limitReached',
   [LogErrorCode.NotFound]: 'logs.errors.notFound',
+  [LogErrorCode.GoalArchived]: 'logs.errors.goalArchived',
 };
 
 export function useLogErrorMessage() {

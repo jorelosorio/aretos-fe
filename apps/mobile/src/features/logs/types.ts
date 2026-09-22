@@ -138,4 +138,9 @@ export const LogErrorCode = {
   LimitReached: 'HABIT_LOG_LIMIT_REACHED',
   /** Also the answer for a log, goal or habit owned by someone else. */
   NotFound: 'NOT_FOUND',
+  /**
+   * The goal is archived. What was already written stays readable in the
+   * diary, but the period cannot be saved or amended again.
+   */
+  GoalArchived: 'GOAL_ARCHIVED',
 } as const;

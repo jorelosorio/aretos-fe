@@ -135,8 +135,16 @@ export function GoalActionsMenu({
             borderColor="$border"
             overflow="hidden"
           >
-            <MenuItem label={t('goals.edit')} Icon={Pencil} onPress={edit} />
-            <Separator borderColor="$border" />
+            {!archived && (
+              <>
+                <MenuItem
+                  label={t('goals.edit')}
+                  Icon={Pencil}
+                  onPress={edit}
+                />
+                <Separator borderColor="$border" />
+              </>
+            )}
             <MenuItem
               label={t(archived ? 'goals.restore' : 'goals.archive')}
               Icon={archived ? ArchiveRestore : Archive}
