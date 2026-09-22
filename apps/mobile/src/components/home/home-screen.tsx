@@ -1,5 +1,4 @@
 import { FlatList, RefreshControl } from 'react-native';
-import { useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
 import { Target } from '@tamagui/lucide-icons-2';
 import { YStack } from 'tamagui';
@@ -26,16 +25,12 @@ const isScored = (goal: Goal): goal is ScoredGoal =>
 export function HomeScreen() {
   const { t } = useTranslations();
   const theme = useTheme();
-  const router = useRouter();
   const toMessage = useGoalErrorMessage();
   const tabBarInset = useTabBarInset();
 
   const goals = useGoals({ include: ['progress'] });
 
   const scored = (goals.data ?? []).filter(isScored);
-
-  const openLog = (goalId: string) =>
-    router.push({ pathname: '/logs/[goalId]', params: { goalId } });
 
   let empty = null;
   if (goals.isPending) {
@@ -84,11 +79,7 @@ export function HomeScreen() {
       ListEmptyComponent={empty}
       renderItem={({ item }) => (
         <YStack px={SPACING.screen} pb={SPACING.items}>
-          <GoalStatusCard
-            goal={item}
-            progress={item.progress}
-            onPress={() => openLog(item.id)}
-          />
+          <GoalStatusCard goal={item} progress={item.progress} />
         </YStack>
       )}
     />

@@ -8,6 +8,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { TamaguiProvider, useTheme } from '@tamagui/core';
 import { config } from '../../tamagui.config';
 
+import { CloseButton } from '@/components/common/close-button';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { HEADER_TITLE } from '@/constants/layout';
 import { useTranslations } from '@/lib/i18n';
@@ -37,6 +38,14 @@ function RootNavigator() {
   if (isRestoring) return <ScreenLoader />;
 
   const modalOptions = { presentation: 'modal', headerShown: true } as const;
+
+  const sheetOptions = {
+    ...modalOptions,
+    animation: 'slide_from_bottom',
+    headerBackVisible: false,
+    headerLeft: () => null,
+    headerRight: () => <CloseButton />,
+  } as const;
 
   return (
     <Stack
@@ -86,9 +95,9 @@ function RootNavigator() {
 
         <Stack.Screen
           name="logs/new"
-          options={{ ...modalOptions, title: t('logs.pickTitle') }}
+          options={{ ...sheetOptions, title: t('logs.pickTitle') }}
         />
-        <Stack.Screen name="logs/[goalId]" options={modalOptions} />
+        <Stack.Screen name="logs/[goalId]" options={sheetOptions} />
       </Stack.Protected>
 
       <Stack.Protected guard={!isAuthenticated}>

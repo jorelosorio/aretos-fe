@@ -11,7 +11,6 @@ import type {
 import { useTranslations } from '@/lib/i18n';
 
 const STEP_SIZE = '$1';
-const CURRENT_SIZE = '$1.5';
 const CORE_SIZE = '$0.75';
 
 const TRACK_FILL = '$outcomeBlank';
@@ -46,11 +45,7 @@ export function WeekStrip({
   const byDay = frequency !== 'weekly';
 
   return (
-    <XStack
-      items="flex-end"
-      justify={byDay ? 'space-between' : 'flex-start'}
-      gap="$1"
-    >
+    <XStack items="center" justify="flex-start" gap="$1">
       {periods.map((period) => {
         const isNow = byDay
           ? period.entryDate === today
@@ -66,10 +61,13 @@ export function WeekStrip({
         return (
           <YStack
             key={period.entryDate}
+            flex={byDay ? 1 : undefined}
+            flexBasis={byDay ? 0 : undefined}
             items="center"
-            gap="$1"
-            px="$1.5"
-            py="$1"
+            justify="center"
+            gap="$1.5"
+            px="$1"
+            py="$2"
             rounded="$lg"
             bg={isNow ? '$muted' : 'transparent'}
             opacity={period.entryDate > currentEntryDate ? UPCOMING_OPACITY : 1}
@@ -92,7 +90,7 @@ export function WeekStrip({
             </SizableText>
 
             <Circle
-              size={isNow ? CURRENT_SIZE : STEP_SIZE}
+              size={STEP_SIZE}
               items="center"
               justify="center"
               bg={counted ? '$primary' : TRACK_FILL}

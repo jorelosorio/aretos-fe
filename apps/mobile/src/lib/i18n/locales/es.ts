@@ -57,6 +57,7 @@ export const es = {
       },
     },
     optional: '(opcional)',
+    close: 'Cerrar',
     pickTitle: 'Registrar',
     pickGoal: '¿Sobre qué meta quieres registrar?',
     period: {

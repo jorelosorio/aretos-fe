@@ -56,6 +56,7 @@ export const en = {
       },
     },
     optional: '(optional)',
+    close: 'Close',
     pickTitle: 'Log',
     pickGoal: 'Which goal are you logging?',
     period: {
