@@ -10,7 +10,10 @@ import type {
 } from '@/features/goals';
 import { useTranslations } from '@/lib/i18n';
 
+import { PeriodMood } from './period-mood';
+
 const STEP_SIZE = '$1';
+const MOOD_SIZE = 18;
 const CORE_SIZE = '$0.75';
 
 const TRACK_FILL = '$outcomeBlank';
@@ -105,6 +108,8 @@ export function WeekStrip({
                 <Circle size={CORE_SIZE} bg={ink} />
               )}
             </Circle>
+
+            <PeriodMood mood={period.mood} size={MOOD_SIZE} active={isNow} />
           </YStack>
         );
       })}

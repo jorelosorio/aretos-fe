@@ -3,16 +3,23 @@ import { SizableText, XStack } from 'tamagui';
 
 import { shortDateLabel } from '@/components/common/date-label';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
+import type { MoodScore } from '@/features/logs';
 import { useTranslations } from '@/lib/i18n';
+
+import { PeriodMood } from './period-mood';
+
+const MOOD_SIZE = 18;
 
 export function WeekWindow({
   entryDate,
   endDate,
   daysLeft,
+  mood,
 }: {
   entryDate: string;
   endDate: string;
   daysLeft: number;
+  mood: MoodScore | null;
 }) {
   const { t, locale } = useTranslations();
 
@@ -44,15 +51,19 @@ export function WeekWindow({
         </SizableText>
       </XStack>
 
-      <SizableText
-        size={TEXT.caption}
-        fontWeight="700"
-        color={lastDay ? '$primary' : '$cardForeground'}
-      >
-        {lastDay
-          ? t('home.daysLeftOne')
-          : t('home.daysLeftMany', { count: daysLeft })}
-      </SizableText>
+      <XStack items="center" gap="$2">
+        <SizableText
+          size={TEXT.caption}
+          fontWeight="700"
+          color={lastDay ? '$primary' : '$cardForeground'}
+        >
+          {lastDay
+            ? t('home.daysLeftOne')
+            : t('home.daysLeftMany', { count: daysLeft })}
+        </SizableText>
+
+        <PeriodMood mood={mood} size={MOOD_SIZE} active />
+      </XStack>
     </XStack>
   );
 }

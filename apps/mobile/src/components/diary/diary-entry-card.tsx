@@ -1,6 +1,6 @@
 import { useTheme } from '@tamagui/core';
-import { Archive } from '@tamagui/lucide-icons-2';
-import { Circle, Paragraph, SizableText, XStack, YStack } from 'tamagui';
+import { Archive, ChevronRight } from '@tamagui/lucide-icons-2';
+import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
 import { CompletionStatus } from '@/components/goals/completion-status';
 import { GoalDot } from '@/components/goals/goal-dot';
@@ -14,8 +14,7 @@ import { periodLabel } from './diary-date';
 import { notePreview } from './note-preview';
 
 const NOTE_LINES = 4;
-const MOOD_BADGE = 40;
-const MOOD_FACE = 26;
+const MOOD_FACE = 16;
 
 export function DiaryEntryCard({
   entry,
@@ -41,9 +40,10 @@ export function DiaryEntryCard({
     .join('. ');
 
   return (
-    <YStack
+    <XStack
       onPress={onPress}
       pressStyle={{ bg: '$muted' }}
+      items="center"
       gap={SPACING.items}
       p={SPACING.card}
       bg="$card"
@@ -52,20 +52,21 @@ export function DiaryEntryCard({
       borderColor="$border"
       accessibilityRole="button"
       accessibilityLabel={label}
+      accessibilityHint={t('diary.entry.readHint')}
     >
-      {preview !== '' && (
-        <Paragraph
-          size={TEXT.body}
-          color="$cardForeground"
-          numberOfLines={NOTE_LINES}
-          ellipsizeMode="tail"
-        >
-          {preview}
-        </Paragraph>
-      )}
+      <YStack flex={1} minW={0} gap={SPACING.items}>
+        {preview !== '' && (
+          <Paragraph
+            size={TEXT.body}
+            color="$cardForeground"
+            numberOfLines={NOTE_LINES}
+            ellipsizeMode="tail"
+          >
+            {preview}
+          </Paragraph>
+        )}
 
-      <XStack items="flex-end" justify="space-between" gap={SPACING.items}>
-        <YStack flex={1} minW={0} gap={SPACING.text}>
+        <YStack gap={SPACING.text}>
           <XStack items="center" gap="$1.5">
             <GoalDot slot={goal.colorSlot} size={8} />
             <SizableText
@@ -90,25 +91,40 @@ export function DiaryEntryCard({
             </SizableText>
           </XStack>
 
-          {total > 0 && (
-            <CompletionStatus
-              status={status}
-              answered={answered}
-              total={total}
-            />
+          {(total > 0 || mood !== null) && (
+            <XStack items="center" gap="$1.5" flexWrap="wrap">
+              {total > 0 && (
+                <CompletionStatus
+                  status={status}
+                  answered={answered}
+                  total={total}
+                />
+              )}
+
+              {total > 0 && mood !== null && (
+                <SizableText size={TEXT.caption} color="$mutedForeground">
+                  ·
+                </SizableText>
+              )}
+
+              {mood !== null && (
+                <XStack items="center" gap="$1">
+                  <MoodFace
+                    score={mood}
+                    size={MOOD_FACE}
+                    color={theme.mutedForeground.val}
+                  />
+                  <SizableText size={TEXT.caption} color="$mutedForeground">
+                    {t(MOOD_LABELS[mood])}
+                  </SizableText>
+                </XStack>
+              )}
+            </XStack>
           )}
         </YStack>
+      </YStack>
 
-        {mood !== null && (
-          <Circle size={MOOD_BADGE} items="center" justify="center" bg="$muted">
-            <MoodFace
-              score={mood}
-              size={MOOD_FACE}
-              color={theme.mutedForeground.val}
-            />
-          </Circle>
-        )}
-      </XStack>
-    </YStack>
+      <ChevronRight size={ICON.row} color="$mutedForeground" />
+    </XStack>
   );
 }

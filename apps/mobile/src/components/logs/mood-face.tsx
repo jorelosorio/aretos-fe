@@ -3,11 +3,35 @@ import { Circle, G, Path, Svg } from 'react-native-svg';
 import type { MoodScore } from '@/features/logs';
 
 import {
+  FACE_BLANK_DASH,
   FACE_BOX,
   FACE_HEAD,
   FACE_STROKE_WIDTH,
   MOOD_FACES,
 } from './mood-faces';
+
+export function MoodBlank({ size, color }: { size: number; color: string }) {
+  return (
+    <Svg
+      width={size * FACE_BOX.aspect}
+      height={size}
+      viewBox={FACE_BOX.viewBox}
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants"
+    >
+      <Circle
+        cx={FACE_HEAD.cx}
+        cy={FACE_HEAD.cy}
+        r={FACE_HEAD.r}
+        fill="none"
+        stroke={color}
+        strokeWidth={FACE_STROKE_WIDTH}
+        strokeDasharray={FACE_BLANK_DASH}
+        strokeLinecap="round"
+      />
+    </Svg>
+  );
+}
 
 export function MoodFace({
   score,

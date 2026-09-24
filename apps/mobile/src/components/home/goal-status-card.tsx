@@ -1,4 +1,3 @@
-import { useTheme } from '@tamagui/core';
 import { ChevronRight, Flame } from '@tamagui/lucide-icons-2';
 import { Separator, SizableText, XStack, YStack } from 'tamagui';
 
@@ -8,7 +7,6 @@ import {
   PERIOD_STATUS_COLORS,
   PERIOD_STATUS_LABELS,
 } from '@/components/goals/period-status';
-import { MoodFace } from '@/components/logs/mood-face';
 import { MOOD_LABELS } from '@/components/logs/mood-labels';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
 import type { Goal, GoalProgress, PeriodStatus } from '@/features/goals';
@@ -24,7 +22,6 @@ const FREQUENCY_LABELS: Record<Goal['trackingFrequency'], TranslationKey> = {
 };
 
 const TRACK_HEIGHT = 6;
-const MOOD_FACE = 22;
 
 function StreakChip({ count }: { count: number }) {
   const { t } = useTranslations();
@@ -94,7 +91,6 @@ export function GoalStatusCard({
   onPress: () => void;
 }) {
   const { t } = useTranslations();
-  const theme = useTheme();
 
   const { currentPeriod, currentStreak, longestStreak, atRisk, daysLeft } =
     progress;
@@ -177,25 +173,11 @@ export function GoalStatusCard({
         {hasHabits ? (
           <>
             <YStack gap={SPACING.group}>
-              <XStack
-                items="center"
-                justify="space-between"
-                gap={SPACING.items}
-              >
-                <CompletionStatus
-                  status={status}
-                  answered={answered}
-                  total={total}
-                />
-
-                {mood != null && (
-                  <MoodFace
-                    score={mood}
-                    size={MOOD_FACE}
-                    color={theme.mutedForeground.val}
-                  />
-                )}
-              </XStack>
+              <CompletionStatus
+                status={status}
+                answered={answered}
+                total={total}
+              />
 
               <ProgressTrack
                 answered={answered}
@@ -209,6 +191,7 @@ export function GoalStatusCard({
                 entryDate={currentPeriod.entryDate}
                 endDate={currentPeriod.endDate}
                 daysLeft={daysLeft}
+                mood={mood}
               />
             ) : (
               <WeekStrip

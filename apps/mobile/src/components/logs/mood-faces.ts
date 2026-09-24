@@ -57,6 +57,17 @@ export const FACE_BOX: FaceBox = { viewBox: '42 34 76 76', aspect: 1 };
 export const FACE_STROKE_WIDTH = 3;
 
 /**
+ * The dashes of the empty head drawn where a period has no mood.
+ *
+ * It is the face's own head, dashed, so a day with no answer holds the exact
+ * footprint a face would and the row does not shift as moods are filled in.
+ * In head units, not points: about a dozen dashes round a 36-unit head, which
+ * still reads as "dashed" rather than "dotted" once scaled down to a 16-18pt
+ * glyph. Solid would read as a face with its features missing.
+ */
+export const FACE_BLANK_DASH = '10 9';
+
+/**
  * The five, read left to right as the picker lays them out.
  *
  * Two things carry the scale, and they move together so neighbouring faces

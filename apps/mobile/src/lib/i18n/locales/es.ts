@@ -40,6 +40,7 @@ export const es = {
     title: 'Diario',
     entry: {
       more: '+%{count} más',
+      readHint: 'Abre la nota completa para leerla con calma.',
     },
     close: 'Cerrar',
     empty: {
