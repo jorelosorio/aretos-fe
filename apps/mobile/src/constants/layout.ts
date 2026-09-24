@@ -152,14 +152,18 @@ export const TEXT = {
  *   glass effect is iOS 26 only and draws surfaces, not backdrops), and a
  *   translucent black curtain read as a rendering glitch rather than as
  *   focus. The menu carries a shadow instead; a tap outside still closes it.
- * - **The check-in is the one exception** to a header confirm: it is a flow
- *   worked through top to bottom every day, so its save sits in a sticky
- *   footer under the thumb, with the progress it is saving beside it.
+ * - **No exceptions for long flows.** The check-in once kept its save in a
+ *   sticky footer on the argument that it is worked through top to bottom
+ *   daily; it read as a second convention for the same job. Its confirm is
+ *   in the header like every other modal's, and the "2 of 3" it used to sit
+ *   beside moved up to the period title, where it describes what is being
+ *   saved rather than the button.
  */
 export const BUTTON = {
   /**
-   * The screen's main action — the check-in's save in its sticky footer, an
-   * empty state's way forward. One per screen.
+   * An empty state's way forward, or a standalone action such as signing in
+   * or out. One per screen. A form's confirm is never this size: it is a
+   * `HeaderTextButton`.
    */
   primary: '$5',
   /** An icon-only action: a header, a row, a menu, a close. */
@@ -228,7 +232,17 @@ export const HEADER_INSET = 8;
  *
  * The bar floats over the scene instead of taking layout space, which is what
  * lets content pass behind it and read as floating. Scrolling screens pay for
- * that with `useTabBarInset` as bottom padding.
+ * that with `useTabBarInset` as bottom padding: the pill plus a `gap` above
+ * it, so the last item comes to rest clear of the bar rather than touching it.
+ *
+ * Content passing behind is why the pill carries a border and a wide, soft
+ * shadow: it is a `$card` over lists of `$card`, and without an edge a goal
+ * card scrolling underneath merged into it. Two things were tried and
+ * dropped. A scrim fading content out behind the pill hid everything below
+ * it — an opaque bottom bar with extra steps, so the bar stopped floating.
+ * A lighter "elevated" surface colour for the pill read as a different
+ * component rather than as the same card raised. The pill stays `$card`;
+ * the shadow halo is what lifts it.
  */
 export const TAB_BAR = {
   height: 64,

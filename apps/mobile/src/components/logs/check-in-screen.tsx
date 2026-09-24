@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Check, Maximize2, Plus } from '@tamagui/lucide-icons-2';
 import {
   Button,
@@ -13,6 +14,7 @@ import {
 } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
+import { HeaderTextButton } from '@/components/common/header-actions';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
 import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';
@@ -66,6 +68,7 @@ function CheckInForm({
 }) {
   const { t, locale } = useTranslations();
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const toMessage = useLogErrorMessage();
 
   const [noteOpen, setNoteOpen] = useState(false);
@@ -77,8 +80,6 @@ function CheckInForm({
     existing: period?.logged ? period : undefined,
     isLoaded: period !== undefined,
   });
-
-  const busy = draft.isLoading || draft.isSaving;
 
   const save = () =>
     void draft
@@ -104,11 +105,26 @@ function CheckInForm({
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
+      <Stack.Screen
+        options={{
+          title: goal.name,
+          headerRight: () => (
+            <HeaderTextButton
+              label={t(period?.logged === true ? 'logs.update' : 'logs.save')}
+              onPress={save}
+              disabled={draft.isLoading}
+              busy={draft.isSaving}
+            />
+          ),
+        }}
+      />
+
       <YStack flex={1} bg="$background">
         <ScrollView
           flex={1}
           keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{ grow: 1 }}
+          keyboardDismissMode="on-drag"
+          contentContainerStyle={{ grow: 1, pb: insets.bottom }}
         >
           <YStack p={SPACING.screen} gap={SPACING.section}>
             <WeekPicker
@@ -120,10 +136,29 @@ function CheckInForm({
               onSelect={pick}
             />
 
-            <XStack items="center" justify="space-between">
-              <SectionTitle>
-                {periodLabel(periodDate, goal.trackingFrequency, locale, t)}
-              </SectionTitle>
+            <YStack gap={SPACING.text}>
+              <XStack
+                items="center"
+                justify="space-between"
+                gap={SPACING.items}
+              >
+                <SectionTitle>
+                  {periodLabel(periodDate, goal.trackingFrequency, locale, t)}
+                </SectionTitle>
+
+                {!draft.isLoading && (
+                  <SizableText
+                    size={TEXT.caption}
+                    fontWeight="600"
+                    color="$mutedForeground"
+                  >
+                    {t('logs.progress', {
+                      answered: draft.answered,
+                      total: draft.total,
+                    })}
+                  </SizableText>
+                )}
+              </XStack>
 
               {period?.logged === true && (
                 <XStack items="center" gap="$2">
@@ -133,7 +168,7 @@ function CheckInForm({
                   </SizableText>
                 </XStack>
               )}
-            </XStack>
+            </YStack>
 
             <ErrorNotice message={toMessage(draft.saveError)} />
 
@@ -194,35 +229,6 @@ function CheckInForm({
             )}
           </YStack>
         </ScrollView>
-
-        <YStack
-          gap={SPACING.group}
-          p={SPACING.screen}
-          bg="$card"
-          borderTopWidth={1}
-          borderTopColor="$border"
-        >
-          <SizableText
-            size={TEXT.caption}
-            color="$mutedForeground"
-            text="center"
-          >
-            {t('logs.progress', {
-              answered: draft.answered,
-              total: draft.total,
-            })}
-          </SizableText>
-
-          <Button
-            size={BUTTON.primary}
-            theme="accent"
-            onPress={save}
-            disabled={busy}
-            opacity={busy ? 0.7 : 1}
-          >
-            {t(period?.logged === true ? 'logs.update' : 'logs.save')}
-          </Button>
-        </YStack>
       </YStack>
 
       <NoteEditor
@@ -300,18 +306,15 @@ export function CheckInScreen({
     periods.find((entry) => entry.entryDate === periodDate) ?? single;
 
   return (
-    <>
-      <Stack.Screen options={{ title: goal.name }} />
-      <CheckInForm
-        goal={goal}
-        habits={habits}
-        periods={periods}
-        period={period}
-        periodDate={periodDate}
-        selected={selected}
-        today={progress.today}
-        onSelect={setSelected}
-      />
-    </>
+    <CheckInForm
+      goal={goal}
+      habits={habits}
+      periods={periods}
+      period={period}
+      periodDate={periodDate}
+      selected={selected}
+      today={progress.today}
+      onSelect={setSelected}
+    />
   );
 }

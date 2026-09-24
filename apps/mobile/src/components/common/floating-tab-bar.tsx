@@ -17,7 +17,7 @@ const Slot = styled(YStack, {
 
 export function useTabBarInset() {
   const insets = useSafeAreaInsets();
-  return insets.bottom + TAB_BAR.gap + TAB_BAR.height;
+  return insets.bottom + TAB_BAR.gap * 2 + TAB_BAR.height;
 }
 
 export function FloatingTabBar({
@@ -83,6 +83,13 @@ export function FloatingTabBar({
         px="$2"
         bg="$card"
         rounded={TAB_BAR.height / 2}
+        borderWidth={1}
+        borderColor="$border"
+        shadowColor="#000"
+        shadowOpacity={0.18}
+        shadowRadius={20}
+        shadowOffset={{ width: 0, height: 6 }}
+        elevation={8}
       >
         {tabs}
 

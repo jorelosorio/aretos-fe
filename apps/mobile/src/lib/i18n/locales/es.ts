@@ -275,8 +275,8 @@ export const es = {
     },
     editing: 'Estás editando un registro guardado',
     progress: '%{answered} de %{total}',
-    save: 'Guardar registro',
-    update: 'Actualizar registro',
+    save: 'Guardar',
+    update: 'Actualizar',
     note: 'Nota',
     noteEditor: {
       open: 'Ampliar la nota',

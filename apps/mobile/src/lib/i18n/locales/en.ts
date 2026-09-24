@@ -274,8 +274,8 @@ export const en = {
     },
     editing: "You're editing a saved entry",
     progress: '%{answered} of %{total}',
-    save: 'Save entry',
-    update: 'Update entry',
+    save: 'Save',
+    update: 'Update',
     note: 'Note',
     noteEditor: {
       open: 'Expand the note',
