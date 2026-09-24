@@ -13,6 +13,7 @@ import { useStackHeaderOptions } from '@/components/common/stack-header';
 import { useTranslations } from '@/lib/i18n';
 import { useSession, useSessionAutoRefresh } from '@/features/auth';
 import { usePreferences } from '@/lib/preferences';
+import { NavigationThemeProvider } from '@/providers/navigation-theme-provider';
 import { QueryProvider } from '@/providers/query-provider';
 
 // Closes the auth popup left over from a redirect on web. No-op on native.
@@ -97,9 +98,11 @@ export default function RootLayout() {
     <TamaguiProvider config={config} defaultTheme={resolved}>
       <StatusBar style={resolved === 'dark' ? 'light' : 'dark'} />
 
-      <QueryProvider>
-        <RootNavigator />
-      </QueryProvider>
+      <NavigationThemeProvider>
+        <QueryProvider>
+          <RootNavigator />
+        </QueryProvider>
+      </NavigationThemeProvider>
     </TamaguiProvider>
   );
 }
