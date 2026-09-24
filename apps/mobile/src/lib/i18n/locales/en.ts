@@ -14,8 +14,14 @@ export const en = {
     welcomeBack: 'Welcome back',
     streaks: {
       days: '%{count} d',
-      none: 'No streak',
-      label: '%{count} day streak',
+      weeks: '%{count} wk',
+      labelDay: 'A 1-day streak',
+      labelDays: 'A %{count}-day streak',
+      labelWeek: 'A 1-week streak',
+      labelWeeks: 'A %{count}-week streak',
+      bestDays: 'Best streak: %{count} d',
+      bestWeeks: 'Best streak: %{count} wk',
+      bestNow: 'Your best streak yet',
     },
     today: {
       title: "Today's report",
@@ -27,7 +33,6 @@ export const en = {
       edit: 'Edit entry',
       addHabit: 'Add a habit',
     },
-    best: 'Best streak: %{count} d',
     daysLeftOne: 'Last day',
     daysLeftMany: '%{count} days left',
   },
@@ -481,7 +486,8 @@ export const en = {
       weekly: 'Weekly',
       weeklyHint: 'Every week counts as one period for the streak.',
       flexible: 'Flexible',
-      flexibleHint: 'Log whenever you like; the streak is measured weekly.',
+      flexibleHint:
+        "Log whenever you like; days you don't log never break the streak.",
     },
     streak: {
       loggedShort: 'Logging',

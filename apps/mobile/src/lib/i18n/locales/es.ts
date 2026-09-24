@@ -15,8 +15,14 @@ export const es = {
     welcomeBack: 'Bienvenido de vuelta',
     streaks: {
       days: '%{count} d',
-      none: 'Sin racha',
-      label: 'Racha de %{count} días',
+      weeks: '%{count} sem',
+      labelDay: 'Racha de 1 día',
+      labelDays: 'Racha de %{count} días',
+      labelWeek: 'Racha de 1 semana',
+      labelWeeks: 'Racha de %{count} semanas',
+      bestDays: 'Mejor racha: %{count} d',
+      bestWeeks: 'Mejor racha: %{count} sem',
+      bestNow: 'Tu mejor racha hasta ahora',
     },
     today: {
       title: 'Tu reporte de hoy',
@@ -28,7 +34,6 @@ export const es = {
       edit: 'Editar registro',
       addHabit: 'Añadir un hábito',
     },
-    best: 'Mejor racha: %{count} d',
     daysLeftOne: 'Último día',
     daysLeftMany: 'Quedan %{count} días',
   },
@@ -480,7 +485,8 @@ export const es = {
       weekly: 'Semanal',
       weeklyHint: 'Cada semana cuenta como un periodo para la racha.',
       flexible: 'Flexible',
-      flexibleHint: 'Registra cuando quieras; la racha se mide por semana.',
+      flexibleHint:
+        'Registra cuando quieras; los días sin registro no rompen la racha.',
     },
     streak: {
       loggedShort: 'Registrar',

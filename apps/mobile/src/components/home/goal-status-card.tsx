@@ -23,10 +23,21 @@ const FREQUENCY_LABELS: Record<Goal['trackingFrequency'], TranslationKey> = {
 
 const TRACK_HEIGHT = 6;
 
-function StreakChip({ count }: { count: number }) {
-  const { t } = useTranslations();
-  const alive = count > 0;
+const STREAK_DAYS = {
+  short: 'home.streaks.days',
+  one: 'home.streaks.labelDay',
+  many: 'home.streaks.labelDays',
+  best: 'home.streaks.bestDays',
+} as const satisfies Record<string, TranslationKey>;
 
+const STREAK_WEEKS = {
+  short: 'home.streaks.weeks',
+  one: 'home.streaks.labelWeek',
+  many: 'home.streaks.labelWeeks',
+  best: 'home.streaks.bestWeeks',
+} as const satisfies Record<string, TranslationKey>;
+
+function StreakChip({ text }: { text: string }) {
   return (
     <XStack
       items="center"
@@ -34,18 +45,11 @@ function StreakChip({ count }: { count: number }) {
       px="$2"
       py="$1"
       rounded="$lg"
-      bg={alive ? '$accentSurface' : '$muted'}
+      bg="$accentSurface"
     >
-      <Flame
-        size={ICON.inline}
-        color={alive ? '$primary' : '$mutedForeground'}
-      />
-      <SizableText
-        size={TEXT.caption}
-        fontWeight="700"
-        color={alive ? '$primary' : '$mutedForeground'}
-      >
-        {t('home.streaks.days', { count })}
+      <Flame size={ICON.inline} color="$primary" />
+      <SizableText size={TEXT.caption} fontWeight="700" color="$primary">
+        {text}
       </SizableText>
     </XStack>
   );
@@ -108,15 +112,26 @@ export function GoalStatusCard({
   else if (logged) action = t('home.cta.edit');
   else action = t(weekly ? 'home.cta.logWeek' : 'home.cta.log');
 
-  const note =
-    longestStreak > 0 ? t('home.best', { count: longestStreak }) : '';
+  const streak = weekly ? STREAK_WEEKS : STREAK_DAYS;
+  const hasStreak = currentStreak > 0;
+
+  let note = '';
+  if (hasStreak && currentStreak >= longestStreak) {
+    note = t('home.streaks.bestNow');
+  } else if (longestStreak > 0) {
+    note = t(streak.best, { count: longestStreak });
+  }
 
   const label = [
     goal.name,
     context,
-    currentStreak > 0
-      ? t('home.streaks.label', { count: currentStreak })
-      : t('home.streaks.none'),
+    ...(hasStreak
+      ? [
+          t(currentStreak === 1 ? streak.one : streak.many, {
+            count: currentStreak,
+          }),
+        ]
+      : []),
     ...(hasHabits
       ? [
           t(PERIOD_STATUS_LABELS[status]),
@@ -165,7 +180,9 @@ export function GoalStatusCard({
             </SizableText>
           </YStack>
 
-          <StreakChip count={currentStreak} />
+          {hasStreak && (
+            <StreakChip text={t(streak.short, { count: currentStreak })} />
+          )}
         </XStack>
 
         {hasHabits ? (
