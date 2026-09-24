@@ -4,9 +4,12 @@ import {
   type NativeScrollEvent,
   type NativeSyntheticEvent,
 } from 'react-native';
+import Svg, { Circle as SvgCircle } from 'react-native-svg';
+import { useTheme } from '@tamagui/core';
 import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons-2';
 import { Button, Circle, SizableText, XStack, YStack } from 'tamagui';
 
+import { resolveColor } from '@/components/common/theme-color';
 import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';
 import type {
   GoalPeriod,
@@ -65,6 +68,8 @@ function DayCell({
   isFuture: boolean;
   onPress: () => void;
 }) {
+  const theme = useTheme();
+
   return (
     <YStack
       flex={1}
@@ -96,10 +101,16 @@ function DayCell({
         </SizableText>
       </Circle>
 
-      <Circle
-        size={DOT}
-        bg={status === null ? 'transparent' : PERIOD_STATUS_COLORS[status]}
-      />
+      <Svg width={DOT} height={DOT}>
+        {status !== null && (
+          <SvgCircle
+            cx={DOT / 2}
+            cy={DOT / 2}
+            r={DOT / 2}
+            fill={resolveColor(theme, PERIOD_STATUS_COLORS[status])}
+          />
+        )}
+      </Svg>
     </YStack>
   );
 }
