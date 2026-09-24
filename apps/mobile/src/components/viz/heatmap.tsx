@@ -1,5 +1,6 @@
-import { useMemo } from 'react';
-import { ScrollView, XStack, YStack } from 'tamagui';
+import { useMemo, useRef } from 'react';
+import { ScrollView } from 'react-native';
+import { XStack, YStack } from 'tamagui';
 
 import type { HeatCell } from '@/features/analysis';
 import { weekdayIndex } from '@/features/logs';
@@ -54,6 +55,7 @@ export function Heatmap({
   onSelect?: (cell: HeatCell) => void;
 }) {
   const columns = useMemo(() => toColumns(cells), [cells]);
+  const scroll = useRef<ScrollView>(null);
 
   const size = Math.max(
     MIN_CELL,
@@ -99,9 +101,12 @@ export function Heatmap({
 
   return (
     <ScrollView
+      ref={scroll}
       horizontal
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{ flexDirection: 'row-reverse' }}
+      onContentSizeChange={() =>
+        scroll.current?.scrollToEnd({ animated: false })
+      }
     >
       {grid}
     </ScrollView>
