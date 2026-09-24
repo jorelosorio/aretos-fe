@@ -109,9 +109,9 @@ export function useGoalCheckIn(id: string, date?: string) {
 /**
  * Every write invalidates the whole feature rather than patching one list.
  *
- * A goal moves between the active and archived lists, and the server assigns
- * `color_slot` and orders by it, so the lists a write touches are not
- * knowable from the response alone.
+ * A goal moves between the active and archived lists, and its colour shows
+ * wherever it is named — the diary and the analysis carry their own copy —
+ * so the queries a write touches are not knowable from the response alone.
  *
  * The plan's limits go with it, but only when a row appears or disappears.
  * Creating and deleting move the usage count behind `can_create`, which is

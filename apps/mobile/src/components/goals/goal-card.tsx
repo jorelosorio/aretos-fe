@@ -5,6 +5,8 @@ import { ICON, SPACING, TEXT } from '@/constants/layout';
 import type { Goal } from '@/features/goals';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
 
+import { GoalDot } from './goal-dot';
+
 const FREQUENCY_LABELS: Record<Goal['trackingFrequency'], TranslationKey> = {
   daily: 'goals.frequency.daily',
   weekly: 'goals.frequency.weekly',
@@ -41,13 +43,17 @@ export function GoalCard({
       accessibilityLabel={`${goal.name}. ${actions}`}
     >
       <YStack flex={1} gap={SPACING.text}>
-        <SizableText
-          size={TEXT.subheading}
-          fontFamily="$heading"
-          color="$cardForeground"
-        >
-          {goal.name}
-        </SizableText>
+        <XStack items="center" gap="$2">
+          <GoalDot slot={goal.colorSlot} />
+          <SizableText
+            flex={1}
+            size={TEXT.subheading}
+            fontFamily="$heading"
+            color="$cardForeground"
+          >
+            {goal.name}
+          </SizableText>
+        </XStack>
 
         {goal.description !== '' && (
           <Paragraph

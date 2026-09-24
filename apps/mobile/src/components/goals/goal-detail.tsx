@@ -18,6 +18,8 @@ import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
 import { HabitCard } from '@/components/habits/habit-card';
 import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';
+
+import { GoalDot } from './goal-dot';
 import type { Goal } from '@/features/goals';
 import { useHabitErrorMessage, useHabits } from '@/features/habits';
 import { useAllowance } from '@/features/limits';
@@ -61,13 +63,17 @@ function GoalSummary({ goal, habitCount }: { goal: Goal; habitCount: number }) {
       borderWidth={1}
       borderColor="$border"
     >
-      <SizableText
-        size={TEXT.title}
-        fontFamily="$heading"
-        color="$cardForeground"
-      >
-        {goal.name}
-      </SizableText>
+      <XStack items="center" gap={SPACING.group}>
+        <GoalDot slot={goal.colorSlot} size={14} />
+        <SizableText
+          flex={1}
+          size={TEXT.title}
+          fontFamily="$heading"
+          color="$cardForeground"
+        >
+          {goal.name}
+        </SizableText>
+      </XStack>
 
       {goal.description !== '' && (
         <Paragraph size={TEXT.body} color="$mutedForeground">

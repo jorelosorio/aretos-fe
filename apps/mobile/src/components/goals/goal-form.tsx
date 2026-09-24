@@ -23,6 +23,7 @@ import { ErrorNotice } from '@/components/common/error-notice';
 import { HeaderTextButton } from '@/components/common/header-actions';
 import { OptionGroup, type Option } from '@/components/common/option-group';
 import { SectionTitle } from '@/components/common/section-title';
+import { GoalColorPicker } from '@/components/goals/goal-color-picker';
 import {
   useCreateGoal,
   useGoalErrorMessage,
@@ -181,6 +182,16 @@ export function GoalForm({
                 borderColor="$border"
               />
             </YStack>
+
+            <GoalColorPicker
+              value={draft.colorSlot}
+              onChange={(slot) => patch({ colorSlot: slot })}
+              hint={t(
+                draft.colorSlot === null
+                  ? 'goals.form.colorAuto'
+                  : 'goals.form.colorHint',
+              )}
+            />
 
             <OptionGroup
               title={t('goals.form.frequency')}

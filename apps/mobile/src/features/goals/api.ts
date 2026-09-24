@@ -221,13 +221,17 @@ function toBody(patch: GoalPatch): Record<string, unknown> {
   if (patch.streakThreshold !== undefined) {
     body.streak_threshold = patch.streakThreshold;
   }
+  // null is "let the server choose", which on the wire is the key left out.
+  if (patch.colorSlot !== undefined && patch.colorSlot !== null) {
+    body.color_slot = patch.colorSlot;
+  }
   if (patch.archived !== undefined) body.archived = patch.archived;
 
   return body;
 }
 
 /**
- * The user's goals, in `color_slot` order.
+ * The user's goals, oldest first.
  *
  * Leaving `archived` out is a third state, not a default: the server then
  * returns active and archived together.

@@ -461,8 +461,22 @@ export const en = {
       frequency: 'Your cadence',
       streakRule: 'What keeps the streak alive?',
       threshold: 'Minimum',
+      color: 'Color',
+      colorHint: 'This is how you spot this goal across the app.',
+      colorAuto:
+        "If you don't pick one, you get a color none of your other goals uses.",
       create: 'Create',
       save: 'Save',
+    },
+    colors: {
+      terracotta: 'Terracotta',
+      teal: 'Teal',
+      ochre: 'Ochre',
+      rose: 'Rose',
+      purple: 'Purple',
+      brown: 'Brown',
+      blue: 'Blue',
+      moss: 'Moss',
     },
     frequency: {
       daily: 'Daily',

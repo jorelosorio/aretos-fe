@@ -3,6 +3,7 @@ import { Archive } from '@tamagui/lucide-icons-2';
 import { Circle, Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
 import { CompletionStatus } from '@/components/goals/completion-status';
+import { GoalDot } from '@/components/goals/goal-dot';
 import { MoodFace } from '@/components/logs/mood-face';
 import { MOOD_LABELS } from '@/components/logs/mood-labels';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
@@ -66,6 +67,7 @@ export function DiaryEntryCard({
       <XStack items="flex-end" justify="space-between" gap={SPACING.items}>
         <YStack flex={1} minW={0} gap={SPACING.text}>
           <XStack items="center" gap="$1.5">
+            <GoalDot slot={goal.colorSlot} size={8} />
             <SizableText
               shrink={1}
               size={TEXT.caption}

@@ -17,6 +17,7 @@ import { ErrorNotice } from '@/components/common/error-notice';
 import { HeaderTextButton } from '@/components/common/header-actions';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
+import { GoalHeaderTitle } from '@/components/goals/goal-header-title';
 import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';
 import {
   useGoalCheckIn,
@@ -103,6 +104,13 @@ function CheckInForm({
       <Stack.Screen
         options={{
           title: goal.name,
+          headerTitle: ({ children, tintColor }) => (
+            <GoalHeaderTitle
+              slot={goal.colorSlot}
+              title={children}
+              color={tintColor}
+            />
+          ),
           headerRight: () => (
             <HeaderTextButton
               label={t(period?.logged === true ? 'logs.update' : 'logs.save')}
@@ -275,7 +283,18 @@ export function CheckInScreen({
   if (habits.length === 0) {
     return (
       <>
-        <Stack.Screen options={{ title: goal.name }} />
+        <Stack.Screen
+          options={{
+            title: goal.name,
+            headerTitle: ({ children, tintColor }) => (
+              <GoalHeaderTitle
+                slot={goal.colorSlot}
+                title={children}
+                color={tintColor}
+              />
+            ),
+          }}
+        />
         <EmptyLog
           Icon={Plus}
           title={t('logs.empty.noHabitsTitle')}

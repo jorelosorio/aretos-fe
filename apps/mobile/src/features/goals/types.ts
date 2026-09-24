@@ -43,7 +43,7 @@ export type Goal = {
   streakRule: StreakRule;
   /** 0–100, and only meaningful when `streakRule` is `'threshold'`. */
   streakThreshold: number;
-  /** The server's colour assignment — an index into the chart palette. */
+  /** The user's colour for the goal — an index into the goal palette, 0–7. */
   colorSlot: number;
   archived: boolean;
   /** ISO 8601, as the server sent it. */
@@ -72,9 +72,12 @@ export type Goal = {
 };
 
 /**
- * Everything the form decides: not identity, and not colour. `color_slot` is
- * the server's to assign, since two devices creating at once would otherwise
- * both pick the same one.
+ * Everything the form decides, colour included; not identity.
+ *
+ * `colorSlot: null` leaves the colour to the server, which gives a new goal
+ * one no active goal is wearing. Picking the free one here would mean
+ * working out from a possibly stale list what the server already knows, so
+ * a create the user did not colour sends nothing and lets it choose.
  */
 export type GoalDraft = {
   name: string;
@@ -82,6 +85,7 @@ export type GoalDraft = {
   trackingFrequency: TrackingFrequency;
   streakRule: StreakRule;
   streakThreshold: number;
+  colorSlot: number | null;
 };
 
 /** A patch sends only what changed; archiving is just `{ archived: true }`. */
@@ -94,6 +98,7 @@ export const EMPTY_DRAFT: GoalDraft = {
   trackingFrequency: 'daily',
   streakRule: 'logged',
   streakThreshold: 60,
+  colorSlot: null,
 };
 
 /** The subset of `internal/api/errors/codes.go` this feature reacts to. */

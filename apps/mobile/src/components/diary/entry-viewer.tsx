@@ -3,6 +3,7 @@ import { Paragraph, ScrollView, YStack } from 'tamagui';
 
 import { FullScreenSheet } from '@/components/common/full-screen-sheet';
 import { NOTE_TEXT } from '@/components/common/note-text';
+import { GoalDot } from '@/components/goals/goal-dot';
 import type { DiaryEntry } from '@/features/diary';
 import { useTranslations } from '@/lib/i18n';
 
@@ -21,6 +22,9 @@ export function EntryViewer({
     <FullScreenSheet
       open={entry !== null}
       title={entry?.goal.name ?? ''}
+      leading={
+        entry === null ? undefined : <GoalDot slot={entry.goal.colorSlot} />
+      }
       meta={
         entry === null
           ? ''

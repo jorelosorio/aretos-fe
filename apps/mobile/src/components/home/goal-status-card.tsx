@@ -3,6 +3,7 @@ import { ChevronRight, Flame } from '@tamagui/lucide-icons-2';
 import { Separator, SizableText, XStack, YStack } from 'tamagui';
 
 import { CompletionStatus } from '@/components/goals/completion-status';
+import { GoalDot } from '@/components/goals/goal-dot';
 import {
   PERIOD_STATUS_COLORS,
   PERIOD_STATUS_LABELS,
@@ -149,14 +150,18 @@ export function GoalStatusCard({
       <YStack gap={SPACING.items} p={SPACING.card}>
         <XStack items="flex-start" gap={SPACING.items}>
           <YStack flex={1} minW={0} gap={SPACING.text}>
-            <SizableText
-              size={TEXT.subheading}
-              fontFamily="$heading"
-              color="$cardForeground"
-              numberOfLines={2}
-            >
-              {goal.name}
-            </SizableText>
+            <XStack items="center" gap="$2">
+              <GoalDot slot={goal.colorSlot} />
+              <SizableText
+                flex={1}
+                size={TEXT.subheading}
+                fontFamily="$heading"
+                color="$cardForeground"
+                numberOfLines={2}
+              >
+                {goal.name}
+              </SizableText>
+            </XStack>
             <SizableText
               size={TEXT.caption}
               color="$mutedForeground"

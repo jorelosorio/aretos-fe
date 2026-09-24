@@ -12,6 +12,7 @@ type IconComponent = typeof X;
 export function FullScreenSheet({
   open,
   title,
+  leading,
   meta,
   Icon,
   iconLabel,
@@ -20,6 +21,7 @@ export function FullScreenSheet({
 }: {
   open: boolean;
   title: string;
+  leading?: ReactNode;
   meta: string;
   Icon: IconComponent;
   iconLabel: string;
@@ -44,7 +46,16 @@ export function FullScreenSheet({
           py={SPACING.group}
         >
           <YStack flex={1} minW={0} gap={SPACING.text}>
-            <SectionTitle>{title}</SectionTitle>
+            {leading === undefined ? (
+              <SectionTitle>{title}</SectionTitle>
+            ) : (
+              <XStack items="center" gap="$2">
+                {leading}
+                <YStack shrink={1}>
+                  <SectionTitle>{title}</SectionTitle>
+                </YStack>
+              </XStack>
+            )}
 
             {meta !== '' && (
               <SizableText size={TEXT.caption} color="$mutedForeground">

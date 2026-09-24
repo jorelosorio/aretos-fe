@@ -1,6 +1,6 @@
 import { Separator, SizableText, XStack, YStack } from 'tamagui';
 
-import { slotColor } from '@/components/goals/slot-color';
+import { GoalDot } from '@/components/goals/goal-dot';
 import { UNIT_LABELS } from '@/components/habits/unit-labels';
 import { ChartCard } from '@/components/viz/chart-card';
 import { formatRate } from '@/components/viz/format';
@@ -168,12 +168,7 @@ export function HabitsCard({
 
             {groups.length > 1 && (
               <XStack items="center" gap="$2">
-                <YStack
-                  width={8}
-                  height={8}
-                  rounded={4}
-                  bg={slotColor(goal.colorSlot)}
-                />
+                <GoalDot slot={goal.colorSlot} size={8} />
                 <SizableText
                   size={TEXT.caption}
                   fontWeight="700"

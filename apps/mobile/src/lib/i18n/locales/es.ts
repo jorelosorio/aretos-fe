@@ -460,8 +460,22 @@ export const es = {
       frequency: 'Tu cadencia',
       streakRule: '¿Qué mantiene viva la racha?',
       threshold: 'Mínimo',
+      color: 'Color',
+      colorHint: 'Así reconoces esta meta en toda la app.',
+      colorAuto:
+        'Si no eliges uno, te damos un color que no use ninguna de tus otras metas.',
       create: 'Crear',
       save: 'Guardar',
+    },
+    colors: {
+      terracotta: 'Terracota',
+      teal: 'Verde azulado',
+      ochre: 'Ocre',
+      rose: 'Rosa',
+      purple: 'Morado',
+      brown: 'Marrón',
+      blue: 'Azul',
+      moss: 'Musgo',
     },
     frequency: {
       daily: 'Diaria',

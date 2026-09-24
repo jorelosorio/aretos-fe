@@ -7,7 +7,7 @@ import {
 import { Separator, SizableText, XStack, YStack } from 'tamagui';
 
 import { shortDateLabel } from '@/components/common/date-label';
-import { slotColor } from '@/components/goals/slot-color';
+import { GoalDot } from '@/components/goals/goal-dot';
 import { ChartCard } from '@/components/viz/chart-card';
 import { formatRate } from '@/components/viz/format';
 import { Heatmap } from '@/components/viz/heatmap';
@@ -69,12 +69,7 @@ function GoalRow({
   return (
     <YStack gap={SPACING.items}>
       <XStack items="center" gap="$2">
-        <YStack
-          width={10}
-          height={10}
-          rounded={5}
-          bg={slotColor(goal.colorSlot)}
-        />
+        <GoalDot slot={goal.colorSlot} />
 
         <SizableText
           flex={1}
