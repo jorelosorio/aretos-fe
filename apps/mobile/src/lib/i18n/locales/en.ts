@@ -58,6 +58,10 @@ export const en = {
   analysis: {
     title: 'Analysis',
     empty: 'no data',
+    why: 'Why this matters',
+    overTime: 'Over the period',
+    trackedFrom:
+      'Your analysis counts from %{date}, when you started logging. Nothing before that counts as a miss.',
     errors: {
       badRequest: "We couldn't read the analysis. Try again.",
       locked: "Your plan doesn't include the analysis.",
@@ -94,47 +98,85 @@ export const en = {
       detail: 'Detail',
     },
     sectionHint: {
-      summary: 'How often you show up, and how much you finish when you do.',
+      summary: 'What matters most about this period, in a few lines.',
       rhythm:
-        'Where your strong and weak days fall, and which way you are going.',
-      mood: 'How much what you do depends on how you feel.',
-      detail: 'Goal by goal, and habit by habit.',
+        'Which days you follow through, how even you are, and where you are heading.',
+      mood: 'Whether what you do depends on how you feel.',
+      detail: 'Each goal and each habit on its own.',
+    },
+    insights: {
+      title: 'Your period',
+      showUp: 'You show up',
+      showUpCaption: '%{logged} of %{periods} check-ins',
+      followThrough: 'You follow through',
+      followThroughCaption: 'when you check in',
+      improving:
+        'You are improving: from %{from} to %{to} in the second half of the period.',
+      declining:
+        'You are slipping: from %{from} to %{to}. Worth looking at what changed in the last few weeks.',
+      steady: 'You are holding steady, around %{to}.',
+      weekday:
+        'You follow through less %{worst}: %{worstTen} of every 10, against %{bestTen} of every 10 %{best}.',
+      automatic:
+        'You follow through as well on low days as on good ones: your habits no longer depend on how you feel.',
+      dependent:
+        'On low days you follow through %{low}; on good days, %{high}. A plan for the low days closes that gap.',
+      formedOne:
+        '“%{habit}” is past the %{median} repetitions a habit typically takes to become automatic.',
+      formedMany:
+        '%{count} habits are past the %{median} repetitions it typically takes to become automatic.',
+      closest:
+        '“%{habit}” is at %{count} of %{median} repetitions: the closest one to becoming automatic.',
+      streak:
+        '%{count} periods in a row on “%{goal}”, your longest active streak.',
+      plan: 'Only %{count} of %{of} habits have an if-then plan, the technique that most raises the odds of following through.',
+      none: 'Keep logging: a few more days and your patterns show up here.',
     },
     setup: {
-      title: 'Your setup',
-      subtitle:
-        'How measurable what you track is. This can be answered before your first entry.',
+      title: 'How measurable your plan is',
+      subtitle: 'Three settings that make your numbers mean something.',
+      why: 'These do not depend on how much you log: they say whether what you track can be measured well. You can improve them today by editing each habit.',
       counts: '%{goals} goals · %{habits} active habits',
-      planned: 'With a plan',
-      thresholded: 'With a threshold',
-      weighted: 'With weights',
+      modes:
+        '%{binary} yes/no · %{count} count · %{duration} duration · %{rating} rating',
+      planned: 'If-then plan',
+      plannedHint:
+        'Deciding in advance when and where you will do it is what most closes the gap between intending and doing.',
+      thresholded: 'Success threshold',
+      thresholdedHint:
+        'Without one, a minute counts the same as an hour. It defines what “done” means for measured habits.',
+      weighted: 'Importance',
+      weightedHint:
+        'Sets how far each habit moves its goal: medium counts double, high counts triple.',
+      complete: 'Done',
+      na: 'Not applicable',
     },
     cadence: {
       title: 'Consistency',
-      subtitle:
-        'Showing up and doing well are different questions. A streak breaks in one day; this does not.',
+      subtitle: 'Showing up and following through are two different questions.',
+      why: 'One missed day breaks a streak; it barely moves these rates. That makes them the real measure of your consistency, and leaves the streak for celebrating.',
       logging: 'Logged',
-      completion: 'Completed',
-      counted: 'Counts for the streak',
+      completion: 'Followed through',
+      counted: 'Kept the streak',
       status: {
         complete: 'Complete',
         partial: 'Partial',
         missed: 'Missed',
         skipped: 'Skipped',
-        empty: 'No entry',
+        empty: 'Not logged',
       },
     },
     mix: {
-      title: 'What your rate is made of',
-      subtitle:
-        'Every answer falls into one of four states. Only the first two enter the calculation.',
-      achieved: 'Achieved',
-      missed: 'Not achieved',
-      skipped: 'Not applicable',
+      title: 'What your percentage is made of',
+      subtitle: 'Every answer lands in one of four states.',
+      why: 'Only “done” and “not done” count toward the percentage. “Didn’t apply” and “no answer” are left out on purpose so they do not punish you, but it means the percentage covers fewer days than it seems.',
+      achieved: 'Done',
+      missed: 'Not done',
+      skipped: 'Didn’t apply',
       blank: 'No answer',
-      center: '%{achieved} of %{opportunities} opportunities',
+      center: '%{achieved} of %{opportunities}',
       excluded:
-        '%{count} answers fell outside the rate: %{skipped} did not apply and %{blank} went unanswered. That is deliberate, but it means your rate describes a smaller base than it looks.',
+        '%{count} answers were left out of the percentage: %{skipped} didn’t apply and %{blank} had no answer.',
     },
     weekday: {
       mon: 'Mon',
@@ -145,29 +187,40 @@ export const en = {
       sat: 'Sat',
       sun: 'Sun',
     },
+    weekdayPlural: {
+      mon: 'on Mondays',
+      tue: 'on Tuesdays',
+      wed: 'on Wednesdays',
+      thu: 'on Thursdays',
+      fri: 'on Fridays',
+      sat: 'on Saturdays',
+      sun: 'on Sundays',
+    },
     rhythm: {
-      title: 'Your weekly rhythm',
-      subtitle:
-        'The average hides the shape of the week. This shows whether one particular day is getting away from you.',
-      spreadLabel: 'Gap between your best and worst day',
-      spreadValue: '%{points} pts',
-      spreadReading:
-        '%{best} is your strong day (%{bestRate}) and %{worst} the weakest (%{worstRate}). A gap like that is usually a calendar problem, not a willpower one.',
-      needExtremes: '%{count} days for each day of the week',
-      regularityLabel: 'Regularity',
+      title: 'Your week',
+      subtitle: 'Which days you follow through and which slip away.',
+      why: 'An average hides the shape of the week. If one day keeps dropping, it is usually a scheduling problem rather than a willpower one, and it is fixed by changing when you do it.',
+      best: 'Your best day',
+      worst: 'Your weakest day',
+      outOfTen: '%{count} of every 10',
+      needExtremes: '%{count} days of each weekday',
+      regularity: 'How even you are',
+      regularityBand: {
+        steady: 'Very even',
+        variable: 'Ups and downs',
+        erratic: 'Irregular',
+      },
       regularityReading:
-        'Your days vary by ±%{deviation} points around %{mean}.',
-      needRegularity: '%{count} days with an entry',
+        'Most days you follow through between %{low} and %{high}.',
+      needRegularity: '%{count} logged days',
     },
     trend: {
       title: 'Are you improving?',
-      subtitle:
-        'The second half of the window against the first, split by date.',
+      subtitle: 'The second half of the period against the first.',
+      why: 'Comparing the two halves by date shows where you are heading without one bad week hiding everything. Small changes count as steady on purpose.',
       first: 'First half',
       second: 'Second half',
       half: '%{count} days',
-      deltaLabel: 'Change',
-      deltaValue: '%{points} pts',
       direction: {
         improving: 'You are improving.',
         steady: 'You are holding steady.',
@@ -176,67 +229,103 @@ export const en = {
       need: '%{count} days in each half',
     },
     strength: {
-      negligible: 'Negligible',
-      weak: 'Weak',
-      moderate: 'Moderate',
-      strong: 'Strong',
+      negligible: 'No link',
+      weak: 'Weak link',
+      moderate: 'Moderate link',
+      strong: 'Strong link',
     },
     moods: {
       title: 'Your mood',
-      subtitle: 'How you used the 1-5 scale, and how often you answered it.',
-      summary: 'You answered in %{answered} of %{total} entries (%{rate}).',
+      subtitle: 'How you have felt when checking in.',
+      why: 'Logging your mood is what lets the app see whether your habits depend on how you feel. Without it, the two cards below have nothing to work with.',
+      average: 'Average mood',
+      distribution: 'How often you picked each one',
+      summary:
+        'You answered it in %{answered} of %{total} check-ins (%{rate}).',
     },
     moodPerformance: {
-      title: 'Mood against achievement',
-      subtitle:
-        'How much your behaviour depends on how you feel. A small gap is the good result.',
-      low: 'Low days',
-      neutral: 'Neutral days',
-      high: 'Good days',
+      title: 'Mood vs. follow-through',
+      subtitle: 'Do you follow through as well when you feel low?',
+      why: 'A formed habit is cued by context (the time, the place), not by how you feel. If you follow through as well on bad days as on good ones, the habit is carrying itself.',
+      low: 'Low mood',
+      neutral: 'Neutral mood',
+      high: 'High mood',
       days: '%{count} days',
-      gapLabel: 'Mood gap',
-      gapValue: '%{points} pts',
       automaticity: {
+        automatic: 'Carries itself',
+        mixed: 'In progress',
+        dependent: 'Mood-dependent',
+      },
+      reading: {
         automatic:
-          'Your behaviour holds up as well on bad days as on good ones. That is what a formed habit does.',
-        mixed: 'Your behaviour partly holds up, but mood still weighs on it.',
+          'You follow through about as well on low days (%{low}) as on good ones (%{high}).',
+        mixed:
+          'On low days you follow through %{low}, on good days %{high}: mood still weighs a little.',
         dependent:
-          'Your behaviour still rides on how you feel. A concrete plan for the low days is usually what closes that gap.',
+          'On low days you follow through %{low}, on good days %{high}. A concrete plan for low days usually closes that gap.',
       },
       need: '%{count} days at each end of the scale',
     },
     direction: {
-      title: 'Direction',
-      subtitle:
-        'The same day cannot separate cause from effect. Pairing each day with the next one breaks that symmetry.',
-      sameDay: 'Mood and achievement, same day',
-      moodLeads: 'Mood today → achievement tomorrow',
-      performanceLeads: 'Achievement today → mood tomorrow',
-      caveat:
-        'This narrows the possibilities, it does not settle them: anything that moved both would show up in either column.',
+      title: 'Which comes first?',
+      subtitle: 'Whether your mood drives what you do, or the other way round.',
+      why: 'Pairing each day with the next hints at what influences what. It is a clue, not proof: something outside, like poor sleep, could move both.',
+      sameDay: 'The same day',
+      moodLeads: 'Today’s mood and tomorrow’s follow-through',
+      performanceLeads: 'Today’s follow-through and tomorrow’s mood',
+      together: 'They rise and fall together.',
+      opposite: 'When one rises, the other falls.',
+      unclear: 'No clear link shows up.',
       need: '%{count} pairs of consecutive days',
     },
     heatmap: {
-      title: 'Consistency map',
-      subtitle:
-        'One square per day. Blank days had nothing due — they are not misses.',
+      title: 'Your calendar',
+      subtitle: 'One square per day. Tap one for the detail.',
+      why: 'A percentage says how much; the calendar says where. It shows whether your good run lasted six weeks or six days, and whether the gaps cluster. Blank squares had nothing due: they are not misses.',
       less: 'Less',
       more: 'More',
-      summary: '%{logged} days logged out of %{tracked} with something due.',
+      summary:
+        'You logged %{logged} of %{tracked} days that had something due.',
+      dayLogged: 'Logged %{logged} of %{periods}',
+      dayRate: 'followed through %{rate}',
+      daySkipped: 'marked “didn’t apply”',
+      dayMood: 'mood %{mood}',
+      dayMissed: 'Not logged',
+      dayFree: 'Nothing due this day',
     },
     goals: {
-      title: 'Per goal',
-      subtitle:
-        'Each goal with its own calendar. For a weekly goal this is the only one that reads correctly.',
-      streaks: 'Streak %{current} · longest %{longest}',
+      title: 'By goal',
+      subtitle: 'How each goal is doing on its own.',
+      why: 'For a weekly goal this calendar is the only one that reads correctly: the overall one mixes it with daily goals, which get a square every day.',
+      logging: 'Logged',
+      completion: 'Followed through',
+      streak: 'Streak',
+      best: 'best %{count}',
+      lastEntry: 'Last check-in: %{date}',
+      never: 'No check-ins yet',
+      notes: '%{count} with a note',
+      trend: {
+        improving: 'Improving',
+        steady: 'Steady',
+        declining: 'Slipping',
+      },
     },
     habits: {
-      title: 'Your habits',
-      subtitle:
-        'Each habit on its own. The median to automate one is %{median} repetitions, with an observed range of %{low} to %{high}.',
-      formation: 'Formation',
-      repetitions: '%{count} of %{median} repetitions',
-      span: 'Across %{count} days',
+      title: 'On the way to automatic',
+      subtitle: 'How many times you have followed through on each habit.',
+      why: 'A University College London study (Lally et al., 2010) found a habit takes a median of %{median} repetitions to become automatic, with individual cases between %{low} and %{high}. Missing a single day does not reset the count: that is why we count repetitions, not streaks.',
+      repetitions: '%{count} of %{median}',
+      stage: {
+        start: 'Starting',
+        forming: 'Taking shape',
+        close: 'Almost automatic',
+        formed: 'Automatic',
+      },
+      rate: 'Followed through %{rate}',
+      span: 'over %{count} days',
+      plan: 'Has a plan',
+      weight: 'Importance ×%{weight}',
+      noRate: 'No answers in this period yet',
     },
   },
   logs: {

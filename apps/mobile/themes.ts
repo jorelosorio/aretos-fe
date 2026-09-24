@@ -60,6 +60,60 @@ const accentDark = {
   accent12: '#1d1712',
 };
 
+/**
+ * The status colours, each defined once per scheme.
+ *
+ * Every role that means "done" — `good`, `outcomeDone`, `successInk`, and the
+ * moss goal slot `chart8` — reads from `done`, and every role that means
+ * "missed" or "watch this" — `warning`, `outcomeMissed`, and the ochre goal
+ * slot `chart3` — reads from `missed`. `destructive` and `critical` read from
+ * `danger`. They used to be separate
+ * literals that had drifted a few shades apart, so the analysis tab showed
+ * three greens on one screen: the donut's, the best-day bar's, and the
+ * verdict text's. A role here may alias one of these; it never gets its own
+ * value for the same meaning again.
+ */
+const lightStatus = {
+  done: '#4a6b28',
+  missed: '#8f6210',
+  skipped: '#8a8073',
+  blank: '#cfc4b0',
+  danger: '#b5483f',
+};
+
+const darkStatus: typeof lightStatus = {
+  done: '#a8c084',
+  missed: '#e6b45c',
+  skipped: '#968a7c',
+  blank: '#4d4238',
+  danger: '#e27d72',
+};
+
+/**
+ * Every colour here belongs to one earthy family: cream, clay, terracotta,
+ * moss, ochre. The status and chart roles used to be borrowed from a generic
+ * UI kit — a grass green, a traffic-light yellow, a pure red, and a chart
+ * palette of teal, royal blue and violet — and they were the loudest thing on
+ * any screen they appeared on, louder than the terracotta that is meant to
+ * lead.
+ *
+ * So each semantic role is now the earthy cousin of what it means:
+ *
+ * - `good` is moss — the very value `outcomeDone` is — so "this is going
+ *   well" and "this habit was done" are one colour, not two close ones.
+ * - `warning` is ochre, the very value `outcomeMissed` is: a caution, not an
+ *   alarm, because in this app a slipping trend is information rather than a
+ *   failure.
+ * - `destructive` and `critical` are brick, red enough to stop a thumb on
+ *   "Eliminar" but not a siren.
+ * - `chart1`–`chart8` keep the hue each goal slot already had (teal stays
+ *   teal-ish, pink stays rose) but muted to the theme's saturation, so a goal
+ *   does not change identity, only volume.
+ *
+ * Light values hold at least 4.5:1 against both `card` and `background` when
+ * set as text, except the chart slots, which are dots and fills and hold 3:1.
+ * Dark values are the same hues lifted, all above 5:1 on `card`.
+ */
 const lightRoles = {
   card: '#fffaf1',
   cardForeground: '#2a211b',
@@ -74,7 +128,7 @@ const lightRoles = {
   mutedForeground: '#474036',
   accentSurface: '#fff1e8',
   accentSurfaceForeground: '#67301a',
-  destructive: '#c4443c',
+  destructive: lightStatus.danger,
   destructiveForeground: '#ffffff',
 
   border: '#ded3c0',
@@ -102,13 +156,13 @@ const lightRoles = {
   seedMossInk: '#3c4e2a',
 
   chart1: '#c25a33',
-  chart2: '#008f80',
-  chart3: '#d9a020',
-  chart4: '#bf4f78',
-  chart5: '#5b4199',
-  chart6: '#a8443c',
-  chart7: '#1f5da8',
-  chart8: '#7d9a3c',
+  chart2: '#4d8578',
+  chart3: lightStatus.missed,
+  chart4: '#b0606c',
+  chart5: '#7d5f93',
+  chart6: '#8f6b47',
+  chart7: '#56718f',
+  chart8: lightStatus.done,
 
   vizAxis: '#8a8073',
   vizGrid: '#e9e0d1',
@@ -122,16 +176,16 @@ const lightRoles = {
   seq4: '#c2652f',
   seq5: '#8f431c',
 
-  good: '#2f8a1e',
-  warning: '#e0a01c',
-  serious: '#e07a45',
-  critical: '#c4443c',
-  successInk: '#1f6b12',
+  good: lightStatus.done,
+  warning: lightStatus.missed,
+  serious: '#c2652f',
+  critical: lightStatus.danger,
+  successInk: lightStatus.done,
 
-  outcomeDone: '#3c4e2a',
-  outcomeMissed: '#9a6a12',
-  outcomeSkipped: '#8a8073',
-  outcomeBlank: '#cfc4b0',
+  outcomeDone: lightStatus.done,
+  outcomeMissed: lightStatus.missed,
+  outcomeSkipped: lightStatus.skipped,
+  outcomeBlank: lightStatus.blank,
 };
 
 const darkRoles: typeof lightRoles = {
@@ -148,7 +202,7 @@ const darkRoles: typeof lightRoles = {
   mutedForeground: '#c1b4a7',
   accentSurface: '#392319',
   accentSurfaceForeground: '#f6c6a3',
-  destructive: '#e66767',
+  destructive: darkStatus.danger,
   destructiveForeground: '#0b0b0b',
 
   border: 'rgba(245, 234, 222, 0.12)',
@@ -175,14 +229,14 @@ const darkRoles: typeof lightRoles = {
   seedEmberInk: '#f6c6a3',
   seedMossInk: '#a8c084',
 
-  chart1: '#d9713d',
-  chart2: '#17a695',
-  chart3: '#c98500',
-  chart4: '#c94374',
-  chart5: '#9085e9',
-  chart6: '#e66767',
-  chart7: '#2f7cdc',
-  chart8: '#6b9e32',
+  chart1: '#e0875a',
+  chart2: '#7fb8aa',
+  chart3: darkStatus.missed,
+  chart4: '#d98a92',
+  chart5: '#b096c4',
+  chart6: '#c09a74',
+  chart7: '#8fa6c4',
+  chart8: darkStatus.done,
 
   vizAxis: '#9a8f80',
   vizGrid: '#332b23',
@@ -196,16 +250,16 @@ const darkRoles: typeof lightRoles = {
   seq4: '#d9834a',
   seq5: '#f0ab77',
 
-  good: '#4f9e35',
-  warning: '#e0a01c',
+  good: darkStatus.done,
+  warning: darkStatus.missed,
   serious: '#e58b5a',
-  critical: '#d9615c',
-  successInk: '#5cb347',
+  critical: darkStatus.danger,
+  successInk: darkStatus.done,
 
-  outcomeDone: '#a8c084',
-  outcomeMissed: '#e6b45c',
-  outcomeSkipped: '#968a7c',
-  outcomeBlank: '#4d4238',
+  outcomeDone: darkStatus.done,
+  outcomeMissed: darkStatus.missed,
+  outcomeSkipped: darkStatus.skipped,
+  outcomeBlank: darkStatus.blank,
 };
 
 export const themes = createV5Theme({

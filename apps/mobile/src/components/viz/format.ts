@@ -20,25 +20,22 @@ export function formatRate(rate: number | null, empty: string): string {
 }
 
 /**
- * A rate as bare percentage points, for a gap or a spread where the "%" sign
- * would suggest a proportion of something rather than a difference.
+ * A rate as "how many out of ten", for a comparison a person reads at a
+ * glance.
+ *
+ * The report used to state differences as "23 pts" — percentage points,
+ * which is the correct unit and one nobody outside a statistics class reads.
+ * "8 of every 10 on Thursdays, 6 on Mondays" says the same thing in a form
+ * that needs no legend. Rounding to tenths loses precision a phone screen was
+ * never going to convey, and the exact percent always travels beside it.
  */
-export function formatPoints(value: number | null, empty: string): string {
-  if (value === null) return empty;
-  return `${Math.round(value * 100)}`;
+export function outOfTen(rate: number): number {
+  return Math.round(Math.max(0, Math.min(1, rate)) * 10);
 }
 
-/** A signed change in percentage points: `+12`, `-4`, `0`. */
-export function formatDelta(delta: number | null, empty: string): string {
-  if (delta === null) return empty;
-
-  const points = Math.round(delta * 100);
-  return points > 0 ? `+${points}` : `${points}`;
-}
-
-/** A correlation coefficient at two decimals, which is how they are read. */
-export function formatRho(rho: number): string {
-  return rho.toFixed(2);
+/** A mood mean on the 1–5 scale at one decimal, the way a mean is read. */
+export function formatMood(mean: number): string {
+  return mean.toFixed(1);
 }
 
 /**

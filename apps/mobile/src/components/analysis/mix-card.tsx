@@ -44,6 +44,7 @@ export function MixCard({ mix }: { mix: OutcomeMix }) {
     <ChartCard
       title={t('analysis.mix.title')}
       subtitle={t('analysis.mix.subtitle')}
+      why={t('analysis.mix.why')}
       footnote={
         excluded > 0 ? (
           <SizableText size={TEXT.caption} color="$mutedForeground">

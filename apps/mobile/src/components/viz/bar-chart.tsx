@@ -6,15 +6,18 @@ import { resolveColor } from '@/components/common/theme-color';
 import { TEXT } from '@/constants/layout';
 
 import { percentOf } from './format';
+import { barLayout } from './chart-layout';
 
 export type BarDatum = {
   key: string;
   label: string;
   value: number | null;
   color?: string;
+  caption?: string;
 };
 
 const CHART_HEIGHT = 140;
+const TOP_LABEL_ROOM = 20;
 
 export function BarChart({
   width,
@@ -27,9 +30,7 @@ export function BarChart({
 }) {
   const theme = useTheme();
 
-  const slot = width / Math.max(bars.length, 1);
-  const barWidth = Math.max(8, Math.round(slot * 0.52));
-  const spacing = Math.max(4, Math.round(slot - barWidth));
+  const { barWidth, spacing, initialSpacing } = barLayout(width, bars.length);
 
   return (
     <GiftedBarChart
@@ -37,8 +38,11 @@ export function BarChart({
       height={CHART_HEIGHT}
       barWidth={barWidth}
       spacing={spacing}
-      initialSpacing={Math.round(spacing / 2)}
+      initialSpacing={initialSpacing}
       endSpacing={0}
+      yAxisLabelWidth={0}
+      xAxisLength={width}
+      overflowTop={TOP_LABEL_ROOM}
       maxValue={100}
       noOfSections={2}
       hideRules
@@ -61,6 +65,9 @@ export function BarChart({
               size={TEXT.caption}
               color="$mutedForeground"
               text="center"
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.8}
             >
               {bar.label}
             </SizableText>
@@ -69,6 +76,16 @@ export function BarChart({
             percent === null ? (
               <SizableText size={TEXT.caption} color="$mutedForeground">
                 —
+              </SizableText>
+            ) : bar.caption !== undefined ? (
+              <SizableText
+                size={TEXT.micro}
+                fontWeight="700"
+                color="$mutedForeground"
+                text="center"
+                numberOfLines={1}
+              >
+                {bar.caption}
               </SizableText>
             ) : null,
         };

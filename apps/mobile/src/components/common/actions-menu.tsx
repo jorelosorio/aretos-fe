@@ -1,10 +1,6 @@
 import { Fragment, useState } from 'react';
 import { Modal, Platform, Pressable, StyleSheet } from 'react-native';
-import {
-  Ellipsis,
-  EllipsisVertical,
-  type Plus,
-} from '@tamagui/lucide-icons-2';
+import { Ellipsis, EllipsisVertical, type Plus } from '@tamagui/lucide-icons-2';
 import { Separator, SizableText, XStack, YStack } from 'tamagui';
 
 import { ICON, SPACING, TEXT } from '@/constants/layout';

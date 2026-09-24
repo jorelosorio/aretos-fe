@@ -26,6 +26,7 @@ export function CadenceCard({ cadence }: { cadence: Cadence }) {
     <ChartCard
       title={t('analysis.cadence.title')}
       subtitle={t('analysis.cadence.subtitle')}
+      why={t('analysis.cadence.why')}
       footnote={<BasisNote basis={cadence.basis} />}
     >
       <YStack gap={SPACING.items}>

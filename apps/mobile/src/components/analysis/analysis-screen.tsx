@@ -3,13 +3,15 @@ import { RefreshControl } from 'react-native';
 import { useTheme } from '@tamagui/core';
 import {
   CalendarDays,
+  Info,
   Gauge,
   ListChecks,
   Smile,
   Target,
 } from '@tamagui/lucide-icons-2';
-import { ScrollView, Separator, SizableText, YStack } from 'tamagui';
+import { ScrollView, Separator, SizableText, XStack, YStack } from 'tamagui';
 
+import { shortDateLabel } from '@/components/common/date-label';
 import { ErrorNotice } from '@/components/common/error-notice';
 import { useTabBarInset } from '@/components/common/floating-tab-bar';
 import { ScreenLoader } from '@/components/common/screen-loader';
@@ -19,7 +21,7 @@ import {
 } from '@/components/common/segmented-control';
 import { EmptyLog } from '@/components/logs/empty-log';
 import { ILLUSTRATIONS } from '@/constants/illustrations';
-import { SPACING, TEXT } from '@/constants/layout';
+import { ICON, SPACING, TEXT } from '@/constants/layout';
 import {
   useAnalysis,
   useAnalysisErrorMessage,
@@ -34,6 +36,7 @@ import { DirectionCard } from './direction-card';
 import { GoalsCard } from './goals-card';
 import { HabitsCard } from './habits-card';
 import { HeatmapCard } from './heatmap-card';
+import { InsightsCard } from './insights-card';
 import { MixCard } from './mix-card';
 import { MoodCard } from './mood-card';
 import { MoodPerformanceCard } from './mood-performance-card';
@@ -64,6 +67,7 @@ function SectionCards({
   if (section === 'summary') {
     return (
       <>
+        <InsightsCard report={report} />
         <CadenceCard cadence={report.cadence} />
         <MixCard mix={report.mix} />
         <SetupCard setup={report.setup} />
@@ -81,7 +85,11 @@ function SectionCards({
           regularity={report.regularity}
           thresholds={report.thresholds}
         />
-        <TrendCard trend={report.trend} thresholds={report.thresholds} />
+        <TrendCard
+          trend={report.trend}
+          cells={report.heatmap}
+          thresholds={report.thresholds}
+        />
       </>
     );
   }
@@ -89,7 +97,7 @@ function SectionCards({
   if (section === 'mood') {
     return (
       <>
-        <MoodCard moods={report.moods} />
+        <MoodCard moods={report.moods} cells={report.heatmap} />
         <MoodPerformanceCard
           performance={report.moodPerformance}
           thresholds={report.thresholds}
@@ -105,13 +113,17 @@ function SectionCards({
   return (
     <>
       <GoalsCard goals={report.goals} />
-      <HabitsCard habits={report.habits} thresholds={report.thresholds} />
+      <HabitsCard
+        habits={report.habits}
+        goals={report.goals}
+        thresholds={report.thresholds}
+      />
     </>
   );
 }
 
 export function AnalysisScreen() {
-  const { t } = useTranslations();
+  const { t, locale } = useTranslations();
   const theme = useTheme();
   const tabBarInset = useTabBarInset();
   const toMessage = useAnalysisErrorMessage();
@@ -188,6 +200,27 @@ export function AnalysisScreen() {
               <SizableText size={TEXT.caption} color="$mutedForeground">
                 {t(`analysis.sectionHint.${section}`)}
               </SizableText>
+
+              {report.trackedFrom > report.from && (
+                <XStack
+                  items="flex-start"
+                  gap="$2"
+                  p={SPACING.cardTight}
+                  rounded="$xl"
+                  bg="$muted"
+                >
+                  <Info size={ICON.inline} color="$mutedForeground" mt={2} />
+                  <SizableText
+                    flex={1}
+                    size={TEXT.caption}
+                    color="$mutedForeground"
+                  >
+                    {t('analysis.trackedFrom', {
+                      date: shortDateLabel(report.trackedFrom, locale),
+                    })}
+                  </SizableText>
+                </XStack>
+              )}
             </YStack>
 
             <YStack px={SPACING.screen} gap={SPACING.items}>

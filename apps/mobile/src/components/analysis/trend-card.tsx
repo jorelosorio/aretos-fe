@@ -1,79 +1,141 @@
-import { YStack } from 'tamagui';
+import { ArrowRight, TrendingDown, TrendingUp } from '@tamagui/lucide-icons-2';
+import { SizableText, XStack, YStack } from 'tamagui';
 
+import { shortDateLabel } from '@/components/common/date-label';
 import { ChartCard } from '@/components/viz/chart-card';
-import { formatDelta } from '@/components/viz/format';
+import { formatRate } from '@/components/viz/format';
+import { LineChart } from '@/components/viz/line-chart';
 import { Meter } from '@/components/viz/meter';
 import { NotEnoughData } from '@/components/viz/not-enough-data';
-import { Stat, type StatTone } from '@/components/viz/stat';
-import { SPACING } from '@/constants/layout';
+import { ICON, SPACING, TEXT } from '@/constants/layout';
 import type {
   AnalysisThresholds,
+  HeatCell,
   Trend,
   TrendDirection,
+  TrendHalf,
 } from '@/features/analysis';
 import { useTranslations } from '@/lib/i18n';
 
-const DIRECTION_TONE = {
-  improving: 'good',
-  steady: 'neutral',
-  declining: 'watch',
-} as const satisfies Record<TrendDirection, StatTone>;
+import { overTime } from './over-time';
+
+const DIRECTION_COLOR = {
+  improving: '$good',
+  steady: '$cardForeground',
+  declining: '$warning',
+} as const satisfies Record<TrendDirection, string>;
+
+const DIRECTION_ICON = {
+  improving: TrendingUp,
+  steady: ArrowRight,
+  declining: TrendingDown,
+} as const satisfies Record<TrendDirection, typeof ArrowRight>;
 
 export function TrendCard({
   trend,
+  cells,
   thresholds,
 }: {
   trend: Trend | null;
+  cells: readonly HeatCell[];
   thresholds: AnalysisThresholds;
 }) {
-  const { t } = useTranslations();
+  const { t, locale } = useTranslations();
   const empty = t('analysis.empty');
 
   const need = t('analysis.trend.need', { count: thresholds.minPerGroup });
 
+  const range = (half: TrendHalf) =>
+    `${shortDateLabel(half.from, locale)} – ${shortDateLabel(half.to, locale)}`;
+
+  const card = {
+    title: t('analysis.trend.title'),
+    subtitle: t('analysis.trend.subtitle'),
+    why: t('analysis.trend.why'),
+  };
+
   if (trend === null) {
     return (
-      <ChartCard
-        title={t('analysis.trend.title')}
-        subtitle={t('analysis.trend.subtitle')}
-      >
+      <ChartCard {...card}>
         <NotEnoughData need={need} />
       </ChartCard>
     );
   }
 
   const direction = trend.direction;
+  const series = overTime(cells, (cell) => cell.rate, locale);
+
+  const Icon = direction === null ? null : DIRECTION_ICON[direction];
 
   return (
-    <ChartCard
-      title={t('analysis.trend.title')}
-      subtitle={t('analysis.trend.subtitle')}
-    >
-      <YStack gap={SPACING.items}>
-        <Meter
-          label={t('analysis.trend.first')}
-          rate={trend.first.rate}
-          caption={t('analysis.trend.half', { count: trend.first.n })}
-          muted
-        />
-        <Meter
-          label={t('analysis.trend.second')}
-          rate={trend.second.rate}
-          caption={t('analysis.trend.half', { count: trend.second.n })}
-        />
-      </YStack>
+    <ChartCard {...card}>
+      {(width) => (
+        <YStack gap={SPACING.section}>
+          {direction !== null && Icon !== null && (
+            <YStack gap={SPACING.text}>
+              <XStack items="center" gap="$2">
+                <SizableText
+                  size={TEXT.display}
+                  fontWeight="700"
+                  color="$mutedForeground"
+                >
+                  {formatRate(trend.first.rate, empty)}
+                </SizableText>
+                <ArrowRight size={ICON.feature} color="$mutedForeground" />
+                <SizableText
+                  size={TEXT.display}
+                  fontWeight="700"
+                  color={DIRECTION_COLOR[direction]}
+                >
+                  {formatRate(trend.second.rate, empty)}
+                </SizableText>
+              </XStack>
 
-      {direction === null ? (
-        <NotEnoughData need={need} />
-      ) : (
-        <Stat
-          label={t('analysis.trend.deltaLabel')}
-          value={t('analysis.trend.deltaValue', {
-            points: formatDelta(trend.delta, empty),
-          })}
-          tone={DIRECTION_TONE[direction]}
-          reading={t(`analysis.trend.direction.${direction}`)}
-        />
+              <XStack items="center" gap="$1.5">
+                <Icon size={ICON.row} color={DIRECTION_COLOR[direction]} />
+                <SizableText
+                  size={TEXT.body}
+                  fontWeight="600"
+                  color={DIRECTION_COLOR[direction]}
+                >
+                  {t(`analysis.trend.direction.${direction}`)}
+                </SizableText>
+              </XStack>
+            </YStack>
+          )}
+
+          {series.length > 1 && (
+            <YStack gap={SPACING.group}>
+              <SizableText size={TEXT.caption} color="$mutedForeground">
+                {t('analysis.overTime')}
+              </SizableText>
+              <LineChart
+                width={width}
+                points={series}
+                min={0}
+                max={1}
+                yLabels={['0%', '50%', '100%']}
+                area
+              />
+            </YStack>
+          )}
+
+          <YStack gap={SPACING.items}>
+            <Meter
+              label={t('analysis.trend.first')}
+              rate={trend.first.rate}
+              caption={range(trend.first)}
+              muted
+            />
+            <Meter
+              label={t('analysis.trend.second')}
+              rate={trend.second.rate}
+              caption={range(trend.second)}
+            />
+          </YStack>
+
+          {direction === null && <NotEnoughData need={need} />}
+        </YStack>
       )}
     </ChartCard>
   );

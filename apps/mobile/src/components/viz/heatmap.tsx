@@ -9,8 +9,9 @@ import { heatToken } from './heat-level';
 const MIN_CELL = 10;
 const MAX_CELL = 28;
 const GAP = 2;
-const COMPACT_CELL = MIN_CELL;
+const COMPACT_MAX = 12;
 const WEEK_ROWS = 7;
+const HIT_SLOP = 2;
 
 type Column = (HeatCell | null)[];
 
@@ -43,22 +44,24 @@ export function Heatmap({
   width,
   cells,
   compact = false,
+  selected = null,
+  onSelect,
 }: {
   width: number;
   cells: readonly HeatCell[];
   compact?: boolean;
+  selected?: string | null;
+  onSelect?: (cell: HeatCell) => void;
 }) {
   const columns = useMemo(() => toColumns(cells), [cells]);
 
-  const size = compact
-    ? COMPACT_CELL
-    : Math.max(
-        MIN_CELL,
-        Math.min(
-          MAX_CELL,
-          Math.floor(width / Math.max(columns.length, 1)) - GAP,
-        ),
-      );
+  const size = Math.max(
+    MIN_CELL,
+    Math.min(
+      compact ? COMPACT_MAX : MAX_CELL,
+      Math.floor(width / Math.max(columns.length, 1)) - GAP,
+    ),
+  );
 
   const grid = (
     <XStack gap={GAP}>
@@ -66,6 +69,8 @@ export function Heatmap({
         <YStack key={index} gap={GAP}>
           {column.map((cell, row) => {
             const token = cell === null ? null : heatToken(cell);
+            const isSelected = cell !== null && cell.date === selected;
+            const pressable = cell !== null && onSelect !== undefined;
 
             return (
               <YStack
@@ -74,6 +79,12 @@ export function Heatmap({
                 height={size}
                 rounded={2}
                 bg={token ?? 'transparent'}
+                borderWidth={isSelected ? 2 : 0}
+                borderColor="$cardForeground"
+                hitSlop={pressable ? HIT_SLOP : undefined}
+                onPress={pressable ? () => onSelect(cell) : undefined}
+                accessibilityRole={pressable ? 'button' : undefined}
+                accessibilityLabel={pressable ? cell.date : undefined}
               />
             );
           })}
@@ -82,7 +93,9 @@ export function Heatmap({
     </XStack>
   );
 
-  if (columns.length * (size + GAP) <= width) return grid;
+  if (columns.length * (size + GAP) <= width) {
+    return <XStack justify="center">{grid}</XStack>;
+  }
 
   return (
     <ScrollView

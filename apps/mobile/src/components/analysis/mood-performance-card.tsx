@@ -1,12 +1,11 @@
-import { YStack } from 'tamagui';
+import { SizableText, YStack } from 'tamagui';
 
 import { BasisNote } from '@/components/viz/basis-note';
 import { ChartCard } from '@/components/viz/chart-card';
-import { formatPoints } from '@/components/viz/format';
+import { formatRate } from '@/components/viz/format';
 import { Meter } from '@/components/viz/meter';
 import { NotEnoughData } from '@/components/viz/not-enough-data';
-import { Stat, type StatTone } from '@/components/viz/stat';
-import { SPACING } from '@/constants/layout';
+import { SPACING, TEXT } from '@/constants/layout';
 import type {
   AnalysisThresholds,
   Automaticity,
@@ -14,11 +13,11 @@ import type {
 } from '@/features/analysis';
 import { useTranslations } from '@/lib/i18n';
 
-const AUTOMATICITY_TONE = {
-  automatic: 'good',
-  mixed: 'neutral',
-  dependent: 'watch',
-} as const satisfies Record<Automaticity, StatTone>;
+const AUTOMATICITY_COLOR = {
+  automatic: '$good',
+  mixed: '$cardForeground',
+  dependent: '$warning',
+} as const satisfies Record<Automaticity, string>;
 
 export function MoodPerformanceCard({
   performance,
@@ -36,8 +35,27 @@ export function MoodPerformanceCard({
     <ChartCard
       title={t('analysis.moodPerformance.title')}
       subtitle={t('analysis.moodPerformance.subtitle')}
+      why={t('analysis.moodPerformance.why')}
       footnote={<BasisNote basis={performance.basis} />}
     >
+      {automaticity !== null && (
+        <YStack gap={SPACING.text}>
+          <SizableText
+            size={TEXT.heading}
+            fontWeight="700"
+            color={AUTOMATICITY_COLOR[automaticity]}
+          >
+            {t(`analysis.moodPerformance.automaticity.${automaticity}`)}
+          </SizableText>
+          <SizableText size={TEXT.caption} color="$mutedForeground">
+            {t(`analysis.moodPerformance.reading.${automaticity}`, {
+              low: formatRate(performance.low.rate, empty),
+              high: formatRate(performance.high.rate, empty),
+            })}
+          </SizableText>
+        </YStack>
+      )}
+
       <YStack gap={SPACING.items}>
         <Meter
           label={t('analysis.moodPerformance.low')}
@@ -65,20 +83,11 @@ export function MoodPerformanceCard({
         />
       </YStack>
 
-      {performance.dependencyGap === null || automaticity === null ? (
+      {automaticity === null && (
         <NotEnoughData
           need={t('analysis.moodPerformance.need', {
             count: thresholds.minPerGroup,
           })}
-        />
-      ) : (
-        <Stat
-          label={t('analysis.moodPerformance.gapLabel')}
-          value={t('analysis.moodPerformance.gapValue', {
-            points: formatPoints(performance.dependencyGap, empty),
-          })}
-          tone={AUTOMATICITY_TONE[automaticity]}
-          reading={t(`analysis.moodPerformance.automaticity.${automaticity}`)}
         />
       )}
     </ChartCard>
