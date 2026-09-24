@@ -1,7 +1,6 @@
-import { Tabs, useRouter } from 'expo-router';
+import { Tabs } from 'expo-router';
 import { useTheme } from '@tamagui/core';
 import {
-  CalendarCheck,
   ChartNoAxesColumn,
   House,
   NotebookPen,
@@ -19,21 +18,11 @@ const iconColor = (focused: boolean) =>
 
 export default function TabsLayout() {
   const theme = useTheme();
-  const router = useRouter();
   const { t } = useTranslations();
 
   return (
     <Tabs
-      tabBar={(props) => (
-        <FloatingTabBar
-          {...props}
-          action={{
-            label: t('tabs.log'),
-            Icon: CalendarCheck,
-            onPress: () => router.push('/logs/new'),
-          }}
-        />
-      )}
+      tabBar={(props) => <FloatingTabBar {...props} />}
       screenOptions={{
         sceneStyle: { backgroundColor: theme.background.val },
         headerStyle: { backgroundColor: theme.background.val },
@@ -74,7 +63,6 @@ export default function TabsLayout() {
           ),
         }}
       />
-      <Tabs.Screen name="log" options={{ href: null }} />
       <Tabs.Screen
         name="goals"
         options={{

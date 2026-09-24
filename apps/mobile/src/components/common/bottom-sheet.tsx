@@ -101,12 +101,14 @@ export function BottomSheet({
       if (offset.get() < full) enter();
       return;
     }
+    if (!mounted) return;
+
     offset.set(
       withTiming(full, EXIT, (finished) => {
         if (finished) scheduleOnRN(setMounted, false);
       }),
     );
-  }, [open, full, offset, enter]);
+  }, [open, mounted, full, offset, enter]);
 
   const drag = () =>
     Gesture.Race(

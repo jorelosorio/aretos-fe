@@ -3,7 +3,6 @@ import type { Translations } from './es';
 export const en = {
   tabs: {
     home: 'Home',
-    log: 'Log',
     diary: 'Diary',
     analysis: 'Analysis',
     goals: 'My Goals',
@@ -28,9 +27,12 @@ export const en = {
       bestWeeks: 'Best streak: %{count} wk',
       bestNow: 'Your best streak yet',
     },
-    today: {
-      title: "Today's report",
+    summary: '%{logged} of %{total} logged',
+    sections: {
+      pending: 'To log',
+      logged: 'Logged',
     },
+    allLogged: 'All logged. Nice work!',
     noHabits: 'No habits yet',
     cta: {
       log: 'Log today',
@@ -50,6 +52,7 @@ export const en = {
     },
     empty: {
       title: 'Your diary is empty',
+      action: 'Go to Home',
       body: 'Every check-in you save shows up here, with its note and how you felt.',
     },
     cutoff: {
@@ -352,9 +355,6 @@ export const en = {
       },
     },
     optional: '(optional)',
-    close: 'Close',
-    pickTitle: 'Log',
-    pickGoal: 'Which goal are you logging?',
     period: {
       previousWeek: 'Previous week',
       nextWeek: 'Next week',

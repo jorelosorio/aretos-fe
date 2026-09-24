@@ -36,7 +36,13 @@ function Avatar({ name, url }: { name: string; url: string }) {
   );
 }
 
-export function HomeHeader({ today }: { today: string | null }) {
+export function HomeHeader({
+  today,
+  summary,
+}: {
+  today: string | null;
+  summary?: string;
+}) {
   const { t, locale } = useTranslations();
   const { data: profile } = useProfile();
 
@@ -64,6 +70,16 @@ export function HomeHeader({ today }: { today: string | null }) {
             numberOfLines={1}
           >
             {longDateLabel(today, locale)}
+          </SizableText>
+        )}
+
+        {summary !== undefined && (
+          <SizableText
+            size={TEXT.caption}
+            color="$mutedForeground"
+            numberOfLines={1}
+          >
+            {summary}
           </SizableText>
         )}
       </YStack>

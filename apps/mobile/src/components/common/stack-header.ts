@@ -3,10 +3,10 @@
  *
  * `screenOptions` do not cascade into a nested navigator: a stack mounted
  * inside another starts from React Navigation's defaults, white bar and
- * system font included. The check-in sheet is such a stack — it has to be,
- * so that picking a goal pushes the check-in inside the sheet instead of
- * replacing it — and without sharing these its header would be the one
- * screen in the app that looks borrowed.
+ * system font included. Only the root stack exists today, but the Log flow
+ * once mounted its own, and its header was the one screen in the app that
+ * looked borrowed until it shared these. A hook rather than inline options,
+ * so the next nested stack starts from the app's header and not the library's.
  */
 
 import { useTheme } from '@tamagui/core';

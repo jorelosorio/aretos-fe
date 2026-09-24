@@ -4,7 +4,6 @@ type TranslationTree = { [key: string]: string | TranslationTree };
 export const es = {
   tabs: {
     home: 'Inicio',
-    log: 'Registrar',
     diary: 'Diario',
     analysis: 'Análisis',
     goals: 'Mis Metas',
@@ -29,9 +28,12 @@ export const es = {
       bestWeeks: 'Mejor racha: %{count} sem',
       bestNow: 'Tu mejor racha hasta ahora',
     },
-    today: {
-      title: 'Tu reporte de hoy',
+    summary: '%{logged} de %{total} registradas',
+    sections: {
+      pending: 'Por registrar',
+      logged: 'Registradas',
     },
+    allLogged: 'Todo registrado. ¡Bien hecho!',
     noHabits: 'Sin hábitos todavía',
     cta: {
       log: 'Registrar hoy',
@@ -51,6 +53,7 @@ export const es = {
     },
     empty: {
       title: 'Tu diario está vacío',
+      action: 'Ir a Inicio',
       body: 'Cada registro que guardes aparece aquí, con su nota y cómo te sentiste.',
     },
     cutoff: {
@@ -350,9 +353,6 @@ export const es = {
       },
     },
     optional: '(opcional)',
-    close: 'Cerrar',
-    pickTitle: 'Registrar',
-    pickGoal: '¿Sobre qué meta quieres registrar?',
     period: {
       previousWeek: 'Semana anterior',
       nextWeek: 'Semana siguiente',

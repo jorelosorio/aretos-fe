@@ -249,20 +249,21 @@ export const HEADER_INSET = 8;
  * the shadow halo is what lifts it.
  */
 export const TAB_BAR = {
-  height: 64,
+  height: 56,
   /** How far the pill sits above the bottom safe area. */
-  gap: 16,
+  gap: 12,
   /**
-   * How far the pill sits in from each side.
+   * The width of one tab's touch target; the pill is these laid side by side.
    *
-   * The bar spans the width rather than hugging its content. Six slots — five
-   * tabs and the action — cannot be made both larger and further apart inside
-   * a width that is the sum of its parts: at a 40pt glyph and a comfortable
-   * gap that sum passes 370pt, which overflows a 360pt phone. Spanning the
-   * width makes the slots share what is there instead, so the bar cannot
-   * overflow and simply grows roomier on a larger screen.
+   * The bar hugs its tabs, centred, rather than spanning the screen. It
+   * spanned it while it carried six slots — five tabs and a Log action —
+   * because six comfortable slots passed 370pt and overflowed a 360pt phone.
+   * Logging moved onto Home, and five slots of this width come to under
+   * 300pt, so the pill can be only as wide as what is in it and cover less
+   * of the list scrolling behind it. 56 is the height too: each tab's target
+   * is a square, comfortably over the 44/48pt minimum on both platforms.
    */
-  inset: 16,
+  slot: 56,
   /**
    * The tab glyphs, which sit a step above `ICON.feature`.
    *

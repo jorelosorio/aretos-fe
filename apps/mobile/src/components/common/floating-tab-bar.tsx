@@ -1,15 +1,12 @@
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import type { Plus } from '@tamagui/lucide-icons-2';
-import { Circle, styled, XStack, YStack } from 'tamagui';
+import { styled, XStack, YStack } from 'tamagui';
 
-import { ICON, TAB_BAR } from '@/constants/layout';
+import { TAB_BAR } from '@/constants/layout';
 
 import type { TabBarProps } from './tab-bar-props';
 
-type IconComponent = typeof Plus;
-
 const Slot = styled(YStack, {
-  flex: 1,
+  width: TAB_BAR.slot,
   height: '100%',
   items: 'center',
   justify: 'center',
@@ -24,10 +21,7 @@ export function FloatingTabBar({
   state,
   descriptors,
   navigation,
-  action,
-}: TabBarProps & {
-  action?: { label: string; Icon: IconComponent; onPress: () => void };
-}) {
+}: TabBarProps) {
   const insets = useSafeAreaInsets();
 
   const tabs = state.routes.flatMap((route, index) => {
@@ -72,12 +66,12 @@ export function FloatingTabBar({
     <XStack
       position="absolute"
       b={insets.bottom + TAB_BAR.gap}
-      l={TAB_BAR.inset}
-      r={TAB_BAR.inset}
+      l={0}
+      r={0}
+      justify="center"
       pointerEvents="box-none"
     >
       <XStack
-        flex={1}
         height={TAB_BAR.height}
         items="center"
         px="$2"
@@ -92,19 +86,6 @@ export function FloatingTabBar({
         elevation={8}
       >
         {tabs}
-
-        {action !== undefined && (
-          <Slot
-            onPress={action.onPress}
-            pressStyle={{ opacity: 0.85 }}
-            accessibilityRole="button"
-            accessibilityLabel={action.label}
-          >
-            <Circle size="$3.5" items="center" justify="center" bg="$primary">
-              <action.Icon size={ICON.feature} color="$primaryForeground" />
-            </Circle>
-          </Slot>
-        )}
       </XStack>
     </XStack>
   );

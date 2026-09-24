@@ -76,11 +76,6 @@ function RootNavigator() {
           name="settings/licenses"
           options={{ headerShown: true, title: t('settings.licenses') }}
         />
-
-        <Stack.Screen
-          name="logs"
-          options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
-        />
       </Stack.Protected>
 
       <Stack.Protected guard={!isAuthenticated}>
