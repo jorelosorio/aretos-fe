@@ -290,6 +290,8 @@ export const es = {
       dayMood: 'ánimo %{mood}',
       dayMissed: 'Sin registrar',
       dayFree: 'Nada pendiente este día',
+      loading: 'Cargando…',
+      building: 'Dibujando…',
     },
     goals: {
       title: 'Por meta',

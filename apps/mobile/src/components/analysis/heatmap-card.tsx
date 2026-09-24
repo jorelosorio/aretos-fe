@@ -62,9 +62,11 @@ function DayDetail({ cell }: { cell: HeatCell }) {
 export function HeatmapCard({
   cells,
   calendar,
+  pending = false,
 }: {
   cells: readonly HeatCell[];
   calendar: CalendarTally;
+  pending?: boolean;
 }) {
   const { t } = useTranslations();
   const [selected, setSelected] = useState<HeatCell | null>(null);
@@ -111,6 +113,7 @@ export function HeatmapCard({
         <Heatmap
           width={width}
           cells={cells}
+          pending={pending}
           selected={selected?.date ?? null}
           onSelect={(cell) =>
             setSelected((current) =>

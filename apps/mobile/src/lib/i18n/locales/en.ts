@@ -292,6 +292,8 @@ export const en = {
       dayMood: 'mood %{mood}',
       dayMissed: 'Not logged',
       dayFree: 'Nothing due this day',
+      loading: 'Loading…',
+      building: 'Drawing…',
     },
     goals: {
       title: 'By goal',

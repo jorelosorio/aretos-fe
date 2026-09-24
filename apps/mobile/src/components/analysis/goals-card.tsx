@@ -40,7 +40,15 @@ function MiniStat({ label, value }: { label: string; value: string }) {
   );
 }
 
-function GoalRow({ goal, width }: { goal: AnalysisGoal; width: number }) {
+function GoalRow({
+  goal,
+  width,
+  pending,
+}: {
+  goal: AnalysisGoal;
+  width: number;
+  pending: boolean;
+}) {
   const { t, locale } = useTranslations();
   const empty = t('analysis.empty');
 
@@ -125,7 +133,7 @@ function GoalRow({ goal, width }: { goal: AnalysisGoal; width: number }) {
         </YStack>
       </XStack>
 
-      <Heatmap width={width} cells={goal.heatmap} compact />
+      <Heatmap width={width} cells={goal.heatmap} compact pending={pending} />
 
       <SizableText size={TEXT.caption} color="$mutedForeground">
         {footer}
@@ -134,7 +142,13 @@ function GoalRow({ goal, width }: { goal: AnalysisGoal; width: number }) {
   );
 }
 
-export function GoalsCard({ goals }: { goals: readonly AnalysisGoal[] }) {
+export function GoalsCard({
+  goals,
+  pending = false,
+}: {
+  goals: readonly AnalysisGoal[];
+  pending?: boolean;
+}) {
   const { t } = useTranslations();
 
   if (goals.length === 0) return null;
@@ -150,7 +164,7 @@ export function GoalsCard({ goals }: { goals: readonly AnalysisGoal[] }) {
           {goals.map((goal, index) => (
             <YStack key={goal.id} gap={SPACING.section}>
               {index > 0 && <Separator borderColor="$border" />}
-              <GoalRow goal={goal} width={width} />
+              <GoalRow goal={goal} width={width} pending={pending} />
             </YStack>
           ))}
         </YStack>

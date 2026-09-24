@@ -60,9 +60,11 @@ const SECTION_ICONS = {
 function SectionCards({
   section,
   report,
+  pending,
 }: {
   section: Section;
   report: AnalysisReport;
+  pending: boolean;
 }) {
   if (section === 'summary') {
     return (
@@ -78,7 +80,11 @@ function SectionCards({
   if (section === 'rhythm') {
     return (
       <>
-        <HeatmapCard cells={report.heatmap} calendar={report.calendar} />
+        <HeatmapCard
+          cells={report.heatmap}
+          calendar={report.calendar}
+          pending={pending}
+        />
         <RhythmCard
           profile={report.profile}
           extremes={report.extremes}
@@ -112,7 +118,7 @@ function SectionCards({
 
   return (
     <>
-      <GoalsCard goals={report.goals} />
+      <GoalsCard goals={report.goals} pending={pending} />
       <HabitsCard
         habits={report.habits}
         goals={report.goals}
@@ -137,6 +143,7 @@ export function AnalysisScreen() {
   const {
     data: report,
     isPending,
+    isPlaceholderData,
     error,
     refetch,
     isRefetching,
@@ -224,7 +231,11 @@ export function AnalysisScreen() {
             </YStack>
 
             <YStack px={SPACING.screen} gap={SPACING.items}>
-              <SectionCards section={section} report={report} />
+              <SectionCards
+                section={section}
+                report={report}
+                pending={isPlaceholderData}
+              />
             </YStack>
           </>
         )}
