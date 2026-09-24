@@ -41,6 +41,7 @@ export const es = {
     title: 'Diario',
     entry: {
       more: '+%{count} más',
+      open: 'Abrir',
       readHint: 'Abre la nota completa para leerla con calma.',
     },
     close: 'Cerrar',

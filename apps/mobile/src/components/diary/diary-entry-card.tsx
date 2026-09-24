@@ -1,11 +1,10 @@
-import { useTheme } from '@tamagui/core';
-import { Archive, ChevronRight } from '@tamagui/lucide-icons-2';
-import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
+import { Archive, BookOpen } from '@tamagui/lucide-icons-2';
+import { Paragraph, Separator, SizableText, XStack, YStack } from 'tamagui';
 
 import { CompletionStatus } from '@/components/goals/completion-status';
 import { GoalDot } from '@/components/goals/goal-dot';
-import { MoodFace } from '@/components/logs/mood-face';
 import { MOOD_LABELS } from '@/components/logs/mood-labels';
+import { PeriodMood } from '@/components/logs/period-mood';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
 import type { DiaryEntry } from '@/features/diary';
 import { useTranslations } from '@/lib/i18n';
@@ -14,7 +13,7 @@ import { periodLabel } from './diary-date';
 import { notePreview } from './note-preview';
 
 const NOTE_LINES = 4;
-const MOOD_FACE = 16;
+const MOOD_FACE = 28;
 
 export function DiaryEntryCard({
   entry,
@@ -24,49 +23,57 @@ export function DiaryEntryCard({
   onPress: () => void;
 }) {
   const { t, locale } = useTranslations();
-  const theme = useTheme();
 
   const { goal, note, mood, answered, total, status } = entry;
   const when = periodLabel(entry.entryDate, entry.endDate, locale);
   const preview = notePreview(note);
 
   const label = [
+    mood === null ? null : t(MOOD_LABELS[mood]),
     preview === '' ? null : preview,
     goal.name,
     when,
-    mood === null ? null : t(MOOD_LABELS[mood]),
   ]
     .filter((part) => part !== null)
     .join('. ');
 
   return (
-    <XStack
+    <YStack
       onPress={onPress}
       pressStyle={{ bg: '$muted' }}
-      items="center"
-      gap={SPACING.items}
-      p={SPACING.card}
       bg="$card"
       rounded="$xl2"
       borderWidth={1}
       borderColor="$border"
+      overflow="hidden"
       accessibilityRole="button"
       accessibilityLabel={label}
       accessibilityHint={t('diary.entry.readHint')}
     >
-      <YStack flex={1} minW={0} gap={SPACING.items}>
-        {preview !== '' && (
-          <Paragraph
-            size={TEXT.body}
-            color="$cardForeground"
-            numberOfLines={NOTE_LINES}
-            ellipsizeMode="tail"
-          >
-            {preview}
-          </Paragraph>
-        )}
+      <XStack items="flex-start" gap={SPACING.group} p={SPACING.card}>
+        <Paragraph
+          flex={1}
+          minW={0}
+          size={TEXT.body}
+          color="$cardForeground"
+          numberOfLines={NOTE_LINES}
+          ellipsizeMode="tail"
+        >
+          {preview}
+        </Paragraph>
 
-        <YStack gap={SPACING.text}>
+        <PeriodMood mood={mood} size={MOOD_FACE} active />
+      </XStack>
+
+      <Separator borderColor="$border" />
+
+      <XStack
+        items="center"
+        gap={SPACING.items}
+        px={SPACING.card}
+        py={SPACING.items}
+      >
+        <YStack flex={1} minW={0} gap={SPACING.text}>
           <XStack items="center" gap="$1.5">
             <GoalDot slot={goal.colorSlot} size={8} />
             <SizableText
@@ -91,40 +98,22 @@ export function DiaryEntryCard({
             </SizableText>
           </XStack>
 
-          {(total > 0 || mood !== null) && (
-            <XStack items="center" gap="$1.5" flexWrap="wrap">
-              {total > 0 && (
-                <CompletionStatus
-                  status={status}
-                  answered={answered}
-                  total={total}
-                />
-              )}
-
-              {total > 0 && mood !== null && (
-                <SizableText size={TEXT.caption} color="$mutedForeground">
-                  ·
-                </SizableText>
-              )}
-
-              {mood !== null && (
-                <XStack items="center" gap="$1">
-                  <MoodFace
-                    score={mood}
-                    size={MOOD_FACE}
-                    color={theme.mutedForeground.val}
-                  />
-                  <SizableText size={TEXT.caption} color="$mutedForeground">
-                    {t(MOOD_LABELS[mood])}
-                  </SizableText>
-                </XStack>
-              )}
-            </XStack>
+          {total > 0 && (
+            <CompletionStatus
+              status={status}
+              answered={answered}
+              total={total}
+            />
           )}
         </YStack>
-      </YStack>
 
-      <ChevronRight size={ICON.row} color="$mutedForeground" />
-    </XStack>
+        <XStack items="center" gap="$1.5">
+          <BookOpen size={ICON.row} color="$primary" />
+          <SizableText size={TEXT.body} fontWeight="700" color="$primary">
+            {t('diary.entry.open')}
+          </SizableText>
+        </XStack>
+      </XStack>
+    </YStack>
   );
 }

@@ -2,6 +2,7 @@ import { Check, Minus } from '@tamagui/lucide-icons-2';
 import { Circle, SizableText, XStack, YStack } from 'tamagui';
 
 import { dayNumber, weekdayInitial } from '@/components/common/date-label';
+import { PeriodMood } from '@/components/logs/period-mood';
 import { ICON, TEXT } from '@/constants/layout';
 import type {
   GoalPeriod,
@@ -9,8 +10,6 @@ import type {
   TrackingFrequency,
 } from '@/features/goals';
 import { useTranslations } from '@/lib/i18n';
-
-import { PeriodMood } from './period-mood';
 
 const STEP_SIZE = '$1';
 const MOOD_SIZE = 18;

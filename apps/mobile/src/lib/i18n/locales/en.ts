@@ -40,6 +40,7 @@ export const en = {
     title: 'Diary',
     entry: {
       more: '+%{count} more',
+      open: 'Open',
       readHint: 'Opens the full note to read at your own pace.',
     },
     close: 'Close',
