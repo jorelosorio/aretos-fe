@@ -314,10 +314,13 @@ export const ICON = {
  *   above `SPACING.screen`: the rounded corners eat into the edge, and at the
  *   screen's own margin the title looked pushed into them.
  * - `shadow` is cast upward, the only direction a sheet has an edge to show.
- *   Dark gets a much denser one, because the sheet and the screen behind it
- *   are both near-black and a light shadow disappears into them. It is a
- *   `boxShadow` rather than `elevation`, which on Android lights from above
- *   and draws almost nothing over a view's top edge.
+ *   It is a `boxShadow` rather than `elevation`, which on Android lights from
+ *   above and draws almost nothing over a view's top edge. In dark it is
+ *   deliberately faint: a dense one was tried, and on a near-black screen it
+ *   read as a black band behind the list rather than as depth. What outlines
+ *   the sheet there is its surface instead — `$popover`, a step lighter than
+ *   the screen, the way Material lifts an elevated surface in dark — and a
+ *   hairline of `$border` around the rounded edge.
  * - `handle` is the grabber at the top centre: iOS's 36 × 5 and Material's
  *   32 × 4 are close enough that one size reads as native on both.
  */
@@ -329,7 +332,7 @@ export const SHEET = {
   padding: '$5',
   shadow: {
     light: '0px -4px 24px rgba(0, 0, 0, 0.14)',
-    dark: '0px -6px 28px rgba(0, 0, 0, 0.6)',
+    dark: '0px -2px 16px rgba(0, 0, 0, 0.3)',
   },
   handle: { width: 36, height: 5 },
 } as const;

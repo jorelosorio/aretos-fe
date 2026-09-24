@@ -165,7 +165,8 @@ export function BottomSheet({
             {
               height: full + SHEET.overdrag,
               bottom: -SHEET.overdrag,
-              backgroundColor: theme.background.val,
+              backgroundColor: theme.popover.val,
+              borderColor: theme.border.val,
               boxShadow: shadow,
             },
             slide,
@@ -174,7 +175,7 @@ export function BottomSheet({
         >
           <YStack
             flex={1}
-            bg="$background"
+            bg="$popover"
             borderTopLeftRadius={SHEET.radius}
             borderTopRightRadius={SHEET.radius}
             overflow="hidden"
@@ -261,5 +262,6 @@ const styles = StyleSheet.create({
     right: 0,
     borderTopLeftRadius: SHEET.radius,
     borderTopRightRadius: SHEET.radius,
+    borderWidth: StyleSheet.hairlineWidth,
   },
 });
