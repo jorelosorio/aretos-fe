@@ -46,7 +46,7 @@ export function OptionGroup<T extends string>({
 
               <XStack
                 onPress={() => onChange(option.value)}
-                pressStyle={{ bg: '$muted' }}
+                pressStyle={{ bg: '$cardPress' }}
                 items="center"
                 gap={SPACING.items}
                 px={SPACING.card}

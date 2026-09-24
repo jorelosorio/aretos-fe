@@ -117,6 +117,11 @@ const darkStatus: typeof lightStatus = {
 const lightRoles = {
   card: '#fffaf1',
   cardForeground: '#2a211b',
+  // A pressed card. Its own role, not `muted`: cards carry `muted` chips and
+  // strips inside them, and a press that turned the card that same colour made
+  // them vanish under the finger. Darker than `muted` in light, lighter than
+  // `card` in dark, so it reads apart from both.
+  cardPress: '#e4d6bd',
   popover: '#fffaf1',
   popoverForeground: '#2a211b',
 
@@ -191,6 +196,7 @@ const lightRoles = {
 const darkRoles: typeof lightRoles = {
   card: '#2a221c',
   cardForeground: '#f5eade',
+  cardPress: '#3a2f27',
   popover: '#2a221c',
   popoverForeground: '#f5eade',
 

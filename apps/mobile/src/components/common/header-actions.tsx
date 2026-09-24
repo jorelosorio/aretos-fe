@@ -65,6 +65,7 @@ export function HeaderTextButton({
       px="$2"
       onPress={onPress}
       disabled={inactive}
+      opacity={disabled ? 0.4 : 1}
       hitSlop={HIT_SLOP}
       accessibilityLabel={label}
       accessibilityState={{ disabled: inactive, busy }}
@@ -72,11 +73,7 @@ export function HeaderTextButton({
       {busy ? (
         <Spinner color="$primary" />
       ) : (
-        <SizableText
-          size={TEXT.subheading}
-          fontWeight="700"
-          color={disabled ? '$mutedForeground' : '$primary'}
-        >
+        <SizableText size={TEXT.subheading} fontWeight="700" color="$primary">
           {label}
         </SizableText>
       )}

@@ -34,7 +34,7 @@ export function RowGroup({
 
             <XStack
               onPress={row.onPress}
-              pressStyle={{ bg: '$muted' }}
+              pressStyle={{ bg: '$cardPress' }}
               items="center"
               gap={SPACING.items}
               px={SPACING.card}

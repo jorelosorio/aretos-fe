@@ -31,7 +31,7 @@ export function GoalCard({
   return (
     <XStack
       onPress={onPress}
-      pressStyle={{ bg: '$muted' }}
+      pressStyle={{ bg: '$cardPress' }}
       items="center"
       gap={SPACING.items}
       p={SPACING.card}

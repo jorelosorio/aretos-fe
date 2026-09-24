@@ -468,8 +468,8 @@ export const en = {
       colorHint: 'This is how you spot this goal across the app.',
       colorAuto:
         "If you don't pick one, you get a color none of your other goals uses.",
-      create: 'Create',
       save: 'Save',
+      update: 'Update',
     },
     colors: {
       terracotta: 'Terracotta',
@@ -547,8 +547,8 @@ export const en = {
       planPlaceholder: 'If… then…',
       planHint:
         'e.g. "If it\'s 7:15 a.m., then I leave the house even if I haven\'t finished my coffee." Deciding when and where you will do it beforehand is what most raises the odds that you will.',
-      create: 'Add',
       save: 'Save',
+      update: 'Update',
     },
     mode: {
       binary: 'Yes / No',

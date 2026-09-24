@@ -467,8 +467,8 @@ export const es = {
       colorHint: 'Así reconoces esta meta en toda la app.',
       colorAuto:
         'Si no eliges uno, te damos un color que no use ninguna de tus otras metas.',
-      create: 'Crear',
       save: 'Guardar',
+      update: 'Actualizar',
     },
     colors: {
       terracotta: 'Terracota',
@@ -547,8 +547,8 @@ export const es = {
       planPlaceholder: 'Si… entonces…',
       planHint:
         'Ej. «Si son las 7:15 a.m., entonces salgo de casa aunque no haya terminado el café». Decidir de antemano cuándo y dónde lo harás es lo que más sube la probabilidad de hacerlo.',
-      create: 'Añadir',
       save: 'Guardar',
+      update: 'Actualizar',
     },
     mode: {
       binary: 'Sí / No',

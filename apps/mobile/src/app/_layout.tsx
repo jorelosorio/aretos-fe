@@ -8,7 +8,6 @@ import * as WebBrowser from 'expo-web-browser';
 import { TamaguiProvider } from '@tamagui/core';
 import { config } from '../../tamagui.config';
 
-import { CloseButton } from '@/components/common/close-button';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { useStackHeaderOptions } from '@/components/common/stack-header';
 import { useTranslations } from '@/lib/i18n';
@@ -37,13 +36,6 @@ function RootNavigator() {
 
   if (isRestoring) return <ScreenLoader />;
 
-  const modalOptions = {
-    presentation: 'modal',
-    headerShown: true,
-    headerBackVisible: false,
-    headerLeft: () => <CloseButton />,
-  } as const;
-
   return (
     <Stack screenOptions={{ ...headerOptions, headerShown: false }}>
       {/*
@@ -57,7 +49,7 @@ function RootNavigator() {
 
         <Stack.Screen
           name="goals/new"
-          options={{ ...modalOptions, title: t('goals.form.newTitle') }}
+          options={{ headerShown: true, title: t('goals.form.newTitle') }}
         />
         <Stack.Screen
           name="goals/[id]/index"
@@ -69,11 +61,11 @@ function RootNavigator() {
         />
         <Stack.Screen
           name="goals/[id]/edit"
-          options={{ ...modalOptions, title: t('goals.form.editTitle') }}
+          options={{ headerShown: true, title: t('goals.form.editTitle') }}
         />
         <Stack.Screen
           name="goals/[id]/habits/new"
-          options={{ ...modalOptions, title: t('habits.form.newTitle') }}
+          options={{ headerShown: true, title: t('habits.form.newTitle') }}
         />
         <Stack.Screen
           name="habits/[id]"

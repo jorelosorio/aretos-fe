@@ -42,7 +42,7 @@ export function HabitCard({
   return (
     <XStack
       onPress={onPress}
-      pressStyle={onPress ? { bg: '$muted' } : undefined}
+      pressStyle={onPress ? { bg: '$cardPress' } : undefined}
       items="center"
       gap={SPACING.items}
       p={SPACING.card}

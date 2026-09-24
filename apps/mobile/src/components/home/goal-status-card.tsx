@@ -145,7 +145,7 @@ export function GoalStatusCard({
   return (
     <YStack
       onPress={onPress}
-      pressStyle={{ bg: '$muted' }}
+      pressStyle={{ bg: '$cardPress' }}
       bg="$card"
       rounded="$xl2"
       borderWidth={1}

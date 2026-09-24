@@ -35,7 +35,7 @@ function MenuItem({
   return (
     <XStack
       onPress={onSelect}
-      pressStyle={{ bg: '$muted' }}
+      pressStyle={{ bg: '$cardPress' }}
       items="center"
       gap={SPACING.items}
       px={SPACING.card}

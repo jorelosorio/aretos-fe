@@ -136,7 +136,7 @@ export function HabitForm({
             <HeaderActions>
               <HeaderTextButton
                 label={
-                  habitId ? t('habits.form.save') : t('habits.form.create')
+                  habitId ? t('habits.form.update') : t('habits.form.save')
                 }
                 onPress={save}
                 disabled={!name}

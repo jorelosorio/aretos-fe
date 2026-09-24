@@ -122,7 +122,7 @@ export function GoalForm({
         options={{
           headerRight: () => (
             <HeaderTextButton
-              label={goalId ? t('goals.form.save') : t('goals.form.create')}
+              label={goalId ? t('goals.form.update') : t('goals.form.save')}
               onPress={save}
               disabled={!name}
               busy={busy}
