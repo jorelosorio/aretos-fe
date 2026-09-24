@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
-import { useRouter } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   CalendarDays,
   CalendarRange,
@@ -9,7 +10,6 @@ import {
   Shuffle,
 } from '@tamagui/lucide-icons-2';
 import {
-  Button,
   Input,
   Label,
   ScrollView,
@@ -20,6 +20,7 @@ import {
 } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
+import { HeaderTextButton } from '@/components/common/header-actions';
 import { OptionGroup, type Option } from '@/components/common/option-group';
 import { SectionTitle } from '@/components/common/section-title';
 import {
@@ -31,7 +32,7 @@ import {
   type TrackingFrequency,
 } from '@/features/goals';
 import { useTranslations } from '@/lib/i18n';
-import { BUTTON, SPACING, TEXT } from '@/constants/layout';
+import { SPACING, TEXT } from '@/constants/layout';
 
 const NAME_MAX = 120;
 const DESCRIPTION_MAX = 1000;
@@ -49,6 +50,7 @@ export function GoalForm({
 }) {
   const { t } = useTranslations();
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const toMessage = useGoalErrorMessage();
 
   const { createGoal, isCreating, error: createError } = useCreateGoal();
@@ -115,11 +117,25 @@ export function GoalForm({
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
+      <Stack.Screen
+        options={{
+          headerRight: () => (
+            <HeaderTextButton
+              label={goalId ? t('goals.form.save') : t('goals.form.create')}
+              onPress={save}
+              disabled={!name}
+              busy={busy}
+            />
+          ),
+        }}
+      />
+
       <YStack flex={1} bg="$background">
         <ScrollView
           flex={1}
           keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{ grow: 1 }}
+          keyboardDismissMode="on-drag"
+          contentContainerStyle={{ grow: 1, pb: insets.bottom }}
         >
           <YStack flex={1} p={SPACING.screen} gap={SPACING.section}>
             <ErrorNotice message={toMessage(createError ?? updateError)} />
@@ -229,23 +245,6 @@ export function GoalForm({
             </YStack>
           </YStack>
         </ScrollView>
-
-        <YStack
-          p={SPACING.screen}
-          bg="$card"
-          borderTopWidth={1}
-          borderTopColor="$border"
-        >
-          <Button
-            size={BUTTON.primary}
-            theme="accent"
-            onPress={save}
-            disabled={!name || busy}
-            opacity={!name || busy ? 0.7 : 1}
-          >
-            {goalId ? t('goals.form.save') : t('goals.form.create')}
-          </Button>
-        </YStack>
       </YStack>
     </KeyboardAvoidingView>
   );

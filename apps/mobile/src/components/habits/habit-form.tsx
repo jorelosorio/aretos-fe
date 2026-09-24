@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
-import { useRouter } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CircleCheck, Clock, Hash, Star } from '@tamagui/lucide-icons-2';
 import {
-  Button,
   Input,
   Label,
   ScrollView,
@@ -13,13 +13,17 @@ import {
 } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
+import {
+  HeaderActions,
+  HeaderTextButton,
+} from '@/components/common/header-actions';
 import { OptionGroup, type Option } from '@/components/common/option-group';
 import { SectionTitle } from '@/components/common/section-title';
 import {
   SegmentedControl,
   type Segment,
 } from '@/components/common/segmented-control';
-import { BUTTON, SPACING, TEXT } from '@/constants/layout';
+import { SPACING, TEXT } from '@/constants/layout';
 import { DEFAULT_TARGET, HabitTarget } from './habit-target';
 import {
   hasThreshold,
@@ -45,13 +49,16 @@ export function HabitForm({
   goalId,
   habitId,
   initial,
+  menu,
 }: {
   goalId: string;
   habitId?: string;
   initial: HabitDraft;
+  menu?: ReactNode;
 }) {
   const { t } = useTranslations();
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const toMessage = useHabitErrorMessage();
 
   const {
@@ -123,11 +130,30 @@ export function HabitForm({
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
+      <Stack.Screen
+        options={{
+          headerRight: () => (
+            <HeaderActions>
+              <HeaderTextButton
+                label={
+                  habitId ? t('habits.form.save') : t('habits.form.create')
+                }
+                onPress={save}
+                disabled={!name}
+                busy={busy}
+              />
+              {menu}
+            </HeaderActions>
+          ),
+        }}
+      />
+
       <YStack flex={1} bg="$background">
         <ScrollView
           flex={1}
           keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{ grow: 1 }}
+          keyboardDismissMode="on-drag"
+          contentContainerStyle={{ grow: 1, pb: insets.bottom }}
         >
           <YStack flex={1} p={SPACING.screen} gap={SPACING.section}>
             <ErrorNotice message={toMessage(createError ?? updateError)} />
@@ -207,23 +233,6 @@ export function HabitForm({
             </YStack>
           </YStack>
         </ScrollView>
-
-        <YStack
-          p={SPACING.screen}
-          bg="$card"
-          borderTopWidth={1}
-          borderTopColor="$border"
-        >
-          <Button
-            size={BUTTON.primary}
-            theme="accent"
-            onPress={save}
-            disabled={!name || busy}
-            opacity={!name || busy ? 0.7 : 1}
-          >
-            {habitId ? t('habits.form.save') : t('habits.form.create')}
-          </Button>
-        </YStack>
       </YStack>
     </KeyboardAvoidingView>
   );

@@ -13,6 +13,6 @@ import mindMap from '@/assets/illustrations/Mind map-cuate.svg';
  * `credits.ts` moves with it.
  */
 export const ILLUSTRATIONS = {
-  /** No goals yet: home, the diary, the goal picker and the goals list. */
+  /** No goals yet: home, the goal picker and the goals list. */
   noGoals: mindMap,
 } as const;

@@ -1,7 +1,7 @@
 import type { Check } from '@tamagui/lucide-icons-2';
 import { SizableText, XStack, YStack } from 'tamagui';
 
-import { ICON } from '@/constants/layout';
+import { ICON, TEXT } from '@/constants/layout';
 
 type IconComponent = typeof Check;
 
@@ -55,7 +55,7 @@ export function SegmentedControl<T extends string>({
             {Icon !== undefined && <Icon size={ICON.row} color={ink} />}
 
             <SizableText
-              size={stacked ? '$2' : '$3'}
+              size={stacked ? TEXT.caption : TEXT.body}
               fontWeight="600"
               color={ink}
               numberOfLines={1}

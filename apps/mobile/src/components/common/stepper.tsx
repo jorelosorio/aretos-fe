@@ -1,6 +1,6 @@
 import { Minus, Plus } from '@tamagui/lucide-icons-2';
 import { Button, SizableText, XStack } from 'tamagui';
-import { BUTTON, TEXT } from '@/constants/layout';
+import { BUTTON, ICON, TEXT } from '@/constants/layout';
 
 export function Stepper({
   value,
@@ -41,7 +41,7 @@ export function Stepper({
         disabled={value <= min}
         opacity={value <= min ? 0.4 : 1}
         onPress={() => onChange(clamp(value - step))}
-        icon={<Minus size={20} color="$color" />}
+        icon={<Minus size={ICON.row} color="$color" />}
         accessibilityLabel={`${label} −`}
       />
 
@@ -56,7 +56,7 @@ export function Stepper({
         disabled={value >= max}
         opacity={value >= max ? 0.4 : 1}
         onPress={() => onChange(clamp(value + step))}
-        icon={<Plus size={20} color="$color" />}
+        icon={<Plus size={ICON.row} color="$color" />}
         accessibilityLabel={`${label} +`}
       />
     </XStack>

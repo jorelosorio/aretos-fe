@@ -1,4 +1,4 @@
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 
 import { ErrorNotice } from '@/components/common/error-notice';
 import { ScreenLoader } from '@/components/common/screen-loader';
@@ -15,26 +15,17 @@ export default function EditHabit() {
   if (!habit) return <ScreenLoader />;
 
   return (
-    <>
-      <Stack.Screen
-        options={{
-          headerRight: () => (
-            <HabitActionsMenu habitId={habit.id} archived={habit.archived} />
-          ),
-        }}
-      />
-
-      <HabitForm
-        goalId={habit.goalId}
-        habitId={habit.id}
-        initial={{
-          name: habit.name,
-          trackingMode: habit.trackingMode,
-          weight: habit.weight,
-          successThreshold: habit.successThreshold,
-          ifThenPlan: habit.ifThenPlan,
-        }}
-      />
-    </>
+    <HabitForm
+      goalId={habit.goalId}
+      habitId={habit.id}
+      initial={{
+        name: habit.name,
+        trackingMode: habit.trackingMode,
+        weight: habit.weight,
+        successThreshold: habit.successThreshold,
+        ifThenPlan: habit.ifThenPlan,
+      }}
+      menu={<HabitActionsMenu habitId={habit.id} archived={habit.archived} />}
+    />
   );
 }

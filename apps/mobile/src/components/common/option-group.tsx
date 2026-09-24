@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { Check } from '@tamagui/lucide-icons-2';
 import { Separator, SizableText, XStack, YStack } from 'tamagui';
 
-import { SPACING, TEXT } from '@/constants/layout';
+import { ICON, SPACING, TEXT } from '@/constants/layout';
 
 import { SectionTitle } from './section-title';
 
@@ -57,7 +57,7 @@ export function OptionGroup<T extends string>({
                 accessibilityHint={option.hint}
               >
                 <option.Icon
-                  size={20}
+                  size={ICON.row}
                   color={selected ? '$primary' : '$mutedForeground'}
                 />
 
@@ -73,7 +73,7 @@ export function OptionGroup<T extends string>({
                 </YStack>
 
                 <YStack width={18} items="center">
-                  {selected && <Check size={18} color="$primary" />}
+                  {selected && <Check size={ICON.row} color="$primary" />}
                 </YStack>
               </XStack>
             </Fragment>

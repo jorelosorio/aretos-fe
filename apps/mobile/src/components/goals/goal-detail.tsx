@@ -1,5 +1,6 @@
 import { FlatList, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@tamagui/core';
 import { Archive, ListChecks, Plus } from '@tamagui/lucide-icons-2';
 import {
@@ -11,7 +12,7 @@ import {
   YStack,
 } from 'tamagui';
 
-import { AddRow } from '@/components/common/add-row';
+import { EmptyArt } from '@/components/common/empty-art';
 import { ErrorNotice } from '@/components/common/error-notice';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
@@ -27,6 +28,8 @@ const FREQUENCY_LABELS: Record<Goal['trackingFrequency'], TranslationKey> = {
   weekly: 'goals.frequency.weekly',
   flexible: 'goals.frequency.flexible',
 };
+
+const FOOTER_SPACE = 16;
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
@@ -129,6 +132,7 @@ export function GoalDetail({ goal }: { goal: Goal }) {
   const { t } = useTranslations();
   const theme = useTheme();
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const toMessage = useHabitErrorMessage();
 
   const allowance = useAllowance('habit');
@@ -148,14 +152,16 @@ export function GoalDetail({ goal }: { goal: Goal }) {
       params: { id: goal.id },
     });
 
-  const hasHabits = (habits?.length ?? 0) > 0;
   const canAdd = !goal.archived && canCreate;
 
   return (
     <YStack flex={1} bg="$background">
       <FlatList
         style={{ flex: 1 }}
-        contentContainerStyle={{ flexGrow: 1 }}
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingBottom: insets.bottom + FOOTER_SPACE,
+        }}
         data={habits ?? []}
         keyExtractor={(habit) => habit.id}
         refreshControl={
@@ -207,13 +213,6 @@ export function GoalDetail({ goal }: { goal: Goal }) {
             </YStack>
           )
         }
-        ListFooterComponent={
-          <YStack px={SPACING.screen} pb={SPACING.screen}>
-            {canAdd && hasHabits && (
-              <AddRow label={t('habits.new')} onPress={addHabit} />
-            )}
-          </YStack>
-        }
       />
     </YStack>
   );
@@ -224,7 +223,7 @@ function EmptyHabits({ onCreate }: { onCreate?: () => void }) {
 
   return (
     <YStack items="center" gap={SPACING.group} p={SPACING.section}>
-      <ListChecks size={28} color="$primary" />
+      <EmptyArt Icon={ListChecks} />
       <SizableText
         size={TEXT.title}
         fontWeight="700"

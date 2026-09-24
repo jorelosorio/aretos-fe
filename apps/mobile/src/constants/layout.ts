@@ -123,11 +123,43 @@ export const TEXT = {
  * Three, because the app already had three shapes of button and a fourth that
  * was nobody's decision: `$4` turned up on a stepper's plus and on an empty
  * state's call to action, two controls with nothing in common.
+ *
+ * Where a button goes is as much a decision as its size, and the app follows
+ * the two platforms where they agree:
+ *
+ * - **Creating the thing a screen lists is a `+` in its header** — Goals on
+ *   its tab, habits on a goal's detail. Never a row at the end of the list:
+ *   past a handful of items that row is a scroll away, and the action a list
+ *   exists to grow should not get harder to reach as it grows. An empty list
+ *   still carries a `primary` button in its empty state, because there the
+ *   header `+` is easy to miss and the empty state is the whole screen.
+ * - **A modal dismisses from the leading edge and confirms from the trailing
+ *   one**: iOS's Cancel/Done, Material's full-screen dialog. The root stack
+ *   puts the close on every modal; a form puts its own confirm in
+ *   `headerRight`, where the keyboard cannot cover it.
+ * - **A form reached by tapping a row is a push, not a modal**, and goes
+ *   back with the platform's back button: editing a habit drills into the
+ *   goal's list the way a settings row does. A close ✕ there reads as
+ *   "throw this away" on a screen that animated in like a page. Creating
+ *   something, or an edit opened from a menu, is still a modal.
+ * - **Actions on the thing a screen shows — archive, delete, edit — live
+ *   behind the overflow `⋮` (`…` on iOS)**, always the trailing-most item in
+ *   the header, so a goal and a habit are managed from the same place. They
+ *   are never a visible button beside a form's confirm: one tap away from
+ *   "Guardar" is too close for "Eliminar".
+ * - **A menu opens without dimming the screen.** A blur would be the native
+ *   backdrop, but the app has no blur view to draw one with (the installed
+ *   glass effect is iOS 26 only and draws surfaces, not backdrops), and a
+ *   translucent black curtain read as a rendering glitch rather than as
+ *   focus. The menu carries a shadow instead; a tap outside still closes it.
+ * - **The check-in is the one exception** to a header confirm: it is a flow
+ *   worked through top to bottom every day, so its save sits in a sticky
+ *   footer under the thumb, with the progress it is saving beside it.
  */
 export const BUTTON = {
   /**
-   * The screen's main action — a form's submit in its sticky footer, an empty
-   * state's way forward. One per screen.
+   * The screen's main action — the check-in's save in its sticky footer, an
+   * empty state's way forward. One per screen.
    */
   primary: '$5',
   /** An icon-only action: a header, a row, a menu, a close. */
@@ -175,6 +207,17 @@ export const HEADER_TITLE = {
   fontSize: 20,
   lineHeight: 26,
 } as const;
+
+/**
+ * How far the tab navigator's header actions sit in from the trailing edge,
+ * in points.
+ *
+ * Only the tabs need it. The root stack draws a native header, which places
+ * its bar items with the platform's own margins; the tab navigator draws a
+ * JavaScript one that puts `headerRight` flush against the edge, where a `+`
+ * would sit closer to the glass than the title does on the other side.
+ */
+export const HEADER_INSET = 8;
 
 /**
  * The floating tab bar's two metrics, in points.

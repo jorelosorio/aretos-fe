@@ -24,6 +24,12 @@
  * - **Numbers and measured values.** A stat is data, not a name, and setting
  *   one in the display face puts it in direct competition with the heading
  *   beside it. These are `$body` at weight 700.
+ * - **Button labels.** An action rather than a subject. The web sets its
+ *   buttons in the display face, and the mobile app used to follow it through
+ *   `Button`'s default props — which put Caprasimo on "Guardar registro" and
+ *   "Cerrar sesión" a few points from the goal name they sat under. The
+ *   default is now `$body` at weight 700, the same weight a header action
+ *   such as "Guardar" is set in.
  *
  * A home screen used to stack the greeting, the section heading, a goal's
  * name and an empty-state title all in Caprasimo, within a step of each

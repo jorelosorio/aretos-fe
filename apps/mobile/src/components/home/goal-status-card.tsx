@@ -27,9 +27,11 @@ const MOOD_LABELS: Record<MoodScore, TranslationKey> = {
 export function GoalStatusCard({
   goal,
   progress,
+  onPress,
 }: {
   goal: Goal;
   progress: GoalProgress;
+  onPress: () => void;
 }) {
   const { t } = useTranslations();
 
@@ -73,8 +75,12 @@ export function GoalStatusCard({
       rounded="$xl2"
       borderWidth={1}
       borderColor="$border"
+      onPress={onPress}
+      pressStyle={{ bg: '$muted' }}
       accessible
+      accessibilityRole="button"
       accessibilityLabel={label}
+      accessibilityHint={t('home.openCheckIn')}
     >
       <YStack gap={SPACING.text}>
         <SizableText

@@ -11,6 +11,7 @@ import { GoalCard } from '@/components/goals/goal-card';
 import { ILLUSTRATIONS } from '@/constants/illustrations';
 import { SPACING } from '@/constants/layout';
 import { useGoalErrorMessage, useGoals } from '@/features/goals';
+import { useAllowance } from '@/features/limits';
 import { useTranslations } from '@/lib/i18n';
 
 import { EmptyLog } from './empty-log';
@@ -22,6 +23,7 @@ export function GoalPickerScreen() {
   const toMessage = useGoalErrorMessage();
 
   const { data: goals, isPending, error } = useGoals();
+  const { canCreate } = useAllowance('goal');
 
   const open = (goalId: string) =>
     router.replace({ pathname: '/logs/[goalId]', params: { goalId } });
@@ -43,6 +45,8 @@ export function GoalPickerScreen() {
         illustration={ILLUSTRATIONS.noGoals}
         title={t('goals.empty.title')}
         body={t('goals.empty.body')}
+        action={canCreate ? t('goals.new') : undefined}
+        onAction={() => router.replace('/goals/new')}
       />
     );
   }

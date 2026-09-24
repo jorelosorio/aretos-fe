@@ -1,6 +1,7 @@
 import { Tabs, useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
 import {
+  CalendarCheck,
   ChartNoAxesColumn,
   House,
   NotebookPen,
@@ -9,7 +10,8 @@ import {
 } from '@tamagui/lucide-icons-2';
 
 import { FloatingTabBar } from '@/components/common/floating-tab-bar';
-import { HEADER_TITLE, ICON } from '@/constants/layout';
+import { NewGoalButton } from '@/components/goals/new-goal-button';
+import { HEADER_INSET, HEADER_TITLE, ICON } from '@/constants/layout';
 import { useTranslations } from '@/lib/i18n';
 
 const iconColor = (focused: boolean) =>
@@ -27,6 +29,7 @@ export default function TabsLayout() {
           {...props}
           action={{
             label: t('tabs.log'),
+            Icon: CalendarCheck,
             onPress: () => router.push('/logs/new'),
           }}
         />
@@ -35,6 +38,7 @@ export default function TabsLayout() {
         sceneStyle: { backgroundColor: theme.background.val },
         headerStyle: { backgroundColor: theme.background.val },
         headerShadowVisible: false,
+        headerRightContainerStyle: { paddingRight: HEADER_INSET },
         headerTintColor: theme.color.val,
         headerTitleStyle: {
           fontFamily: HEADER_TITLE.fontFamily,
@@ -75,6 +79,7 @@ export default function TabsLayout() {
         name="goals"
         options={{
           title: t('tabs.goals'),
+          headerRight: () => <NewGoalButton />,
           tabBarIcon: ({ focused }) => (
             <Target color={iconColor(focused)} size={ICON.feature} />
           ),

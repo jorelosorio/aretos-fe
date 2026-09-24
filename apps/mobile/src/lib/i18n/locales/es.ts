@@ -26,6 +26,7 @@ export const es = {
       summary: '%{complete} de %{total} períodos completos',
     },
     noHabits: 'Sin hábitos todavía',
+    openCheckIn: 'Abre el registro de esta meta',
   },
   diary: {
     title: 'Diario',
@@ -33,6 +34,10 @@ export const es = {
       more: '+%{count} más',
     },
     close: 'Cerrar',
+    empty: {
+      title: 'Tu diario está vacío',
+      body: 'Cada registro que guardes aparece aquí, con su nota y cómo te sentiste.',
+    },
     cutoff: {
       title: 'Hasta aquí llega tu plan',
       body: 'Tu plan muestra el diario desde el %{date}. Lo anterior sigue guardado y vuelve a aparecer si mejoras tu plan.',
@@ -359,8 +364,8 @@ export const es = {
       frequency: 'Tu cadencia',
       streakRule: '¿Qué mantiene viva la racha?',
       threshold: 'Mínimo',
-      create: 'Crear meta',
-      save: 'Guardar cambios',
+      create: 'Crear',
+      save: 'Guardar',
     },
     frequency: {
       daily: 'Diaria',
@@ -428,8 +433,8 @@ export const es = {
       planPlaceholder: 'Si… entonces…',
       planHint:
         'Ej. «Si son las 7:15 a.m., entonces salgo de casa aunque no haya terminado el café». Decidir de antemano cuándo y dónde lo harás es lo que más sube la probabilidad de hacerlo.',
-      create: 'Añadir hábito',
-      save: 'Guardar cambios',
+      create: 'Añadir',
+      save: 'Guardar',
     },
     mode: {
       binary: 'Sí / No',

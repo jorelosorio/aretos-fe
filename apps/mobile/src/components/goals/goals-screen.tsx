@@ -6,7 +6,6 @@ import { useTheme } from '@tamagui/core';
 import { Archive, Plus, Target } from '@tamagui/lucide-icons-2';
 import { Button, Paragraph, SizableText, YStack } from 'tamagui';
 
-import { AddRow } from '@/components/common/add-row';
 import { EmptyArt } from '@/components/common/empty-art';
 import { ErrorNotice } from '@/components/common/error-notice';
 import { useTabBarInset } from '@/components/common/floating-tab-bar';
@@ -54,9 +53,6 @@ export function GoalsScreen() {
 
   const create = () => router.push('/goals/new');
 
-  const hasGoals = (goals?.length ?? 0) > 0;
-  const canAdd = !archived && hasGoals && canCreate;
-
   return (
     <YStack flex={1} bg="$background">
       <FlatList
@@ -75,18 +71,18 @@ export function GoalsScreen() {
         }
         ListHeaderComponent={
           <YStack
-            gap={SPACING.section}
+            gap={SPACING.items}
             px={SPACING.screen}
             pt={SPACING.screen}
             pb={SPACING.items}
           >
-            <PlanLimitNotice allowance={allowance} />
-
             <SegmentedControl
               segments={segments}
               value={filter}
               onChange={setFilter}
             />
+
+            {!archived && <PlanLimitNotice allowance={allowance} />}
 
             <ErrorNotice message={toMessage(error)} />
           </YStack>
@@ -105,13 +101,6 @@ export function GoalsScreen() {
             />
           </YStack>
         )}
-        ListFooterComponent={
-          canAdd ? (
-            <YStack px={SPACING.screen} pb={SPACING.items}>
-              <AddRow label={t('goals.new')} onPress={create} />
-            </YStack>
-          ) : null
-        }
         ListEmptyComponent={
           isPending ? (
             <ScreenLoader />

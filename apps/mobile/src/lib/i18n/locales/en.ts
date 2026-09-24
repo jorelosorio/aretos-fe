@@ -25,6 +25,7 @@ export const en = {
       summary: '%{complete} of %{total} periods complete',
     },
     noHabits: 'No habits yet',
+    openCheckIn: 'Opens this goal’s check-in',
   },
   diary: {
     title: 'Diary',
@@ -32,6 +33,10 @@ export const en = {
       more: '+%{count} more',
     },
     close: 'Close',
+    empty: {
+      title: 'Your diary is empty',
+      body: 'Every check-in you save shows up here, with its note and how you felt.',
+    },
     cutoff: {
       title: 'This is as far as your plan reads',
       body: 'Your plan shows the diary from %{date}. Anything older is still saved and comes back if you upgrade.',
@@ -357,8 +362,8 @@ export const en = {
       frequency: 'Your cadence',
       streakRule: 'What keeps the streak alive?',
       threshold: 'Minimum',
-      create: 'Create goal',
-      save: 'Save changes',
+      create: 'Create',
+      save: 'Save',
     },
     frequency: {
       daily: 'Daily',
@@ -425,8 +430,8 @@ export const en = {
       planPlaceholder: 'If… then…',
       planHint:
         'e.g. "If it\'s 7:15 a.m., then I leave the house even if I haven\'t finished my coffee." Deciding when and where you will do it beforehand is what most raises the odds that you will.',
-      create: 'Add habit',
-      save: 'Save changes',
+      create: 'Add',
+      save: 'Save',
     },
     mode: {
       binary: 'Yes / No',

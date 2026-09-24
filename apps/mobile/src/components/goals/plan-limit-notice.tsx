@@ -1,7 +1,7 @@
 import { Info, Layers } from '@tamagui/lucide-icons-2';
 import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
-import { SPACING, TEXT } from '@/constants/layout';
+import { ICON, SPACING, TEXT } from '@/constants/layout';
 import type { Allowance } from '@/features/limits';
 import { useTranslations } from '@/lib/i18n';
 
@@ -15,7 +15,7 @@ export function PlanLimitNotice({ allowance }: { allowance: Allowance }) {
   if (canCreate) {
     return (
       <XStack items="center" gap={SPACING.group} px="$2">
-        <Info size={14} color="$mutedForeground" />
+        <Info size={ICON.inline} color="$mutedForeground" />
         <Paragraph flex={1} size={TEXT.caption} color="$mutedForeground">
           {t('goals.limit.usage', { used, limit })}
         </Paragraph>
@@ -40,7 +40,7 @@ export function PlanLimitNotice({ allowance }: { allowance: Allowance }) {
         rounded="$xl"
         bg="$muted"
       >
-        <Layers size={18} color="$primary" />
+        <Layers size={ICON.row} color="$primary" />
       </YStack>
 
       <YStack flex={1} gap={SPACING.text}>

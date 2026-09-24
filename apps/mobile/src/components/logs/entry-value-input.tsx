@@ -7,7 +7,7 @@ import type { LogEntry } from '@/features/logs';
 import { useTranslations } from '@/lib/i18n';
 
 import { stepFor } from './entry-actions';
-import { BUTTON, TEXT } from '@/constants/layout';
+import { BUTTON, ICON, TEXT } from '@/constants/layout';
 
 const RATINGS = [1, 2, 3, 4, 5];
 const PIP = 26;
@@ -45,7 +45,7 @@ function AmountPill({
         disabled={atZero}
         opacity={atZero ? 0.35 : 1}
         onPress={() => set(value === null ? null : Math.max(0, value - step))}
-        icon={<Minus size={14} color="$color" />}
+        icon={<Minus size={ICON.inline} color="$color" />}
         accessibilityLabel={`${unit} −`}
       />
 
@@ -64,7 +64,7 @@ function AmountPill({
         circular
         chromeless
         onPress={() => set((value ?? 0) + step)}
-        icon={<Plus size={14} color="$color" />}
+        icon={<Plus size={ICON.inline} color="$color" />}
         accessibilityLabel={`${unit} +`}
       />
     </XStack>

@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
+import { useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
-import { Target } from '@tamagui/lucide-icons-2';
+import { NotebookPen } from '@tamagui/lucide-icons-2';
 import { Spinner, XStack, YStack } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
@@ -9,7 +10,6 @@ import { useTabBarInset } from '@/components/common/floating-tab-bar';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
 import { EmptyLog } from '@/components/logs/empty-log';
-import { ILLUSTRATIONS } from '@/constants/illustrations';
 import { SPACING } from '@/constants/layout';
 import {
   useDiary,
@@ -47,6 +47,7 @@ function toRows(entries: readonly DiaryEntry[]): Row[] {
 export function DiaryScreen() {
   const { t, locale } = useTranslations();
   const theme = useTheme();
+  const router = useRouter();
   const toMessage = useDiaryErrorMessage();
   const tabBarInset = useTabBarInset();
 
@@ -110,10 +111,11 @@ export function DiaryScreen() {
             <ScreenLoader />
           ) : error ? null : (
             <EmptyLog
-              Icon={Target}
-              illustration={ILLUSTRATIONS.noGoals}
-              title={t('goals.empty.title')}
-              body={t('goals.empty.body')}
+              Icon={NotebookPen}
+              title={t('diary.empty.title')}
+              body={t('diary.empty.body')}
+              action={t('tabs.log')}
+              onAction={() => router.push('/logs/new')}
             />
           )
         }

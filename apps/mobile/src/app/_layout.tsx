@@ -37,14 +37,16 @@ function RootNavigator() {
 
   if (isRestoring) return <ScreenLoader />;
 
-  const modalOptions = { presentation: 'modal', headerShown: true } as const;
+  const modalOptions = {
+    presentation: 'modal',
+    headerShown: true,
+    headerBackVisible: false,
+    headerLeft: () => <CloseButton />,
+  } as const;
 
   const sheetOptions = {
     ...modalOptions,
     animation: 'slide_from_bottom',
-    headerBackVisible: false,
-    headerLeft: () => null,
-    headerRight: () => <CloseButton />,
   } as const;
 
   return (
@@ -85,7 +87,7 @@ function RootNavigator() {
         />
         <Stack.Screen
           name="habits/[id]"
-          options={{ ...modalOptions, title: t('habits.form.editTitle') }}
+          options={{ headerShown: true, title: t('habits.form.editTitle') }}
         />
 
         <Stack.Screen

@@ -1,7 +1,7 @@
 import { ChevronRight } from '@tamagui/lucide-icons-2';
 import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
-import { SPACING, TEXT } from '@/constants/layout';
+import { ICON, SPACING, TEXT } from '@/constants/layout';
 import type { Goal } from '@/features/goals';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
 
@@ -72,7 +72,7 @@ export function GoalCard({
         </XStack>
       </YStack>
 
-      <ChevronRight size={18} color="$mutedForeground" />
+      <ChevronRight size={ICON.row} color="$mutedForeground" />
     </XStack>
   );
 }

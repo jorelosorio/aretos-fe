@@ -1,4 +1,5 @@
 import { FlatList, RefreshControl } from 'react-native';
+import { useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
 import { Target } from '@tamagui/lucide-icons-2';
 import { YStack } from 'tamagui';
@@ -11,6 +12,7 @@ import { EmptyLog } from '@/components/logs/empty-log';
 import { ILLUSTRATIONS } from '@/constants/illustrations';
 import { SPACING } from '@/constants/layout';
 import { useGoalErrorMessage, useGoals, type Goal } from '@/features/goals';
+import { useAllowance } from '@/features/limits';
 import { useTranslations } from '@/lib/i18n';
 
 import { GoalStatusCard } from './goal-status-card';
@@ -27,6 +29,8 @@ export function HomeScreen() {
   const theme = useTheme();
   const toMessage = useGoalErrorMessage();
   const tabBarInset = useTabBarInset();
+  const router = useRouter();
+  const { canCreate } = useAllowance('goal');
 
   const goals = useGoals({ include: ['progress'] });
 
@@ -42,6 +46,8 @@ export function HomeScreen() {
         illustration={ILLUSTRATIONS.noGoals}
         title={t('goals.empty.title')}
         body={t('goals.empty.body')}
+        action={canCreate ? t('goals.new') : undefined}
+        onAction={() => router.push('/goals/new')}
       />
     );
   }
@@ -79,7 +85,16 @@ export function HomeScreen() {
       ListEmptyComponent={empty}
       renderItem={({ item }) => (
         <YStack px={SPACING.screen} pb={SPACING.items}>
-          <GoalStatusCard goal={item} progress={item.progress} />
+          <GoalStatusCard
+            goal={item}
+            progress={item.progress}
+            onPress={() =>
+              router.push({
+                pathname: '/logs/[goalId]',
+                params: { goalId: item.id },
+              })
+            }
+          />
         </YStack>
       )}
     />

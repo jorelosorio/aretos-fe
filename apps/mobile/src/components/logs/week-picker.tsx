@@ -7,7 +7,7 @@ import {
 import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons-2';
 import { Button, Circle, SizableText, XStack, YStack } from 'tamagui';
 
-import { BUTTON, SPACING, TEXT } from '@/constants/layout';
+import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';
 import type {
   GoalPeriod,
   PeriodStatus,
@@ -178,7 +178,7 @@ export function WeekPicker({
           disabled={index === 0}
           opacity={index === 0 ? 0.3 : 1}
           onPress={() => pickWeek(index - 1)}
-          icon={<ChevronLeft size={18} color="$color" />}
+          icon={<ChevronLeft size={ICON.row} color="$color" />}
           accessibilityLabel={t('logs.period.previousWeek')}
         />
 
@@ -193,7 +193,7 @@ export function WeekPicker({
           disabled={index === weeks.length - 1}
           opacity={index === weeks.length - 1 ? 0.3 : 1}
           onPress={() => pickWeek(index + 1)}
-          icon={<ChevronRight size={18} color="$color" />}
+          icon={<ChevronRight size={ICON.row} color="$color" />}
           accessibilityLabel={t('logs.period.nextWeek')}
         />
       </XStack>

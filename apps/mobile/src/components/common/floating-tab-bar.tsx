@@ -1,10 +1,12 @@
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Plus } from '@tamagui/lucide-icons-2';
+import type { Plus } from '@tamagui/lucide-icons-2';
 import { Circle, styled, XStack, YStack } from 'tamagui';
 
 import { ICON, TAB_BAR } from '@/constants/layout';
 
 import type { TabBarProps } from './tab-bar-props';
+
+type IconComponent = typeof Plus;
 
 const Slot = styled(YStack, {
   flex: 1,
@@ -24,7 +26,7 @@ export function FloatingTabBar({
   navigation,
   action,
 }: TabBarProps & {
-  action?: { label: string; onPress: () => void };
+  action?: { label: string; Icon: IconComponent; onPress: () => void };
 }) {
   const insets = useSafeAreaInsets();
 
@@ -92,7 +94,7 @@ export function FloatingTabBar({
             accessibilityLabel={action.label}
           >
             <Circle size="$3.5" items="center" justify="center" bg="$primary">
-              <Plus size={ICON.feature} color="$primaryForeground" />
+              <action.Icon size={ICON.feature} color="$primaryForeground" />
             </Circle>
           </Slot>
         )}
