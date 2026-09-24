@@ -152,8 +152,10 @@ export const TEXT = {
  *   glass effect is iOS 26 only and draws surfaces, not backdrops), and a
  *   translucent black curtain read as a rendering glitch rather than as
  *   focus. The menu carries a shadow instead; a tap outside still closes it.
- *   The same holds for a `FullScreenSheet`: Android dims behind any opaque
- *   `Modal`, so the sheet is a transparent one that slides itself in.
+ *   The same holds for a `FullScreenSheet` and a `BottomSheet`: Android dims
+ *   behind any opaque `Modal`, so both are transparent ones that slide
+ *   themselves in. A `BottomSheet` leaves the screen above it in view, and a
+ *   tap there closes it the way a tap outside a menu does.
  * - **No exceptions for long flows.** The check-in once kept its save in a
  *   sticky footer on the argument that it is worked through top to bottom
  *   daily; it read as a second convention for the same job. Its confirm is
@@ -290,4 +292,44 @@ export const ICON = {
   row: 18,
   /** The subject of a tile or an empty state, not an annotation of one. */
   feature: 24,
+} as const;
+
+/**
+ * The geometry of a `BottomSheet`, in points unless noted.
+ *
+ * - `detents` are the heights a sheet opens at, as a share of the screen.
+ *   Two and only two: `half` for something glanced at, `tall` for something
+ *   read. Dragging up always reaches the full height, so a third opening size
+ *   would only be a guess at where the user was going to drag anyway.
+ * - `topGap` is what stays visible above a fully expanded sheet, below the
+ *   status bar. Without it an expanded sheet is indistinguishable from a
+ *   pushed screen, and the drag down that closes it stops being discoverable.
+ * - `overdrag` is how far the sheet may be pulled past its full height before
+ *   it stops following the finger. The sheet is drawn that much taller than
+ *   it needs, below the screen, so the resistance never opens a gap under it.
+ * - `radius` is the `$xl3` token as a number, because the view that casts
+ *   the sheet's shadow is a plain animated view that cannot read tokens.
+ * - `padding` is the sheet's side margin, for its header and its content
+ *   alike, so the first line of what it shows sits under the title. A step
+ *   above `SPACING.screen`: the rounded corners eat into the edge, and at the
+ *   screen's own margin the title looked pushed into them.
+ * - `shadow` is cast upward, the only direction a sheet has an edge to show.
+ *   Dark gets a much denser one, because the sheet and the screen behind it
+ *   are both near-black and a light shadow disappears into them. It is a
+ *   `boxShadow` rather than `elevation`, which on Android lights from above
+ *   and draws almost nothing over a view's top edge.
+ * - `handle` is the grabber at the top centre: iOS's 36 × 5 and Material's
+ *   32 × 4 are close enough that one size reads as native on both.
+ */
+export const SHEET = {
+  detents: { half: 0.5, tall: 0.7 },
+  topGap: 12,
+  overdrag: 80,
+  radius: 21,
+  padding: '$5',
+  shadow: {
+    light: '0px -4px 24px rgba(0, 0, 0, 0.14)',
+    dark: '0px -6px 28px rgba(0, 0, 0, 0.6)',
+  },
+  handle: { width: 36, height: 5 },
 } as const;

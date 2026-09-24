@@ -10,6 +10,11 @@ export const es = {
     goals: 'Mis Metas',
     settings: 'Ajustes',
   },
+  sheet: {
+    expand: 'Expandir',
+    collapse: 'Reducir',
+    close: 'Cerrar',
+  },
   home: {
     greeting: 'Hola, %{name}',
     welcomeBack: 'Bienvenido de vuelta',
@@ -44,7 +49,6 @@ export const es = {
       open: 'Abrir',
       readHint: 'Abre la nota completa para leerla con calma.',
     },
-    close: 'Cerrar',
     empty: {
       title: 'Tu diario está vacío',
       body: 'Cada registro que guardes aparece aquí, con su nota y cómo te sentiste.',

@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { X } from '@tamagui/lucide-icons-2';
-import { Paragraph, ScrollView, YStack } from 'tamagui';
+import { Paragraph, YStack } from 'tamagui';
 
-import { FullScreenSheet } from '@/components/common/full-screen-sheet';
+import { BottomSheet } from '@/components/common/bottom-sheet';
 import { NOTE_TEXT } from '@/components/common/note-text';
 import { GoalDot } from '@/components/goals/goal-dot';
 import type { DiaryEntry } from '@/features/diary';
@@ -17,41 +16,37 @@ export function EntryViewer({
   entry: DiaryEntry | null;
   onClose: () => void;
 }) {
-  const { t, locale } = useTranslations();
+  const { locale } = useTranslations();
   const [shown, setShown] = useState(entry);
 
   if (entry !== null && entry !== shown) setShown(entry);
 
   return (
-    <FullScreenSheet
+    <BottomSheet
       open={entry !== null}
       title={shown?.goal.name ?? ''}
+      subtitle={
+        shown === null
+          ? undefined
+          : periodLabel(shown.entryDate, shown.endDate, locale)
+      }
       leading={
         shown === null ? undefined : <GoalDot slot={shown.goal.colorSlot} />
       }
-      meta={
-        shown === null
-          ? ''
-          : periodLabel(shown.entryDate, shown.endDate, locale)
-      }
-      Icon={X}
-      iconLabel={t('diary.close')}
       onDismiss={onClose}
     >
       {shown !== null && (
-        <ScrollView flex={1}>
-          <YStack p={NOTE_TEXT.padding}>
-            <Paragraph
-              size={NOTE_TEXT.size}
-              lineHeight={NOTE_TEXT.lineHeight}
-              color="$color"
-              selectable
-            >
-              {shown.note}
-            </Paragraph>
-          </YStack>
-        </ScrollView>
+        <YStack pb={NOTE_TEXT.padding}>
+          <Paragraph
+            size={NOTE_TEXT.size}
+            lineHeight={NOTE_TEXT.lineHeight}
+            color="$color"
+            selectable
+          >
+            {shown.note}
+          </Paragraph>
+        </YStack>
       )}
-    </FullScreenSheet>
+    </BottomSheet>
   );
 }

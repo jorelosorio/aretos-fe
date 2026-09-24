@@ -9,6 +9,11 @@ export const en = {
     goals: 'My Goals',
     settings: 'Settings',
   },
+  sheet: {
+    expand: 'Expand',
+    collapse: 'Collapse',
+    close: 'Close',
+  },
   home: {
     greeting: 'Hello, %{name}',
     welcomeBack: 'Welcome back',
@@ -43,7 +48,6 @@ export const en = {
       open: 'Open',
       readHint: 'Opens the full note to read at your own pace.',
     },
-    close: 'Close',
     empty: {
       title: 'Your diary is empty',
       body: 'Every check-in you save shows up here, with its note and how you felt.',
