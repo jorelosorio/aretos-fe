@@ -20,12 +20,20 @@ export const en = {
     today: {
       title: "Today's report",
     },
-    week: {
-      counted: '%{count} count toward the streak',
-      summary: '%{complete} of %{total} periods complete',
-    },
     noHabits: 'No habits yet',
-    openCheckIn: 'Opens this goal’s check-in',
+    cta: {
+      log: 'Log today',
+      logWeek: 'Log this week',
+      edit: 'Edit entry',
+      addHabit: 'Add a habit',
+    },
+    risk: {
+      today: 'Log today to keep your streak',
+      week: 'Log this week to keep your streak',
+    },
+    best: 'Best streak: %{count} d',
+    daysLeftOne: 'Last day',
+    daysLeftMany: '%{count} days left',
   },
   diary: {
     title: 'Diary',

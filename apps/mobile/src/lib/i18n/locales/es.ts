@@ -21,12 +21,20 @@ export const es = {
     today: {
       title: 'Tu reporte de hoy',
     },
-    week: {
-      counted: '%{count} cuentan para la racha',
-      summary: '%{complete} de %{total} períodos completos',
-    },
     noHabits: 'Sin hábitos todavía',
-    openCheckIn: 'Abre el registro de esta meta',
+    cta: {
+      log: 'Registrar hoy',
+      logWeek: 'Registrar la semana',
+      edit: 'Editar registro',
+      addHabit: 'Añadir un hábito',
+    },
+    risk: {
+      today: 'Registra hoy para mantener la racha',
+      week: 'Registra esta semana para mantener la racha',
+    },
+    best: 'Mejor racha: %{count} d',
+    daysLeftOne: 'Último día',
+    daysLeftMany: 'Quedan %{count} días',
   },
   diary: {
     title: 'Diario',

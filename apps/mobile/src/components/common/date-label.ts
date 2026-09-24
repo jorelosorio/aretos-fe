@@ -37,6 +37,17 @@ export function weekdayLabel(key: string, locale: AppLocale): string {
   );
 }
 
+/**
+ * A day and a short month — "21 sept" — for a range whose two ends each need
+ * their month, because a week can straddle two of them.
+ */
+export function shortDateLabel(key: string, locale: AppLocale): string {
+  return new Intl.DateTimeFormat(locale, {
+    day: 'numeric',
+    month: 'short',
+  }).format(toDate(key));
+}
+
 /** The day of the month, which is what a picker's circles carry. */
 export function dayNumber(key: string): string {
   return String(toDate(key).getDate());

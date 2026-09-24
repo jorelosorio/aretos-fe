@@ -89,10 +89,15 @@ export function HomeScreen() {
             goal={item}
             progress={item.progress}
             onPress={() =>
-              router.push({
-                pathname: '/logs/[goalId]',
-                params: { goalId: item.id },
-              })
+              item.habitCount === 0
+                ? router.push({
+                    pathname: '/goals/[id]/habits/new',
+                    params: { id: item.id },
+                  })
+                : router.push({
+                    pathname: '/logs/[goalId]',
+                    params: { goalId: item.id },
+                  })
             }
           />
         </YStack>
