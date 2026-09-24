@@ -220,7 +220,8 @@ export type GoalProgress = {
   pending: boolean;
   /**
    * The streak depends on the current period: pending, with a streak to
-   * lose. The server's judgement — the home card only shows it.
+   * lose. Mapped so the wire type stays whole, but deliberately not shown:
+   * the app does not frame a streak as something to lose or rush to save.
    */
   atRisk: boolean;
   /** Today through the current period's end, inclusive. */

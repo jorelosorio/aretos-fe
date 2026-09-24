@@ -27,10 +27,6 @@ export const en = {
       edit: 'Edit entry',
       addHabit: 'Add a habit',
     },
-    risk: {
-      today: 'Your streak hinges on today',
-      week: 'Your streak hinges on this week',
-    },
     best: 'Best streak: %{count} d',
     daysLeftOne: 'Last day',
     daysLeftMany: '%{count} days left',

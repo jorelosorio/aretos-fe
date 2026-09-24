@@ -28,8 +28,6 @@ export function WeekWindow({
     locale,
   )}`;
 
-  const lastDay = daysLeft === 1;
-
   return (
     <XStack
       items="center"
@@ -55,9 +53,9 @@ export function WeekWindow({
         <SizableText
           size={TEXT.caption}
           fontWeight="700"
-          color={lastDay ? '$primary' : '$cardForeground'}
+          color="$cardForeground"
         >
-          {lastDay
+          {daysLeft === 1
             ? t('home.daysLeftOne')
             : t('home.daysLeftMany', { count: daysLeft })}
         </SizableText>

@@ -92,8 +92,7 @@ export function GoalStatusCard({
 }) {
   const { t } = useTranslations();
 
-  const { currentPeriod, currentStreak, longestStreak, atRisk, daysLeft } =
-    progress;
+  const { currentPeriod, currentStreak, longestStreak, daysLeft } = progress;
   const { mood, status, answered, total, logged } = currentPeriod;
 
   const weekly = goal.trackingFrequency === 'weekly';
@@ -109,9 +108,8 @@ export function GoalStatusCard({
   else if (logged) action = t('home.cta.edit');
   else action = t(weekly ? 'home.cta.logWeek' : 'home.cta.log');
 
-  let note = '';
-  if (atRisk) note = t(weekly ? 'home.risk.week' : 'home.risk.today');
-  else if (longestStreak > 0) note = t('home.best', { count: longestStreak });
+  const note =
+    longestStreak > 0 ? t('home.best', { count: longestStreak }) : '';
 
   const label = [
     goal.name,
@@ -217,12 +215,7 @@ export function GoalStatusCard({
         px={SPACING.card}
         py={SPACING.items}
       >
-        <SizableText
-          flex={1}
-          size={TEXT.caption}
-          fontWeight={atRisk ? '600' : '400'}
-          color={atRisk ? '$primary' : '$mutedForeground'}
-        >
+        <SizableText flex={1} size={TEXT.caption} color="$mutedForeground">
           {note}
         </SizableText>
 

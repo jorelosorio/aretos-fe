@@ -28,10 +28,6 @@ export const es = {
       edit: 'Editar registro',
       addHabit: 'Añadir un hábito',
     },
-    risk: {
-      today: 'Tu racha depende de hoy',
-      week: 'Tu racha depende de esta semana',
-    },
     best: 'Mejor racha: %{count} d',
     daysLeftOne: 'Último día',
     daysLeftMany: 'Quedan %{count} días',
