@@ -11,16 +11,19 @@ import type {
   AnalysisWindow,
   Basis,
   Cadence,
+  CalendarTally,
   Correlation,
   Coverage,
   Formation,
   HeatCell,
+  Highlight,
   MoodBand,
   MoodDirection,
   MoodDistribution,
   MoodPerformance,
   OutcomeMix,
   Regularity,
+  Series,
   Setup,
   Trend,
   TrendHalf,
@@ -33,15 +36,18 @@ import type {
   WireBand,
   WireBasis,
   WireCadence,
+  WireCalendarTally,
   WireCorrelation,
   WireCoverage,
   WireFormation,
   WireHeatCell,
+  WireHighlight,
   WireMoodDirection,
   WireMoodDistribution,
   WireMoodPerformance,
   WireOutcomeMix,
   WireRegularity,
+  WireSeries,
   WireSetup,
   WireTrend,
   WireTrendHalf,
@@ -169,6 +175,7 @@ const toExtremes = (
         best: toWeekdayCell(wire.best),
         worst: toWeekdayCell(wire.worst),
         spread: wire.spread,
+        notable: wire.notable,
         basis: toBasis(wire.basis),
       };
 
@@ -180,6 +187,9 @@ const toRegularity = (wire: WireRegularity | null): Regularity | null =>
         standardDeviation: wire.standard_deviation,
         coefficientOfVariation: wire.coefficient_of_variation,
         score: wire.score,
+        band: wire.band,
+        typicalLow: wire.typical_low,
+        typicalHigh: wire.typical_high,
         n: wire.n,
         basis: toBasis(wire.basis),
       };
@@ -251,6 +261,7 @@ const toFormation = (wire: WireFormation): Formation => ({
   opportunities: wire.opportunities,
   skipped: wire.skipped,
   towardMedian: wire.toward_median,
+  stage: wire.stage,
   spanDays: wire.span_days,
   first: wire.first,
   last: wire.last,
@@ -268,6 +279,37 @@ const toThresholds = (wire: WireAnalysisThresholds): AnalysisThresholds => ({
   mixedGap: wire.mixed_gap,
   lallyMedianDays: wire.lally_median_days,
   lallyRangeDays: wire.lally_range_days,
+  formationStages: wire.formation_stages,
+  steadyScore: wire.steady_score,
+  variableScore: wire.variable_score,
+  notableSpread: wire.notable_spread,
+  planNudgeBelow: wire.plan_nudge_below,
+  maxHighlights: wire.max_highlights,
+  seriesMaxWeeks: wire.series_max_weeks,
+});
+
+const toSeries = (wire: WireSeries): Series => ({
+  step: wire.step,
+  points: wire.points.map((point) => ({
+    from: point.from,
+    to: point.to,
+    rate: point.rate,
+    mood: point.mood,
+    basis: toBasis(point.basis),
+  })),
+});
+
+const toCalendar = (wire: WireCalendarTally): CalendarTally => ({
+  due: wire.due,
+  logged: wire.logged,
+});
+
+const toHighlight = (wire: WireHighlight): Highlight => ({
+  kind: wire.kind,
+  tone: wire.tone,
+  // "" is the server's "not about one goal"; null is what the app means by it.
+  goalId: wire.goal_id === '' ? null : wire.goal_id,
+  habitIds: wire.habit_ids,
 });
 
 const toGoal = (wire: WireAnalysisGoal): AnalysisGoal => ({
@@ -347,6 +389,9 @@ export async function getAnalysis(
     moodPerformance: toMoodPerformance(data.mood_performance),
     direction: toDirection(data.direction),
     heatmap: data.heatmap.map(toCell),
+    calendar: toCalendar(data.calendar),
+    series: toSeries(data.series),
+    highlights: data.highlights.map(toHighlight),
     goals: data.goals.map(toGoal),
     habits: data.habits.map(toHabit),
   };

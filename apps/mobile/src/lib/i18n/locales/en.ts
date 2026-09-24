@@ -316,7 +316,7 @@ export const en = {
       why: 'A University College London study (Lally et al., 2010) found a habit takes a median of %{median} repetitions to become automatic, with individual cases between %{low} and %{high}. Missing a single day does not reset the count: that is why we count repetitions, not streaks.',
       repetitions: '%{count} of %{median}',
       stage: {
-        start: 'Starting',
+        starting: 'Starting',
         forming: 'Taking shape',
         close: 'Almost automatic',
         formed: 'Automatic',

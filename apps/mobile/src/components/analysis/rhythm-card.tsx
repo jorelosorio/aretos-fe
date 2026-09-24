@@ -8,6 +8,7 @@ import { SPACING, TEXT } from '@/constants/layout';
 import type {
   AnalysisThresholds,
   Regularity,
+  RegularityBand,
   WeekdayCell,
   WeekdayExtremes,
 } from '@/features/analysis';
@@ -15,20 +16,11 @@ import { useTranslations } from '@/lib/i18n';
 
 const WEEKDAY_KEYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as const;
 
-const STEADY_SCORE = 0.7;
-const VARIABLE_SCORE = 0.4;
-
-function regularityBand(score: number) {
-  if (score >= STEADY_SCORE) return 'steady' as const;
-  if (score >= VARIABLE_SCORE) return 'variable' as const;
-  return 'erratic' as const;
-}
-
 const BAND_COLORS = {
   steady: '$good',
   variable: '$cardForeground',
   erratic: '$warning',
-} as const;
+} as const satisfies Record<RegularityBand, string>;
 
 function DayStat({
   label,
@@ -96,17 +88,6 @@ export function RhythmCard({
     };
   });
 
-  const band = regularity === null ? null : regularityBand(regularity.score);
-
-  const lower =
-    regularity === null
-      ? null
-      : Math.max(0, regularity.meanRate - regularity.standardDeviation);
-  const upper =
-    regularity === null
-      ? null
-      : Math.min(1, regularity.meanRate + regularity.standardDeviation);
-
   return (
     <ChartCard
       title={t('analysis.rhythm.title')}
@@ -144,7 +125,7 @@ export function RhythmCard({
             />
           )}
 
-          {regularity !== null && band !== null ? (
+          {regularity !== null ? (
             <YStack gap={SPACING.text}>
               <SizableText size={TEXT.caption} color="$mutedForeground">
                 {t('analysis.rhythm.regularity')}
@@ -152,14 +133,14 @@ export function RhythmCard({
               <SizableText
                 size={TEXT.heading}
                 fontWeight="700"
-                color={BAND_COLORS[band]}
+                color={BAND_COLORS[regularity.band]}
               >
-                {t(`analysis.rhythm.regularityBand.${band}`)}
+                {t(`analysis.rhythm.regularityBand.${regularity.band}`)}
               </SizableText>
               <SizableText size={TEXT.caption} color="$mutedForeground">
                 {t('analysis.rhythm.regularityReading', {
-                  low: formatRate(lower, empty),
-                  high: formatRate(upper, empty),
+                  low: formatRate(regularity.typicalLow, empty),
+                  high: formatRate(regularity.typicalHigh, empty),
                 })}
               </SizableText>
             </YStack>

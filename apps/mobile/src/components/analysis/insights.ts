@@ -1,90 +1,60 @@
 /**
- * The report's headline findings, as sentences.
+ * The server's highlights, put into words.
  *
- * The analysis response is a set of measurements, and every card below the
- * summary shows one of them. What none of them does on its own is say which
- * of those measurements is worth a person's attention *today* — the trend
- * turning, one weekday dragging, a habit about to cross the formation median.
- * This picks those out and words them, so the first thing on the tab is a
- * reading rather than a chart.
+ * Which findings the report leads with, in what order and how each one reads
+ * is decided on the server (`internal/analysis/highlights.go`): it is a
+ * judgement over the measurements, and a client making it would be telling
+ * its own story about the same month. This file only speaks. A highlight
+ * names a kind and points at the goal or habits it is about; the numbers for
+ * the sentence are read from the blocks of the report it names, exactly as
+ * the server sent them.
  *
- * It decides nothing the server did not already measure. Every number comes
- * straight off the report; this only chooses which ones to say and in what
- * order, and it says nothing a `null` would have to be guessed for — a
- * reading the sample could not support is simply not a candidate.
- *
- * Order is priority: a change of direction first, because it is the most
- * actionable and the most time-sensitive; then the specific leaks (a weekday,
- * a mood dependency); then progress worth celebrating; then setup nudges,
- * which are always true and so always last.
+ * So nothing here compares, sorts, filters by a threshold or counts. A
+ * highlight whose block is missing — which the server never sends, but a
+ * stale cache could — is dropped rather than worded from a guess.
  */
 
-import type { AnalysisReport } from '@/features/analysis';
+import type {
+  AnalysisReport,
+  Highlight,
+  HighlightKind,
+  HighlightTone,
+} from '@/features/analysis';
 import type { TranslateFn } from '@/lib/i18n';
 
 import { formatRate, outOfTen } from '@/components/viz/format';
 
-export type InsightTone = 'good' | 'watch' | 'info';
-
-export type InsightKind =
-  'trend' | 'weekday' | 'mood' | 'formed' | 'closest' | 'streak' | 'plan';
-
 export type Insight = {
-  kind: InsightKind;
-  tone: InsightTone;
+  key: string;
+  kind: HighlightKind;
+  tone: HighlightTone;
   text: string;
 };
 
 const WEEKDAY_KEYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as const;
 
-/**
- * The weekday spread worth a sentence. Below it the week is flat enough that
- * naming a "weak day" would single out noise.
- */
-const NOTABLE_SPREAD = 0.15;
-
-/**
- * Plan coverage under which the nudge appears. An if-then plan is the
- * best-evidenced intervention the app offers, so the bar is deliberately low:
- * half the habits without one is already worth a line.
- */
-const PLAN_NUDGE_BELOW = 0.5;
-
-const MAX_INSIGHTS = 4;
-
-export function buildInsights(
+function word(
+  highlight: Highlight,
   report: AnalysisReport,
   t: TranslateFn,
-): Insight[] {
+): string | null {
   const empty = t('analysis.empty');
-  const found: Insight[] = [];
-
-  const { trend, extremes, moodPerformance, habits, goals, setup } = report;
   const median = report.thresholds.lallyMedianDays;
 
-  if (trend?.direction != null && trend.first.rate !== null) {
-    const rates = {
-      from: formatRate(trend.first.rate, empty),
-      to: formatRate(trend.second.rate, empty),
-    };
+  switch (highlight.kind) {
+    case 'trend': {
+      const direction = report.trend?.direction;
+      if (report.trend == null || direction == null) return null;
+      return t(`analysis.insights.${direction}`, {
+        from: formatRate(report.trend.first.rate, empty),
+        to: formatRate(report.trend.second.rate, empty),
+      });
+    }
 
-    found.push({
-      kind: 'trend',
-      tone:
-        trend.direction === 'improving'
-          ? 'good'
-          : trend.direction === 'declining'
-            ? 'watch'
-            : 'info',
-      text: t(`analysis.insights.${trend.direction}`, rates),
-    });
-  }
-
-  if (extremes !== null && extremes.spread >= NOTABLE_SPREAD) {
-    found.push({
-      kind: 'weekday',
-      tone: 'watch',
-      text: t('analysis.insights.weekday', {
+    case 'weekday': {
+      const extremes = report.extremes;
+      if (extremes === null) return null;
+      return t('analysis.insights.weekday', {
         worst: t(
           `analysis.weekdayPlural.${WEEKDAY_KEYS[extremes.worst.weekday]}`,
         ),
@@ -93,95 +63,76 @@ export function buildInsights(
         ),
         worstTen: outOfTen(extremes.worst.rate ?? 0),
         bestTen: outOfTen(extremes.best.rate ?? 0),
-      }),
-    });
-  }
+      });
+    }
 
-  const automaticity = moodPerformance.automaticity;
-  if (automaticity === 'automatic') {
-    found.push({
-      kind: 'mood',
-      tone: 'good',
-      text: t('analysis.insights.automatic'),
-    });
-  } else if (
-    automaticity === 'dependent' &&
-    moodPerformance.low.rate !== null &&
-    moodPerformance.high.rate !== null
-  ) {
-    found.push({
-      kind: 'mood',
-      tone: 'watch',
-      text: t('analysis.insights.dependent', {
-        low: formatRate(moodPerformance.low.rate, empty),
-        high: formatRate(moodPerformance.high.rate, empty),
-      }),
-    });
-  }
+    case 'mood': {
+      const { automaticity, low, high } = report.moodPerformance;
+      if (automaticity === 'automatic') return t('analysis.insights.automatic');
+      if (automaticity !== 'dependent') return null;
+      return t('analysis.insights.dependent', {
+        low: formatRate(low.rate, empty),
+        high: formatRate(high.rate, empty),
+      });
+    }
 
-  const formed = habits.filter((habit) => habit.formation.towardMedian >= 1);
-  if (formed.length === 1) {
-    found.push({
-      kind: 'formed',
-      tone: 'good',
-      text: t('analysis.insights.formedOne', {
-        habit: formed[0].name,
+    case 'formed': {
+      const [only] = highlight.habitIds;
+      if (highlight.habitIds.length !== 1) {
+        return t('analysis.insights.formedMany', {
+          count: highlight.habitIds.length,
+          median,
+        });
+      }
+      const habit = report.habits.find((entry) => entry.id === only);
+      if (habit === undefined) return null;
+      return t('analysis.insights.formedOne', { habit: habit.name, median });
+    }
+
+    case 'closest': {
+      const habit = report.habits.find(
+        (entry) => entry.id === highlight.habitIds[0],
+      );
+      if (habit === undefined) return null;
+      return t('analysis.insights.closest', {
+        habit: habit.name,
+        count: habit.formation.repetitions,
         median,
-      }),
-    });
-  } else if (formed.length > 1) {
-    found.push({
-      kind: 'formed',
-      tone: 'good',
-      text: t('analysis.insights.formedMany', {
-        count: formed.length,
-        median,
-      }),
-    });
-  }
+      });
+    }
 
-  const closest = habits
-    .filter(
-      (habit) =>
-        habit.formation.towardMedian < 1 && habit.formation.repetitions > 0,
-    )
-    .sort((a, b) => b.formation.towardMedian - a.formation.towardMedian)[0];
-  if (closest !== undefined) {
-    found.push({
-      kind: 'closest',
-      tone: 'info',
-      text: t('analysis.insights.closest', {
-        habit: closest.name,
-        count: closest.formation.repetitions,
-        median,
-      }),
-    });
-  }
+    case 'streak': {
+      const goal = report.goals.find((entry) => entry.id === highlight.goalId);
+      if (goal === undefined) return null;
+      return t('analysis.insights.streak', {
+        count: goal.currentStreak,
+        goal: goal.name,
+      });
+    }
 
-  const streaking = [...goals]
-    .filter((goal) => goal.currentStreak > 1)
-    .sort((a, b) => b.currentStreak - a.currentStreak)[0];
-  if (streaking !== undefined) {
-    found.push({
-      kind: 'streak',
-      tone: 'good',
-      text: t('analysis.insights.streak', {
-        count: streaking.currentStreak,
-        goal: streaking.name,
-      }),
-    });
+    case 'plan':
+      return t('analysis.insights.plan', {
+        count: report.setup.planned.count,
+        of: report.setup.planned.of,
+      });
   }
+}
 
-  if (setup.planned.rate !== null && setup.planned.rate < PLAN_NUDGE_BELOW) {
-    found.push({
-      kind: 'plan',
-      tone: 'info',
-      text: t('analysis.insights.plan', {
-        count: setup.planned.count,
-        of: setup.planned.of,
-      }),
-    });
-  }
-
-  return found.slice(0, MAX_INSIGHTS);
+export function wordHighlights(
+  report: AnalysisReport,
+  t: TranslateFn,
+): Insight[] {
+  return report.highlights.flatMap((highlight, index) => {
+    const text = word(highlight, report, t);
+    return text === null
+      ? []
+      : [
+          {
+            key: `${highlight.kind}-${index}`,
+            kind: highlight.kind,
+            tone: highlight.tone,
+            text,
+          },
+        ];
+  });
 }

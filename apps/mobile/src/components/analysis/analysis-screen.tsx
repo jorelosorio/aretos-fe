@@ -78,7 +78,7 @@ function SectionCards({
   if (section === 'rhythm') {
     return (
       <>
-        <HeatmapCard cells={report.heatmap} />
+        <HeatmapCard cells={report.heatmap} calendar={report.calendar} />
         <RhythmCard
           profile={report.profile}
           extremes={report.extremes}
@@ -87,7 +87,7 @@ function SectionCards({
         />
         <TrendCard
           trend={report.trend}
-          cells={report.heatmap}
+          series={report.series}
           thresholds={report.thresholds}
         />
       </>
@@ -97,7 +97,7 @@ function SectionCards({
   if (section === 'mood') {
     return (
       <>
-        <MoodCard moods={report.moods} cells={report.heatmap} />
+        <MoodCard moods={report.moods} series={report.series} />
         <MoodPerformanceCard
           performance={report.moodPerformance}
           thresholds={report.thresholds}

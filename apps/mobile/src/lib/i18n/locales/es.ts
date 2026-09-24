@@ -314,7 +314,7 @@ export const es = {
       why: 'Un estudio de la University College London (Lally et al., 2010) encontró que un hábito tarda una mediana de %{median} repeticiones en volverse automático, con casos entre %{low} y %{high}. Fallar un día suelto no reinicia la cuenta: por eso contamos repeticiones, no rachas.',
       repetitions: '%{count} de %{median}',
       stage: {
-        start: 'Empezando',
+        starting: 'Empezando',
         forming: 'Tomando forma',
         close: 'Casi automático',
         formed: 'Automático',

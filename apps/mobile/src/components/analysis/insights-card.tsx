@@ -11,10 +11,14 @@ import { SizableText, XStack, YStack } from 'tamagui';
 
 import { formatRate } from '@/components/viz/format';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
-import type { AnalysisReport } from '@/features/analysis';
+import type {
+  AnalysisReport,
+  HighlightKind,
+  HighlightTone,
+} from '@/features/analysis';
 import { useTranslations } from '@/lib/i18n';
 
-import { buildInsights, type InsightKind, type InsightTone } from './insights';
+import { wordHighlights } from './insights';
 
 const KIND_ICONS = {
   trend: TrendingUp,
@@ -24,13 +28,13 @@ const KIND_ICONS = {
   closest: Sprout,
   streak: Flame,
   plan: Lightbulb,
-} as const satisfies Record<InsightKind, typeof Flame>;
+} as const satisfies Record<HighlightKind, typeof Flame>;
 
 const TONE_COLORS = {
   good: '$good',
   watch: '$warning',
   info: '$primary',
-} as const satisfies Record<InsightTone, string>;
+} as const satisfies Record<HighlightTone, string>;
 
 function Headline({
   label,
@@ -60,7 +64,7 @@ export function InsightsCard({ report }: { report: AnalysisReport }) {
   const { t } = useTranslations();
   const empty = t('analysis.empty');
 
-  const insights = buildInsights(report, t);
+  const insights = wordHighlights(report, t);
   const { cadence } = report;
 
   return (
@@ -109,7 +113,7 @@ export function InsightsCard({ report }: { report: AnalysisReport }) {
             const Icon = KIND_ICONS[insight.kind];
 
             return (
-              <XStack key={insight.kind} gap={SPACING.items} items="flex-start">
+              <XStack key={insight.key} gap={SPACING.items} items="flex-start">
                 <YStack
                   width={28}
                   height={28}

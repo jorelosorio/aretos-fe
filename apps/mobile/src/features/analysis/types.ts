@@ -36,6 +36,17 @@ export type TrendDirection = 'improving' | 'steady' | 'declining';
 
 export type Automaticity = 'automatic' | 'mixed' | 'dependent';
 
+export type RegularityBand = 'steady' | 'variable' | 'erratic';
+
+export type FormationStage = 'starting' | 'forming' | 'close' | 'formed';
+
+export type SeriesStep = 'week' | 'month';
+
+export type HighlightKind =
+  'trend' | 'weekday' | 'mood' | 'formed' | 'closest' | 'streak' | 'plan';
+
+export type HighlightTone = 'good' | 'watch' | 'info';
+
 export type WireBasis = {
   count: number;
   unit: AnalysisUnit;
@@ -100,6 +111,8 @@ export type WireWeekdayExtremes = {
   best: WireWeekdayCell;
   worst: WireWeekdayCell;
   spread: number;
+  /** The spread reaches `notable_spread`: a weak day worth naming. */
+  notable: boolean;
   basis: WireBasis;
 };
 
@@ -108,6 +121,9 @@ export type WireRegularity = {
   standard_deviation: number;
   coefficient_of_variation: number;
   score: number;
+  band: RegularityBand;
+  typical_low: number;
+  typical_high: number;
   n: number;
   basis: WireBasis;
 };
@@ -179,10 +195,32 @@ export type WireFormation = {
   opportunities: number;
   skipped: number;
   toward_median: number;
+  stage: FormationStage;
   span_days: number;
   first: string;
   last: string;
   basis: WireBasis;
+};
+
+export type WireSeriesPoint = {
+  from: string;
+  to: string;
+  /** `null` when nothing in the step was measured — not zero. */
+  rate: number | null;
+  mood: number | null;
+  basis: WireBasis;
+};
+
+export type WireSeries = { step: SeriesStep; points: WireSeriesPoint[] };
+
+export type WireCalendarTally = { due: number; logged: number };
+
+export type WireHighlight = {
+  kind: HighlightKind;
+  tone: HighlightTone;
+  /** `""` unless the highlight is about one goal. */
+  goal_id: string;
+  habit_ids: string[];
 };
 
 export type WireAnalysisThresholds = {
@@ -196,6 +234,13 @@ export type WireAnalysisThresholds = {
   mixed_gap: number;
   lally_median_days: number;
   lally_range_days: [number, number];
+  formation_stages: [number, number];
+  steady_score: number;
+  variable_score: number;
+  notable_spread: number;
+  plan_nudge_below: number;
+  max_highlights: number;
+  series_max_weeks: number;
 };
 
 export type WireAnalysisGoal = {
@@ -256,6 +301,9 @@ export type WireAnalysis = {
   direction: WireMoodDirection;
   /** Always exactly as long as the window asked for, oldest first. */
   heatmap: WireHeatCell[];
+  calendar: WireCalendarTally;
+  series: WireSeries;
+  highlights: WireHighlight[];
   goals: WireAnalysisGoal[];
   habits: WireAnalysisHabit[];
 };
@@ -320,6 +368,7 @@ export type WeekdayExtremes = {
   best: WeekdayCell;
   worst: WeekdayCell;
   spread: number;
+  notable: boolean;
   basis: Basis;
 };
 
@@ -329,6 +378,11 @@ export type Regularity = {
   coefficientOfVariation: number;
   /** `1 - CV`, clamped to `0..1`. Higher is steadier. */
   score: number;
+  /** The score read off the server's cut-points. */
+  band: RegularityBand;
+  /** The range most days fell in: the mean, one deviation either side. */
+  typicalLow: number;
+  typicalHigh: number;
   n: number;
   basis: Basis;
 };
@@ -400,10 +454,35 @@ export type Formation = {
   skipped: number;
   /** Repetitions against the 66-period median, capped at 1. */
   towardMedian: number;
+  /** Where on the formation curve, by the server's cut-points. */
+  stage: FormationStage;
   spanDays: number;
   first: string;
   last: string;
   basis: Basis;
+};
+
+export type SeriesPoint = {
+  from: string;
+  to: string;
+  rate: number | null;
+  mood: number | null;
+  basis: Basis;
+};
+
+export type Series = { step: SeriesStep; points: SeriesPoint[] };
+
+export type CalendarTally = { due: number; logged: number };
+
+/**
+ * A finding the server chose to lead with. It carries no numbers: the
+ * numbers are in the block it names, and the ids say which goal or habits.
+ */
+export type Highlight = {
+  kind: HighlightKind;
+  tone: HighlightTone;
+  goalId: string | null;
+  habitIds: string[];
 };
 
 export type AnalysisThresholds = {
@@ -417,6 +496,13 @@ export type AnalysisThresholds = {
   mixedGap: number;
   lallyMedianDays: number;
   lallyRangeDays: [number, number];
+  formationStages: [number, number];
+  steadyScore: number;
+  variableScore: number;
+  notableSpread: number;
+  planNudgeBelow: number;
+  maxHighlights: number;
+  seriesMaxWeeks: number;
 };
 
 export type AnalysisGoal = {
@@ -481,6 +567,12 @@ export type AnalysisReport = {
   moodPerformance: MoodPerformance;
   direction: MoodDirection;
   heatmap: HeatCell[];
+  /** The heatmap's due and logged days, counted by the server. */
+  calendar: CalendarTally;
+  /** The window averaged into weeks or months, for a line. */
+  series: Series;
+  /** The findings to lead with, in the server's order. */
+  highlights: Highlight[];
   goals: AnalysisGoal[];
   habits: AnalysisHabit[];
 };

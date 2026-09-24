@@ -8,20 +8,20 @@ import { ChartCard } from '@/components/viz/chart-card';
 import { formatMood, formatRate } from '@/components/viz/format';
 import { LineChart } from '@/components/viz/line-chart';
 import { SPACING, TEXT } from '@/constants/layout';
-import type { HeatCell, MoodDistribution } from '@/features/analysis';
+import type { MoodDistribution, Series } from '@/features/analysis';
 import { MOOD_SCORES, type MoodScore } from '@/features/logs';
 import { useTranslations } from '@/lib/i18n';
 
-import { overTime } from './over-time';
+import { seriesPoints } from './series-points';
 
 const AVERAGE_FACE = 36;
 
 export function MoodCard({
   moods,
-  cells,
+  series,
 }: {
   moods: MoodDistribution;
-  cells: readonly HeatCell[];
+  series: Series;
 }) {
   const { t, locale } = useTranslations();
   const theme = useTheme();
@@ -40,7 +40,7 @@ export function MoodCard({
     };
   });
 
-  const series = overTime(cells, (cell) => cell.mood, locale);
+  const points = seriesPoints(series, (point) => point.mood, locale);
 
   const rounded =
     moods.mean === null
@@ -86,14 +86,14 @@ export function MoodCard({
             </XStack>
           )}
 
-          {series.length > 1 && (
+          {points.length > 1 && (
             <YStack gap={SPACING.group}>
               <SizableText size={TEXT.caption} color="$mutedForeground">
                 {t('analysis.overTime')}
               </SizableText>
               <LineChart
                 width={width}
-                points={series}
+                points={points}
                 min={1}
                 max={5}
                 yLabels={['1', '3', '5']}

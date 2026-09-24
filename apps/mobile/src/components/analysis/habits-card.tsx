@@ -9,26 +9,18 @@ import type {
   AnalysisGoal,
   AnalysisHabit,
   AnalysisThresholds,
+  FormationStage,
 } from '@/features/analysis';
 import { useTranslations } from '@/lib/i18n';
 
 const TRACK_HEIGHT = 8;
 
-type Stage = 'start' | 'forming' | 'close' | 'formed';
-
-function stageOf(towardMedian: number): Stage {
-  if (towardMedian >= 1) return 'formed';
-  if (towardMedian >= 0.75) return 'close';
-  if (towardMedian >= 0.25) return 'forming';
-  return 'start';
-}
-
 const STAGE_COLORS = {
-  start: '$seq2',
+  starting: '$seq2',
   forming: '$seq3',
   close: '$seq4',
   formed: '$good',
-} as const satisfies Record<Stage, string>;
+} as const satisfies Record<FormationStage, string>;
 
 function Badge({ children }: { children: string }) {
   return (
@@ -45,7 +37,7 @@ function HabitRow({ habit, median }: { habit: AnalysisHabit; median: number }) {
   const empty = t('analysis.empty');
 
   const { formation } = habit;
-  const stage = stageOf(formation.towardMedian);
+  const { stage } = formation;
   const unit = UNIT_LABELS[habit.trackingMode];
 
   const badges = [

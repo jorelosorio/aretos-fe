@@ -7,7 +7,7 @@ import { formatMood, formatRate } from '@/components/viz/format';
 import { HEAT_LEGEND } from '@/components/viz/heat-level';
 import { Heatmap } from '@/components/viz/heatmap';
 import { SPACING, TEXT } from '@/constants/layout';
-import type { HeatCell } from '@/features/analysis';
+import type { CalendarTally, HeatCell } from '@/features/analysis';
 import { useTranslations } from '@/lib/i18n';
 
 function DayDetail({ cell }: { cell: HeatCell }) {
@@ -59,12 +59,15 @@ function DayDetail({ cell }: { cell: HeatCell }) {
   );
 }
 
-export function HeatmapCard({ cells }: { cells: readonly HeatCell[] }) {
+export function HeatmapCard({
+  cells,
+  calendar,
+}: {
+  cells: readonly HeatCell[];
+  calendar: CalendarTally;
+}) {
   const { t } = useTranslations();
   const [selected, setSelected] = useState<HeatCell | null>(null);
-
-  const tracked = cells.filter((cell) => cell.level !== null).length;
-  const logged = cells.filter((cell) => cell.logged > 0).length;
 
   return (
     <ChartCard
@@ -96,7 +99,10 @@ export function HeatmapCard({ cells }: { cells: readonly HeatCell[] }) {
           </XStack>
 
           <SizableText size={TEXT.caption} color="$mutedForeground">
-            {t('analysis.heatmap.summary', { logged, tracked })}
+            {t('analysis.heatmap.summary', {
+              logged: calendar.logged,
+              tracked: calendar.due,
+            })}
           </SizableText>
         </YStack>
       }

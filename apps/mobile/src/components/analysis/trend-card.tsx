@@ -10,14 +10,14 @@ import { NotEnoughData } from '@/components/viz/not-enough-data';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
 import type {
   AnalysisThresholds,
-  HeatCell,
+  Series,
   Trend,
   TrendDirection,
   TrendHalf,
 } from '@/features/analysis';
 import { useTranslations } from '@/lib/i18n';
 
-import { overTime } from './over-time';
+import { seriesPoints } from './series-points';
 
 const DIRECTION_COLOR = {
   improving: '$good',
@@ -33,11 +33,11 @@ const DIRECTION_ICON = {
 
 export function TrendCard({
   trend,
-  cells,
+  series,
   thresholds,
 }: {
   trend: Trend | null;
-  cells: readonly HeatCell[];
+  series: Series;
   thresholds: AnalysisThresholds;
 }) {
   const { t, locale } = useTranslations();
@@ -63,7 +63,7 @@ export function TrendCard({
   }
 
   const direction = trend.direction;
-  const series = overTime(cells, (cell) => cell.rate, locale);
+  const points = seriesPoints(series, (point) => point.rate, locale);
 
   const Icon = direction === null ? null : DIRECTION_ICON[direction];
 
@@ -104,14 +104,14 @@ export function TrendCard({
             </YStack>
           )}
 
-          {series.length > 1 && (
+          {points.length > 1 && (
             <YStack gap={SPACING.group}>
               <SizableText size={TEXT.caption} color="$mutedForeground">
                 {t('analysis.overTime')}
               </SizableText>
               <LineChart
                 width={width}
-                points={series}
+                points={points}
                 min={0}
                 max={1}
                 yLabels={['0%', '50%', '100%']}
