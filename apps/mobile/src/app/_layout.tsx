@@ -76,7 +76,10 @@ function RootNavigator() {
           name="goals/new"
           options={{ ...modalOptions, title: t('goals.form.newTitle') }}
         />
-        <Stack.Screen name="goals/[id]/index" options={{ headerShown: true }} />
+        <Stack.Screen
+          name="goals/[id]/index"
+          options={{ headerShown: true, title: '' }}
+        />
         <Stack.Screen
           name="goals/[id]/edit"
           options={{ ...modalOptions, title: t('goals.form.editTitle') }}
@@ -99,7 +102,10 @@ function RootNavigator() {
           name="logs/new"
           options={{ ...sheetOptions, title: t('logs.pickTitle') }}
         />
-        <Stack.Screen name="logs/[goalId]" options={sheetOptions} />
+        <Stack.Screen
+          name="logs/[goalId]"
+          options={{ ...sheetOptions, title: '' }}
+        />
       </Stack.Protected>
 
       <Stack.Protected guard={!isAuthenticated}>
