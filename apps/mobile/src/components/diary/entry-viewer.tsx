@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { X } from '@tamagui/lucide-icons-2';
 import { Paragraph, ScrollView, YStack } from 'tamagui';
 
@@ -17,24 +18,27 @@ export function EntryViewer({
   onClose: () => void;
 }) {
   const { t, locale } = useTranslations();
+  const [shown, setShown] = useState(entry);
+
+  if (entry !== null && entry !== shown) setShown(entry);
 
   return (
     <FullScreenSheet
       open={entry !== null}
-      title={entry?.goal.name ?? ''}
+      title={shown?.goal.name ?? ''}
       leading={
-        entry === null ? undefined : <GoalDot slot={entry.goal.colorSlot} />
+        shown === null ? undefined : <GoalDot slot={shown.goal.colorSlot} />
       }
       meta={
-        entry === null
+        shown === null
           ? ''
-          : periodLabel(entry.entryDate, entry.endDate, locale)
+          : periodLabel(shown.entryDate, shown.endDate, locale)
       }
       Icon={X}
       iconLabel={t('diary.close')}
       onDismiss={onClose}
     >
-      {entry !== null && (
+      {shown !== null && (
         <ScrollView flex={1}>
           <YStack p={NOTE_TEXT.padding}>
             <Paragraph
@@ -43,7 +47,7 @@ export function EntryViewer({
               color="$color"
               selectable
             >
-              {entry.note}
+              {shown.note}
             </Paragraph>
           </YStack>
         </ScrollView>

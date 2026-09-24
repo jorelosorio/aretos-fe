@@ -152,6 +152,8 @@ export const TEXT = {
  *   glass effect is iOS 26 only and draws surfaces, not backdrops), and a
  *   translucent black curtain read as a rendering glitch rather than as
  *   focus. The menu carries a shadow instead; a tap outside still closes it.
+ *   The same holds for a `FullScreenSheet`: Android dims behind any opaque
+ *   `Modal`, so the sheet is a transparent one that slides itself in.
  * - **No exceptions for long flows.** The check-in once kept its save in a
  *   sticky footer on the argument that it is worked through top to bottom
  *   daily; it read as a second convention for the same job. Its confirm is
