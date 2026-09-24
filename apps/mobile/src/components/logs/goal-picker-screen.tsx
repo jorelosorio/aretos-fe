@@ -26,7 +26,7 @@ export function GoalPickerScreen() {
   const { canCreate } = useAllowance('goal');
 
   const open = (goalId: string) =>
-    router.replace({ pathname: '/logs/[goalId]', params: { goalId } });
+    router.push({ pathname: '/logs/[goalId]', params: { goalId } });
 
   if (isPending) return <ScreenLoader />;
 

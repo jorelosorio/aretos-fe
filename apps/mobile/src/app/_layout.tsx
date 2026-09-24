@@ -5,12 +5,12 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import * as WebBrowser from 'expo-web-browser';
 
-import { TamaguiProvider, useTheme } from '@tamagui/core';
+import { TamaguiProvider } from '@tamagui/core';
 import { config } from '../../tamagui.config';
 
 import { CloseButton } from '@/components/common/close-button';
 import { ScreenLoader } from '@/components/common/screen-loader';
-import { HEADER_TITLE } from '@/constants/layout';
+import { useStackHeaderOptions } from '@/components/common/stack-header';
 import { useTranslations } from '@/lib/i18n';
 import { useSession, useSessionAutoRefresh } from '@/features/auth';
 import { usePreferences } from '@/lib/preferences';
@@ -24,7 +24,7 @@ WebBrowser.maybeCompleteAuthSession();
 void SplashScreen.preventAutoHideAsync();
 
 function RootNavigator() {
-  const theme = useTheme();
+  const headerOptions = useStackHeaderOptions();
   const { t } = useTranslations();
   const { isAuthenticated, isRestoring } = useSession();
 
@@ -44,25 +44,8 @@ function RootNavigator() {
     headerLeft: () => <CloseButton />,
   } as const;
 
-  const sheetOptions = {
-    ...modalOptions,
-    animation: 'slide_from_bottom',
-  } as const;
-
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-        contentStyle: { backgroundColor: theme.background.val },
-        headerStyle: { backgroundColor: theme.background.val },
-        headerShadowVisible: false,
-        headerTintColor: theme.color.val,
-        headerTitleStyle: {
-          fontFamily: HEADER_TITLE.fontFamily,
-          fontSize: HEADER_TITLE.fontSize,
-        },
-      }}
-    >
+    <Stack screenOptions={{ ...headerOptions, headerShown: false }}>
       {/*
         Declarative guards: groups are mounted by session state rather than by
         an effect that redirects after render, so there is no window in which a
@@ -78,6 +61,10 @@ function RootNavigator() {
         />
         <Stack.Screen
           name="goals/[id]/index"
+          options={{ headerShown: true, title: '' }}
+        />
+        <Stack.Screen
+          name="goals/[id]/check-in"
           options={{ headerShown: true, title: '' }}
         />
         <Stack.Screen
@@ -99,12 +86,8 @@ function RootNavigator() {
         />
 
         <Stack.Screen
-          name="logs/new"
-          options={{ ...sheetOptions, title: t('logs.pickTitle') }}
-        />
-        <Stack.Screen
-          name="logs/[goalId]"
-          options={{ ...sheetOptions, title: '' }}
+          name="logs"
+          options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
         />
       </Stack.Protected>
 

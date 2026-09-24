@@ -95,8 +95,8 @@ export function HomeScreen() {
                     params: { id: item.id },
                   })
                 : router.push({
-                    pathname: '/logs/[goalId]',
-                    params: { goalId: item.id },
+                    pathname: '/goals/[id]/check-in',
+                    params: { id: item.id },
                   })
             }
           />
