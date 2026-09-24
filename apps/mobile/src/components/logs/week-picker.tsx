@@ -144,10 +144,7 @@ export function WeekPicker({
   }, [index, width]);
 
   const periodFor = (day: DateKey) =>
-    periods.find(
-      (period) =>
-        period.entryDate === (byWeek ? periodKey(day, 'weekly') : day),
-    );
+    periods.find((period) => period.entryDate <= day && day <= period.endDate);
 
   const pickWeek = (next: number) => {
     const start = weeks[next];

@@ -30,6 +30,10 @@ const toHabit = (wire: WireHabit): Habit => ({
   trackingMode: wire.tracking_mode,
   weight: wire.weight,
   successThreshold: wire.success_threshold,
+  achievedWhen: {
+    compare: wire.achieved_when.compare,
+    value: wire.achieved_when.value,
+  },
   ifThenPlan: wire.if_then_plan,
   archived: wire.archived,
   createdAt: wire.created_at,

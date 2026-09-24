@@ -27,7 +27,7 @@ export function DiaryEntryCard({
   const theme = useTheme();
 
   const { goal, note, mood, answered, total, status } = entry;
-  const when = periodLabel(entry.entryDate, goal.trackingFrequency, locale);
+  const when = periodLabel(entry.entryDate, entry.endDate, locale);
   const preview = notePreview(note);
 
   const label = [

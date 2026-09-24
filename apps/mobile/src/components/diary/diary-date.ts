@@ -18,7 +18,6 @@
  * differently.
  */
 
-import type { TrackingFrequency } from '@/features/goals';
 import type { AppLocale } from '@/lib/i18n';
 
 /**
@@ -74,37 +73,21 @@ const dayMonth = (key: string, locale: AppLocale) =>
   );
 
 /**
- * The last day of the period `entryDate` opens.
- *
- * Only `weekly` spans more than its own date, and the server has already
- * snapped that entry to its Monday, so the end is six days on. This agrees
- * with `periodKey` in `features/logs/period.ts`, which snaps the same way in
- * the other direction.
- */
-function periodEnd(entryDate: string, frequency: TrackingFrequency): string {
-  if (frequency !== 'weekly') return entryDate;
-
-  const date = toDate(entryDate);
-  date.setDate(date.getDate() + 6);
-
-  const pad = (value: number) => String(value).padStart(2, '0');
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
-}
-
-/**
  * The span an entry covers, as short as it can be said.
  *
  * A daily or flexible goal stands on one date and reads as that weekday. A
  * weekly one has to name both ends, and the month is dropped from the near end
  * when the week does not cross into another one, since the heading above it
  * already said which month this is.
+ *
+ * Both ends come from the server — `entry_date` and `end_date` — so how wide
+ * a period is stays the server's rule rather than a "plus six days" here.
  */
 export function periodLabel(
   entryDate: string,
-  frequency: TrackingFrequency,
+  end: string,
   locale: AppLocale,
 ): string {
-  const end = periodEnd(entryDate, frequency);
   if (end === entryDate) return weekdayDay(entryDate, locale);
 
   const sameMonth = monthKey(entryDate) === monthKey(end);

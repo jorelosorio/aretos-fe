@@ -65,6 +65,8 @@ export type WireDiaryEntry = {
   completion: number | null;
   status: PeriodStatus;
   counts_for_streak: boolean;
+  /** The period's last day: the Sunday of a weekly goal's week. */
+  end_date: string;
   created_at: string;
   updated_at: string;
 };
@@ -127,6 +129,8 @@ export type DiaryEntry = {
   /** The server's verdict on the period, scored by the goal's own rules. */
   status: PeriodStatus;
   countsForStreak: boolean;
+  /** The period's last day, from the server. */
+  endDate: string;
   /** ISO 8601, as the server sent it. */
   createdAt: string;
   updatedAt: string;

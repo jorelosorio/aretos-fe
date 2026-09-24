@@ -7,6 +7,23 @@
 
 export type TrackingMode = 'binary' | 'count' | 'duration' | 'rating';
 
+/**
+ * A habit's bar, exactly as the server applies it (`progress.CriterionOf`).
+ *
+ * The check-in shows "done" while an answer is still being typed, before
+ * anything is saved for the server to judge. Rather than keep its own copy of
+ * the rule — which had already drifted: it counted a 0 as done for a measured
+ * habit with no threshold, where the server does not — it compares against
+ * the criterion the server sends with every habit.
+ */
+export type WireAchievedWhen = {
+  compare: 'true' | 'at_least' | 'above';
+  /** `null` for `true`. */
+  value: number | null;
+};
+
+export type AchievedWhen = WireAchievedWhen;
+
 export type WireHabit = {
   id: string;
   goal_id: string;
@@ -15,6 +32,7 @@ export type WireHabit = {
   weight: number;
   /** `null` when no target is set. Decimal with two places. */
   success_threshold: number | null;
+  achieved_when: WireAchievedWhen;
   if_then_plan: string;
   archived: boolean;
   created_at: string;
@@ -31,6 +49,8 @@ export type Habit = {
   /** How much this habit counts toward its goal. 1 or more. */
   weight: number;
   successThreshold: number | null;
+  /** The bar an unsaved answer is compared against. Server-decided. */
+  achievedWhen: AchievedWhen;
   ifThenPlan: string;
   archived: boolean;
   createdAt: string;

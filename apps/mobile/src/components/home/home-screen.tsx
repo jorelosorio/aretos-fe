@@ -70,7 +70,7 @@ export function HomeScreen() {
         <YStack gap={SPACING.section} pb={SPACING.items}>
           <YStack gap={SPACING.items} px={SPACING.screen}>
             <ScreenHeader>
-              <HomeHeader />
+              <HomeHeader today={scored[0]?.progress.today ?? null} />
             </ScreenHeader>
             <ErrorNotice message={toMessage(goals.error)} />
           </YStack>

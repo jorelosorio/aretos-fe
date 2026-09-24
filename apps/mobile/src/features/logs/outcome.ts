@@ -1,12 +1,14 @@
 /**
  * How one entry reads at a glance: done, missed, skipped, or nothing said yet.
  *
- * This is presentation, not measurement. The server does not report whether an
- * entry met its habit's bar — `success_threshold` and the logged value both
- * come down raw — so the comparison happens here, the same way the web app
- * does it. Nothing is stored from it and nothing is sent back; it decides a
- * colour and a label, and the real accounting stays the server's when it
- * eventually grows an analysis endpoint.
+ * The rule for "done" is the server's. A saved answer comes back already
+ * judged (`PeriodEntry.achieved`), but the check-in shows the verdict while an
+ * answer is still being typed, before there is anything saved to judge. So
+ * the server sends each habit's bar as data — `achievedWhen`, which is
+ * `progress.CriterionOf`, the same value `progress.Achieved` applies — and
+ * this only compares the typed answer against it. It used to keep its own
+ * copy of the rule, and the copy had drifted: it counted a 0 as done for a
+ * measured habit with no threshold, which the server never has.
  *
  * `missed` and `pending` are deliberately different: both leave the habit
  * unmet, but only one of them is a thing the person actually said.
@@ -18,19 +20,18 @@ import { isAnswered, type LogEntry } from './types';
 
 export type Outcome = 'done' | 'missed' | 'skipped' | 'pending';
 
-/**
- * Whether the entry cleared the habit's own bar.
- *
- * A `binary` habit has no threshold — doing it is the bar. For the measured
- * modes a habit with no threshold set counts any logged value as clearing it,
- * because the person never named a number to fall short of.
- */
+/** Whether the entry clears the bar the server sent for its habit. */
 function metTarget(habit: Habit, entry: LogEntry): boolean {
-  if (habit.trackingMode === 'binary') return entry.done === true;
-  if (entry.amount === null) return false;
-  return (
-    habit.successThreshold === null || entry.amount >= habit.successThreshold
-  );
+  const { compare, value } = habit.achievedWhen;
+
+  switch (compare) {
+    case 'true':
+      return entry.done === true;
+    case 'at_least':
+      return entry.amount !== null && value !== null && entry.amount >= value;
+    case 'above':
+      return entry.amount !== null && value !== null && entry.amount > value;
+  }
 }
 
 export function outcomeOf(habit: Habit, entry: LogEntry): Outcome {

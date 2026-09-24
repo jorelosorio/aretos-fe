@@ -151,6 +151,8 @@ export type WireGoalPeriod = {
   completion: number | null;
   status: PeriodStatus;
   counts_for_streak: boolean;
+  /** The period's last day: the Sunday of a weekly goal's week. */
+  end_date: string;
   note: string;
   mood: number | null;
   entries: WirePeriodEntry[];
@@ -164,6 +166,10 @@ export type WireGoalProgress = {
   current_streak: number;
   longest_streak: number;
   pending: boolean;
+  /** Pending with a live streak to lose. */
+  at_risk: boolean;
+  /** Today through the current period's end, inclusive. */
+  days_left: number;
   /** `""` when the goal has never been logged. */
   last_entry_date: string;
   current_period: WireGoalPeriod;
@@ -190,6 +196,8 @@ export type GoalPeriod = {
   completion: number | null;
   status: PeriodStatus;
   countsForStreak: boolean;
+  /** The period's last day, from the server. */
+  endDate: string;
   note: string;
   mood: MoodScore | null;
   entries: PeriodEntry[];
@@ -205,6 +213,13 @@ export type GoalProgress = {
   longestStreak: number;
   /** The run reached the previous period and this one is still open. */
   pending: boolean;
+  /**
+   * The streak depends on the current period: pending, with a streak to
+   * lose. The server's judgement — the home card only shows it.
+   */
+  atRisk: boolean;
+  /** Today through the current period's end, inclusive. */
+  daysLeft: number;
   lastEntryDate: string | null;
   currentPeriod: GoalPeriod;
   /** One per period of the window, logged or not. */

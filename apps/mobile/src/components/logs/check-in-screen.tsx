@@ -25,14 +25,7 @@ import {
   type GoalPeriod,
 } from '@/features/goals';
 import type { Habit } from '@/features/habits';
-import {
-  periodKey,
-  todayKey,
-  useLogDraft,
-  useLogErrorMessage,
-  weekEnd,
-  type DateKey,
-} from '@/features/logs';
+import { useLogDraft, useLogErrorMessage, type DateKey } from '@/features/logs';
 import { useTranslations } from '@/lib/i18n';
 
 import { EmptyLog } from './empty-log';
@@ -55,6 +48,7 @@ function CheckInForm({
   periodDate,
   selected,
   today,
+  current,
   onSelect,
 }: {
   goal: Goal;
@@ -64,6 +58,7 @@ function CheckInForm({
   periodDate: DateKey;
   selected: DateKey;
   today: DateKey;
+  current: DateKey;
   onSelect: (date: DateKey) => void;
 }) {
   const { t, locale } = useTranslations();
@@ -143,7 +138,13 @@ function CheckInForm({
                 gap={SPACING.items}
               >
                 <SectionTitle>
-                  {periodLabel(periodDate, goal.trackingFrequency, locale, t)}
+                  {periodLabel(
+                    periodDate,
+                    current,
+                    goal.trackingFrequency,
+                    locale,
+                    t,
+                  )}
                 </SectionTitle>
 
                 {!draft.isLoading && (
@@ -253,11 +254,10 @@ export function CheckInScreen({
   const router = useRouter();
   const toMessage = useGoalErrorMessage();
 
-  const [selected, setSelected] = useState(opensOn ?? todayKey());
+  const [picked, setPicked] = useState(opensOn);
+  const [anchor, setAnchor] = useState(opensOn);
 
-  const from = periodKey(selected, 'weekly');
-  const to = weekEnd(selected);
-  const { data: goal, isPending, error } = useGoalCheckIn(goalId, from, to);
+  const { data: goal, isPending, error } = useGoalCheckIn(goalId, anchor);
 
   const habits = goal?.habits;
   const progress = goal?.progress;
@@ -292,18 +292,17 @@ export function CheckInScreen({
     );
   }
 
-  const periodDate = periodKey(selected, goal.trackingFrequency);
   const periods = progress.periods;
+  const selected = picked ?? progress.today;
 
-  const single =
-    periods.length === 1 &&
-    periods[0].entryDate >= from &&
-    periods[0].entryDate <= to
-      ? periods[0]
-      : undefined;
+  const period = periods.find(
+    (entry) => entry.entryDate <= selected && selected <= entry.endDate,
+  );
 
-  const period =
-    periods.find((entry) => entry.entryDate === periodDate) ?? single;
+  const select = (day: DateKey) => {
+    setPicked(day);
+    if (day < progress.from || day > progress.to) setAnchor(day);
+  };
 
   return (
     <CheckInForm
@@ -311,10 +310,11 @@ export function CheckInScreen({
       habits={habits}
       periods={periods}
       period={period}
-      periodDate={periodDate}
+      periodDate={period?.entryDate ?? selected}
       selected={selected}
       today={progress.today}
-      onSelect={setSelected}
+      current={progress.currentPeriod.entryDate}
+      onSelect={select}
     />
   );
 }

@@ -32,11 +32,16 @@ const paths = {
  * `from`/`to` narrow the progress window. Left out, the server answers for
  * the current week in the resolved zone, which is what the home screen wants
  * and what saves it computing a "today" the server is the authority on.
+ *
+ * `date` names a day to open on. The server answers with the week holding
+ * it, and each period carries its `end_date`, so the device finds the period
+ * a day belongs to from the server's ranges rather than working it out.
  */
 export type GoalReadOptions = {
   include?: readonly GoalInclude[];
   from?: string;
   to?: string;
+  date?: string;
 };
 
 export type ListGoalsOptions = GoalReadOptions & { archived?: boolean };
@@ -68,6 +73,7 @@ function readParams(options: GoalReadOptions) {
     zone: wantsToday ? deviceTimezone() : null,
     from: options.from ?? null,
     to: options.to ?? null,
+    date: options.date ?? null,
   };
 }
 
@@ -123,6 +129,7 @@ const toPeriod = (wire: WireGoalPeriod): GoalPeriod => ({
   completion: wire.completion,
   status: wire.status,
   countsForStreak: wire.counts_for_streak,
+  endDate: wire.end_date,
   note: wire.note,
   mood: toMood(wire.mood),
   entries: wire.entries.map((entry) => ({
@@ -150,6 +157,10 @@ const toHabit = (wire: WireHabit): Habit => ({
   trackingMode: wire.tracking_mode,
   weight: wire.weight,
   successThreshold: wire.success_threshold,
+  achievedWhen: {
+    compare: wire.achieved_when.compare,
+    value: wire.achieved_when.value,
+  },
   ifThenPlan: wire.if_then_plan,
   archived: wire.archived,
   createdAt: wire.created_at,
@@ -164,6 +175,8 @@ const toProgress = (wire: WireGoalProgress): GoalProgress => ({
   currentStreak: wire.current_streak,
   longestStreak: wire.longest_streak,
   pending: wire.pending,
+  atRisk: wire.at_risk,
+  daysLeft: wire.days_left,
   lastEntryDate: wire.last_entry_date === '' ? null : wire.last_entry_date,
   currentPeriod: toPeriod(wire.current_period),
   periods: wire.periods.map(toPeriod),

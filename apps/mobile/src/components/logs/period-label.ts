@@ -11,7 +11,7 @@
  */
 
 import type { TrackingFrequency } from '@/features/goals';
-import { periodKey, todayKey, type DateKey } from '@/features/logs';
+import type { DateKey } from '@/features/logs';
 import type { AppLocale, TranslateFn } from '@/lib/i18n';
 
 /** Local again, for the same reason `fromDateKey` is: `new Date(key)` is UTC. */
@@ -37,15 +37,18 @@ const shortDate = (key: DateKey, locale: AppLocale) =>
  *
  * "Today" is compared period-to-period, not date-to-date: for a weekly goal
  * every day of the current week *is* the current period, and calling it by
- * Monday's date would make this week look like history.
+ * Monday's date would make this week look like history. `current` is the
+ * server's `current_period.entry_date`, so which period "now" is — and in
+ * which timezone — is never worked out on the device.
  */
 export function periodLabel(
   key: DateKey,
+  current: DateKey,
   frequency: TrackingFrequency,
   locale: AppLocale,
   t: TranslateFn,
 ): string {
-  if (key === periodKey(todayKey(), frequency)) return t('logs.period.today');
+  if (key === current) return t('logs.period.today');
   if (frequency === 'weekly') {
     return t('logs.period.week', { date: shortDate(key, locale) });
   }

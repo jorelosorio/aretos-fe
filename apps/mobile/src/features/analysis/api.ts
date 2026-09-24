@@ -1,7 +1,7 @@
 import { api } from '@/lib/api';
 import { deviceTimezone } from '@/lib/timezone';
 
-import { shiftPeriod, todayKey } from '@/features/logs';
+import { todayKey } from '@/features/logs';
 
 import type {
   AnalysisGoal,
@@ -61,33 +61,15 @@ const paths = {
 };
 
 /**
- * The window the report is read over, resolved on the device.
- *
- * `today` and `from` both come from one call to `todayKey()`, so they cannot
- * describe different days. Sending `today` rather than letting the server
- * resolve its own is what closes the midnight gap: the device computing `from`
- * off its clock while the server derived `to` off its own would, for a few
- * hours a day, ask for a window neither of them meant.
- *
- * `to` is deliberately not sent. The server defaults it to whatever `today`
- * resolved to, which is the value we just supplied, so naming it again would
- * only create a second thing that can go stale.
- *
- * The zone itself is not here at all — it rides on the `X-Timezone` header
- * that `lib/api/client.ts` sets for every request.
- */
-function analysisWindow(days: AnalysisWindow) {
-  const today = todayKey();
-  return { today, from: shiftPeriod(today, 'daily', -(days - 1)) };
-}
-
-/**
  * The shape a scope takes in a cache key.
  *
  * `zone` is key-only and is never sent. The zone reaches the server on a
  * header React Query cannot see, so without it here a traveller would be
- * handed the previous zone's report out of the cache. `today` is in the key
- * for the same reason at a finer grain: the report changes at midnight.
+ * handed the previous zone's report out of the cache. `day` is in the key
+ * for the same reason at a finer grain: the report changes at midnight, and a
+ * key that did not would serve yesterday's report from the cache. It is only
+ * a cache boundary — nothing is computed from it and it is never sent; the
+ * window itself is the server's, asked for as `?days=`.
  *
  * `goalId` is genuinely a different report rather than a filtered view of one.
  * Narrowing re-computes every report-level reading over that goal's periods
@@ -95,8 +77,7 @@ function analysisWindow(days: AnalysisWindow) {
  * goal's — so the two cannot share an entry.
  */
 function readParams(days: AnalysisWindow, goalId: string | null) {
-  const { today, from } = analysisWindow(days);
-  return { days, today, from, goalId, zone: deviceTimezone() };
+  return { days, day: todayKey(), goalId, zone: deviceTimezone() };
 }
 
 /** Query keys for this feature, as a factory so they cannot drift apart. */
@@ -360,12 +341,9 @@ export async function getAnalysis(
   days: AnalysisWindow,
   goalId: string | null = null,
 ): Promise<AnalysisReport> {
-  const { today, from } = analysisWindow(days);
-
   const { data } = await api.get<WireAnalysis>(paths.analysis, {
     params: {
-      today,
-      from,
+      days,
       ...(goalId === null ? {} : { goal_id: goalId }),
     },
   });

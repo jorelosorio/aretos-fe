@@ -95,13 +95,12 @@ export function GoalStatusCard({
   const { t } = useTranslations();
   const theme = useTheme();
 
-  const { currentPeriod, currentStreak, longestStreak, pending, today } =
+  const { currentPeriod, currentStreak, longestStreak, atRisk, daysLeft } =
     progress;
   const { mood, status, answered, total, logged } = currentPeriod;
 
   const weekly = goal.trackingFrequency === 'weekly';
   const hasHabits = total > 0;
-  const atRisk = pending && currentStreak > 0 && !currentPeriod.countsForStreak;
 
   const context = `${t(
     goal.habitCount === 1 ? 'habits.countOne' : 'habits.countMany',
@@ -201,12 +200,16 @@ export function GoalStatusCard({
             </YStack>
 
             {weekly ? (
-              <WeekWindow entryDate={currentPeriod.entryDate} today={today} />
+              <WeekWindow
+                entryDate={currentPeriod.entryDate}
+                endDate={currentPeriod.endDate}
+                daysLeft={daysLeft}
+              />
             ) : (
               <WeekStrip
                 periods={progress.periods}
                 currentEntryDate={currentPeriod.entryDate}
-                today={today}
+                today={progress.today}
                 frequency={goal.trackingFrequency}
               />
             )}

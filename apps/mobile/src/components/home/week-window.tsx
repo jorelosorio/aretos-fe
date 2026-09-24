@@ -3,26 +3,24 @@ import { SizableText, XStack } from 'tamagui';
 
 import { shortDateLabel } from '@/components/common/date-label';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
-import { weekEnd, weekdayIndex } from '@/features/logs';
 import { useTranslations } from '@/lib/i18n';
-
-const DAYS_IN_WEEK = 7;
 
 export function WeekWindow({
   entryDate,
-  today,
+  endDate,
+  daysLeft,
 }: {
   entryDate: string;
-  today: string;
+  endDate: string;
+  daysLeft: number;
 }) {
   const { t, locale } = useTranslations();
 
   const range = `${shortDateLabel(entryDate, locale)} – ${shortDateLabel(
-    weekEnd(entryDate),
+    endDate,
     locale,
   )}`;
 
-  const daysLeft = DAYS_IN_WEEK - weekdayIndex(today);
   const lastDay = daysLeft === 1;
 
   return (

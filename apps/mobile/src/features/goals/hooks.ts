@@ -70,17 +70,19 @@ export function useGoal(id: string) {
  *
  * The goal, its active habits and the saved answers used to be three:
  * `/v1/goals/:id`, `/v1/habits?goal_id=` and a `/v1/habit-logs` window.
- * `?include=habits,progress` with `from` and `to` answers all three at once.
+ * `?include=habits,progress` answers all three at once.
  *
  * The window is a week rather than the one day being edited, because the
  * check-in's strip shows how the whole week went and moving between its days
- * has to be instant. Seven days cost the same request one did, and the
- * period the screen is editing is picked out of `periods` by date — the
- * server's own snapping stays the authority on which period that is.
+ * has to be instant. Seven days cost the same request one did.
  *
- * The window is the caller's to compute: the snapping lives in
- * `features/logs`, and importing it here would close a require cycle through
- * that feature's own use of `goalKeys`.
+ * Which week is the server's to decide: `date` names a day and the server
+ * answers with the Monday-to-Sunday week holding it (today's, with no date),
+ * in the caller's zone. Every period comes back with its own `entry_date` and
+ * `end_date`, so the screen finds the period a day belongs to by looking for
+ * the range that holds it — the server's snapping stays the only one — and
+ * asks again with a new `date` only when a day falls outside the `from`–`to`
+ * it was given.
  *
  * `keepPreviousData` is what keeps the strip on screen while another week
  * loads. It hands back the previous week's periods in the meantime, so a
@@ -91,12 +93,11 @@ export function useGoal(id: string) {
  * showing the goal while the habits are still missing would render a period
  * with no rows in it.
  */
-export function useGoalCheckIn(id: string, from: string, to: string) {
-  const options = {
+export function useGoalCheckIn(id: string, date?: string) {
+  const options: GoalReadOptions = {
     include: ['habits', 'progress'],
-    from,
-    to,
-  } as const satisfies GoalReadOptions;
+    ...(date === undefined ? {} : { date }),
+  };
 
   return useQuery({
     queryKey: goalKeys.detail(id, options),

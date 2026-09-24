@@ -88,6 +88,7 @@ const toEntry = (wire: WireDiaryEntry): DiaryEntry => ({
   completion: wire.completion,
   status: wire.status,
   countsForStreak: wire.counts_for_streak,
+  endDate: wire.end_date,
   createdAt: wire.created_at,
   updatedAt: wire.updated_at,
 });

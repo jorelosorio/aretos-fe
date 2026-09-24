@@ -24,7 +24,7 @@ export function EntryViewer({
       meta={
         entry === null
           ? ''
-          : periodLabel(entry.entryDate, entry.goal.trackingFrequency, locale)
+          : periodLabel(entry.entryDate, entry.endDate, locale)
       }
       Icon={X}
       iconLabel={t('diary.close')}
