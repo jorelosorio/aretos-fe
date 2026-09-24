@@ -3,7 +3,7 @@ import type { Check } from '@tamagui/lucide-icons-2';
 import { Button, Paragraph, SizableText, YStack } from 'tamagui';
 
 import { EmptyArt } from '@/components/common/empty-art';
-import { SPACING, TEXT } from '@/constants/layout';
+import { BUTTON, SPACING, TEXT } from '@/constants/layout';
 
 type IconComponent = typeof Check;
 
@@ -35,8 +35,8 @@ export function EmptyLog({
 
         <YStack gap={SPACING.group} items="center">
           <SizableText
-            size="$6"
-            fontFamily="$heading"
+            size={TEXT.title}
+            fontWeight="700"
             color="$color"
             text="center"
           >
@@ -48,7 +48,7 @@ export function EmptyLog({
         </YStack>
 
         {action && onAction ? (
-          <Button size="$4" theme="accent" onPress={onAction}>
+          <Button size={BUTTON.primary} theme="accent" onPress={onAction}>
             {action}
           </Button>
         ) : null}

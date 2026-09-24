@@ -22,7 +22,7 @@ const MODE_LABELS: Record<Habit['trackingMode'], TranslationKey> = {
 function Badge({ children }: { children: string }) {
   return (
     <XStack px="$2" py="$1" rounded="$lg" bg="$muted">
-      <SizableText size="$1" color="$mutedForeground">
+      <SizableText size={TEXT.micro} color="$mutedForeground">
         {children}
       </SizableText>
     </XStack>
@@ -54,7 +54,11 @@ export function HabitCard({
       accessibilityLabel={habit.name}
     >
       <YStack flex={1} gap={SPACING.group}>
-        <SizableText size="$4" fontFamily="$heading" color="$cardForeground">
+        <SizableText
+          size={TEXT.subheading}
+          fontFamily="$heading"
+          color="$cardForeground"
+        >
           {habit.name}
         </SizableText>
 

@@ -64,8 +64,8 @@ export function HabitTarget({
           borderColor="$border"
         >
           <SizableText
-            size="$8"
-            fontFamily="$heading"
+            size={TEXT.display}
+            fontWeight="700"
             color="$primary"
             text="center"
           >

@@ -10,7 +10,7 @@ import {
 } from '@tamagui/lucide-icons-2';
 import { Button, Separator, SizableText, XStack, YStack } from 'tamagui';
 
-import { SPACING } from '@/constants/layout';
+import { BUTTON, SPACING, TEXT } from '@/constants/layout';
 import {
   useDeleteHabit,
   useHabitErrorMessage,
@@ -48,7 +48,7 @@ function MenuItem({
       accessibilityLabel={label}
     >
       <Icon size={18} color={tone} />
-      <SizableText flex={1} size="$4" color={tone}>
+      <SizableText flex={1} size={TEXT.subheading} color={tone}>
         {label}
       </SizableText>
     </XStack>
@@ -100,7 +100,7 @@ export function HabitActionsMenu({
   return (
     <>
       <Button
-        size="$3"
+        size={BUTTON.icon}
         chromeless
         onPress={() => setOpen(true)}
         disabled={isUpdating || isDeleting}

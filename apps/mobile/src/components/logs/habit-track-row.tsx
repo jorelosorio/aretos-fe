@@ -17,7 +17,7 @@ import {
 } from 'tamagui';
 
 import { UNIT_LABELS } from '@/components/habits/unit-labels';
-import { ICON, SPACING, TEXT } from '@/constants/layout';
+import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';
 import type { Habit } from '@/features/habits';
 import { OUTCOME_COLORS, outcomeOf, type LogEntry } from '@/features/logs';
 import { useTranslations } from '@/lib/i18n';
@@ -178,7 +178,7 @@ export function HabitTrackRow({
             accessibilityHint={tappable ? t(tapHint) : undefined}
           >
             <SizableText
-              size="$4"
+              size={TEXT.subheading}
               fontFamily="$heading"
               color="$cardForeground"
               numberOfLines={2}
@@ -187,14 +187,14 @@ export function HabitTrackRow({
             </SizableText>
 
             {meta !== '' && (
-              <SizableText size="$1" color="$mutedForeground">
+              <SizableText size={TEXT.micro} color="$mutedForeground">
                 {meta}
               </SizableText>
             )}
           </YStack>
 
           {entry.skipped ? (
-            <SizableText size="$2" color="$mutedForeground">
+            <SizableText size={TEXT.caption} color="$mutedForeground">
               {t('logs.outcome.skipped')}
             </SizableText>
           ) : (
@@ -202,7 +202,7 @@ export function HabitTrackRow({
           )}
 
           <Button
-            size="$2"
+            size={BUTTON.compact}
             circular
             bg={entry.skipped ? '$card' : '$muted'}
             borderWidth={1}
@@ -234,7 +234,7 @@ export function HabitTrackRow({
               accessibilityLabel={t('logs.entry.plan')}
             >
               <Lightbulb size={ICON.inline} color="$mutedForeground" />
-              <SizableText size="$1" color="$mutedForeground">
+              <SizableText size={TEXT.micro} color="$mutedForeground">
                 {t('logs.entry.plan')}
               </SizableText>
             </XStack>

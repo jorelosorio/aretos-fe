@@ -68,7 +68,7 @@ export function DiaryEntryCard({
           <XStack items="center" gap="$1.5">
             <SizableText
               shrink={1}
-              size="$2"
+              size={TEXT.caption}
               color="$mutedForeground"
               numberOfLines={1}
             >
@@ -79,7 +79,11 @@ export function DiaryEntryCard({
               <Archive size={ICON.inline} color="$mutedForeground" />
             )}
 
-            <SizableText size="$2" color="$mutedForeground" numberOfLines={1}>
+            <SizableText
+              size={TEXT.caption}
+              color="$mutedForeground"
+              numberOfLines={1}
+            >
               {`· ${when}`}
             </SizableText>
           </XStack>

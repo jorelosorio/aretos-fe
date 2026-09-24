@@ -44,7 +44,11 @@ export function PlanLimitNotice({ allowance }: { allowance: Allowance }) {
       </YStack>
 
       <YStack flex={1} gap={SPACING.text}>
-        <SizableText size="$5" fontFamily="$heading" color="$cardForeground">
+        <SizableText
+          size={TEXT.heading}
+          fontWeight="700"
+          color="$cardForeground"
+        >
           {t(limit === null ? 'goals.limit.blockedTitle' : 'goals.limit.title')}
         </SizableText>
         <Paragraph size={TEXT.body} color="$mutedForeground">

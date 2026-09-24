@@ -1,7 +1,7 @@
 import { Circle, Image, SizableText, XStack, YStack } from 'tamagui';
 
 import { longDateLabel } from '@/components/common/date-label';
-import { SPACING } from '@/constants/layout';
+import { SPACING, TEXT } from '@/constants/layout';
 import { todayKey } from '@/features/logs';
 import { useProfile } from '@/features/user';
 import { useTranslations } from '@/lib/i18n';
@@ -19,8 +19,8 @@ function Avatar({ name, url }: { name: string; url: string }) {
     >
       {url === '' ? (
         <SizableText
-          size="$5"
-          fontFamily="$heading"
+          size={TEXT.heading}
+          fontWeight="700"
           color="$accentSurfaceForeground"
         >
           {name.slice(0, 1).toUpperCase()}
@@ -50,7 +50,7 @@ export function HomeHeader() {
 
       <YStack flex={1} gap={SPACING.text}>
         <SizableText
-          size="$6"
+          size={TEXT.title}
           fontFamily="$heading"
           color="$color"
           numberOfLines={1}
@@ -58,7 +58,11 @@ export function HomeHeader() {
           {name === '' ? t('home.welcomeBack') : t('home.greeting', { name })}
         </SizableText>
 
-        <SizableText size="$2" color="$mutedForeground" numberOfLines={1}>
+        <SizableText
+          size={TEXT.caption}
+          color="$mutedForeground"
+          numberOfLines={1}
+        >
           {longDateLabel(todayKey(), locale)}
         </SizableText>
       </YStack>

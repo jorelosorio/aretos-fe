@@ -2,7 +2,7 @@ import { Check, Minus } from '@tamagui/lucide-icons-2';
 import { Circle, SizableText, XStack, YStack } from 'tamagui';
 
 import { dayNumber, weekdayInitial } from '@/components/common/date-label';
-import { ICON } from '@/constants/layout';
+import { ICON, TEXT } from '@/constants/layout';
 import type {
   GoalPeriod,
   PeriodStatus,
@@ -74,7 +74,7 @@ export function WeekStrip({
           >
             {byDay && (
               <SizableText
-                size="$1"
+                size={TEXT.micro}
                 color={isNow ? '$color' : '$mutedForeground'}
               >
                 {weekdayInitial(period.entryDate, locale)}
@@ -82,7 +82,7 @@ export function WeekStrip({
             )}
 
             <SizableText
-              size="$2"
+              size={TEXT.caption}
               fontWeight={isNow ? '800' : '500'}
               color={isNow ? '$color' : '$mutedForeground'}
             >

@@ -25,6 +25,7 @@ export type Diary = {
   total: number;
   timezone: string;
   historyCutoff: string | null;
+  hasMoreHistory: boolean;
 };
 
 const flatten = (pages: readonly DiaryPage[]): Diary => ({
@@ -32,6 +33,7 @@ const flatten = (pages: readonly DiaryPage[]): Diary => ({
   total: pages[0]?.total ?? 0,
   timezone: pages[0]?.timezone ?? '',
   historyCutoff: pages[0]?.historyCutoff ?? null,
+  hasMoreHistory: pages[0]?.hasMoreHistory ?? false,
 });
 
 /**

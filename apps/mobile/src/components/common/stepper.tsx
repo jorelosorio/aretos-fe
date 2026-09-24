@@ -1,5 +1,6 @@
 import { Minus, Plus } from '@tamagui/lucide-icons-2';
 import { Button, SizableText, XStack } from 'tamagui';
+import { BUTTON, TEXT } from '@/constants/layout';
 
 export function Stepper({
   value,
@@ -34,7 +35,7 @@ export function Stepper({
       accessibilityValue={{ min, max, now: value }}
     >
       <Button
-        size="$4"
+        size={BUTTON.icon}
         circular
         chromeless
         disabled={value <= min}
@@ -44,12 +45,12 @@ export function Stepper({
         accessibilityLabel={`${label} −`}
       />
 
-      <SizableText size="$7" fontFamily="$heading" color="$cardForeground">
+      <SizableText size={TEXT.display} fontWeight="700" color="$cardForeground">
         {suffix ? `${value} ${suffix}` : String(value)}
       </SizableText>
 
       <Button
-        size="$4"
+        size={BUTTON.icon}
         circular
         chromeless
         disabled={value >= max}

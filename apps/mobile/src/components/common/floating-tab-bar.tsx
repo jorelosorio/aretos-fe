@@ -7,8 +7,8 @@ import { ICON, TAB_BAR } from '@/constants/layout';
 import type { TabBarProps } from './tab-bar-props';
 
 const Slot = styled(YStack, {
+  flex: 1,
   height: '100%',
-  px: '$3',
   items: 'center',
   justify: 'center',
 });
@@ -70,15 +70,14 @@ export function FloatingTabBar({
     <XStack
       position="absolute"
       b={insets.bottom + TAB_BAR.gap}
-      l={0}
-      r={0}
-      justify="center"
+      l={TAB_BAR.inset}
+      r={TAB_BAR.inset}
       pointerEvents="box-none"
     >
       <XStack
+        flex={1}
         height={TAB_BAR.height}
         items="center"
-        gap="$2"
         px="$2"
         bg="$card"
         rounded={TAB_BAR.height / 2}

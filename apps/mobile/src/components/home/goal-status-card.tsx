@@ -3,7 +3,7 @@ import { SizableText, XStack, YStack } from 'tamagui';
 
 import { CompletionStatus } from '@/components/goals/completion-status';
 import { PERIOD_STATUS_LABELS } from '@/components/goals/period-status';
-import { ICON, SPACING } from '@/constants/layout';
+import { ICON, SPACING, TEXT } from '@/constants/layout';
 import type { Goal, GoalProgress } from '@/features/goals';
 import type { MoodScore } from '@/features/logs';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
@@ -78,7 +78,7 @@ export function GoalStatusCard({
     >
       <YStack gap={SPACING.text}>
         <SizableText
-          size="$5"
+          size={TEXT.subheading}
           fontFamily="$heading"
           color="$cardForeground"
           numberOfLines={2}
@@ -89,7 +89,7 @@ export function GoalStatusCard({
         <XStack items="center" gap="$1.5">
           <SizableText
             shrink={1}
-            size="$2"
+            size={TEXT.caption}
             color="$mutedForeground"
             numberOfLines={1}
           >
@@ -102,7 +102,7 @@ export function GoalStatusCard({
           />
 
           <SizableText
-            size="$2"
+            size={TEXT.caption}
             fontWeight="600"
             color={hasStreak ? '$primary' : '$mutedForeground'}
           >
@@ -123,7 +123,7 @@ export function GoalStatusCard({
           frequency={goal.trackingFrequency}
         />
       ) : (
-        <SizableText size="$1" color="$mutedForeground">
+        <SizableText size={TEXT.micro} color="$mutedForeground">
           {t('home.noHabits')}
         </SizableText>
       )}

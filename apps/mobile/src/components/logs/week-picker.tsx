@@ -7,7 +7,7 @@ import {
 import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons-2';
 import { Button, Circle, SizableText, XStack, YStack } from 'tamagui';
 
-import { SPACING } from '@/constants/layout';
+import { BUTTON, SPACING, TEXT } from '@/constants/layout';
 import type {
   GoalPeriod,
   PeriodStatus,
@@ -77,7 +77,7 @@ function DayCell({
       accessibilityState={{ selected: isSelected, disabled: isFuture }}
       accessibilityLabel={`${weekdayLabel(day, locale)} ${dayNumber(day)}. ${statusLabel}`}
     >
-      <SizableText size="$1" color="$mutedForeground">
+      <SizableText size={TEXT.micro} color="$mutedForeground">
         {weekdayLabel(day, locale)}
       </SizableText>
 
@@ -88,8 +88,8 @@ function DayCell({
         borderColor={isToday ? '$primary' : '$border'}
       >
         <SizableText
-          size="$4"
-          fontFamily="$heading"
+          size={TEXT.subheading}
+          fontWeight="700"
           color={isSelected ? '$primaryForeground' : '$cardForeground'}
         >
           {dayNumber(day)}
@@ -172,7 +172,7 @@ export function WeekPicker({
     <YStack gap={SPACING.group}>
       <XStack items="center" justify="space-between">
         <Button
-          size="$2"
+          size={BUTTON.compact}
           circular
           chromeless
           disabled={index === 0}
@@ -187,7 +187,7 @@ export function WeekPicker({
         </SectionTitle>
 
         <Button
-          size="$2"
+          size={BUTTON.compact}
           circular
           chromeless
           disabled={index === weeks.length - 1}

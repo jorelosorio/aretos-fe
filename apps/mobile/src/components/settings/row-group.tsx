@@ -2,7 +2,7 @@ import { Fragment, type ReactNode } from 'react';
 import { Separator, SizableText, XStack, YStack } from 'tamagui';
 
 import { SectionTitle } from '@/components/common/section-title';
-import { SPACING } from '@/constants/layout';
+import { SPACING, TEXT } from '@/constants/layout';
 
 export type Row = {
   label: string;
@@ -42,7 +42,11 @@ export function RowGroup({
               accessibilityRole="button"
               accessibilityLabel={row.label}
             >
-              <SizableText flex={1} size="$4" color="$cardForeground">
+              <SizableText
+                flex={1}
+                size={TEXT.subheading}
+                color="$cardForeground"
+              >
                 {row.label}
               </SizableText>
 

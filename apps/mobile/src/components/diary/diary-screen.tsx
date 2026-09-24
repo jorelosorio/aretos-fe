@@ -128,7 +128,8 @@ export function DiaryScreen() {
 
               {!hasNextPage &&
                 !isFetchingNextPage &&
-                data?.historyCutoff != null && (
+                data?.hasMoreHistory === true &&
+                data.historyCutoff != null && (
                   <HistoryCutoffNotice cutoff={data.historyCutoff} />
                 )}
             </YStack>

@@ -2,7 +2,7 @@ import { Alert } from 'react-native';
 import { LogOut } from '@tamagui/lucide-icons-2';
 import { Button } from 'tamagui';
 
-import { ICON } from '@/constants/layout';
+import { BUTTON, ICON } from '@/constants/layout';
 import { useSignOut } from '@/features/auth';
 import { useTranslations } from '@/lib/i18n';
 
@@ -26,7 +26,7 @@ export function SignOutButton() {
 
   return (
     <Button
-      size="$5"
+      size={BUTTON.primary}
       onPress={confirm}
       disabled={isSigningOut}
       opacity={isSigningOut ? 0.7 : 1}

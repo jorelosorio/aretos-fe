@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { Check } from '@tamagui/lucide-icons-2';
 import { Separator, SizableText, XStack, YStack } from 'tamagui';
 
-import { SPACING } from '@/constants/layout';
+import { SPACING, TEXT } from '@/constants/layout';
 
 import { SectionTitle } from './section-title';
 
@@ -62,11 +62,11 @@ export function OptionGroup<T extends string>({
                 />
 
                 <YStack flex={1} gap={SPACING.text}>
-                  <SizableText size="$4" color="$cardForeground">
+                  <SizableText size={TEXT.subheading} color="$cardForeground">
                     {option.label}
                   </SizableText>
                   {option.hint && (
-                    <SizableText size="$2" color="$mutedForeground">
+                    <SizableText size={TEXT.caption} color="$mutedForeground">
                       {option.hint}
                     </SizableText>
                   )}

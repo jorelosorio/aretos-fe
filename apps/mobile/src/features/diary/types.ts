@@ -79,6 +79,8 @@ export type WireDiary = {
   timezone: string;
   /** `""` when the plan reads the whole history. */
   history_cutoff: string;
+  /** Whether anything is actually behind `history_cutoff`. */
+  has_more_history: boolean;
 };
 
 /**
@@ -153,6 +155,19 @@ export type DiaryPage = {
    * stops there.
    */
   historyCutoff: string | null;
+  /**
+   * Whether anything is actually behind `historyCutoff`, and the flag a
+   * screen gates that notice on.
+   *
+   * The cutoff cannot answer it. It describes the plan rather than the
+   * account, so it arrives for everyone on a bounded plan — including
+   * somebody who joined last week and has nothing older. Gating on the date
+   * alone tells them their history is being hidden when none exists.
+   *
+   * Running out of entries and hitting the plan's floor are different
+   * events; only this separates them.
+   */
+  hasMoreHistory: boolean;
 };
 
 /**

@@ -10,7 +10,7 @@
 
 import { SizableText, XStack } from 'tamagui';
 
-import { ICON } from '@/constants/layout';
+import { ICON, TEXT } from '@/constants/layout';
 import type { PeriodStatus } from '@/features/goals';
 import { useTranslations } from '@/lib/i18n';
 
@@ -39,11 +39,15 @@ export function CompletionStatus({
     <XStack items="center" gap="$1.5">
       <Glyph size={ICON.inline} color={color} strokeWidth={2.5} />
 
-      <SizableText size="$2" color={color} numberOfLines={1}>
+      <SizableText size={TEXT.caption} color={color} numberOfLines={1}>
         {t(PERIOD_STATUS_LABELS[status])}
       </SizableText>
 
-      <SizableText size="$2" fontWeight="600" color="$mutedForeground">
+      <SizableText
+        size={TEXT.caption}
+        fontWeight="600"
+        color="$mutedForeground"
+      >
         {t('goals.progress', { answered, total })}
       </SizableText>
     </XStack>

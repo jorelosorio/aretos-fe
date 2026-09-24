@@ -19,7 +19,7 @@ import {
   SegmentedControl,
   type Segment,
 } from '@/components/common/segmented-control';
-import { SPACING } from '@/constants/layout';
+import { BUTTON, SPACING, TEXT } from '@/constants/layout';
 import { DEFAULT_TARGET, HabitTarget } from './habit-target';
 import {
   hasThreshold,
@@ -123,89 +123,99 @@ export function HabitForm({
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <ScrollView
-        flex={1}
-        bg="$background"
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ grow: 1 }}
-      >
-        <YStack flex={1} p={SPACING.screen} gap={SPACING.section}>
-          <ErrorNotice message={toMessage(createError ?? updateError)} />
+      <YStack flex={1} bg="$background">
+        <ScrollView
+          flex={1}
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{ grow: 1 }}
+        >
+          <YStack flex={1} p={SPACING.screen} gap={SPACING.section}>
+            <ErrorNotice message={toMessage(createError ?? updateError)} />
 
-          <YStack gap={SPACING.group}>
-            <Label htmlFor="habit-name" color="$color">
-              {t('habits.form.name')}
-            </Label>
-            <Input
-              id="habit-name"
-              size="$5"
-              value={draft.name}
-              onChangeText={(value) => patch({ name: value })}
-              placeholder={t('habits.form.namePlaceholder')}
-              placeholderTextColor="$mutedForeground"
-              maxLength={NAME_MAX}
-              autoFocus={!habitId}
-              bg="$card"
-              borderColor="$border"
+            <YStack gap={SPACING.group}>
+              <Label htmlFor="habit-name" color="$color">
+                {t('habits.form.name')}
+              </Label>
+              <Input
+                id="habit-name"
+                size="$5"
+                value={draft.name}
+                onChangeText={(value) => patch({ name: value })}
+                placeholder={t('habits.form.namePlaceholder')}
+                placeholderTextColor="$mutedForeground"
+                maxLength={NAME_MAX}
+                autoFocus={!habitId}
+                bg="$card"
+                borderColor="$border"
+              />
+              <SizableText size={TEXT.caption} color="$mutedForeground" px="$2">
+                {t('habits.form.nameHint')}
+              </SizableText>
+            </YStack>
+
+            <OptionGroup
+              title={t('habits.form.mode')}
+              options={modes}
+              value={draft.trackingMode}
+              onChange={selectMode}
             />
-            <SizableText size="$2" color="$mutedForeground" px="$2">
-              {t('habits.form.nameHint')}
-            </SizableText>
-          </YStack>
 
-          <OptionGroup
-            title={t('habits.form.mode')}
-            options={modes}
-            value={draft.trackingMode}
-            onChange={selectMode}
-          />
-
-          <HabitTarget
-            mode={draft.trackingMode}
-            value={
-              draft.successThreshold ?? DEFAULT_TARGET[draft.trackingMode] ?? 1
-            }
-            onChange={(value) => patch({ successThreshold: value })}
-          />
-
-          <YStack gap={SPACING.group}>
-            <SectionTitle>{t('habits.form.weight')}</SectionTitle>
-            <SegmentedControl
-              segments={weights}
-              value={String(draft.weight) as (typeof WEIGHTS)[number]}
-              onChange={(value) => patch({ weight: Number(value) })}
+            <HabitTarget
+              mode={draft.trackingMode}
+              value={
+                draft.successThreshold ??
+                DEFAULT_TARGET[draft.trackingMode] ??
+                1
+              }
+              onChange={(value) => patch({ successThreshold: value })}
             />
-            <SizableText size="$2" color="$mutedForeground" px="$2">
-              {t('habits.form.weightHint')}
-            </SizableText>
-          </YStack>
 
-          <YStack gap={SPACING.group}>
-            <Label htmlFor="habit-plan" color="$color">
-              {t('habits.form.plan')}
-            </Label>
-            <TextArea
-              id="habit-plan"
-              size="$5"
-              value={draft.ifThenPlan}
-              onChangeText={(value) => patch({ ifThenPlan: value })}
-              placeholder={t('habits.form.planPlaceholder')}
-              placeholderTextColor="$mutedForeground"
-              maxLength={PLAN_MAX}
-              multiline
-              numberOfLines={4}
-              minH={112}
-              verticalAlign="top"
-              bg="$card"
-              borderColor="$border"
-            />
-            <SizableText size="$2" color="$mutedForeground" px="$2">
-              {t('habits.form.planHint')}
-            </SizableText>
-          </YStack>
+            <YStack gap={SPACING.group}>
+              <SectionTitle>{t('habits.form.weight')}</SectionTitle>
+              <SegmentedControl
+                segments={weights}
+                value={String(draft.weight) as (typeof WEIGHTS)[number]}
+                onChange={(value) => patch({ weight: Number(value) })}
+              />
+              <SizableText size={TEXT.caption} color="$mutedForeground" px="$2">
+                {t('habits.form.weightHint')}
+              </SizableText>
+            </YStack>
 
+            <YStack gap={SPACING.group}>
+              <Label htmlFor="habit-plan" color="$color">
+                {t('habits.form.plan')}
+              </Label>
+              <TextArea
+                id="habit-plan"
+                size="$5"
+                value={draft.ifThenPlan}
+                onChangeText={(value) => patch({ ifThenPlan: value })}
+                placeholder={t('habits.form.planPlaceholder')}
+                placeholderTextColor="$mutedForeground"
+                maxLength={PLAN_MAX}
+                multiline
+                numberOfLines={4}
+                minH={112}
+                verticalAlign="top"
+                bg="$card"
+                borderColor="$border"
+              />
+              <SizableText size={TEXT.caption} color="$mutedForeground" px="$2">
+                {t('habits.form.planHint')}
+              </SizableText>
+            </YStack>
+          </YStack>
+        </ScrollView>
+
+        <YStack
+          p={SPACING.screen}
+          bg="$card"
+          borderTopWidth={1}
+          borderTopColor="$border"
+        >
           <Button
-            size="$5"
+            size={BUTTON.primary}
             theme="accent"
             onPress={save}
             disabled={!name || busy}
@@ -214,7 +224,7 @@ export function HabitForm({
             {habitId ? t('habits.form.save') : t('habits.form.create')}
           </Button>
         </YStack>
-      </ScrollView>
+      </YStack>
     </KeyboardAvoidingView>
   );
 }

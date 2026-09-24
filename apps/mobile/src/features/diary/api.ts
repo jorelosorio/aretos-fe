@@ -129,5 +129,6 @@ export async function listDiary(
     to: data.to,
     timezone: data.timezone,
     historyCutoff: data.history_cutoff === '' ? null : data.history_cutoff,
+    hasMoreHistory: data.has_more_history,
   };
 }

@@ -6,6 +6,7 @@ export const es = {
     home: 'Inicio',
     log: 'Registrar',
     diary: 'Diario',
+    analysis: 'Análisis',
     goals: 'Mis Metas',
     settings: 'Ajustes',
   },
@@ -40,6 +41,190 @@ export const es = {
       badRequest: 'No pudimos leer el diario. Inténtalo de nuevo.',
       network: 'No pudimos conectar con el servidor. Revisa tu conexión.',
       generic: 'Algo salió mal. Inténtalo de nuevo.',
+    },
+  },
+  analysis: {
+    title: 'Análisis',
+    empty: 'sin dato',
+    errors: {
+      badRequest: 'No pudimos leer el análisis. Inténtalo de nuevo.',
+      locked: 'Tu plan no incluye el análisis.',
+      network: 'No pudimos conectar con el servidor. Revisa tu conexión.',
+      generic: 'Algo salió mal. Inténtalo de nuevo.',
+    },
+    units: {
+      answer: '%{count} respuestas',
+      period: '%{count} períodos',
+      day: '%{count} días',
+      weekday_day: '%{count} días',
+      pair: '%{count} pares de días',
+      log: '%{count} registros',
+    },
+    basis: {
+      thin: '%{sample} · provisional',
+    },
+    notEnough: {
+      title: 'Aún no hay suficiente',
+      body: 'Necesitamos %{need} para decir algo con fundamento.',
+    },
+    window: {
+      '30': '30 días',
+      '90': '90 días',
+      '365': '1 año',
+    },
+    scope: {
+      all: 'Todas las metas',
+    },
+    section: {
+      summary: 'Resumen',
+      rhythm: 'Ritmo',
+      mood: 'Ánimo',
+      detail: 'Detalle',
+    },
+    sectionHint: {
+      summary: 'Qué tanto apareces y qué tanto cumples cuando lo haces.',
+      rhythm: 'Dónde caen tus días buenos y flojos, y hacia dónde vas.',
+      mood: 'Qué tanto depende lo que haces de cómo te sientes.',
+      detail: 'Meta por meta y hábito por hábito.',
+    },
+    setup: {
+      title: 'Tu configuración',
+      subtitle:
+        'Qué tan medible es lo que estás siguiendo. Esto se puede responder antes del primer registro.',
+      counts: '%{goals} metas · %{habits} hábitos activos',
+      planned: 'Con plan',
+      thresholded: 'Con umbral',
+      weighted: 'Con pesos',
+    },
+    cadence: {
+      title: 'Constancia',
+      subtitle:
+        'Aparecer y cumplir son dos preguntas distintas. Una racha se rompe con un día; esto no.',
+      logging: 'Registraste',
+      completion: 'Cumpliste',
+      counted: 'Cuenta para la racha',
+      status: {
+        complete: 'Completos',
+        partial: 'Parciales',
+        missed: 'Fallados',
+        skipped: 'Omitidos',
+        empty: 'Sin registro',
+      },
+    },
+    mix: {
+      title: 'De qué está hecho tu porcentaje',
+      subtitle:
+        'Cada respuesta cae en uno de cuatro estados. Solo los dos primeros entran en el cálculo.',
+      achieved: 'Logrado',
+      missed: 'Sin lograr',
+      skipped: 'No aplicaba',
+      blank: 'Sin respuesta',
+      center: '%{achieved} de %{opportunities} oportunidades',
+      excluded:
+        '%{count} respuestas quedaron fuera del porcentaje: %{skipped} por no aplicar y %{blank} sin respuesta. Es intencional, pero significa que tu porcentaje describe una base más pequeña de lo que parece.',
+    },
+    weekday: {
+      mon: 'Lun',
+      tue: 'Mar',
+      wed: 'Mié',
+      thu: 'Jue',
+      fri: 'Vie',
+      sat: 'Sáb',
+      sun: 'Dom',
+    },
+    rhythm: {
+      title: 'Tu ritmo semanal',
+      subtitle:
+        'El promedio esconde la forma de la semana. Aquí se ve si hay un día concreto que se te escapa.',
+      spreadLabel: 'Diferencia entre tu mejor y tu peor día',
+      spreadValue: '%{points} pts',
+      spreadReading:
+        '%{best} es tu día fuerte (%{bestRate}) y %{worst} el más flojo (%{worstRate}). Una brecha así suele ser de calendario, no de fuerza de voluntad.',
+      needExtremes: '%{count} días por cada día de la semana',
+      regularityLabel: 'Regularidad',
+      regularityReading:
+        'Tus días varían ±%{deviation} puntos alrededor del %{mean}.',
+      needRegularity: '%{count} días con registro',
+    },
+    trend: {
+      title: '¿Vas mejorando?',
+      subtitle:
+        'La segunda mitad del período contra la primera, partida por fecha.',
+      first: 'Primera mitad',
+      second: 'Segunda mitad',
+      half: '%{count} días',
+      deltaLabel: 'Cambio',
+      deltaValue: '%{points} pts',
+      direction: {
+        improving: 'Vas mejorando.',
+        steady: 'Te mantienes estable.',
+        declining: 'Vas bajando.',
+      },
+      need: '%{count} días en cada mitad',
+    },
+    strength: {
+      negligible: 'Insignificante',
+      weak: 'Débil',
+      moderate: 'Moderada',
+      strong: 'Fuerte',
+    },
+    moods: {
+      title: 'Tu ánimo',
+      subtitle:
+        'Cómo usaste la escala del 1 al 5, y cada cuánto la respondiste.',
+      summary: 'Respondiste en %{answered} de %{total} registros (%{rate}).',
+    },
+    moodPerformance: {
+      title: 'Ánimo contra logro',
+      subtitle:
+        'Qué tanto depende tu conducta de cómo te sientes. Una brecha pequeña es el buen resultado.',
+      low: 'Días flojos',
+      neutral: 'Días neutros',
+      high: 'Días buenos',
+      days: '%{count} días',
+      gapLabel: 'Brecha por ánimo',
+      gapValue: '%{points} pts',
+      automaticity: {
+        automatic:
+          'Tu conducta aguanta igual en días malos que en buenos. Eso es lo que hace un hábito formado.',
+        mixed: 'Tu conducta aguanta en parte, pero el ánimo todavía pesa.',
+        dependent:
+          'Tu conducta todavía depende de cómo te sientes. Un plan concreto para los días flojos suele ser lo que cierra esa brecha.',
+      },
+      need: '%{count} días en los extremos de la escala',
+    },
+    direction: {
+      title: 'Dirección',
+      subtitle:
+        'El mismo día no distingue causa de efecto. Emparejar cada día con el siguiente sí rompe esa simetría.',
+      sameDay: 'Ánimo y logro el mismo día',
+      moodLeads: 'Ánimo hoy → logro mañana',
+      performanceLeads: 'Logro hoy → ánimo mañana',
+      caveat:
+        'Esto acota las posibilidades, no las resuelve: algo que moviera ambos aparecería igual en las dos columnas.',
+      need: '%{count} pares de días consecutivos',
+    },
+    heatmap: {
+      title: 'Mapa de constancia',
+      subtitle:
+        'Un cuadro por día. Los días en blanco no tenían nada pendiente — no son fallos.',
+      less: 'Menos',
+      more: 'Más',
+      summary: '%{logged} días registrados de %{tracked} con algo pendiente.',
+    },
+    goals: {
+      title: 'Por meta',
+      subtitle:
+        'Cada meta con su propio calendario. Para una meta semanal este es el único que se lee bien.',
+      streaks: 'Racha %{current} · máxima %{longest}',
+    },
+    habits: {
+      title: 'Tus hábitos',
+      subtitle:
+        'Cada hábito por separado. La mediana para automatizar uno es de %{median} repeticiones, con un rango observado de %{low} a %{high}.',
+      formation: 'Formación',
+      repetitions: '%{count} de %{median} repeticiones',
+      span: 'A lo largo de %{count} días',
     },
   },
   logs: {

@@ -39,7 +39,11 @@ export function HistoryCutoffNotice({ cutoff }: { cutoff: string }) {
       </YStack>
 
       <YStack flex={1} gap={SPACING.text}>
-        <SizableText size="$4" fontFamily="$heading" color="$cardForeground">
+        <SizableText
+          size={TEXT.heading}
+          fontWeight="700"
+          color="$cardForeground"
+        >
           {t('diary.cutoff.title')}
         </SizableText>
         <Paragraph size={TEXT.body} color="$mutedForeground">

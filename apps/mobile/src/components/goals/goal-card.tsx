@@ -41,7 +41,11 @@ export function GoalCard({
       accessibilityLabel={`${goal.name}. ${actions}`}
     >
       <YStack flex={1} gap={SPACING.text}>
-        <SizableText size="$5" fontFamily="$heading" color="$cardForeground">
+        <SizableText
+          size={TEXT.subheading}
+          fontFamily="$heading"
+          color="$cardForeground"
+        >
           {goal.name}
         </SizableText>
 
@@ -56,13 +60,13 @@ export function GoalCard({
         )}
 
         <XStack items="center" gap="$2">
-          <SizableText size="$2" color="$primary" fontWeight="600">
+          <SizableText size={TEXT.caption} color="$primary" fontWeight="600">
             {actions}
           </SizableText>
-          <SizableText size="$2" color="$mutedForeground">
+          <SizableText size={TEXT.caption} color="$mutedForeground">
             ·
           </SizableText>
-          <SizableText size="$2" color="$mutedForeground">
+          <SizableText size={TEXT.caption} color="$mutedForeground">
             {t(FREQUENCY_LABELS[goal.trackingFrequency])}
           </SizableText>
         </XStack>

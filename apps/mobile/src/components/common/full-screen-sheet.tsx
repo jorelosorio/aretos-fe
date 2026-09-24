@@ -5,7 +5,7 @@ import type { X } from '@tamagui/lucide-icons-2';
 import { Button, SizableText, XStack, YStack } from 'tamagui';
 
 import { SectionTitle } from '@/components/common/section-title';
-import { ICON, SPACING } from '@/constants/layout';
+import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';
 
 type IconComponent = typeof X;
 
@@ -47,14 +47,14 @@ export function FullScreenSheet({
             <SectionTitle>{title}</SectionTitle>
 
             {meta !== '' && (
-              <SizableText size="$2" color="$mutedForeground">
+              <SizableText size={TEXT.caption} color="$mutedForeground">
                 {meta}
               </SizableText>
             )}
           </YStack>
 
           <Button
-            size="$3"
+            size={BUTTON.icon}
             circular
             chromeless
             onPress={onDismiss}

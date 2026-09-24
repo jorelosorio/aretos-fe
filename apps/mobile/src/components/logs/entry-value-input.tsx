@@ -7,6 +7,7 @@ import type { LogEntry } from '@/features/logs';
 import { useTranslations } from '@/lib/i18n';
 
 import { stepFor } from './entry-actions';
+import { BUTTON, TEXT } from '@/constants/layout';
 
 const RATINGS = [1, 2, 3, 4, 5];
 const PIP = 26;
@@ -38,7 +39,7 @@ function AmountPill({
       borderColor="$border"
     >
       <Button
-        size="$2"
+        size={BUTTON.compact}
         circular
         chromeless
         disabled={atZero}
@@ -49,8 +50,8 @@ function AmountPill({
       />
 
       <SizableText
-        size="$2"
-        fontFamily="$heading"
+        size={TEXT.caption}
+        fontWeight="600"
         minW={52}
         text="center"
         color={value === null ? '$mutedForeground' : '$cardForeground'}
@@ -59,7 +60,7 @@ function AmountPill({
       </SizableText>
 
       <Button
-        size="$2"
+        size={BUTTON.compact}
         circular
         chromeless
         onPress={() => set((value ?? 0) + step)}
@@ -108,8 +109,8 @@ function RatingPips({
             accessibilityHint={t('logs.entry.clear')}
           >
             <SizableText
-              size="$2"
-              fontFamily="$heading"
+              size={TEXT.caption}
+              fontWeight="600"
               color={selected ? '$primaryForeground' : '$cardForeground'}
             >
               {score}

@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router';
 import { X } from '@tamagui/lucide-icons-2';
 import { Button } from 'tamagui';
 
-import { ICON } from '@/constants/layout';
+import { BUTTON, ICON } from '@/constants/layout';
 import { useTranslations } from '@/lib/i18n';
 
 export function CloseButton({ label }: { label?: string }) {
@@ -11,7 +11,7 @@ export function CloseButton({ label }: { label?: string }) {
 
   return (
     <Button
-      size="$3"
+      size={BUTTON.icon}
       circular
       chromeless
       onPress={() => router.back()}

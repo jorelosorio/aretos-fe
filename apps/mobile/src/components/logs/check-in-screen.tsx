@@ -15,7 +15,7 @@ import {
 import { ErrorNotice } from '@/components/common/error-notice';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
-import { ICON, SPACING, TEXT } from '@/constants/layout';
+import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';
 import {
   useGoalCheckIn,
   useGoalErrorMessage,
@@ -128,7 +128,7 @@ function CheckInForm({
               {period?.logged === true && (
                 <XStack items="center" gap="$2">
                   <Check size={ICON.inline} color="$primary" />
-                  <SizableText size="$2" color="$mutedForeground">
+                  <SizableText size={TEXT.caption} color="$mutedForeground">
                     {t('logs.editing')}
                   </SizableText>
                 </XStack>
@@ -162,7 +162,7 @@ function CheckInForm({
                     <SectionTitle>{t('logs.note')}</SectionTitle>
 
                     <Button
-                      size="$2"
+                      size={BUTTON.compact}
                       circular
                       chromeless
                       onPress={() => setNoteOpen(true)}
@@ -202,7 +202,11 @@ function CheckInForm({
           borderTopWidth={1}
           borderTopColor="$border"
         >
-          <SizableText size="$2" color="$mutedForeground" text="center">
+          <SizableText
+            size={TEXT.caption}
+            color="$mutedForeground"
+            text="center"
+          >
             {t('logs.progress', {
               answered: draft.answered,
               total: draft.total,
@@ -210,7 +214,7 @@ function CheckInForm({
           </SizableText>
 
           <Button
-            size="$5"
+            size={BUTTON.primary}
             theme="accent"
             onPress={save}
             disabled={busy}

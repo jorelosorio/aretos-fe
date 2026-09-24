@@ -1,9 +1,14 @@
 import { Tabs, useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
-import { House, NotebookPen, Settings, Target } from '@tamagui/lucide-icons-2';
+import {
+  ChartNoAxesColumn,
+  House,
+  NotebookPen,
+  Settings,
+  Target,
+} from '@tamagui/lucide-icons-2';
 
 import { FloatingTabBar } from '@/components/common/floating-tab-bar';
-import { NewGoalButton } from '@/components/goals/new-goal-button';
 import { HEADER_TITLE, ICON } from '@/constants/layout';
 import { useTranslations } from '@/lib/i18n';
 
@@ -56,12 +61,20 @@ export default function TabsLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="analysis"
+        options={{
+          title: t('tabs.analysis'),
+          tabBarIcon: ({ focused }) => (
+            <ChartNoAxesColumn color={iconColor(focused)} size={ICON.feature} />
+          ),
+        }}
+      />
       <Tabs.Screen name="log" options={{ href: null }} />
       <Tabs.Screen
         name="goals"
         options={{
           title: t('tabs.goals'),
-          headerRight: () => <NewGoalButton />,
           tabBarIcon: ({ focused }) => (
             <Target color={iconColor(focused)} size={ICON.feature} />
           ),

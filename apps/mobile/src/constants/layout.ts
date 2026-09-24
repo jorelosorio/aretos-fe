@@ -34,24 +34,69 @@ export const SPACING = {
 } as const;
 
 /**
- * The two sizes running text comes in, named by the job it does.
+ * The type scale, named by the job each step does.
  *
  * Same argument as `SPACING`: the font scale is the unit, these are the
- * decision about which unit belongs where. Picking a token per screen is how
- * the app ended up reading a note at `$5` on one surface, `$3` on another and
- * a sign-in tagline at `$4` — three sizes for the same job, none of them
- * wrong on its own.
+ * decision about which unit belongs where.
  *
- * Only two, on purpose. A third tier is how the drift starts again, and
- * anything that needs to stand out more than `body` is a heading and should
- * say so with `SectionTitle` or a `$heading` face rather than a bigger body.
+ * This used to hold two roles and insist that two was enough — "a third tier
+ * is how the drift starts again". The drift happened anyway, in the other
+ * direction: screens reached past the tokens for a raw `size="$5"` and the app
+ * ended up running nine sizes, fifty-seven of them written as literals. Two
+ * roles did not prevent a third, it only meant the third was never named.
+ *
+ * So every step a screen legitimately needs is here, and the rule is the one
+ * that was missing: **a component never writes a raw `size="$n"` for text.**
+ * If a new job does not fit one of these, the scale gains a role rather than
+ * the screen gaining a literal.
+ *
+ * Which *face* a step is set in is a separate decision, and `fonts.ts` owns
+ * it: the display face names the subject, everything else is the body face
+ * leaning on `fontWeight`. A bigger size is not a licence for a different
+ * font.
  *
  * One surface is exempt, and only one: the full-screen note in `NOTE_TEXT`,
  * which is read a paragraph at a time with nothing beside it. That exemption
- * is argued where it is taken, not granted here — a screen that wants larger
- * prose has to make the same case.
+ * is argued where it is taken, not granted here.
  */
 export const TEXT = {
+  /**
+   * A measured value read as a figure rather than as prose: a target, a
+   * percentage, a stepper's count. The only step that exists to be looked at
+   * rather than read.
+   */
+  display: '$7',
+  /**
+   * The most prominent text below the native header: the home greeting, an
+   * empty state's message. At most one visible at a time — two would fight
+   * over which is the point — but a screen may hold several behind mutually
+   * exclusive states, the way an empty goals list and a populated one never
+   * show together.
+   *
+   * A notice *inside* a populated screen — a plan limit, an archived goal —
+   * is a `heading`, not a `title`: the screen already has a subject, and the
+   * notice is commenting on it rather than replacing it.
+   *
+   * Always smaller than the native header (`HEADER_TITLE`, 20pt): the
+   * hierarchy runs header → `title` → `heading`, and a step here that
+   * closed that gap would make a card read as more important than the
+   * screen it sits on.
+   */
+  title: '$6',
+  /**
+   * A notice's title — a plan limit, an archived goal, a diary history
+   * cutoff — always this one size regardless of which screen it sits on,
+   * plus a stat's own value and a glyph sized to fill a fixed shape, such as
+   * an avatar's fallback initial.
+   */
+  heading: '$5',
+  /**
+   * A card's subject when the card is one of several like it: a goal's or a
+   * habit's name in a list. One step below `heading` because the same name
+   * reads larger where the whole screen is about that one thing — a goal's
+   * own detail screen uses `title` for it instead.
+   */
+  subheading: '$4',
   /** Running prose: whatever is read as sentences, however short. */
   body: '$3',
   /**
@@ -62,6 +107,33 @@ export const TEXT = {
    * it is one line.
    */
   caption: '$2',
+  /**
+   * The smallest readable step: a chip, a badge, a dense tally.
+   *
+   * Nothing here is uppercased. All-caps is a way of adding emphasis without
+   * adding size, and this app does the opposite — what matters gets a bigger
+   * step and a heavier weight, which is legible rather than merely loud.
+   */
+  micro: '$1',
+} as const;
+
+/**
+ * Button sizes, named by the job rather than the step.
+ *
+ * Three, because the app already had three shapes of button and a fourth that
+ * was nobody's decision: `$4` turned up on a stepper's plus and on an empty
+ * state's call to action, two controls with nothing in common.
+ */
+export const BUTTON = {
+  /**
+   * The screen's main action — a form's submit in its sticky footer, an empty
+   * state's way forward. One per screen.
+   */
+  primary: '$5',
+  /** An icon-only action: a header, a row, a menu, a close. */
+  icon: '$3',
+  /** A compact inline control, such as a stepper's plus and minus. */
+  compact: '$2',
 } as const;
 
 /**
@@ -116,18 +188,28 @@ export const HEADER_TITLE = {
  * that with `useTabBarInset` as bottom padding.
  */
 export const TAB_BAR = {
-  height: 62,
+  height: 64,
   /** How far the pill sits above the bottom safe area. */
   gap: 16,
+  /**
+   * How far the pill sits in from each side.
+   *
+   * The bar spans the width rather than hugging its content. Six slots — five
+   * tabs and the action — cannot be made both larger and further apart inside
+   * a width that is the sum of its parts: at a 40pt glyph and a comfortable
+   * gap that sum passes 370pt, which overflows a 360pt phone. Spanning the
+   * width makes the slots share what is there instead, so the bar cannot
+   * overflow and simply grows roomier on a larger screen.
+   */
+  inset: 16,
   /**
    * The tab glyphs, which sit a step above `ICON.feature`.
    *
    * Their own number rather than a role from `ICON` because the bar is the
    * one place where the icon *is* the control — there is no label beside it
-   * and nothing else in the pill to read — and because the tabs take their
-   * width from it, so it is what sets the spacing across the whole bar.
+   * and nothing else in the pill to read.
    */
-  icon: 36,
+  icon: 40,
 } as const;
 
 /**

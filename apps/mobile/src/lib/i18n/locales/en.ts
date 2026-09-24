@@ -5,6 +5,7 @@ export const en = {
     home: 'Home',
     log: 'Log',
     diary: 'Diary',
+    analysis: 'Analysis',
     goals: 'My Goals',
     settings: 'Settings',
   },
@@ -39,6 +40,190 @@ export const en = {
       badRequest: "We couldn't read the diary. Try again.",
       network: "We couldn't reach the server. Check your connection.",
       generic: 'Something went wrong. Try again.',
+    },
+  },
+  analysis: {
+    title: 'Analysis',
+    empty: 'no data',
+    errors: {
+      badRequest: "We couldn't read the analysis. Try again.",
+      locked: "Your plan doesn't include the analysis.",
+      network: "We couldn't reach the server. Check your connection.",
+      generic: 'Something went wrong. Try again.',
+    },
+    units: {
+      answer: '%{count} answers',
+      period: '%{count} periods',
+      day: '%{count} days',
+      weekday_day: '%{count} days',
+      pair: '%{count} day pairs',
+      log: '%{count} entries',
+    },
+    basis: {
+      thin: '%{sample} · provisional',
+    },
+    notEnough: {
+      title: 'Not enough yet',
+      body: 'We need %{need} before we can say anything solid.',
+    },
+    window: {
+      '30': '30 days',
+      '90': '90 days',
+      '365': '1 year',
+    },
+    scope: {
+      all: 'All goals',
+    },
+    section: {
+      summary: 'Summary',
+      rhythm: 'Rhythm',
+      mood: 'Mood',
+      detail: 'Detail',
+    },
+    sectionHint: {
+      summary: 'How often you show up, and how much you finish when you do.',
+      rhythm:
+        'Where your strong and weak days fall, and which way you are going.',
+      mood: 'How much what you do depends on how you feel.',
+      detail: 'Goal by goal, and habit by habit.',
+    },
+    setup: {
+      title: 'Your setup',
+      subtitle:
+        'How measurable what you track is. This can be answered before your first entry.',
+      counts: '%{goals} goals · %{habits} active habits',
+      planned: 'With a plan',
+      thresholded: 'With a threshold',
+      weighted: 'With weights',
+    },
+    cadence: {
+      title: 'Consistency',
+      subtitle:
+        'Showing up and doing well are different questions. A streak breaks in one day; this does not.',
+      logging: 'Logged',
+      completion: 'Completed',
+      counted: 'Counts for the streak',
+      status: {
+        complete: 'Complete',
+        partial: 'Partial',
+        missed: 'Missed',
+        skipped: 'Skipped',
+        empty: 'No entry',
+      },
+    },
+    mix: {
+      title: 'What your rate is made of',
+      subtitle:
+        'Every answer falls into one of four states. Only the first two enter the calculation.',
+      achieved: 'Achieved',
+      missed: 'Not achieved',
+      skipped: 'Not applicable',
+      blank: 'No answer',
+      center: '%{achieved} of %{opportunities} opportunities',
+      excluded:
+        '%{count} answers fell outside the rate: %{skipped} did not apply and %{blank} went unanswered. That is deliberate, but it means your rate describes a smaller base than it looks.',
+    },
+    weekday: {
+      mon: 'Mon',
+      tue: 'Tue',
+      wed: 'Wed',
+      thu: 'Thu',
+      fri: 'Fri',
+      sat: 'Sat',
+      sun: 'Sun',
+    },
+    rhythm: {
+      title: 'Your weekly rhythm',
+      subtitle:
+        'The average hides the shape of the week. This shows whether one particular day is getting away from you.',
+      spreadLabel: 'Gap between your best and worst day',
+      spreadValue: '%{points} pts',
+      spreadReading:
+        '%{best} is your strong day (%{bestRate}) and %{worst} the weakest (%{worstRate}). A gap like that is usually a calendar problem, not a willpower one.',
+      needExtremes: '%{count} days for each day of the week',
+      regularityLabel: 'Regularity',
+      regularityReading:
+        'Your days vary by ±%{deviation} points around %{mean}.',
+      needRegularity: '%{count} days with an entry',
+    },
+    trend: {
+      title: 'Are you improving?',
+      subtitle:
+        'The second half of the window against the first, split by date.',
+      first: 'First half',
+      second: 'Second half',
+      half: '%{count} days',
+      deltaLabel: 'Change',
+      deltaValue: '%{points} pts',
+      direction: {
+        improving: 'You are improving.',
+        steady: 'You are holding steady.',
+        declining: 'You are slipping.',
+      },
+      need: '%{count} days in each half',
+    },
+    strength: {
+      negligible: 'Negligible',
+      weak: 'Weak',
+      moderate: 'Moderate',
+      strong: 'Strong',
+    },
+    moods: {
+      title: 'Your mood',
+      subtitle: 'How you used the 1-5 scale, and how often you answered it.',
+      summary: 'You answered in %{answered} of %{total} entries (%{rate}).',
+    },
+    moodPerformance: {
+      title: 'Mood against achievement',
+      subtitle:
+        'How much your behaviour depends on how you feel. A small gap is the good result.',
+      low: 'Low days',
+      neutral: 'Neutral days',
+      high: 'Good days',
+      days: '%{count} days',
+      gapLabel: 'Mood gap',
+      gapValue: '%{points} pts',
+      automaticity: {
+        automatic:
+          'Your behaviour holds up as well on bad days as on good ones. That is what a formed habit does.',
+        mixed: 'Your behaviour partly holds up, but mood still weighs on it.',
+        dependent:
+          'Your behaviour still rides on how you feel. A concrete plan for the low days is usually what closes that gap.',
+      },
+      need: '%{count} days at each end of the scale',
+    },
+    direction: {
+      title: 'Direction',
+      subtitle:
+        'The same day cannot separate cause from effect. Pairing each day with the next one breaks that symmetry.',
+      sameDay: 'Mood and achievement, same day',
+      moodLeads: 'Mood today → achievement tomorrow',
+      performanceLeads: 'Achievement today → mood tomorrow',
+      caveat:
+        'This narrows the possibilities, it does not settle them: anything that moved both would show up in either column.',
+      need: '%{count} pairs of consecutive days',
+    },
+    heatmap: {
+      title: 'Consistency map',
+      subtitle:
+        'One square per day. Blank days had nothing due — they are not misses.',
+      less: 'Less',
+      more: 'More',
+      summary: '%{logged} days logged out of %{tracked} with something due.',
+    },
+    goals: {
+      title: 'Per goal',
+      subtitle:
+        'Each goal with its own calendar. For a weekly goal this is the only one that reads correctly.',
+      streaks: 'Streak %{current} · longest %{longest}',
+    },
+    habits: {
+      title: 'Your habits',
+      subtitle:
+        'Each habit on its own. The median to automate one is %{median} repetitions, with an observed range of %{low} to %{high}.',
+      formation: 'Formation',
+      repetitions: '%{count} of %{median} repetitions',
+      span: 'Across %{count} days',
     },
   },
   logs: {

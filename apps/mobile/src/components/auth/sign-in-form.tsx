@@ -1,7 +1,7 @@
 import { Button, H1, Paragraph, Spinner, YStack } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
-import { TEXT } from '@/constants/layout';
+import { BUTTON, TEXT } from '@/constants/layout';
 import { useAuthErrorMessage, useSignIn } from '@/features/auth';
 import { useTranslations } from '@/lib/i18n';
 
@@ -28,7 +28,7 @@ export function SignInForm() {
         <ErrorNotice message={toMessage(error)} />
 
         <Button
-          size="$5"
+          size={BUTTON.primary}
           onPress={() => signIn()}
           disabled={isSigningIn}
           opacity={isSigningIn ? 0.7 : 1}

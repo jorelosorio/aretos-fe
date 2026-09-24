@@ -41,12 +41,21 @@ function toDate(key: string): Date {
  */
 export const monthKey = (entryDate: string): string => entryDate.slice(0, 7);
 
-/** "SEPTEMBER 2026" for the heading a month's entries sit under. */
+/**
+ * "Septiembre de 2026" for the heading a month's entries sit under.
+ *
+ * Capitalised on the way out for the reason `date-label.ts`'s
+ * `longDateLabel` is: Spanish writes its months in lower case, and `Intl`
+ * is right to — that is correct prose. It is not correct as a heading on its
+ * own line, which is what this is used for.
+ */
 export function monthLabel(month: string, locale: AppLocale): string {
-  return new Intl.DateTimeFormat(locale, {
+  const text = new Intl.DateTimeFormat(locale, {
     month: 'long',
     year: 'numeric',
   }).format(toDate(`${month}-01`));
+
+  return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 const weekdayDay = (key: string, locale: AppLocale) =>

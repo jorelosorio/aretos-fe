@@ -2,7 +2,7 @@ import { useTheme } from '@tamagui/core';
 import { SizableText, XStack, YStack } from 'tamagui';
 
 import { SectionTitle } from '@/components/common/section-title';
-import { SPACING } from '@/constants/layout';
+import { SPACING, TEXT } from '@/constants/layout';
 import { MOOD_SCORES, type MoodScore } from '@/features/logs';
 import { useTranslations } from '@/lib/i18n';
 
@@ -26,7 +26,11 @@ export function MoodPicker({
     <YStack gap={SPACING.items}>
       <SectionTitle>
         {t('logs.mood.question')}{' '}
-        <SizableText size="$3" fontFamily="$body" color="$mutedForeground">
+        <SizableText
+          size={TEXT.body}
+          fontFamily="$body"
+          color="$mutedForeground"
+        >
           {t('logs.mood.optional')}
         </SizableText>
       </SectionTitle>
@@ -71,10 +75,10 @@ export function MoodPicker({
       </XStack>
 
       <XStack justify="space-between">
-        <SizableText size="$1" color="$mutedForeground">
+        <SizableText size={TEXT.micro} color="$mutedForeground">
           {t(MOOD_LABELS[MOOD_SCORES[0]])}
         </SizableText>
-        <SizableText size="$1" color="$mutedForeground">
+        <SizableText size={TEXT.micro} color="$mutedForeground">
           {t(MOOD_LABELS[MOOD_SCORES[MOOD_SCORES.length - 1]])}
         </SizableText>
       </XStack>

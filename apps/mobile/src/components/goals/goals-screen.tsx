@@ -6,6 +6,7 @@ import { useTheme } from '@tamagui/core';
 import { Archive, Plus, Target } from '@tamagui/lucide-icons-2';
 import { Button, Paragraph, SizableText, YStack } from 'tamagui';
 
+import { AddRow } from '@/components/common/add-row';
 import { EmptyArt } from '@/components/common/empty-art';
 import { ErrorNotice } from '@/components/common/error-notice';
 import { useTabBarInset } from '@/components/common/floating-tab-bar';
@@ -15,7 +16,7 @@ import {
   type Segment,
 } from '@/components/common/segmented-control';
 import { ILLUSTRATIONS } from '@/constants/illustrations';
-import { SPACING, TEXT } from '@/constants/layout';
+import { BUTTON, SPACING, TEXT } from '@/constants/layout';
 import { useGoalErrorMessage, useGoals } from '@/features/goals';
 import { useAllowance } from '@/features/limits';
 import { useTranslations } from '@/lib/i18n';
@@ -53,74 +54,85 @@ export function GoalsScreen() {
 
   const create = () => router.push('/goals/new');
 
+  const hasGoals = (goals?.length ?? 0) > 0;
+  const canAdd = !archived && hasGoals && canCreate;
+
   return (
-    <FlatList
-      style={{ flex: 1, backgroundColor: theme.background.val }}
-      contentContainerStyle={{ flexGrow: 1, paddingBottom: tabBarInset }}
-      data={goals ?? []}
-      extraData={filter}
-      keyExtractor={(goal) => goal.id}
-      refreshControl={
-        <RefreshControl
-          refreshing={isRefetching}
-          onRefresh={() => void refetch()}
-          tintColor={theme.primary.val}
-          colors={[theme.primary.val]}
-        />
-      }
-      ListHeaderComponent={
-        <YStack
-          gap={SPACING.section}
-          px={SPACING.screen}
-          pt={SPACING.screen}
-          pb={SPACING.items}
-        >
-          <PlanLimitNotice allowance={allowance} />
-
-          <SegmentedControl
-            segments={segments}
-            value={filter}
-            onChange={setFilter}
+    <YStack flex={1} bg="$background">
+      <FlatList
+        style={{ flex: 1 }}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: tabBarInset }}
+        data={goals ?? []}
+        extraData={filter}
+        keyExtractor={(goal) => goal.id}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={() => void refetch()}
+            tintColor={theme.primary.val}
+            colors={[theme.primary.val]}
           />
+        }
+        ListHeaderComponent={
+          <YStack
+            gap={SPACING.section}
+            px={SPACING.screen}
+            pt={SPACING.screen}
+            pb={SPACING.items}
+          >
+            <PlanLimitNotice allowance={allowance} />
 
-          <ErrorNotice message={toMessage(error)} />
-        </YStack>
-      }
-      renderItem={({ item }) => (
-        <YStack px={SPACING.screen} pb={SPACING.items}>
-          <GoalCard
-            goal={item}
-            habitCount={item.habitCount}
-            onPress={() =>
-              router.push({
-                pathname: '/goals/[id]',
-                params: { id: item.id },
-              })
-            }
-          />
-        </YStack>
-      )}
-      ListEmptyComponent={
-        isPending ? (
-          <ScreenLoader />
-        ) : (
-          <YStack flex={1} px={SPACING.screen} pb={SPACING.screen}>
-            <EmptyGoals
-              Icon={archived ? Archive : Target}
-              illustration={archived ? undefined : ILLUSTRATIONS.noGoals}
-              title={t(
-                archived ? 'goals.empty.archivedTitle' : 'goals.empty.title',
-              )}
-              body={t(
-                archived ? 'goals.empty.archivedBody' : 'goals.empty.body',
-              )}
-              onCreate={archived ? undefined : create}
-              canCreate={canCreate}
+            <SegmentedControl
+              segments={segments}
+              value={filter}
+              onChange={setFilter}
+            />
+
+            <ErrorNotice message={toMessage(error)} />
+          </YStack>
+        }
+        renderItem={({ item }) => (
+          <YStack px={SPACING.screen} pb={SPACING.items}>
+            <GoalCard
+              goal={item}
+              habitCount={item.habitCount}
+              onPress={() =>
+                router.push({
+                  pathname: '/goals/[id]',
+                  params: { id: item.id },
+                })
+              }
             />
           </YStack>
-        )
-      }
-    />
+        )}
+        ListFooterComponent={
+          canAdd ? (
+            <YStack px={SPACING.screen} pb={SPACING.items}>
+              <AddRow label={t('goals.new')} onPress={create} />
+            </YStack>
+          ) : null
+        }
+        ListEmptyComponent={
+          isPending ? (
+            <ScreenLoader />
+          ) : (
+            <YStack flex={1} px={SPACING.screen} pb={SPACING.screen}>
+              <EmptyGoals
+                Icon={archived ? Archive : Target}
+                illustration={archived ? undefined : ILLUSTRATIONS.noGoals}
+                title={t(
+                  archived ? 'goals.empty.archivedTitle' : 'goals.empty.title',
+                )}
+                body={t(
+                  archived ? 'goals.empty.archivedBody' : 'goals.empty.body',
+                )}
+                onCreate={archived || !canCreate ? undefined : create}
+              />
+            </YStack>
+          )
+        }
+      />
+    </YStack>
   );
 }
 
@@ -130,14 +142,12 @@ function EmptyGoals({
   title,
   body,
   onCreate,
-  canCreate = true,
 }: {
   Icon: typeof Target;
   illustration?: ImageSourcePropType;
   title: string;
   body: string;
   onCreate?: () => void;
-  canCreate?: boolean;
 }) {
   const { t } = useTranslations();
 
@@ -153,8 +163,8 @@ function EmptyGoals({
 
       <YStack gap={SPACING.group} items="center">
         <SizableText
-          size="$6"
-          fontFamily="$heading"
+          size={TEXT.title}
+          fontWeight="700"
           color="$color"
           text="center"
         >
@@ -167,11 +177,9 @@ function EmptyGoals({
 
       {onCreate && (
         <Button
-          size="$4"
+          size={BUTTON.primary}
           theme="accent"
           icon={Plus}
-          disabled={!canCreate}
-          opacity={canCreate ? 1 : 0.5}
           onPress={onCreate}
         >
           {t('goals.new')}
