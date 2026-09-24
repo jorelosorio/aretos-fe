@@ -28,8 +28,8 @@ export const en = {
       addHabit: 'Add a habit',
     },
     risk: {
-      today: 'Log today to keep your streak',
-      week: 'Log this week to keep your streak',
+      today: 'Your streak hinges on today',
+      week: 'Your streak hinges on this week',
     },
     best: 'Best streak: %{count} d',
     daysLeftOne: 'Last day',

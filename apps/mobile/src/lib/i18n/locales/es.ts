@@ -29,8 +29,8 @@ export const es = {
       addHabit: 'Añadir un hábito',
     },
     risk: {
-      today: 'Registra hoy para mantener la racha',
-      week: 'Registra esta semana para mantener la racha',
+      today: 'Tu racha depende de hoy',
+      week: 'Tu racha depende de esta semana',
     },
     best: 'Mejor racha: %{count} d',
     daysLeftOne: 'Último día',

@@ -239,7 +239,6 @@ export function GoalStatusCard({
           size={TEXT.caption}
           fontWeight={atRisk ? '600' : '400'}
           color={atRisk ? '$primary' : '$mutedForeground'}
-          numberOfLines={1}
         >
           {note}
         </SizableText>
