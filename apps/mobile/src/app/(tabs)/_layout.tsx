@@ -24,6 +24,7 @@ export default function TabsLayout() {
     <Tabs
       tabBar={(props) => <FloatingTabBar {...props} />}
       screenOptions={{
+        freezeOnBlur: true,
         sceneStyle: { backgroundColor: theme.background.val },
         headerStyle: { backgroundColor: theme.background.val },
         headerShadowVisible: false,

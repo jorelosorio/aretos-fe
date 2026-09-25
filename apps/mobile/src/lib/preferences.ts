@@ -57,6 +57,7 @@ function read(): Preferences {
 class PreferenceStore {
   private preferences = read();
   private listeners = new Set<() => void>();
+  private pendingWrite: Promise<void> = Promise.resolve();
 
   /** Stable between writes, which `useSyncExternalStore` requires. */
   get = (): Preferences => this.preferences;
@@ -71,13 +72,15 @@ class PreferenceStore {
     this.preferences = { ...this.preferences, ...patch };
     for (const listener of this.listeners) listener();
 
-    try {
-      // After the in-memory swap and the notify: the change the user just made
-      // should show up even on a device where the Keychain write fails.
-      SecureStore.setItem(STORAGE_KEY, JSON.stringify(this.preferences));
-    } catch {
-      // Costs the preference on next launch. Not worth an alert.
-    }
+    // Async, unlike `read`: this runs inside a press handler, and a blocking
+    // Keychain/Keystore write there holds the JS thread before React can paint
+    // the change. Chained so two quick taps land on disk in the order made.
+    const snapshot = JSON.stringify(this.preferences);
+    this.pendingWrite = this.pendingWrite
+      .then(() => SecureStore.setItemAsync(STORAGE_KEY, snapshot))
+      .catch(() => {
+        // Costs the preference on next launch. Not worth an alert.
+      });
   };
 }
 
