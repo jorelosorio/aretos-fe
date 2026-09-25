@@ -2,7 +2,9 @@ import { useCallback } from 'react';
 import {
   useInfiniteQuery,
   useMutation,
+  useQuery,
   useQueryClient,
+  type InfiniteData,
 } from '@tanstack/react-query';
 
 import { goalKeys } from '@/features/goals';
@@ -17,10 +19,12 @@ import {
   deleteCheckInNote,
   deleteNote,
   diaryKeys,
+  getNote,
   listNotes,
   updateCheckInNote,
   updateNote,
 } from './api';
+import { findListedNote } from './cache';
 import { planNoteWrite } from './routing';
 import {
   DiaryErrorCode,
@@ -71,6 +75,33 @@ export function useDiary(filter: DiaryFilter = {}) {
     initialPageParam: null as string | null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     select: (data) => flatten(data.pages),
+  });
+}
+
+/**
+ * One note, for the reader. Painted from whichever diary list already holds
+ * it while the note itself is fetched, so pushing the reader from the list
+ * never shows a spinner.
+ *
+ * A note deleted from the reader keeps its last data through the refetch
+ * that then 404s — the screen is on its way back by then, and should not
+ * flash an error on the way out.
+ */
+export function useNote(id: string) {
+  const queryClient = useQueryClient();
+
+  return useQuery({
+    queryKey: diaryKeys.detail(id),
+    queryFn: () => getNote(id),
+    placeholderData: () =>
+      findListedNote(
+        queryClient
+          .getQueriesData<InfiniteData<DiaryPage>>({
+            queryKey: diaryKeys.lists(),
+          })
+          .map(([, data]) => data),
+        id,
+      ),
   });
 }
 

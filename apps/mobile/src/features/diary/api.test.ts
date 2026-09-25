@@ -4,6 +4,7 @@ import {
   addCheckInNote,
   createNote,
   deleteCheckInNote,
+  getNote,
   listNotes,
   updateNote,
 } from './api';
@@ -94,6 +95,19 @@ describe('diary api', () => {
       goal: { id: 'g1', colorSlot: 3, trackingFrequency: 'weekly' },
       mood: null,
       countsForStreak: true,
+      endDate: '2026-09-26',
+    });
+  });
+
+  it('reads one note by id and maps its check-in', async () => {
+    mocked.get.mockResolvedValueOnce({ data: wireOnCheckIn });
+
+    const note = await getNote('n2');
+
+    expect(mocked.get).toHaveBeenCalledWith('/v1/diary-notes/n2');
+    expect(note.id).toBe('n2');
+    expect(note.checkIn).toMatchObject({
+      habitLogId: 'l1',
       endDate: '2026-09-26',
     });
   });

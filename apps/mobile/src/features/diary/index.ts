@@ -7,6 +7,7 @@ export {
   useDeleteNote,
   useDiary,
   useDiaryErrorMessage,
+  useNote,
   useNoteErrorMessage,
   useRemoveNote,
   useUpdateCheckInNote,

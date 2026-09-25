@@ -65,6 +65,8 @@ export const diaryKeys = {
   lists: () => [...diaryKeys.all, 'list'] as const,
   list: (filter: DiaryFilter = {}) =>
     [...diaryKeys.lists(), readParams(filter)] as const,
+  detail: (id: string) =>
+    [...diaryKeys.all, 'detail', id, deviceTimezone()] as const,
 };
 
 /**
@@ -172,6 +174,15 @@ export async function listNotes(
     historyCutoff: data.history_cutoff === '' ? null : data.history_cutoff,
     hasMoreHistory: data.has_more_history,
   };
+}
+
+/**
+ * One note, with its check-in scored the way the list scores it. Not bounded
+ * by the plan's history cutoff: naming a note by id reads it back.
+ */
+export async function getNote(id: string): Promise<DiaryNote> {
+  const { data } = await api.get<WireDiaryNote>(paths.note(id));
+  return toNote(data);
 }
 
 /** A note written on its own, into the user's one diary. Capped per plan. */

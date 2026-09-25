@@ -74,6 +74,11 @@ function RootNavigator() {
         />
 
         <Stack.Screen
+          name="diary/[id]"
+          options={{ headerShown: true, title: '' }}
+        />
+
+        <Stack.Screen
           name="settings/licenses"
           options={{ headerShown: true, title: t('settings.licenses') }}
         />

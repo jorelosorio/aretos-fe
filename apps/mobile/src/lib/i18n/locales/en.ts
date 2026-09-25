@@ -48,8 +48,7 @@ export const en = {
     new: 'New note',
     entry: {
       more: '+%{count} more',
-      open: 'Open',
-      readHint: 'Opens the note to read, edit or delete it.',
+      readHint: 'Opens the note.',
     },
     empty: {
       title: 'Your diary is empty',
@@ -65,8 +64,9 @@ export const en = {
       action: 'Clear filter',
     },
     viewer: {
-      edit: 'Edit',
-      delete: 'Delete',
+      actions: 'Options',
+      edit: 'Edit note',
+      delete: 'Delete note',
       archived: 'This goal is archived. Its notes are read-only.',
     },
     deleteConfirm: {

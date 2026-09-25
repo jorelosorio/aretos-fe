@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useRef, useState } from 'react';
 import { Modal, Platform, Pressable, StyleSheet } from 'react-native';
 import { Ellipsis, EllipsisVertical, type Plus } from '@tamagui/lucide-icons-2';
 import { Separator, SizableText, XStack, YStack } from 'tamagui';
@@ -22,6 +22,8 @@ const MENU_WIDTH = 220;
 const MENU_INSET = 12;
 
 const OverflowIcon = Platform.OS === 'ios' ? Ellipsis : EllipsisVertical;
+
+const DISMISS_FALLBACK_MS = 400;
 
 function MenuItem({
   action,
@@ -62,10 +64,24 @@ export function ActionsMenu({
 }) {
   const header = useHeaderMetrics();
   const [open, setOpen] = useState(false);
+  const chosen = useRef<MenuAction | null>(null);
+
+  const run = () => {
+    const action = chosen.current;
+    chosen.current = null;
+    action?.onPress();
+  };
 
   const select = (action: MenuAction) => {
     setOpen(false);
-    action.onPress();
+
+    if (Platform.OS !== 'ios') {
+      action.onPress();
+      return;
+    }
+
+    chosen.current = action;
+    setTimeout(run, DISMISS_FALLBACK_MS);
   };
 
   return (
@@ -82,6 +98,7 @@ export function ActionsMenu({
         transparent
         animationType="fade"
         onRequestClose={() => setOpen(false)}
+        onDismiss={run}
       >
         <Pressable
           style={StyleSheet.absoluteFill}

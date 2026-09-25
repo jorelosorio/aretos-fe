@@ -49,8 +49,7 @@ export const es = {
     new: 'Nueva nota',
     entry: {
       more: '+%{count} más',
-      open: 'Abrir',
-      readHint: 'Abre la nota para leerla, editarla o eliminarla.',
+      readHint: 'Abre la nota.',
     },
     empty: {
       title: 'Tu diario está vacío',
@@ -66,8 +65,9 @@ export const es = {
       action: 'Quitar filtro',
     },
     viewer: {
-      edit: 'Editar',
-      delete: 'Eliminar',
+      actions: 'Opciones',
+      edit: 'Editar nota',
+      delete: 'Eliminar nota',
       archived: 'Esta meta está archivada. Sus notas solo se pueden leer.',
     },
     deleteConfirm: {
