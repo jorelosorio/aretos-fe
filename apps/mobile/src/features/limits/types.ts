@@ -14,8 +14,11 @@ import type { Tier } from '@/features/auth';
  * `habit_log` is capped on rows owned, like the other two: it counts every log
  * the user has ever written, not this month's. The cap is checked before the
  * upsert, so at the limit even rewriting an existing period is refused.
+ *
+ * `diary_note` counts every note the user owns — written on its own or on a
+ * check-in — and gates both routes that create one.
  */
-export type LimitedResource = 'goal' | 'habit' | 'habit_log';
+export type LimitedResource = 'goal' | 'habit' | 'habit_log' | 'diary_note';
 
 export type WireResourceLimit = {
   used: number;

@@ -13,6 +13,8 @@ import {
   type WireLogs,
 } from './types';
 
+import type { CheckInNote, WireCheckInNote } from '@/features/diary';
+
 const paths = {
   logs: '/v1/habit-logs',
   log: (id: string) => `/v1/habit-logs/${id}`,
@@ -51,12 +53,25 @@ const toEntry = (wire: WireLogEntry): LogEntry => ({
   amount: wire.num_value,
 });
 
+/**
+ * Spelled out rather than imported from `features/diary` for the reason
+ * `toHabit` is in `features/goals/api.ts`: a helper pulled through another
+ * feature's barrel is how the require cycles Metro half-resolves get built.
+ */
+const toNote = (wire: WireCheckInNote): CheckInNote => ({
+  id: wire.id,
+  body: wire.body,
+  tags: wire.tags,
+  createdAt: wire.created_at,
+  updatedAt: wire.updated_at,
+});
+
 const toLog = (wire: WireLog): Log => ({
   id: wire.id,
   goalId: wire.goal_id,
   entryDate: wire.entry_date,
-  note: wire.note,
   mood: toMood(wire.mood),
+  notes: wire.notes.map(toNote),
   entries: wire.entries.map(toEntry),
   createdAt: wire.created_at,
   updatedAt: wire.updated_at,
@@ -116,30 +131,22 @@ export async function saveLog(draft: LogDraft): Promise<Log> {
   const { data } = await api.post<WireLog>(paths.logs, {
     goal_id: draft.goalId,
     entry_date: draft.entryDate,
-    note: draft.note.trim(),
     mood: draft.mood,
     entries: toWireEntries(draft.entries),
   });
   return toLog(data);
 }
 
-/**
- * Amends a note or a mood without resending the entries.
- *
- * Keys the caller leaves out are dropped rather than sent as `null`, because
- * the server reads `null` as "keep" — there is no clearing a field this way,
- * only `saveLog` can do that.
- */
+/** Amends the mood without resending the entries. */
 export async function updateLog(id: string, patch: LogPatch): Promise<Log> {
   const body: Record<string, unknown> = {};
-  if (patch.note !== undefined) body.note = patch.note.trim();
   if (patch.mood !== undefined) body.mood = patch.mood;
 
   const { data } = await api.patch<WireLog>(paths.log(id), body);
   return toLog(data);
 }
 
-/** Removes the note, the mood and every entry, freeing the period again. */
+/** Removes the mood, every entry and every note, freeing the period again. */
 export async function deleteLog(id: string): Promise<void> {
   await api.delete(paths.log(id));
 }

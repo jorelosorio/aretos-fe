@@ -26,6 +26,7 @@ export function FullScreenSheet({
   meta,
   Icon,
   iconLabel,
+  actions,
   onDismiss,
   children,
 }: {
@@ -35,6 +36,7 @@ export function FullScreenSheet({
   meta: string;
   Icon: IconComponent;
   iconLabel: string;
+  actions?: ReactNode;
   onDismiss: () => void;
   children: ReactNode;
 }) {
@@ -114,14 +116,17 @@ export function FullScreenSheet({
               )}
             </YStack>
 
-            <Button
-              size={BUTTON.icon}
-              circular
-              chromeless
-              onPress={onDismiss}
-              icon={<Icon size={ICON.row} color="$color" />}
-              accessibilityLabel={iconLabel}
-            />
+            <XStack items="center" gap="$1">
+              {actions}
+              <Button
+                size={BUTTON.icon}
+                circular
+                chromeless
+                onPress={onDismiss}
+                icon={<Icon size={ICON.row} color="$color" />}
+                accessibilityLabel={iconLabel}
+              />
+            </XStack>
           </XStack>
 
           {children}

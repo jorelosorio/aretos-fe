@@ -24,14 +24,17 @@ import { HeaderTextButton } from '@/components/common/header-actions';
 import { OptionGroup, type Option } from '@/components/common/option-group';
 import { SectionTitle } from '@/components/common/section-title';
 import { GoalColorPicker } from '@/components/goals/goal-color-picker';
+import { TagInput } from '@/components/tags/tag-input';
 import {
   useCreateGoal,
   useGoalErrorMessage,
   useUpdateGoal,
+  toGoalPatch,
   type GoalDraft,
   type StreakRule,
   type TrackingFrequency,
 } from '@/features/goals';
+import { addTag } from '@/features/tags';
 import { useTranslations } from '@/lib/i18n';
 import { SPACING, TEXT } from '@/constants/layout';
 
@@ -58,6 +61,7 @@ export function GoalForm({
   const { updateGoal, isUpdating, error: updateError } = useUpdateGoal();
 
   const [draft, setDraft] = useState(initial);
+  const [tagText, setTagText] = useState('');
 
   const patch = (change: Partial<GoalDraft>) =>
     setDraft((current) => ({ ...current, ...change }));
@@ -104,10 +108,16 @@ export function GoalForm({
   async function save() {
     if (!name) return;
 
-    const value: GoalDraft = { ...draft, name };
+    const value: GoalDraft = {
+      ...draft,
+      name,
+      tags: addTag(draft.tags, tagText),
+    };
 
     await (
-      goalId ? updateGoal({ id: goalId, patch: value }) : createGoal(value)
+      goalId
+        ? updateGoal({ id: goalId, patch: toGoalPatch(value, initial) })
+        : createGoal(value)
     )
       .then(() => router.back())
       .catch(() => undefined);
@@ -181,6 +191,19 @@ export function GoalForm({
                 bg="$card"
                 borderColor="$border"
               />
+            </YStack>
+
+            <YStack gap={SPACING.group}>
+              <Label color="$color">{t('goals.form.tags')}</Label>
+              <TagInput
+                value={draft.tags}
+                onChange={(tags) => patch({ tags })}
+                text={tagText}
+                onTextChange={setTagText}
+              />
+              <SizableText size={TEXT.caption} color="$mutedForeground" px="$2">
+                {t('goals.form.tagsHint')}
+              </SizableText>
             </YStack>
 
             <GoalColorPicker

@@ -2,23 +2,15 @@ import { useState } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Check, Maximize2, Plus } from '@tamagui/lucide-icons-2';
-import {
-  Button,
-  Paragraph,
-  ScrollView,
-  SizableText,
-  TextArea,
-  XStack,
-  YStack,
-} from 'tamagui';
+import { Check, Plus } from '@tamagui/lucide-icons-2';
+import { ScrollView, SizableText, XStack, YStack } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
 import { HeaderTextButton } from '@/components/common/header-actions';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
 import { GoalHeaderTitle } from '@/components/goals/goal-header-title';
-import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';
+import { ICON, SPACING, TEXT } from '@/constants/layout';
 import {
   useGoalCheckIn,
   useGoalErrorMessage,
@@ -29,17 +21,12 @@ import type { Habit } from '@/features/habits';
 import { useLogDraft, useLogErrorMessage, type DateKey } from '@/features/logs';
 import { useTranslations } from '@/lib/i18n';
 
+import { CheckInNotes } from './check-in-notes';
 import { EmptyLog } from './empty-log';
 import { HabitTrackRow } from './habit-track-row';
 import { MoodPicker } from './mood-picker';
-import { NoteEditor } from './note-sheet';
 import { periodLabel } from './period-label';
 import { WeekPicker } from './week-picker';
-
-const NOTE_MAX = 2000;
-const NOTE_LINES = 5;
-const NOTE_MIN_HEIGHT = 96;
-const NOTE_MAX_HEIGHT = 148;
 
 function CheckInForm({
   goal,
@@ -67,8 +54,6 @@ function CheckInForm({
   const insets = useSafeAreaInsets();
   const toMessage = useLogErrorMessage();
 
-  const [noteOpen, setNoteOpen] = useState(false);
-
   const draft = useLogDraft({
     goalId: goal.id,
     habits,
@@ -77,10 +62,20 @@ function CheckInForm({
     isLoaded: period !== undefined,
   });
 
+  const heading = periodLabel(
+    periodDate,
+    current,
+    goal.trackingFrequency,
+    locale,
+    t,
+  );
+
   const save = () =>
     void draft
       .save()
-      .then(() => router.back())
+      .then((complete) => {
+        if (complete) router.back();
+      })
       .catch(() => undefined);
 
   const pick = (next: DateKey) => {
@@ -92,7 +87,9 @@ function CheckInForm({
 
     void draft
       .save()
-      .then(() => onSelect(next))
+      .then((complete) => {
+        if (complete) onSelect(next);
+      })
       .catch(() => undefined);
   };
 
@@ -145,15 +142,7 @@ function CheckInForm({
                 justify="space-between"
                 gap={SPACING.items}
               >
-                <SectionTitle>
-                  {periodLabel(
-                    periodDate,
-                    current,
-                    goal.trackingFrequency,
-                    locale,
-                    t,
-                  )}
-                </SectionTitle>
+                <SectionTitle>{heading}</SectionTitle>
 
                 {!draft.isLoading && (
                   <SizableText
@@ -201,52 +190,21 @@ function CheckInForm({
 
                 <MoodPicker value={draft.mood} onChange={draft.setMood} />
 
-                <YStack gap={SPACING.group}>
-                  <XStack items="center" justify="space-between">
-                    <SectionTitle>{t('logs.note')}</SectionTitle>
-
-                    <Button
-                      size={BUTTON.compact}
-                      circular
-                      chromeless
-                      onPress={() => setNoteOpen(true)}
-                      icon={<Maximize2 size={ICON.row} color="$color" />}
-                      accessibilityLabel={t('logs.noteEditor.open')}
-                    />
-                  </XStack>
-
-                  <TextArea
-                    size="$5"
-                    value={draft.note}
-                    onChangeText={draft.setNote}
-                    placeholder={t('logs.notePlaceholder')}
-                    placeholderTextColor="$mutedForeground"
-                    maxLength={NOTE_MAX}
-                    multiline
-                    numberOfLines={NOTE_LINES}
-                    minH={NOTE_MIN_HEIGHT}
-                    maxH={NOTE_MAX_HEIGHT}
-                    verticalAlign="top"
-                    bg="$card"
-                    borderColor="$border"
-                  />
-                  <Paragraph size={TEXT.body} color="$mutedForeground">
-                    {t('logs.optional')}
-                  </Paragraph>
-                </YStack>
+                <CheckInNotes
+                  logId={period?.logId ?? null}
+                  title={goal.name}
+                  subtitle={heading}
+                  pending={draft.pending}
+                  onAddPending={draft.addPending}
+                  onUpdatePending={draft.updatePending}
+                  onRemovePending={draft.removePending}
+                  busy={draft.isSaving}
+                />
               </>
             )}
           </YStack>
         </ScrollView>
       </YStack>
-
-      <NoteEditor
-        open={noteOpen}
-        value={draft.note}
-        maxLength={NOTE_MAX}
-        onChange={draft.setNote}
-        onCollapse={() => setNoteOpen(false)}
-      />
     </KeyboardAvoidingView>
   );
 }

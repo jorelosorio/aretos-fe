@@ -23,6 +23,7 @@ export default function EditGoal() {
         streakRule: goal.streakRule,
         streakThreshold: goal.streakThreshold,
         colorSlot: goal.colorSlot,
+        tags: goal.tags,
       }}
     />
   );

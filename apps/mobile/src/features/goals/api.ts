@@ -130,7 +130,7 @@ const toPeriod = (wire: WireGoalPeriod): GoalPeriod => ({
   status: wire.status,
   countsForStreak: wire.counts_for_streak,
   endDate: wire.end_date,
-  note: wire.note,
+  noteCount: wire.note_count,
   mood: toMood(wire.mood),
   entries: wire.entries.map((entry) => ({
     habitId: entry.habit_id,
@@ -191,6 +191,7 @@ const toGoal = (wire: WireGoal): Goal => ({
   streakThreshold: wire.streak_threshold,
   colorSlot: wire.color_slot,
   archived: wire.archived,
+  tags: wire.tags,
   createdAt: wire.created_at,
   updatedAt: wire.updated_at,
   habitCount: wire.habit_count,
@@ -225,6 +226,9 @@ function toBody(patch: GoalPatch): Record<string, unknown> {
   if (patch.colorSlot !== undefined && patch.colorSlot !== null) {
     body.color_slot = patch.colorSlot;
   }
+  // Sent as-is: the server trims, drops repeats ignoring case and keeps the
+  // spelling a tag was first saved with, so the response is what to show.
+  if (patch.tags !== undefined) body.tags = patch.tags;
   if (patch.archived !== undefined) body.archived = patch.archived;
 
   return body;
@@ -258,7 +262,7 @@ export async function listGoals(
  *
  * `include: ['habits', 'progress']` with a one-period window is what makes
  * the check-in a single request: the habits to render, and the period's saved
- * answers, note and mood, in the response that also carries the goal.
+ * answers, mood and note count, in the response that also carries the goal.
  */
 export async function getGoal(
   id: string,

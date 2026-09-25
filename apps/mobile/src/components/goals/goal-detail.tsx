@@ -17,6 +17,7 @@ import { ErrorNotice } from '@/components/common/error-notice';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
 import { HabitCard } from '@/components/habits/habit-card';
+import { TagChips } from '@/components/tags/tag-chips';
 import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';
 
 import { GoalDot } from './goal-dot';
@@ -80,6 +81,8 @@ function GoalSummary({ goal, habitCount }: { goal: Goal; habitCount: number }) {
           {goal.description}
         </Paragraph>
       )}
+
+      <TagChips tags={goal.tags} />
 
       <Separator borderColor="$border" />
 

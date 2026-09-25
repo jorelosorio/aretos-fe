@@ -10,6 +10,7 @@ export {
   useUpdateLog,
 } from './hooks';
 export { OUTCOME_COLORS, outcomeOf, type Outcome } from './outcome';
+export type { NoteBody, PendingNote } from './pending-notes';
 export {
   dateKey,
   periodKey,

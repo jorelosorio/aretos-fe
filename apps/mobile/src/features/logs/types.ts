@@ -1,6 +1,7 @@
 /**
- * A log is one goal's record of one period: the note and the mood for that
- * period, plus one entry per habit.
+ * A log is one goal's record of one period: the mood for that period, one
+ * entry per habit, and the notes written on it — any number, each written
+ * through its own route (`features/diary` owns note writes).
  *
  * Wire shapes mirror `internal/api/v1/habit_log_service.go` field for field,
  * snake_case included, so a change on the server shows up here as a type error
@@ -10,6 +11,7 @@
  * is already about habits and the longer name only repeats it.
  */
 
+import type { CheckInNote, WireCheckInNote } from '@/features/diary';
 import type { TrackingMode } from '@/features/habits';
 
 /** The scale `mood` is validated against: `min=1,max=5`, and optional. */
@@ -33,8 +35,9 @@ export type WireLog = {
   goal_id: string;
   /** `YYYY-MM-DD`, already snapped to the period's first day. */
   entry_date: string;
-  note: string;
   mood: number | null;
+  /** In the order written. Never null: a period with none reads as `[]`. */
+  notes: WireCheckInNote[];
   entries: WireLogEntry[];
   created_at: string;
   updated_at: string;
@@ -67,8 +70,8 @@ export type Log = {
   goalId: string;
   /** `YYYY-MM-DD`. The period's first day, as the server snapped it. */
   entryDate: string;
-  note: string;
   mood: MoodScore | null;
+  notes: CheckInNote[];
   entries: LogEntry[];
   /** ISO 8601, as the server sent it. */
   createdAt: string;
@@ -82,25 +85,23 @@ export type Log = {
  * `(goal_id, entry_date)`, and every column is overwritten from what was sent.
  * So a draft says what the period *is*, never what to add to it — a habit left
  * out of `entries` is deleted from the log.
+ *
+ * Notes are not part of it: a save never touches them, and they are posted
+ * on their own — see `pending-notes.ts`.
  */
 export type LogDraft = {
   goalId: string;
   entryDate: string;
-  note: string;
   mood: MoodScore | null;
   entries: LogEntry[];
 };
 
 /**
- * What `PATCH /v1/habit-logs/:id` amends, for a note or mood fixed without
- * reopening the check-in.
- *
- * Narrower than it looks: the query is `COALESCE(narg, column)`, so an omitted
- * field keeps its value and there is no way to *clear* one. Emptying a note or
- * taking back a mood is a Save.
+ * What `PATCH /v1/habit-logs/:id` amends: the mood, without reopening the
+ * check-in. There is no way to clear it this way — taking a mood back is a
+ * Save.
  */
 export type LogPatch = {
-  note?: string;
   mood?: MoodScore;
 };
 

@@ -1,12 +1,13 @@
-import { useMemo, useState } from 'react';
-import { FlatList, RefreshControl } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { Alert, FlatList, RefreshControl } from 'react-native';
+import { useNavigation } from 'expo-router';
 import { useTheme } from '@tamagui/core';
-import { NotebookPen } from '@tamagui/lucide-icons-2';
+import { NotebookPen, Plus, Tag } from '@tamagui/lucide-icons-2';
 import { Spinner, XStack, YStack } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
 import { useTabBarInset } from '@/components/common/floating-tab-bar';
+import { HeaderIconButton } from '@/components/common/header-actions';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
 import { EmptyLog } from '@/components/logs/empty-log';
@@ -14,42 +15,37 @@ import { SPACING } from '@/constants/layout';
 import {
   useDiary,
   useDiaryErrorMessage,
-  type DiaryEntry,
+  useNoteErrorMessage,
+  useRemoveNote,
+  type DiaryNote,
 } from '@/features/diary';
+import { useAllowance } from '@/features/limits';
 import { useTranslations } from '@/lib/i18n';
 
-import { monthKey, monthLabel } from './diary-date';
+import { monthLabel } from './diary-date';
 import { DiaryEntryCard } from './diary-entry-card';
+import { toRows } from './diary-rows';
 import { EntryViewer } from './entry-viewer';
 import { HistoryCutoffNotice } from './history-cutoff-notice';
+import { NoteComposer } from './note-composer';
+import { TagFilter } from './tag-filter';
 
-type Row =
-  | { kind: 'month'; key: string; month: string }
-  | { kind: 'entry'; key: string; entry: DiaryEntry };
-
-function toRows(entries: readonly DiaryEntry[]): Row[] {
-  const rows: Row[] = [];
-  let month: string | null = null;
-
-  for (const entry of entries) {
-    const key = monthKey(entry.entryDate);
-
-    if (key !== month) {
-      month = key;
-      rows.push({ kind: 'month', key: `month:${key}`, month: key });
-    }
-    rows.push({ kind: 'entry', key: entry.id, entry });
-  }
-
-  return rows;
-}
+type Composer = { session: number; note: DiaryNote | null; open: boolean };
 
 export function DiaryScreen() {
   const { t, locale } = useTranslations();
   const theme = useTheme();
-  const router = useRouter();
+  const navigation = useNavigation();
   const toMessage = useDiaryErrorMessage();
+  const toNoteMessage = useNoteErrorMessage();
   const tabBarInset = useTabBarInset();
+  const { canCreate } = useAllowance('diary_note');
+  const { removeNote, isRemoving } = useRemoveNote();
+
+  const [tag, setTag] = useState<string | null>(null);
+  const [viewingId, setViewingId] = useState<string | null>(null);
+  const [composer, setComposer] = useState<Composer | null>(null);
+  const sessions = useRef(0);
 
   const {
     data,
@@ -57,17 +53,60 @@ export function DiaryScreen() {
     error,
     refetch,
     isRefetching,
+    isFetching,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useDiary();
+  } = useDiary(tag === null ? {} : { tag });
 
-  const rows = useMemo(() => toRows(data?.entries ?? []), [data?.entries]);
+  const rows = useMemo(() => toRows(data?.notes ?? []), [data?.notes]);
+  const viewing = data?.notes.find((note) => note.id === viewingId) ?? null;
 
-  const [viewing, setViewing] = useState<DiaryEntry | null>(null);
+  if (
+    viewingId !== null &&
+    viewing === null &&
+    data !== undefined &&
+    !isFetching
+  ) {
+    setViewingId(null);
+  }
+
+  const selectTag = (next: string | null) => {
+    setViewingId(null);
+    setTag(next);
+  };
+
+  const compose = useCallback((note: DiaryNote | null) => {
+    sessions.current += 1;
+    setComposer({ session: sessions.current, note, open: true });
+  }, []);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <HeaderIconButton
+          Icon={Plus}
+          tone="$primary"
+          label={t('diary.new')}
+          disabled={!canCreate}
+          onPress={() => compose(null)}
+        />
+      ),
+    });
+  }, [navigation, canCreate, compose, t]);
+
+  const remove = (note: DiaryNote) => {
+    void removeNote(note)
+      .then(() => setViewingId(null))
+      .catch((failure: unknown) =>
+        Alert.alert(t('diary.errors.title'), toNoteMessage(failure) ?? ''),
+      );
+  };
 
   return (
-    <>
+    <YStack flex={1} bg="$background">
+      <TagFilter value={tag} onChange={selectTag} />
+
       <FlatList
         style={{ flex: 1, backgroundColor: theme.background.val }}
         contentContainerStyle={{ flexGrow: 1, paddingBottom: tabBarInset }}
@@ -100,8 +139,8 @@ export function DiaryScreen() {
           ) : (
             <YStack px={SPACING.screen} pb={SPACING.items}>
               <DiaryEntryCard
-                entry={item.entry}
-                onPress={() => setViewing(item.entry)}
+                note={item.note}
+                onPress={() => setViewingId(item.note.id)}
               />
             </YStack>
           )
@@ -109,13 +148,21 @@ export function DiaryScreen() {
         ListEmptyComponent={
           isPending ? (
             <ScreenLoader />
-          ) : error ? null : (
+          ) : error ? null : tag !== null ? (
+            <EmptyLog
+              Icon={Tag}
+              title={t('diary.filtered.title', { tag })}
+              body={t('diary.filtered.body')}
+              action={t('diary.filtered.action')}
+              onAction={() => selectTag(null)}
+            />
+          ) : (
             <EmptyLog
               Icon={NotebookPen}
               title={t('diary.empty.title')}
               body={t('diary.empty.body')}
-              action={t('diary.empty.action')}
-              onAction={() => router.navigate('/')}
+              action={canCreate ? t('diary.empty.action') : undefined}
+              onAction={canCreate ? () => compose(null) : undefined}
             />
           )
         }
@@ -139,7 +186,27 @@ export function DiaryScreen() {
         }
       />
 
-      <EntryViewer entry={viewing} onClose={() => setViewing(null)} />
-    </>
+      <EntryViewer
+        note={viewing}
+        busy={isRemoving}
+        onClose={() => setViewingId(null)}
+        onEdit={compose}
+        onDelete={remove}
+        onTag={selectTag}
+      />
+
+      {composer !== null && (
+        <NoteComposer
+          key={composer.session}
+          note={composer.note}
+          open={composer.open}
+          onClose={() =>
+            setComposer((current) =>
+              current === null ? null : { ...current, open: false },
+            )
+          }
+        />
+      )}
+    </YStack>
   );
 }

@@ -12,14 +12,28 @@
  * and the period in one request, so this holds editing state and nothing
  * else. What it still insists on is `isLoaded` — a draft seeded before the
  * period arrives is a blank one, and saving it would wipe the period.
+ *
+ * Notes are not in the snapshot. A saved period's notes are written one at a
+ * time through their own routes and the Save button never touches them. A
+ * period with no log yet cannot take a note, so notes written there wait in
+ * `pending` and are posted by `save` once the log exists — see
+ * `pending-notes.ts` for why writing a note must not save the check-in.
  */
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
+import { useAddCheckInNote } from '@/features/diary';
 import type { Habit } from '@/features/habits';
+import { runExclusive } from '@/lib/exclusive';
 
 import { useSaveLog } from './hooks';
 import type { DateKey } from './period';
+import {
+  applyPostResult,
+  saveThenPost,
+  type NoteBody,
+  type PendingNote,
+} from './pending-notes';
 import { emptyEntry, isAnswered, type LogEntry, type MoodScore } from './types';
 
 type EntryPatch = Partial<Omit<LogEntry, 'habitId'>>;
@@ -27,20 +41,19 @@ type EntryPatch = Partial<Omit<LogEntry, 'habitId'>>;
 type Entries = Record<string, LogEntry>;
 
 /** The draft's contents, as they stood at the last seed or the last save. */
-type Snapshot = { note: string; mood: MoodScore | null; entries: Entries };
+type Snapshot = { mood: MoodScore | null; entries: Entries };
 
-const EMPTY_SNAPSHOT: Snapshot = { note: '', mood: null, entries: {} };
+const EMPTY_SNAPSHOT: Snapshot = { mood: null, entries: {} };
 
 /**
  * The saved period this draft starts from, or `undefined` when unwritten.
  *
- * Narrower than `Log` on purpose. The draft only ever reads these three, and
+ * Narrower than `Log` on purpose. The draft only ever reads these two, and
  * the check-in now gets them from the goal's `?include=progress` block rather
  * than from `/v1/habit-logs` — a `GoalPeriod` satisfies this shape as-is, so
  * neither caller has to build a `Log` it does not have the ids for.
  */
 export type SavedPeriod = {
-  note: string;
   mood: MoodScore | null;
   entries: readonly LogEntry[];
 };
@@ -73,7 +86,6 @@ function seedEntries(
  * check-in would write a period nobody edited every time it changed day.
  */
 function hasChanged(draft: Snapshot, saved: Snapshot): boolean {
-  if (draft.note !== saved.note) return true;
   if (draft.mood !== saved.mood) return true;
 
   const ids = new Set([
@@ -96,6 +108,11 @@ function hasChanged(draft: Snapshot, saved: Snapshot): boolean {
 
   return false;
 }
+
+let pendingSequence = 0;
+
+/** Unique for the life of the app, which is all a React key needs. */
+const nextPendingKey = () => `pending-${(pendingSequence += 1)}`;
 
 /**
  * `entryDate` and `existing` are handed in rather than fetched.
@@ -120,11 +137,18 @@ export function useLogDraft({
   existing: SavedPeriod | undefined;
   isLoaded: boolean;
 }) {
-  const { saveLog, isSaving, error: saveError } = useSaveLog();
+  const { saveLog, error: saveError } = useSaveLog();
+  const { addCheckInNote } = useAddCheckInNote();
 
-  const [note, setNote] = useState('');
+  // One save at a time, for the whole of it: the period and then each
+  // waiting note. The mutation's own `isPending` ends with the period, and a
+  // second tap while the notes are still going up would post them twice.
+  const saving = useRef(false);
+  const [isSaving, setIsSaving] = useState(false);
+
   const [mood, setMood] = useState<MoodScore | null>(null);
   const [entries, setEntries] = useState<Entries>({});
+  const [pending, setPending] = useState<PendingNote[]>([]);
 
   // What the period read as when it was seeded, and again after every save.
   // The week strip puts all seven days one tap apart, so leaving a period is
@@ -142,15 +166,14 @@ export function useLogDraft({
   const [seeded, setSeeded] = useState<string | null>(null);
   if (isLoaded && seeded !== seed) {
     const opening = {
-      note: existing?.note ?? '',
       mood: existing?.mood ?? null,
       entries: seedEntries(habits, existing),
     };
 
     setSeeded(seed);
-    setNote(opening.note);
     setMood(opening.mood);
     setEntries(opening.entries);
+    setPending([]);
     setSaved(opening);
   }
 
@@ -184,21 +207,61 @@ export function useLogDraft({
     [habits, entryFor],
   );
 
-  // The snapshot only moves on success. A save that failed left the server
-  // holding the old period, and calling the draft clean would let the next
-  // day change walk away from the answers it could not write.
-  const save = useCallback(async () => {
-    const written = await saveLog({
-      goalId,
-      entryDate,
-      note,
-      mood,
-      entries: Object.values(entries),
+  const addPending = useCallback((note: NoteBody) => {
+    setPending((current) => [
+      ...current,
+      { ...note, key: nextPendingKey(), failed: false, error: null },
+    ]);
+  }, []);
+
+  const updatePending = useCallback((key: string, note: NoteBody) => {
+    setPending((current) =>
+      current.map((item) =>
+        item.key === key
+          ? { ...item, ...note, failed: false, error: null }
+          : item,
+      ),
+    );
+  }, []);
+
+  const removePending = useCallback((key: string) => {
+    setPending((current) => current.filter((item) => item.key !== key));
+  }, []);
+
+  // The snapshot only moves once the period itself is written. A save that
+  // failed left the server holding the old period, and calling the draft
+  // clean would let the next day change walk away from the answers it could
+  // not write. Resolves false when a note is still waiting after the period
+  // saved — or when a save was already running — so the caller stays on
+  // screen rather than leaving twice or dropping a note.
+  const save = useCallback(async (): Promise<boolean> => {
+    const complete = await runExclusive(saving, async () => {
+      setIsSaving(true);
+      try {
+        const result = await saveThenPost(
+          async () => {
+            const written = await saveLog({
+              goalId,
+              entryDate,
+              mood,
+              entries: Object.values(entries),
+            });
+            setSaved({ mood, entries });
+            return written;
+          },
+          pending,
+          (logId, note) => addCheckInNote({ logId, note }),
+        );
+
+        setPending((current) => applyPostResult(current, result));
+        return result.failed === null;
+      } finally {
+        setIsSaving(false);
+      }
     });
 
-    setSaved({ note, mood, entries });
-    return written;
-  }, [saveLog, goalId, entryDate, note, mood, entries]);
+    return complete === true;
+  }, [saveLog, addCheckInNote, goalId, entryDate, mood, entries, pending]);
 
   return {
     /**
@@ -210,8 +273,6 @@ export function useLogDraft({
      */
     isLoading: seeded !== seed,
 
-    note,
-    setNote,
     mood,
     setMood,
 
@@ -223,10 +284,17 @@ export function useLogDraft({
     answered,
     total: habits.length,
 
+    /** Notes waiting for the period's first save, in the order written. */
+    pending,
+    addPending,
+    updatePending,
+    removePending,
+
     /** Whether the period holds anything the server has not been told. */
-    isDirty: hasChanged({ note, mood, entries }, saved),
+    isDirty: hasChanged({ mood, entries }, saved) || pending.length > 0,
 
     save,
+    /** The period and its waiting notes, start to finish. */
     isSaving,
     saveError,
   };

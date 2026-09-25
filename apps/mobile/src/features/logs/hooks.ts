@@ -31,13 +31,17 @@ export function useLogs(filter: LogFilter = {}) {
   });
 }
 
-/** One log by id, for a journal entry opened on its own. */
-export function useLog(id: string) {
+/**
+ * One log by id — the check-in reads its notes from here. `null` is a period
+ * with nothing saved, which has no log to read and no notes on it.
+ */
+export function useLog(id: string | null) {
   const queryClient = useQueryClient();
 
   return useQuery({
-    queryKey: logKeys.detail(id),
-    queryFn: () => getLog(id),
+    queryKey: logKeys.detail(id ?? ''),
+    queryFn: () => getLog(id as string),
+    enabled: id !== null,
     initialData: () =>
       queryClient
         .getQueriesData<Log[]>({ queryKey: logKeys.lists() })
@@ -54,12 +58,9 @@ export function useLog(id: string) {
  * now, so a check-in that left the goals cache alone would send the user back
  * to a home screen still showing the period they just filled in as empty.
  *
- * The diary, always, and for more than the note's text. `/v1/diary` lists
- * exactly the periods carrying a note or a mood, so a write can add a row to
- * it, remove one, or leave the row and restate it — writing the first note on
- * a period that was only a check-in is what turns it into a diary entry at
- * all. The scored `progress` on every listed entry moves with the entries
- * too, so even a save that says nothing new in words changes the page.
+ * The diary, always. `/v1/diary-notes` scores every check-in note beside
+ * its period, so a save that changes an answer or the mood changes what the
+ * diary shows next to each note written on it.
  *
  * The tier's habit_log usage in `/v1/limits` only when a row appears or
  * disappears. Save mints a log the first time a period is written and

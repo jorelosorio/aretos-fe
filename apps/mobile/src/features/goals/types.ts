@@ -22,6 +22,8 @@ export type WireGoal = {
   streak_threshold: number;
   color_slot: number;
   archived: boolean;
+  /** Never null: a goal with no tags reads as `[]`. Ordered by name. */
+  tags: string[];
   created_at: string;
   updated_at: string;
   /** Active habits only — what the goal offers to open, not what it owns. */
@@ -46,6 +48,8 @@ export type Goal = {
   /** The user's colour for the goal — an index into the goal palette, 0–7. */
   colorSlot: number;
   archived: boolean;
+  /** The user's shared tags — the same vocabulary their notes use. */
+  tags: string[];
   /** ISO 8601, as the server sent it. */
   createdAt: string;
   updatedAt: string;
@@ -86,6 +90,11 @@ export type GoalDraft = {
   streakRule: StreakRule;
   streakThreshold: number;
   colorSlot: number | null;
+  /**
+   * Replaced whole on the server: the list sent is the list the goal ends
+   * up with. `toGoalPatch` leaves it out of an edit that did not change it.
+   */
+  tags: string[];
 };
 
 /** A patch sends only what changed; archiving is just `{ archived: true }`. */
@@ -99,6 +108,7 @@ export const EMPTY_DRAFT: GoalDraft = {
   streakRule: 'logged',
   streakThreshold: 60,
   colorSlot: null,
+  tags: [],
 };
 
 /** The subset of `internal/api/errors/codes.go` this feature reacts to. */
@@ -158,7 +168,8 @@ export type WireGoalPeriod = {
   counts_for_streak: boolean;
   /** The period's last day: the Sunday of a weekly goal's week. */
   end_date: string;
-  note: string;
+  /** How many notes were written on the period. The notes are the log's. */
+  note_count: number;
   mood: number | null;
   entries: WirePeriodEntry[];
 };
@@ -203,7 +214,11 @@ export type GoalPeriod = {
   countsForStreak: boolean;
   /** The period's last day, from the server. */
   endDate: string;
-  note: string;
+  /**
+   * How many notes the period carries. The text is not here: a period can
+   * hold any number of notes, and the check-in reads them from its log.
+   */
+  noteCount: number;
   mood: MoodScore | null;
   entries: PeriodEntry[];
 };

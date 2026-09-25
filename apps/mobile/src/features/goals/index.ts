@@ -9,6 +9,7 @@ export {
   useGoals,
   useUpdateGoal,
 } from './hooks';
+export { toGoalPatch } from './patch';
 export { EMPTY_DRAFT } from './types';
 export type {
   Goal,

@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-query';
 
 import { limitKeys } from '@/features/limits';
+import { tagKeys } from '@/features/tags';
 import { ApiError } from '@/lib/api';
 import { seedFromLists } from '@/lib/query-cache';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
@@ -124,6 +125,9 @@ function useInvalidateGoals({ usageMoved }: { usageMoved: boolean }) {
 
   return async () => {
     await queryClient.invalidateQueries({ queryKey: goalKeys.all });
+    // Saving a name on a goal creates the tag, and its `uses` moves either
+    // way, so the suggestions are stale after any write that carried tags.
+    await queryClient.invalidateQueries({ queryKey: tagKeys.all });
     if (usageMoved) {
       await queryClient.invalidateQueries({ queryKey: limitKeys.all });
     }

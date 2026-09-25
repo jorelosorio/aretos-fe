@@ -46,25 +46,76 @@ export const es = {
   },
   diary: {
     title: 'Diario',
+    new: 'Nueva nota',
     entry: {
       more: '+%{count} más',
       open: 'Abrir',
-      readHint: 'Abre la nota completa para leerla con calma.',
+      readHint: 'Abre la nota para leerla, editarla o eliminarla.',
     },
     empty: {
       title: 'Tu diario está vacío',
-      action: 'Ir a Inicio',
-      body: 'Cada registro que guardes aparece aquí, con su nota y cómo te sentiste.',
+      action: 'Escribir una nota',
+      body: 'Las notas que escribas, aquí o al registrar tus hábitos, aparecen en este lugar.',
+    },
+    filter: {
+      all: 'Todas',
+    },
+    filtered: {
+      title: 'Sin notas con «%{tag}»',
+      body: 'Prueba con otra etiqueta o quita el filtro.',
+      action: 'Quitar filtro',
+    },
+    viewer: {
+      edit: 'Editar',
+      delete: 'Eliminar',
+      archived: 'Esta meta está archivada. Sus notas solo se pueden leer.',
+    },
+    deleteConfirm: {
+      title: '¿Eliminar esta nota?',
+      body: 'Esta acción no se puede deshacer.',
+      confirm: 'Eliminar',
+      cancel: 'Cancelar',
+    },
+    editor: {
+      newTitle: 'Nueva nota',
+      editTitle: 'Editar nota',
+      placeholder: '¿Qué quieres recordar?',
+      save: 'Guardar',
+      delete: 'Eliminar nota',
+      close: 'Cerrar',
+      yesterday: 'Ayer',
+      previousDay: 'Día anterior',
+      nextDay: 'Día siguiente',
+      discardTitle: '¿Descartar los cambios?',
+      discardBody: 'Lo que escribiste no se guardará.',
+      discard: 'Descartar',
+      keepEditing: 'Seguir editando',
     },
     cutoff: {
       title: 'Hasta aquí llega tu plan',
       body: 'Tu plan muestra el diario desde el %{date}. Lo anterior sigue guardado y vuelve a aparecer si mejoras tu plan.',
     },
     errors: {
+      title: 'Algo salió mal',
       badRequest: 'No pudimos leer el diario. Inténtalo de nuevo.',
+      invalidNote:
+        'No pudimos guardar la nota. Revisa el texto y las etiquetas.',
+      limitReached: 'Tu plan no permite más notas.',
+      notFound: 'Esa nota ya no existe.',
+      goalArchived:
+        'Esta meta está archivada. Restáurala para editar sus notas.',
       network: 'No pudimos conectar con el servidor. Revisa tu conexión.',
       generic: 'Algo salió mal. Inténtalo de nuevo.',
     },
+  },
+  tags: {
+    label: 'Etiquetas',
+    placeholder: 'Añadir una etiqueta',
+    add: 'Añadir %{name}',
+    create: 'Crear «%{name}»',
+    remove: 'Quitar %{name}',
+    filterBy: 'Ver notas con %{name}',
+    full: '%{count} de %{max} etiquetas',
   },
   analysis: {
     title: 'Análisis',
@@ -352,7 +403,6 @@ export const es = {
         '5': 'Muy bien',
       },
     },
-    optional: '(opcional)',
     period: {
       previousWeek: 'Semana anterior',
       nextWeek: 'Semana siguiente',
@@ -380,12 +430,12 @@ export const es = {
     progress: '%{answered} de %{total}',
     save: 'Guardar',
     update: 'Actualizar',
-    note: 'Nota',
-    noteEditor: {
-      open: 'Ampliar la nota',
-      collapse: 'Contraer la nota',
+    notes: {
+      title: 'Notas',
+      add: 'Añadir nota',
+      pending: 'Se guarda con el registro',
+      failed: 'Esta nota no se guardó.',
     },
-    notePlaceholder: '¿Qué hizo que fuera así?',
     entry: {
       done: 'Hecho',
       notDone: 'Hoy no',
@@ -473,6 +523,8 @@ export const es = {
         'Si no eliges uno, te damos un color que no use ninguna de tus otras metas.',
       save: 'Guardar',
       update: 'Actualizar',
+      tags: 'Etiquetas (opcional)',
+      tagsHint: 'Las mismas etiquetas que usas en tus notas.',
     },
     colors: {
       terracotta: 'Terracota',
