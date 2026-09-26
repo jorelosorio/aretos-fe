@@ -12,6 +12,7 @@ import { HeaderIconButton } from '@/components/common/header-actions';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
 import { EmptyLog } from '@/components/logs/empty-log';
+import { ILLUSTRATIONS } from '@/constants/illustrations';
 import { SPACING } from '@/constants/layout';
 import {
   useDiary,
@@ -117,6 +118,7 @@ export function DiaryScreen() {
         ) : (
           <EmptyLog
             Icon={NotebookPen}
+            illustration={ILLUSTRATIONS.emptyDiary}
             title={t('diary.empty.title')}
             body={t('diary.empty.body')}
             action={canCreate ? t('diary.empty.action') : undefined}

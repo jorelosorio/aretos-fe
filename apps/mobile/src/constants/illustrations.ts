@@ -1,4 +1,5 @@
 import allLogged from '@/assets/illustrations/all-logged.svg';
+import emptyDiary from '@/assets/illustrations/empty-diary.svg';
 import noGoals from '@/assets/illustrations/no-goals.svg';
 
 /**
@@ -32,4 +33,13 @@ export const ILLUSTRATIONS = {
    * own, it adds nothing to `credits.ts`.
    */
   allLogged,
+  /**
+   * No notes yet: the diary with no tag filter applied.
+   *
+   * Drawn for the app like `allLogged`: an open journal with blank, ruled
+   * pages and a pencil resting on them, on the same backdrop, floor line and
+   * badge as the other two. A filtered diary that matches nothing keeps its
+   * plain tag icon — the diary is not empty there, the filter is.
+   */
+  emptyDiary,
 } as const;
