@@ -65,7 +65,7 @@ function Mark({
       accessibilityLabel={label}
     >
       {done && (
-        <Check size={ICON.inline} color="$primaryForeground" strokeWidth={3} />
+        <Check size={ICON.inline} color="$statusForeground" strokeWidth={3} />
       )}
       {outcome === 'missed' && (
         <X size={ICON.inline} color={color} strokeWidth={3} />

@@ -61,32 +61,48 @@ const accentDark = {
 };
 
 /**
- * The status colours, each defined once per scheme.
+ * The informative colours, defined once for both schemes.
  *
  * Every role that means "done" — `good`, `outcomeDone`, `successInk`, and the
  * moss goal slot `chart8` — reads from `done`, and every role that means
  * "missed" or "watch this" — `warning`, `outcomeMissed`, and the ochre goal
  * slot `chart3` — reads from `missed`. `destructive` and `critical` read from
- * `danger`. They used to be separate
- * literals that had drifted a few shades apart, so the analysis tab showed
- * three greens on one screen: the donut's, the best-day bar's, and the
- * verdict text's. A role here may alias one of these; it never gets its own
- * value for the same meaning again.
+ * `danger`. They used to be separate literals that had drifted a few shades
+ * apart, so the analysis tab showed three greens on one screen: the donut's,
+ * the best-day bar's, and the verdict text's. A role here may alias one of
+ * these; it never gets its own value for the same meaning again.
+ *
+ * Light and dark used to carry their own set too — a deep moss in light, a
+ * lifted sage in dark — so a check mark changed colour with the theme and the
+ * same "done" read as two different things. They now share the dark set:
+ * the softer tones sit better beside the cream and the terracotta than the
+ * deep ones did, and a status keeps one identity wherever it is seen.
+ *
+ * `ink` is what is drawn *on* one of these fills, such as the tick inside a
+ * done mark. It is dark in both schemes because the fills are light in both;
+ * `primaryForeground` was used before and turned white in light, which
+ * vanished into the sage.
  */
-const lightStatus = {
-  done: '#4a6b28',
-  missed: '#8f6210',
-  skipped: '#8a8073',
-  blank: '#cfc4b0',
-  danger: '#b5483f',
-};
-
-const darkStatus: typeof lightStatus = {
+const status = {
   done: '#a8c084',
   missed: '#e6b45c',
+  danger: '#e27d72',
+  ink: '#1d1712',
+};
+
+/**
+ * The neutral outcomes stay per scheme: they are not informative colours but
+ * shades of the surface — a skipped or blank day should recede into whatever
+ * it sits on, which a single value cannot do on both cream and near-black.
+ */
+const lightNeutral = {
+  skipped: '#8a8073',
+  blank: '#cfc4b0',
+};
+
+const darkNeutral: typeof lightNeutral = {
   skipped: '#968a7c',
   blank: '#4d4238',
-  danger: '#e27d72',
 };
 
 /**
@@ -110,9 +126,11 @@ const darkStatus: typeof lightStatus = {
  *   teal-ish, pink stays rose) but muted to the theme's saturation, so a goal
  *   does not change identity, only volume.
  *
- * Light values hold at least 4.5:1 against both `card` and `background` when
- * set as text, except the chart slots, which are dots and fills and hold 3:1.
- * Dark values are the same hues lifted, all above 5:1 on `card`.
+ * Dark values hold above 5:1 on `card`. Light's own roles hold at least 4.5:1
+ * against both `card` and `background` when set as text, except the chart
+ * slots, which are dots and fills and hold 3:1. The shared status colours are
+ * the exception in light: tuned for near-black, they hold only about 2–3:1 on
+ * cream, which reads as a mark or a fill but is thin as running text.
  */
 const lightRoles = {
   card: '#fffaf1',
@@ -133,8 +151,8 @@ const lightRoles = {
   mutedForeground: '#474036',
   accentSurface: '#fff1e8',
   accentSurfaceForeground: '#67301a',
-  destructive: lightStatus.danger,
-  destructiveForeground: '#ffffff',
+  destructive: status.danger,
+  destructiveForeground: status.ink,
 
   border: '#ded3c0',
   input: '#c2b6a2',
@@ -162,12 +180,12 @@ const lightRoles = {
 
   chart1: '#c25a33',
   chart2: '#4d8578',
-  chart3: lightStatus.missed,
+  chart3: status.missed,
   chart4: '#b0606c',
   chart5: '#7d5f93',
   chart6: '#8f6b47',
   chart7: '#56718f',
-  chart8: lightStatus.done,
+  chart8: status.done,
 
   vizAxis: '#8a8073',
   vizGrid: '#e9e0d1',
@@ -181,16 +199,17 @@ const lightRoles = {
   seq4: '#c2652f',
   seq5: '#8f431c',
 
-  good: lightStatus.done,
-  warning: lightStatus.missed,
+  good: status.done,
+  warning: status.missed,
   serious: '#c2652f',
-  critical: lightStatus.danger,
-  successInk: lightStatus.done,
+  critical: status.danger,
+  successInk: status.done,
+  statusForeground: status.ink,
 
-  outcomeDone: lightStatus.done,
-  outcomeMissed: lightStatus.missed,
-  outcomeSkipped: lightStatus.skipped,
-  outcomeBlank: lightStatus.blank,
+  outcomeDone: status.done,
+  outcomeMissed: status.missed,
+  outcomeSkipped: lightNeutral.skipped,
+  outcomeBlank: lightNeutral.blank,
 };
 
 const darkRoles: typeof lightRoles = {
@@ -208,8 +227,8 @@ const darkRoles: typeof lightRoles = {
   mutedForeground: '#c1b4a7',
   accentSurface: '#392319',
   accentSurfaceForeground: '#f6c6a3',
-  destructive: darkStatus.danger,
-  destructiveForeground: '#0b0b0b',
+  destructive: status.danger,
+  destructiveForeground: status.ink,
 
   border: 'rgba(245, 234, 222, 0.12)',
   input: 'rgba(245, 234, 222, 0.16)',
@@ -237,12 +256,12 @@ const darkRoles: typeof lightRoles = {
 
   chart1: '#e0875a',
   chart2: '#7fb8aa',
-  chart3: darkStatus.missed,
+  chart3: status.missed,
   chart4: '#d98a92',
   chart5: '#b096c4',
   chart6: '#c09a74',
   chart7: '#8fa6c4',
-  chart8: darkStatus.done,
+  chart8: status.done,
 
   vizAxis: '#9a8f80',
   vizGrid: '#332b23',
@@ -256,16 +275,17 @@ const darkRoles: typeof lightRoles = {
   seq4: '#d9834a',
   seq5: '#f0ab77',
 
-  good: darkStatus.done,
-  warning: darkStatus.missed,
+  good: status.done,
+  warning: status.missed,
   serious: '#e58b5a',
-  critical: darkStatus.danger,
-  successInk: darkStatus.done,
+  critical: status.danger,
+  successInk: status.done,
+  statusForeground: status.ink,
 
-  outcomeDone: darkStatus.done,
-  outcomeMissed: darkStatus.missed,
-  outcomeSkipped: darkStatus.skipped,
-  outcomeBlank: darkStatus.blank,
+  outcomeDone: status.done,
+  outcomeMissed: status.missed,
+  outcomeSkipped: darkNeutral.skipped,
+  outcomeBlank: darkNeutral.blank,
 };
 
 export const themes = createV5Theme({

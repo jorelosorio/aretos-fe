@@ -154,7 +154,7 @@ function CheckInForm({
 
               {period?.logged === true && (
                 <XStack items="center" gap="$2">
-                  <Check size={ICON.inline} color="$primary" />
+                  <Check size={ICON.inline} color="$outcomeDone" />
                   <SizableText size={TEXT.caption} color="$mutedForeground">
                     {t('logs.editing')}
                   </SizableText>
