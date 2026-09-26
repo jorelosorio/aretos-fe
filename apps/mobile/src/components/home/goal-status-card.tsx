@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Flame, Plus, SquarePen, Trophy } from '@tamagui/lucide-icons-2';
-import { SizableText, XStack, YStack } from 'tamagui';
+import { Circle, SizableText, XStack, YStack } from 'tamagui';
 
 import { CompletionStatus } from '@/components/goals/completion-status';
 import { GoalDot } from '@/components/goals/goal-dot';
@@ -18,6 +18,8 @@ const FREQUENCY_LABELS: Record<Goal['trackingFrequency'], TranslationKey> = {
   weekly: 'goals.frequency.weekly',
   flexible: 'goals.frequency.flexible',
 };
+
+const ACTION_SIZE = 28;
 
 const STREAK_DAYS = {
   short: 'home.streaks.days',
@@ -140,39 +142,39 @@ export const GoalStatusCard = memo(function GoalStatusCard({
               </SizableText>
             </XStack>
 
-            {hasStreak && (
-              <StreakChip
-                text={t(streak.short, { count: currentStreak })}
-                record={isRecord}
-              />
-            )}
-          </XStack>
-
-          <XStack items="center" gap={SPACING.items}>
-            <XStack flex={1} minW={0}>
-              {hasHabits ? (
-                <CompletionStatus
-                  status={status}
-                  answered={answered}
-                  total={total}
-                  detail={`${t(
-                    total === 1 ? 'habits.progressOne' : 'habits.progressMany',
-                    { answered, total },
-                  )} · ${cadence}`}
+            <XStack shrink={0} items="center" gap="$2">
+              {hasStreak && (
+                <StreakChip
+                  text={t(streak.short, { count: currentStreak })}
+                  record={isRecord}
                 />
-              ) : (
-                <SizableText
-                  size={TEXT.caption}
-                  color="$mutedForeground"
-                  numberOfLines={1}
-                >
-                  {context}
-                </SizableText>
               )}
-            </XStack>
 
-            <ActionIcon size={ICON.row} color="$primary" />
+              <Circle size={ACTION_SIZE} bg="$muted">
+                <ActionIcon size={ICON.inline} color="$primary" />
+              </Circle>
+            </XStack>
           </XStack>
+
+          {hasHabits ? (
+            <CompletionStatus
+              status={status}
+              answered={answered}
+              total={total}
+              detail={`${t(
+                total === 1 ? 'habits.progressOne' : 'habits.progressMany',
+                { answered, total },
+              )} · ${cadence}`}
+            />
+          ) : (
+            <SizableText
+              size={TEXT.caption}
+              color="$mutedForeground"
+              numberOfLines={1}
+            >
+              {context}
+            </SizableText>
+          )}
         </YStack>
 
         {hasHabits ? (
