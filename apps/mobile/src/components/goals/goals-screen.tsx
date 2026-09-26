@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import type { ImageSourcePropType } from 'react-native';
 import { useRouter } from 'expo-router';
@@ -16,7 +16,7 @@ import {
 } from '@/components/common/segmented-control';
 import { ILLUSTRATIONS } from '@/constants/illustrations';
 import { BUTTON, SPACING, TEXT } from '@/constants/layout';
-import { useGoalErrorMessage, useGoals } from '@/features/goals';
+import { useGoalErrorMessage, useGoals, type Goal } from '@/features/goals';
 import { useAllowance } from '@/features/limits';
 import { useTranslations } from '@/lib/i18n';
 
@@ -29,6 +29,12 @@ export function GoalsScreen() {
   const { t } = useTranslations();
   const theme = useTheme();
   const router = useRouter();
+
+  const openGoal = useCallback(
+    (goal: Goal) =>
+      router.push({ pathname: '/goals/[id]', params: { id: goal.id } }),
+    [router],
+  );
   const toMessage = useGoalErrorMessage();
   const tabBarInset = useTabBarInset();
 
@@ -92,12 +98,7 @@ export function GoalsScreen() {
             <GoalCard
               goal={item}
               habitCount={item.habitCount}
-              onPress={() =>
-                router.push({
-                  pathname: '/goals/[id]',
-                  params: { id: item.id },
-                })
-              }
+              onOpen={openGoal}
             />
           </YStack>
         )}

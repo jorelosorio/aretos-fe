@@ -12,6 +12,7 @@
 
 import type { TrackingFrequency } from '@/features/goals';
 import type { DateKey } from '@/features/logs';
+import { dateFormat } from '@/utils/date-format';
 import { capitalize } from '@/utils/text';
 import type { AppLocale, TranslateFn } from '@/lib/i18n';
 
@@ -23,7 +24,7 @@ function toDate(key: DateKey): Date {
 
 const dayMonth = (key: DateKey, locale: AppLocale) =>
   capitalize(
-    new Intl.DateTimeFormat(locale, {
+    dateFormat(locale, {
       weekday: 'long',
       day: 'numeric',
       month: 'short',
@@ -31,9 +32,7 @@ const dayMonth = (key: DateKey, locale: AppLocale) =>
   );
 
 const shortDate = (key: DateKey, locale: AppLocale) =>
-  new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short' }).format(
-    toDate(key),
-  );
+  dateFormat(locale, { day: 'numeric', month: 'short' }).format(toDate(key));
 
 /**
  * "Hoy" for the period the person is in, its date otherwise.

@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { ChevronRight, Flame } from '@tamagui/lucide-icons-2';
 import { Separator, SizableText, XStack, YStack } from 'tamagui';
 
@@ -85,14 +86,14 @@ function ProgressTrack({
   );
 }
 
-export function GoalStatusCard({
+export const GoalStatusCard = memo(function GoalStatusCard({
   goal,
   progress,
-  onPress,
+  onOpen,
 }: {
   goal: Goal;
   progress: GoalProgress;
-  onPress: () => void;
+  onOpen: (goal: Goal) => void;
 }) {
   const { t } = useTranslations();
 
@@ -144,7 +145,7 @@ export function GoalStatusCard({
 
   return (
     <YStack
-      onPress={onPress}
+      onPress={() => onOpen(goal)}
       pressStyle={{ bg: '$cardPress' }}
       bg="$card"
       rounded="$xl2"
@@ -245,4 +246,4 @@ export function GoalStatusCard({
       </XStack>
     </YStack>
   );
-}
+});

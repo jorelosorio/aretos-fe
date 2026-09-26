@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { ChevronRight } from '@tamagui/lucide-icons-2';
 import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
@@ -13,14 +14,14 @@ const FREQUENCY_LABELS: Record<Goal['trackingFrequency'], TranslationKey> = {
   flexible: 'goals.frequency.flexible',
 };
 
-export function GoalCard({
+export const GoalCard = memo(function GoalCard({
   goal,
   habitCount,
-  onPress,
+  onOpen,
 }: {
   goal: Goal;
   habitCount: number;
-  onPress: () => void;
+  onOpen: (goal: Goal) => void;
 }) {
   const { t } = useTranslations();
 
@@ -30,7 +31,7 @@ export function GoalCard({
 
   return (
     <XStack
-      onPress={onPress}
+      onPress={() => onOpen(goal)}
       pressStyle={{ bg: '$cardPress' }}
       items="center"
       gap={SPACING.items}
@@ -81,4 +82,4 @@ export function GoalCard({
       <ChevronRight size={ICON.row} color="$mutedForeground" />
     </XStack>
   );
-}
+});

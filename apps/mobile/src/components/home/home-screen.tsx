@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { RefreshControl, SectionList } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
@@ -43,16 +44,19 @@ export function HomeScreen() {
     { key: 'logged', title: t('home.sections.logged'), data: logged },
   ].filter((section) => section.data.length > 0);
 
-  const open = (goal: Goal) =>
-    goal.habitCount === 0
-      ? router.push({
-          pathname: '/goals/[id]/habits/new',
-          params: { id: goal.id },
-        })
-      : router.push({
-          pathname: '/goals/[id]/check-in',
-          params: { id: goal.id },
-        });
+  const open = useCallback(
+    (goal: Goal) =>
+      goal.habitCount === 0
+        ? router.push({
+            pathname: '/goals/[id]/habits/new',
+            params: { id: goal.id },
+          })
+        : router.push({
+            pathname: '/goals/[id]/check-in',
+            params: { id: goal.id },
+          }),
+    [router],
+  );
 
   let empty = null;
   if (goals.isPending) {
@@ -122,11 +126,7 @@ export function HomeScreen() {
       )}
       renderItem={({ item }) => (
         <YStack px={SPACING.screen} pb={SPACING.items}>
-          <GoalStatusCard
-            goal={item}
-            progress={item.progress}
-            onPress={() => open(item)}
-          />
+          <GoalStatusCard goal={item} progress={item.progress} onOpen={open} />
         </YStack>
       )}
     />

@@ -19,6 +19,7 @@ import {
   type DiaryNote,
 } from '@/features/diary';
 import { useTranslations, type AppLocale } from '@/lib/i18n';
+import { dateFormat } from '@/utils/date-format';
 
 import { periodLabel, writtenOnEntryDay } from './diary-date';
 import { NoteActionsMenu } from './note-actions-menu';
@@ -33,7 +34,7 @@ function whenLabel(note: DiaryNote, locale: AppLocale) {
   const day = longDateLabel(note.entryDate, locale);
   if (!writtenOnEntryDay(note.createdAt, note.entryDate)) return day;
 
-  const time = new Intl.DateTimeFormat(locale, {
+  const time = dateFormat(locale, {
     hour: 'numeric',
     minute: '2-digit',
   }).format(new Date(note.createdAt));

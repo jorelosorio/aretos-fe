@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Archive, ChevronRight } from '@tamagui/lucide-icons-2';
 import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
@@ -17,12 +18,12 @@ const NOTE_LINES = 4;
 const MOOD_FACE = 22;
 const TINT_OPACITY = 0.1;
 
-export function DiaryEntryCard({
+export const DiaryEntryCard = memo(function DiaryEntryCard({
   note,
-  onPress,
+  onOpen,
 }: {
   note: DiaryNote;
-  onPress: () => void;
+  onOpen: (note: DiaryNote) => void;
 }) {
   const { t, locale } = useTranslations();
 
@@ -47,7 +48,7 @@ export function DiaryEntryCard({
 
   return (
     <XStack
-      onPress={onPress}
+      onPress={() => onOpen(note)}
       pressStyle={{ bg: '$cardPress' }}
       items="center"
       gap={SPACING.items}
@@ -112,4 +113,4 @@ export function DiaryEntryCard({
       <ChevronRight size={ICON.row} color="$mutedForeground" />
     </XStack>
   );
-}
+});

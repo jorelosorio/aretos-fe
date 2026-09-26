@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -22,7 +23,7 @@ import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';
 
 import { GoalDot } from './goal-dot';
 import type { Goal } from '@/features/goals';
-import { useHabitErrorMessage, useHabits } from '@/features/habits';
+import { useHabitErrorMessage, useHabits, type Habit } from '@/features/habits';
 import { useAllowance } from '@/features/limits';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
 
@@ -141,6 +142,12 @@ export function GoalDetail({ goal }: { goal: Goal }) {
   const { t } = useTranslations();
   const theme = useTheme();
   const router = useRouter();
+
+  const openHabit = useCallback(
+    (habit: Habit) =>
+      router.push({ pathname: '/habits/[id]', params: { id: habit.id } }),
+    [router],
+  );
   const insets = useSafeAreaInsets();
   const toMessage = useHabitErrorMessage();
 
@@ -201,15 +208,7 @@ export function GoalDetail({ goal }: { goal: Goal }) {
           <YStack px={SPACING.screen} pb={SPACING.items}>
             <HabitCard
               habit={item}
-              onPress={
-                goal.archived
-                  ? undefined
-                  : () =>
-                      router.push({
-                        pathname: '/habits/[id]',
-                        params: { id: item.id },
-                      })
-              }
+              onOpen={goal.archived ? undefined : openHabit}
             />
           </YStack>
         )}

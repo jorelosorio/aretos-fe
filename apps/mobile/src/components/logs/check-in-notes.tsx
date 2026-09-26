@@ -18,6 +18,7 @@ import {
 import { useAllowance } from '@/features/limits';
 import { useLog, type NoteBody, type PendingNote } from '@/features/logs';
 import { useTranslations, type AppLocale } from '@/lib/i18n';
+import { dateFormat } from '@/utils/date-format';
 
 const PREVIEW_LINES = 3;
 
@@ -29,7 +30,7 @@ type Target =
 type Editing = { session: number; target: Target; open: boolean };
 
 const writtenAt = (iso: string, locale: AppLocale) =>
-  new Intl.DateTimeFormat(locale, {
+  dateFormat(locale, {
     day: 'numeric',
     month: 'short',
     hour: 'numeric',

@@ -12,6 +12,7 @@
  */
 
 import type { AppLocale } from '@/lib/i18n';
+import { dateFormat } from '@/utils/date-format';
 import { capitalize } from '@/utils/text';
 
 /**
@@ -27,14 +28,14 @@ function toDate(key: string): Date {
 /** One letter, for a strip with seven columns and no room for more. */
 export function weekdayInitial(key: string, locale: AppLocale): string {
   return capitalize(
-    new Intl.DateTimeFormat(locale, { weekday: 'narrow' }).format(toDate(key)),
+    dateFormat(locale, { weekday: 'narrow' }).format(toDate(key)),
   );
 }
 
 /** The weekday's short name, for a strip that can afford three letters. */
 export function weekdayLabel(key: string, locale: AppLocale): string {
   return capitalize(
-    new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(toDate(key)),
+    dateFormat(locale, { weekday: 'short' }).format(toDate(key)),
   );
 }
 
@@ -43,7 +44,7 @@ export function weekdayLabel(key: string, locale: AppLocale): string {
  * their month, because a week can straddle two of them.
  */
 export function shortDateLabel(key: string, locale: AppLocale): string {
-  return new Intl.DateTimeFormat(locale, {
+  return dateFormat(locale, {
     day: 'numeric',
     month: 'short',
   }).format(toDate(key));
@@ -64,7 +65,7 @@ export function dayNumber(key: string): string {
  * would have to know which locales need it.
  */
 export function longDateLabel(key: string, locale: AppLocale): string {
-  const text = new Intl.DateTimeFormat(locale, {
+  const text = dateFormat(locale, {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
@@ -86,7 +87,7 @@ export function weekMonthLabel(key: string, locale: AppLocale): string {
   thursday.setDate(thursday.getDate() + 3);
 
   return capitalize(
-    new Intl.DateTimeFormat(locale, {
+    dateFormat(locale, {
       month: 'long',
       year: 'numeric',
     }).format(thursday),

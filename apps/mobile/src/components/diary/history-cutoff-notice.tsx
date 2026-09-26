@@ -3,6 +3,7 @@ import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
 import { ICON, SPACING, TEXT } from '@/constants/layout';
 import { useTranslations } from '@/lib/i18n';
+import { dateFormat } from '@/utils/date-format';
 
 function toDate(key: string): Date {
   const [year, month, day] = key.split('-').map(Number);
@@ -12,7 +13,7 @@ function toDate(key: string): Date {
 export function HistoryCutoffNotice({ cutoff }: { cutoff: string }) {
   const { t, locale } = useTranslations();
 
-  const date = new Intl.DateTimeFormat(locale, {
+  const date = dateFormat(locale, {
     day: 'numeric',
     month: 'long',
     year: 'numeric',

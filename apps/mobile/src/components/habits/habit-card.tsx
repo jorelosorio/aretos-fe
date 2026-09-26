@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { ChevronRight, Lightbulb } from '@tamagui/lucide-icons-2';
 import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
@@ -29,20 +30,20 @@ function Badge({ children }: { children: string }) {
   );
 }
 
-export function HabitCard({
+export const HabitCard = memo(function HabitCard({
   habit,
-  onPress,
+  onOpen,
 }: {
   habit: Habit;
-  onPress?: () => void;
+  onOpen?: (habit: Habit) => void;
 }) {
   const { t } = useTranslations();
   const unit = UNIT_LABELS[habit.trackingMode];
 
   return (
     <XStack
-      onPress={onPress}
-      pressStyle={onPress ? { bg: '$cardPress' } : undefined}
+      onPress={onOpen === undefined ? undefined : () => onOpen(habit)}
+      pressStyle={onOpen ? { bg: '$cardPress' } : undefined}
       items="center"
       gap={SPACING.items}
       p={SPACING.card}
@@ -50,7 +51,7 @@ export function HabitCard({
       rounded="$xl2"
       borderWidth={1}
       borderColor="$border"
-      accessibilityRole={onPress ? 'button' : undefined}
+      accessibilityRole={onOpen ? 'button' : undefined}
       accessibilityLabel={habit.name}
     >
       <YStack flex={1} gap={SPACING.group}>
@@ -91,7 +92,7 @@ export function HabitCard({
         )}
       </YStack>
 
-      {onPress && <ChevronRight size={ICON.row} color="$mutedForeground" />}
+      {onOpen && <ChevronRight size={ICON.row} color="$mutedForeground" />}
     </XStack>
   );
-}
+});

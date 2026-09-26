@@ -18,6 +18,7 @@
  * differently.
  */
 
+import { dateFormat } from '@/utils/date-format';
 import { capitalize } from '@/utils/text';
 import type { AppLocale } from '@/lib/i18n';
 
@@ -50,7 +51,7 @@ export const monthKey = (entryDate: string): string => entryDate.slice(0, 7);
  * own line, which is what this is used for.
  */
 export function monthLabel(month: string, locale: AppLocale): string {
-  const text = new Intl.DateTimeFormat(locale, {
+  const text = dateFormat(locale, {
     month: 'long',
     year: 'numeric',
   }).format(toDate(`${month}-01`));
@@ -60,7 +61,7 @@ export function monthLabel(month: string, locale: AppLocale): string {
 
 const weekdayDay = (key: string, locale: AppLocale) =>
   capitalize(
-    new Intl.DateTimeFormat(locale, {
+    dateFormat(locale, {
       weekday: 'short',
       day: 'numeric',
       month: 'short',
@@ -68,12 +69,10 @@ const weekdayDay = (key: string, locale: AppLocale) =>
   );
 
 const dayOnly = (key: string, locale: AppLocale) =>
-  new Intl.DateTimeFormat(locale, { day: 'numeric' }).format(toDate(key));
+  dateFormat(locale, { day: 'numeric' }).format(toDate(key));
 
 const dayMonth = (key: string, locale: AppLocale) =>
-  new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short' }).format(
-    toDate(key),
-  );
+  dateFormat(locale, { day: 'numeric', month: 'short' }).format(toDate(key));
 
 /**
  * The span an entry covers, as short as it can be said.
