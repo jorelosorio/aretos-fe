@@ -57,6 +57,8 @@ export const es = {
     },
     filter: {
       all: 'Todas',
+      more: '+%{count} más',
+      less: 'Ver menos',
     },
     filtered: {
       title: 'Sin notas con «%{tag}»',

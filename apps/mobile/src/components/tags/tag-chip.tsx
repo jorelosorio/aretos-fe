@@ -8,6 +8,8 @@ const HIT_SLOP = 8;
 export function TagChip({
   label,
   size = 'small',
+  icon = true,
+  selected,
   highlighted = false,
   onPress,
   accessibilityLabel,
@@ -16,14 +18,17 @@ export function TagChip({
 }: {
   label: string;
   size?: 'small' | 'regular';
+  icon?: boolean;
+  selected?: boolean;
   highlighted?: boolean;
   onPress?: () => void;
   accessibilityLabel?: string;
   onRemove?: () => void;
   removeLabel?: string;
 }) {
-  const text = highlighted ? '$primaryForeground' : '$color';
-  const mark = highlighted ? '$primaryForeground' : '$mutedForeground';
+  const active = selected === true || highlighted;
+  const text = active ? '$primaryForeground' : '$color';
+  const mark = active ? '$primaryForeground' : '$mutedForeground';
 
   return (
     <XStack
@@ -33,13 +38,14 @@ export function TagChip({
       pr={onRemove === undefined ? '$2.5' : '$1.5'}
       py="$1"
       rounded={999}
-      bg={highlighted ? '$primary' : '$muted'}
+      bg={active ? '$primary' : '$muted'}
       onPress={onPress}
       pressStyle={onPress === undefined ? undefined : { opacity: 0.7 }}
       accessibilityRole={onPress === undefined ? 'text' : 'button'}
+      accessibilityState={selected === undefined ? undefined : { selected }}
       accessibilityLabel={accessibilityLabel ?? label}
     >
-      <Tag size={ICON.inline} color={mark} />
+      {icon && <Tag size={ICON.inline} color={mark} />}
       <SizableText
         size={size === 'small' ? TEXT.caption : TEXT.body}
         color={text}

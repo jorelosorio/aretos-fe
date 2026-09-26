@@ -56,6 +56,8 @@ export const en = {
     },
     filter: {
       all: 'All',
+      more: '+%{count} more',
+      less: 'Show less',
     },
     filtered: {
       title: 'No notes tagged “%{tag}”',

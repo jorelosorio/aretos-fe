@@ -1,41 +1,50 @@
-import { ScrollView, SizableText, XStack } from 'tamagui';
+import { useState } from 'react';
+import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2';
+import { SizableText, XStack } from 'tamagui';
 
-import { SPACING, TEXT } from '@/constants/layout';
+import { ICON, SPACING, TEXT } from '@/constants/layout';
 import { useTags } from '@/features/tags';
+import { TagChip } from '@/components/tags/tag-chip';
 import { useTranslations } from '@/lib/i18n';
 
-const FILTER_TAGS = 20;
+import { visibleTags } from './tag-filter-items';
 
-function FilterChip({
+const FILTER_TAGS = 50;
+const COLLAPSED_TAGS = 10;
+
+function ToggleChip({
   label,
-  active,
+  expanded,
   onPress,
 }: {
   label: string;
-  active: boolean;
+  expanded: boolean;
   onPress: () => void;
 }) {
+  const Icon = expanded ? ChevronUp : ChevronDown;
+
   return (
     <XStack
-      px="$3"
-      py="$1.5"
+      items="center"
+      gap="$1"
+      px="$2.5"
+      py="$1"
       rounded={999}
-      borderWidth={1}
-      borderColor={active ? '$primary' : '$border'}
-      bg={active ? '$primary' : '$card'}
+      bg="$secondary"
       onPress={onPress}
-      pressStyle={{ opacity: 0.8 }}
+      pressStyle={{ opacity: 0.7 }}
       accessibilityRole="button"
-      accessibilityState={{ selected: active }}
+      accessibilityState={{ expanded }}
       accessibilityLabel={label}
     >
       <SizableText
         size={TEXT.caption}
         fontWeight="600"
-        color={active ? '$primaryForeground' : '$color'}
+        color="$secondaryForeground"
       >
         {label}
       </SizableText>
+      <Icon size={ICON.inline} color="$secondaryForeground" />
     </XStack>
   );
 }
@@ -49,6 +58,7 @@ export function TagFilter({
 }) {
   const { t } = useTranslations();
   const { data } = useTags('', { limit: FILTER_TAGS });
+  const [expanded, setExpanded] = useState(false);
 
   const used = (data ?? [])
     .filter((tag) => tag.uses > 0)
@@ -60,30 +70,46 @@ export function TagFilter({
 
   if (names.length === 0) return null;
 
+  const { shown, hidden } = visibleTags(names, value, expanded, COLLAPSED_TAGS);
+
   return (
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      grow={0}
-      contentContainerStyle={{
-        px: SPACING.screen,
-        py: SPACING.group,
-        gap: '$1.5',
-      }}
+    <XStack
+      flexWrap="wrap"
+      items="center"
+      gap="$1.5"
+      px={SPACING.screen}
+      py={SPACING.group}
     >
-      <FilterChip
+      <TagChip
         label={t('diary.filter.all')}
-        active={value === null}
+        icon={false}
+        selected={value === null}
         onPress={() => onChange(null)}
       />
-      {names.map((name) => (
-        <FilterChip
+      {shown.map((name) => (
+        <TagChip
           key={name}
           label={name}
-          active={isActive(name)}
+          selected={isActive(name)}
           onPress={() => onChange(isActive(name) ? null : name)}
         />
       ))}
-    </ScrollView>
+
+      {hidden > 0 && (
+        <ToggleChip
+          label={t('diary.filter.more', { count: hidden })}
+          expanded={false}
+          onPress={() => setExpanded(true)}
+        />
+      )}
+
+      {expanded && names.length > COLLAPSED_TAGS && (
+        <ToggleChip
+          label={t('diary.filter.less')}
+          expanded
+          onPress={() => setExpanded(false)}
+        />
+      )}
+    </XStack>
   );
 }
