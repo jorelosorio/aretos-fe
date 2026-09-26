@@ -1,5 +1,5 @@
 import allLogged from '@/assets/illustrations/all-logged.svg';
-import mindMap from '@/assets/illustrations/Mind map-cuate.svg';
+import noGoals from '@/assets/illustrations/no-goals.svg';
 
 /**
  * The app's illustrations, named by the state they stand for.
@@ -14,8 +14,16 @@ import mindMap from '@/assets/illustrations/Mind map-cuate.svg';
  * `credits.ts` moves with it.
  */
 export const ILLUSTRATIONS = {
-  /** No goals yet: home and the goals list. */
-  noGoals: mindMap,
+  /**
+   * No goals yet: home and the goals list.
+   *
+   * Storyset's "Mind map" (Work collection), simplified: the girl, her desk,
+   * the book and the plant are theirs, unchanged; the mind map of eight icons
+   * and a light bulb above her is replaced by three goal ideas drawn like
+   * `allLogged`'s badge, with its backdrop and sparkles, so the two empty
+   * states read as one set. Still their drawing, so the Work credit stays.
+   */
+  noGoals,
   /**
    * Every goal logged for the current period: home's Today tab.
    *
