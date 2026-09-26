@@ -4,6 +4,7 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import * as WebBrowser from 'expo-web-browser';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 import { TamaguiProvider } from '@tamagui/core';
 import { config } from '../../tamagui.config';
@@ -111,11 +112,13 @@ export default function RootLayout() {
     <TamaguiProvider config={config} defaultTheme={resolved}>
       <StatusBar style={resolved === 'dark' ? 'light' : 'dark'} />
 
-      <NavigationThemeProvider>
-        <QueryProvider>
-          <RootNavigator />
-        </QueryProvider>
-      </NavigationThemeProvider>
+      <KeyboardProvider>
+        <NavigationThemeProvider>
+          <QueryProvider>
+            <RootNavigator />
+          </QueryProvider>
+        </NavigationThemeProvider>
+      </KeyboardProvider>
     </TamaguiProvider>
   );
 }

@@ -1,18 +1,10 @@
 import { useState, type ReactNode } from 'react';
-import { KeyboardAvoidingView, Platform } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CircleCheck, Clock, Hash, Star } from '@tamagui/lucide-icons-2';
-import {
-  Input,
-  Label,
-  ScrollView,
-  SizableText,
-  TextArea,
-  YStack,
-} from 'tamagui';
+import { Input, Label, SizableText, TextArea, YStack } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
+import { FormScrollView } from '@/components/common/form-scroll-view';
 import {
   HeaderActions,
   HeaderTextButton,
@@ -58,7 +50,6 @@ export function HabitForm({
 }) {
   const { t } = useTranslations();
   const router = useRouter();
-  const insets = useSafeAreaInsets();
   const toMessage = useHabitErrorMessage();
 
   const {
@@ -126,10 +117,7 @@ export function HabitForm({
   }
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
+    <>
       <Stack.Screen
         options={{
           headerRight: () => (
@@ -149,12 +137,7 @@ export function HabitForm({
       />
 
       <YStack flex={1} bg="$background">
-        <ScrollView
-          flex={1}
-          keyboardShouldPersistTaps="handled"
-          keyboardDismissMode="on-drag"
-          contentContainerStyle={{ grow: 1, pb: insets.bottom }}
-        >
+        <FormScrollView>
           <YStack flex={1} p={SPACING.screen} gap={SPACING.section}>
             <ErrorNotice message={toMessage(createError ?? updateError)} />
 
@@ -232,8 +215,8 @@ export function HabitForm({
               </SizableText>
             </YStack>
           </YStack>
-        </ScrollView>
+        </FormScrollView>
       </YStack>
-    </KeyboardAvoidingView>
+    </>
   );
 }

@@ -1,8 +1,7 @@
-import { KeyboardAvoidingView, Platform } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Label, ScrollView, SizableText, TextArea, YStack } from 'tamagui';
+import { Label, SizableText, TextArea, YStack } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
+import { FormScrollView } from '@/components/common/form-scroll-view';
 import { WeekPicker } from '@/components/logs/week-picker';
 import { TagField } from '@/components/tags/tag-field';
 import { SPACING, TEXT } from '@/constants/layout';
@@ -30,7 +29,6 @@ export function NoteForm({
   padBottom?: boolean;
 }) {
   const { t } = useTranslations();
-  const insets = useSafeAreaInsets();
   const { data: profile } = useProfile();
 
   const today = todayKey();
@@ -39,77 +37,66 @@ export function NoteForm({
     profile?.createdAt.slice(0, 10) ?? entryDate ?? today;
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
-      <ScrollView
-        flex={1}
-        bg="$background"
-        keyboardShouldPersistTaps="handled"
-        keyboardDismissMode="on-drag"
-        contentContainerStyle={{ pb: padBottom ? insets.bottom : 0 }}
-      >
-        <YStack p={SPACING.screen} gap={SPACING.section}>
-          <ErrorNotice message={error} />
+    <FormScrollView padBottom={padBottom}>
+      <YStack p={SPACING.screen} gap={SPACING.section}>
+        <ErrorNotice message={error} />
 
-          {(entryDate !== null || period !== undefined) && (
-            <YStack gap={SPACING.group}>
-              <Label color="$color">{t('diary.editor.date')}</Label>
-              {entryDate !== null ? (
-                <WeekPicker
-                  frequency="daily"
-                  periods={NO_PERIODS}
-                  selected={entryDate}
-                  today={today}
-                  createdOn={createdOn}
-                  onSelect={draft.setEntryDate}
-                />
-              ) : (
-                <SizableText size={TEXT.body} color="$mutedForeground" px="$2">
-                  {period}
-                </SizableText>
-              )}
-            </YStack>
-          )}
-
+        {(entryDate !== null || period !== undefined) && (
           <YStack gap={SPACING.group}>
-            <Label htmlFor="note-body" color="$color">
-              {t('diary.editor.body')}
-            </Label>
-            <TextArea
-              id="note-body"
-              size="$5"
-              value={draft.body}
-              onChangeText={draft.setBody}
-              placeholder={t('diary.editor.placeholder')}
-              placeholderTextColor="$mutedForeground"
-              maxLength={NOTE_BODY_MAX}
-              multiline
-              autoFocus={autoFocus}
-              minH={BODY_MIN_HEIGHT}
-              verticalAlign="top"
-              bg="$card"
-              borderColor="$border"
-            />
-            <SizableText
-              size={TEXT.caption}
-              color="$mutedForeground"
-              px="$2"
-              text="right"
-            >
-              {`${draft.body.length} / ${NOTE_BODY_MAX}`}
-            </SizableText>
+            <Label color="$color">{t('diary.editor.date')}</Label>
+            {entryDate !== null ? (
+              <WeekPicker
+                frequency="daily"
+                periods={NO_PERIODS}
+                selected={entryDate}
+                today={today}
+                createdOn={createdOn}
+                onSelect={draft.setEntryDate}
+              />
+            ) : (
+              <SizableText size={TEXT.body} color="$mutedForeground" px="$2">
+                {period}
+              </SizableText>
+            )}
           </YStack>
+        )}
 
-          <TagField
-            value={draft.tags}
-            onChange={draft.setTags}
-            text={draft.tagText}
-            onTextChange={draft.setTagText}
+        <YStack gap={SPACING.group}>
+          <Label htmlFor="note-body" color="$color">
+            {t('diary.editor.body')}
+          </Label>
+          <TextArea
+            id="note-body"
+            size="$5"
+            value={draft.body}
+            onChangeText={draft.setBody}
+            placeholder={t('diary.editor.placeholder')}
+            placeholderTextColor="$mutedForeground"
+            maxLength={NOTE_BODY_MAX}
+            multiline
+            autoFocus={autoFocus}
+            minH={BODY_MIN_HEIGHT}
+            verticalAlign="top"
+            bg="$card"
+            borderColor="$border"
           />
+          <SizableText
+            size={TEXT.caption}
+            color="$mutedForeground"
+            px="$2"
+            text="right"
+          >
+            {`${draft.body.length} / ${NOTE_BODY_MAX}`}
+          </SizableText>
         </YStack>
-      </ScrollView>
-    </KeyboardAvoidingView>
+
+        <TagField
+          value={draft.tags}
+          onChange={draft.setTags}
+          text={draft.tagText}
+          onTextChange={draft.setTagText}
+        />
+      </YStack>
+    </FormScrollView>
   );
 }

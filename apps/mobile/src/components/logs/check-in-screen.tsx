@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { KeyboardAvoidingView, Platform } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Check, Plus } from '@tamagui/lucide-icons-2';
-import { ScrollView, SizableText, XStack, YStack } from 'tamagui';
+import { SizableText, XStack, YStack } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
+import { FormScrollView } from '@/components/common/form-scroll-view';
 import { HeaderTextButton } from '@/components/common/header-actions';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
@@ -51,7 +50,6 @@ function CheckInForm({
 }) {
   const { t, locale } = useTranslations();
   const router = useRouter();
-  const insets = useSafeAreaInsets();
   const toMessage = useLogErrorMessage();
 
   const draft = useLogDraft({
@@ -94,10 +92,7 @@ function CheckInForm({
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
+    <>
       <Stack.Screen
         options={{
           title: goal.name,
@@ -120,12 +115,7 @@ function CheckInForm({
       />
 
       <YStack flex={1} bg="$background">
-        <ScrollView
-          flex={1}
-          keyboardShouldPersistTaps="handled"
-          keyboardDismissMode="on-drag"
-          contentContainerStyle={{ grow: 1, pb: insets.bottom }}
-        >
+        <FormScrollView>
           <YStack p={SPACING.screen} gap={SPACING.section}>
             <WeekPicker
               frequency={goal.trackingFrequency}
@@ -203,9 +193,9 @@ function CheckInForm({
               </>
             )}
           </YStack>
-        </ScrollView>
+        </FormScrollView>
       </YStack>
-    </KeyboardAvoidingView>
+    </>
   );
 }
 
