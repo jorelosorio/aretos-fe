@@ -1,3 +1,4 @@
+import allLogged from '@/assets/illustrations/all-logged.svg';
 import mindMap from '@/assets/illustrations/Mind map-cuate.svg';
 
 /**
@@ -15,4 +16,12 @@ import mindMap from '@/assets/illustrations/Mind map-cuate.svg';
 export const ILLUSTRATIONS = {
   /** No goals yet: home and the goals list. */
   noGoals: mindMap,
+  /**
+   * Every goal logged for the current period: home's Today tab.
+   *
+   * Drawn for the app rather than taken from Storyset, in the same flat
+   * style and palette as `noGoals` so the two read as one set. Being our
+   * own, it adds nothing to `credits.ts`.
+   */
+  allLogged,
 } as const;

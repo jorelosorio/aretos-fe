@@ -36,6 +36,7 @@ export const en = {
       logged: 'Logged',
     },
     allLogged: 'All logged. Nice work!',
+    allLoggedBody: 'Enjoy the rest of your day.',
     noneLogged: 'Nothing logged yet.',
     noHabits: 'No habits yet',
     cta: {

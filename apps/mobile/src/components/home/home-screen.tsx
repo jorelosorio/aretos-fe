@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
-import { Target } from '@tamagui/lucide-icons-2';
+import { CircleCheck, Target } from '@tamagui/lucide-icons-2';
 import { SizableText, YStack } from 'tamagui';
 
 import { longDateLabel } from '@/components/common/date-label';
@@ -74,6 +74,15 @@ export function HomeScreen() {
   let empty = null;
   if (goals.isPending) {
     empty = <ScreenLoader />;
+  } else if (scored.length > 0 && tab === 'pending') {
+    empty = (
+      <EmptyLog
+        Icon={CircleCheck}
+        illustration={ILLUSTRATIONS.allLogged}
+        title={t('home.allLogged')}
+        body={t('home.allLoggedBody')}
+      />
+    );
   } else if (scored.length > 0) {
     empty = (
       <SizableText
@@ -81,7 +90,7 @@ export function HomeScreen() {
         size={TEXT.body}
         color="$mutedForeground"
       >
-        {t(tab === 'pending' ? 'home.allLogged' : 'home.noneLogged')}
+        {t('home.noneLogged')}
       </SizableText>
     );
   } else if (!goals.error) {
