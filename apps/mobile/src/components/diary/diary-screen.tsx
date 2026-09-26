@@ -74,8 +74,6 @@ export function DiaryScreen() {
 
   return (
     <YStack flex={1} bg="$background">
-      <TagFilter value={tag} onChange={selectTag} />
-
       <FlatList
         style={{ flex: 1, backgroundColor: theme.background.val }}
         contentContainerStyle={{ flexGrow: 1, paddingBottom: tabBarInset }}
@@ -94,11 +92,14 @@ export function DiaryScreen() {
           if (hasNextPage && !isFetchingNextPage) void fetchNextPage();
         }}
         ListHeaderComponent={
-          error ? (
-            <YStack px={SPACING.screen} pt={SPACING.screen} pb={SPACING.items}>
-              <ErrorNotice message={toMessage(error)} />
-            </YStack>
-          ) : null
+          <>
+            <TagFilter value={tag} onChange={selectTag} />
+            {error ? (
+              <YStack px={SPACING.screen} pt={SPACING.group} pb={SPACING.items}>
+                <ErrorNotice message={toMessage(error)} />
+              </YStack>
+            ) : null}
+          </>
         }
         renderItem={({ item }) =>
           item.kind === 'month' ? (
