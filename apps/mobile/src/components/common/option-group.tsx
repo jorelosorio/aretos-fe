@@ -62,7 +62,11 @@ export function OptionGroup<T extends string>({
                 />
 
                 <YStack flex={1} gap={SPACING.text}>
-                  <SizableText size={TEXT.subheading} color="$cardForeground">
+                  <SizableText
+                    size={TEXT.body}
+                    fontWeight={selected ? '600' : '400'}
+                    color="$cardForeground"
+                  >
                     {option.label}
                   </SizableText>
                   {option.hint && (
@@ -72,7 +76,7 @@ export function OptionGroup<T extends string>({
                   )}
                 </YStack>
 
-                <YStack width={18} items="center">
+                <YStack width={ICON.row} items="center">
                   {selected && <Check size={ICON.row} color="$primary" />}
                 </YStack>
               </XStack>

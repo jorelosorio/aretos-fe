@@ -99,7 +99,13 @@ export const TEXT = {
    * every other card, when the native header above already names the goal.
    */
   subheading: '$4',
-  /** Running prose: whatever is read as sentences, however short. */
+  /**
+   * Running prose: whatever is read as sentences, however short. Also a
+   * row's label in a grouped list — Settings, a form's choices — one step
+   * below the `SectionTitle` above it. Those rows once sat at `subheading`,
+   * the title's own size, so "Appearance" and "Light" differed only by
+   * weight and the heading read as one more row.
+   */
   body: '$3',
   /**
    * A hint or a line of metadata, pinned to something that explains it.

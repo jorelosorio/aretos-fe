@@ -2,13 +2,14 @@ import { useRouter } from 'expo-router';
 import {
   ChevronRight,
   Languages,
+  LogOut,
   Moon,
   Smartphone,
   Sun,
 } from '@tamagui/lucide-icons-2';
-import { ScrollView, YStack } from 'tamagui';
+import { ScrollView, Spinner, YStack } from 'tamagui';
 
-import { SignOutButton } from '@/components/auth/sign-out-button';
+import { useConfirmSignOut } from '@/components/auth/use-confirm-sign-out';
 import { useTabBarInset } from '@/components/common/floating-tab-bar';
 import { OptionGroup, type Option } from '@/components/common/option-group';
 import { RowGroup } from '@/components/settings/row-group';
@@ -31,6 +32,7 @@ export function SettingsScreen() {
   const { theme, locale } = usePreferences();
   const tabBarInset = useTabBarInset();
   const router = useRouter();
+  const { confirm: confirmSignOut, isSigningOut } = useConfirmSignOut();
 
   const themeOptions: readonly Option<ThemePreference>[] = [
     { value: 'light', label: t('settings.light'), Icon: Sun },
@@ -81,7 +83,21 @@ export function SettingsScreen() {
           ]}
         />
 
-        <SignOutButton />
+        <RowGroup
+          title={t('settings.account')}
+          rows={[
+            {
+              label: isSigningOut ? t('auth.signingOut') : t('auth.signOut'),
+              onPress: confirmSignOut,
+              disabled: isSigningOut,
+              trailing: isSigningOut ? (
+                <Spinner color="$mutedForeground" />
+              ) : (
+                <LogOut size={ICON.row} color="$mutedForeground" />
+              ),
+            },
+          ]}
+        />
       </YStack>
     </ScrollView>
   );

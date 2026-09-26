@@ -8,6 +8,7 @@ export type Row = {
   label: string;
   onPress: () => void;
   trailing: ReactNode;
+  disabled?: boolean;
 };
 
 export function RowGroup({
@@ -33,8 +34,10 @@ export function RowGroup({
             {index > 0 && <Separator borderColor="$border" />}
 
             <XStack
-              onPress={row.onPress}
-              pressStyle={{ bg: '$cardPress' }}
+              onPress={row.disabled ? undefined : row.onPress}
+              pressStyle={row.disabled ? undefined : { bg: '$cardPress' }}
+              opacity={row.disabled ? 0.6 : 1}
+              accessibilityState={{ disabled: row.disabled === true }}
               items="center"
               gap={SPACING.items}
               px={SPACING.card}
@@ -42,11 +45,7 @@ export function RowGroup({
               accessibilityRole="button"
               accessibilityLabel={row.label}
             >
-              <SizableText
-                flex={1}
-                size={TEXT.subheading}
-                color="$cardForeground"
-              >
+              <SizableText flex={1} size={TEXT.body} color="$cardForeground">
                 {row.label}
               </SizableText>
 

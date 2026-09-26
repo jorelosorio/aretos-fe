@@ -1,3 +1,4 @@
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScrollView, YStack } from 'tamagui';
 
 import { SPACING } from '@/constants/layout';
@@ -5,8 +6,14 @@ import { SPACING } from '@/constants/layout';
 import { Attributions } from './attributions';
 
 export function LicensesScreen() {
+  const insets = useSafeAreaInsets();
+
   return (
-    <ScrollView flex={1} bg="$background" contentContainerStyle={{ grow: 1 }}>
+    <ScrollView
+      flex={1}
+      bg="$background"
+      contentContainerStyle={{ grow: 1, pb: insets.bottom }}
+    >
       <YStack flex={1} p={SPACING.screen} gap={SPACING.section}>
         <Attributions />
       </YStack>

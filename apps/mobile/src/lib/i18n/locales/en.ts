@@ -677,5 +677,6 @@ export const en = {
     dark: 'Dark',
     system: 'Automatic',
     language: 'Language',
+    account: 'Account',
   },
 } satisfies Translations;

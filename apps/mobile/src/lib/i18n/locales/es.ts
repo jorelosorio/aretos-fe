@@ -681,6 +681,7 @@ export const es = {
     dark: 'Oscuro',
     system: 'Automático',
     language: 'Idioma',
+    account: 'Cuenta',
   },
 } satisfies TranslationTree;
 
