@@ -179,7 +179,7 @@ export function HabitTrackRow({
           >
             <SizableText
               size={TEXT.subheading}
-              fontFamily="$heading"
+              fontWeight="700"
               color="$cardForeground"
               numberOfLines={2}
             >

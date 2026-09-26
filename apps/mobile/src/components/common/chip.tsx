@@ -13,6 +13,7 @@ export type ChipProps = {
   label: string;
   size?: 'small' | 'regular';
   lines?: 1 | 2;
+  inField?: boolean;
   leading?: ChipLeading;
   selected?: boolean;
   highlighted?: boolean;
@@ -26,6 +27,7 @@ export function Chip({
   label,
   size = 'small',
   lines = 1,
+  inField = false,
   leading,
   selected,
   highlighted = false,
@@ -47,7 +49,7 @@ export function Chip({
       py="$1"
       maxW="100%"
       rounded={lines === 1 ? 999 : WRAPPING_RADIUS}
-      bg={active ? '$primary' : '$muted'}
+      bg={active ? '$primary' : inField ? '$fieldChip' : '$muted'}
       onPress={onPress}
       pressStyle={onPress === undefined ? undefined : { opacity: 0.7 }}
       accessibilityRole={onPress === undefined ? 'text' : 'button'}

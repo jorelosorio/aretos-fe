@@ -154,8 +154,8 @@ export function HabitForm({
                 placeholderTextColor="$mutedForeground"
                 maxLength={NAME_MAX}
                 autoFocus={!habitId}
-                bg="$card"
-                borderColor="$border"
+                bg="$field"
+                borderColor="$fieldBorder"
               />
               <SizableText size={TEXT.caption} color="$mutedForeground" px="$2">
                 {t('habits.form.nameHint')}
@@ -207,8 +207,8 @@ export function HabitForm({
                 numberOfLines={4}
                 minH={112}
                 verticalAlign="top"
-                bg="$card"
-                borderColor="$border"
+                bg="$field"
+                borderColor="$fieldBorder"
               />
               <SizableText size={TEXT.caption} color="$mutedForeground" px="$2">
                 {t('habits.form.planHint')}

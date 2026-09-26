@@ -74,20 +74,28 @@ const accentDark = {
  *
  * Light and dark used to carry their own set too — a deep moss in light, a
  * lifted sage in dark — so a check mark changed colour with the theme and the
- * same "done" read as two different things. They now share the dark set:
- * the softer tones sit better beside the cream and the terracotta than the
- * deep ones did, and a status keeps one identity wherever it is seen.
+ * same "done" read as two different things. One set now serves both, and
+ * that constrains how light or dark it can be:
+ *
+ * - The dark theme's pastels were tried first. They sat at 1.8–2.7:1 on the
+ *   cream, and "Complete" in sage on a home card could barely be read. No
+ *   cream can fix that — a pastel is itself light, and only a near-black
+ *   surface contrasts with it.
+ * - So these are mid-tones, each the lightness that maximises its *worst*
+ *   contrast across every surface it lands on in either scheme: card, page
+ *   and field in light; card, page and muted in dark. Each holds 3.5–4.3:1
+ *   on all of them. That clears 3:1 for marks, bars and bold labels.
+ *   It is short of 4.5:1 for small body text, and no single colour can
+ *   reach that on both cream and near-black: the ceiling is about 3.7:1.
  *
  * `ink` is what is drawn *on* one of these fills, such as the tick inside a
- * done mark. It is dark in both schemes because the fills are light in both;
- * `primaryForeground` was used before and turned white in light, which
- * vanished into the sage.
+ * done mark: cream, which holds about 4.3:1 on all three.
  */
 const status = {
-  done: '#a8c084',
-  missed: '#e6b45c',
-  danger: '#e27d72',
-  ink: '#1d1712',
+  done: '#65803c',
+  missed: '#9b7027',
+  danger: '#c25549',
+  ink: '#fffaf1',
 };
 
 /**
@@ -126,11 +134,10 @@ const darkNeutral: typeof lightNeutral = {
  *   teal-ish, pink stays rose) but muted to the theme's saturation, so a goal
  *   does not change identity, only volume.
  *
- * Dark values hold above 5:1 on `card`. Light's own roles hold at least 4.5:1
- * against both `card` and `background` when set as text, except the chart
- * slots, which are dots and fills and hold 3:1. The shared status colours are
- * the exception in light: tuned for near-black, they hold only about 2–3:1 on
- * cream, which reads as a mark or a fill but is thin as running text.
+ * Each scheme's own roles hold at least 4.5:1 against its `card` and
+ * `background` when set as text, except the chart slots, which are dots and
+ * fills and hold 3:1. The shared status colours are the exception, at
+ * 3.5–4.3:1 in both; the note on `status` says why.
  */
 const lightRoles = {
   card: '#fffaf1',
@@ -140,6 +147,15 @@ const lightRoles = {
   // them vanish under the finger. Darker than `muted` in light, lighter than
   // `card` in dark, so it reads apart from both.
   cardPress: '#e4d6bd',
+  // A text field's well. Its own role, not `card`: a field used to be a card
+  // with a caret in it, and at `#fffaf1` on the cream screen it read as a
+  // white box rather than as a place to write. It now sits a step *below* the
+  // screen, tinted toward the terracotta, so a form reads as wells to fill
+  // between the raised cards of its choices. `fieldChip` is what a tag chip
+  // sits as inside one — `muted` is too close to the well to separate from it.
+  field: '#f2e1cf',
+  fieldBorder: '#dfc6ac',
+  fieldChip: '#fffaf1',
   popover: '#fffaf1',
   popoverForeground: '#2a211b',
 
@@ -216,6 +232,9 @@ const darkRoles: typeof lightRoles = {
   card: '#2a221c',
   cardForeground: '#f5eade',
   cardPress: '#3a2f27',
+  field: '#2a221c',
+  fieldBorder: 'rgba(245, 234, 222, 0.12)',
+  fieldChip: '#171310',
   popover: '#2a221c',
   popoverForeground: '#f5eade',
 

@@ -153,10 +153,10 @@ export function TagInput({
         px="$3"
         py="$2"
         minH={INPUT_HEIGHT + 20}
-        bg="$card"
+        bg="$field"
         rounded="$xl"
         borderWidth={1}
-        borderColor={focused ? '$primary' : '$border'}
+        borderColor={focused ? '$primary' : '$fieldBorder'}
         onPress={() => inputRef.current?.focus()}
       >
         {value.map((tag, index) => (
@@ -165,6 +165,7 @@ export function TagInput({
             label={tag}
             size="regular"
             lines={2}
+            inField
             highlighted={armed && index === value.length - 1}
             removeLabel={t('tags.remove', { name: capitalize(tag) })}
             onRemove={() => {

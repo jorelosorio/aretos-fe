@@ -146,8 +146,8 @@ export function GoalForm({
                 placeholderTextColor="$mutedForeground"
                 maxLength={NAME_MAX}
                 autoFocus={!goalId}
-                bg="$card"
-                borderColor="$border"
+                bg="$field"
+                borderColor="$fieldBorder"
               />
               <SizableText size={TEXT.caption} color="$mutedForeground" px="$2">
                 {t('goals.form.nameHint')}
@@ -170,8 +170,8 @@ export function GoalForm({
                 numberOfLines={4}
                 minH={112}
                 verticalAlign="top"
-                bg="$card"
-                borderColor="$border"
+                bg="$field"
+                borderColor="$fieldBorder"
               />
             </YStack>
 

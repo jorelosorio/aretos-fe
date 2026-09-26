@@ -49,7 +49,7 @@ export const GoalCard = memo(function GoalCard({
           <SizableText
             flex={1}
             size={TEXT.subheading}
-            fontFamily="$heading"
+            fontWeight="700"
             color="$cardForeground"
           >
             {goal.name}

@@ -1,15 +1,29 @@
 /**
  * The two faces, and which job each one does.
  *
- * **`$heading` (Caprasimo) names things, and only three things: a screen's
- * own title, a goal's name, and a habit's name.** It is a display face with
- * one weight, and its whole value is that it is rare: what it marks is the
- * subject of what you are looking at, so anything else set in it is a false
- * subject competing with the real one.
+ * **`$heading` (Caprasimo) is for a screen's title and nothing in its
+ * content:** the navigation header (`HEADER_TITLE`, including a goal's name
+ * in `GoalHeaderTitle`), and the sign-in screen's "Aretos", which has no
+ * header and is the wordmark. It is a display face with one weight, and its
+ * whole value is that it is rare: what it marks is the subject of the whole
+ * screen, so anything else set in it is a false subject competing with the
+ * real one.
  *
- * **`$body` (Nunito) is everything else**, including three categories that
- * look like they might qualify and do not:
+ * **`$body` (Nunito) is everything else**, including categories that look
+ * like they might qualify and do not:
  *
+ * - **Names in the content.** A goal's or a habit's name anywhere below the
+ *   header — the home cards, the Goals tab, a goal's habits, the check-in's
+ *   rows, the analysis cards, and the goal's own card on its detail screen —
+ *   is `$body` at weight 700. They once took the display face too, and a
+ *   check-in of three habits read as three titles stacked under the screen's
+ *   own, each two lines of heavy slab type in a card too narrow for it; the
+ *   detail screen set its goal's name in it twice, once in the header and
+ *   again in the card beneath. Bold body keeps a name the first thing in its
+ *   card without competing with the title above it.
+ * - **The home greeting.** Home draws no header, but the greeting is content
+ *   about the person rather than the screen's title, so it is `$body` at
+ *   weight 700 like any other line of content.
  * - **Section headings.** Scaffolding rather than a subject. `SectionTitle`
  *   is the body face at `TEXT.subheading` and weight 700 — a step above the
  *   content it introduces, and bold, which is what makes a heading read as

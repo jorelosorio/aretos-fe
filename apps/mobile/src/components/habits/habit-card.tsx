@@ -57,7 +57,7 @@ export const HabitCard = memo(function HabitCard({
       <YStack flex={1} gap={SPACING.group}>
         <SizableText
           size={TEXT.subheading}
-          fontFamily="$heading"
+          fontWeight="700"
           color="$cardForeground"
         >
           {habit.name}

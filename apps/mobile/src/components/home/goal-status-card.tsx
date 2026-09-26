@@ -165,7 +165,7 @@ export const GoalStatusCard = memo(function GoalStatusCard({
               <SizableText
                 flex={1}
                 size={TEXT.subheading}
-                fontFamily="$heading"
+                fontWeight="700"
                 color="$cardForeground"
                 numberOfLines={2}
               >

@@ -75,7 +75,7 @@ function GoalRow({
           flex={1}
           minW={0}
           size={TEXT.subheading}
-          fontFamily="$heading"
+          fontWeight="700"
           color="$cardForeground"
           numberOfLines={1}
         >

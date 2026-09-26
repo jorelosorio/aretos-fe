@@ -56,7 +56,7 @@ export function HomeHeader({
       <YStack flex={1} gap={SPACING.text}>
         <SizableText
           size={TEXT.title}
-          fontFamily="$heading"
+          fontWeight="700"
           color="$color"
           numberOfLines={1}
         >

@@ -70,7 +70,7 @@ function GoalSummary({ goal, habitCount }: { goal: Goal; habitCount: number }) {
         <SizableText
           flex={1}
           size={TEXT.title}
-          fontFamily="$heading"
+          fontWeight="700"
           color="$cardForeground"
         >
           {goal.name}
