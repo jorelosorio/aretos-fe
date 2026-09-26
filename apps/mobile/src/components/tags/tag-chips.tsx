@@ -3,6 +3,8 @@ import { SizableText, XStack } from 'tamagui';
 import { TEXT } from '@/constants/layout';
 import { useTranslations } from '@/lib/i18n';
 
+import { TagChip } from './tag-chip';
+
 export function TagChips({
   tags,
   max,
@@ -22,29 +24,28 @@ export function TagChips({
   return (
     <XStack flexWrap="wrap" items="center" gap="$1.5">
       {shown.map((tag) => (
-        <XStack
+        <TagChip
           key={tag}
+          label={tag}
+          onPress={onPress === undefined ? undefined : () => onPress(tag)}
+          accessibilityLabel={
+            onPress === undefined ? tag : t('tags.filterBy', { name: tag })
+          }
+        />
+      ))}
+
+      {hidden > 0 && (
+        <XStack
           px="$2"
           py="$1"
           rounded={999}
           bg="$muted"
-          onPress={onPress === undefined ? undefined : () => onPress(tag)}
-          pressStyle={onPress === undefined ? undefined : { opacity: 0.7 }}
-          accessibilityRole={onPress === undefined ? 'text' : 'button'}
-          accessibilityLabel={
-            onPress === undefined ? tag : t('tags.filterBy', { name: tag })
-          }
+          accessibilityLabel={t('tags.moreLabel', { count: hidden })}
         >
           <SizableText size={TEXT.caption} color="$mutedForeground">
-            {tag}
+            {t('tags.more', { count: hidden })}
           </SizableText>
         </XStack>
-      ))}
-
-      {hidden > 0 && (
-        <SizableText size={TEXT.caption} color="$mutedForeground">
-          {t('diary.entry.more', { count: hidden })}
-        </SizableText>
       )}
     </XStack>
   );

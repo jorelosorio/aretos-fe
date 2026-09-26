@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Plus, X } from '@tamagui/lucide-icons-2';
+import { Plus } from '@tamagui/lucide-icons-2';
 import {
   Input,
   SizableText,
@@ -18,11 +18,12 @@ import {
 } from '@/features/tags';
 import { useTranslations } from '@/lib/i18n';
 
+import { TagChip } from './tag-chip';
+
 const SUGGESTIONS = 8;
 const DEBOUNCE_MS = 250;
 const INPUT_MIN_WIDTH = 120;
 const INPUT_HEIGHT = 32;
-const HIT_SLOP = 8;
 
 function useDebounced(value: string, delay: number) {
   const [debounced, setDebounced] = useState(value);
@@ -33,45 +34,6 @@ function useDebounced(value: string, delay: number) {
   }, [value, delay]);
 
   return debounced;
-}
-
-function TagChip({
-  label,
-  armed,
-  removeLabel,
-  onRemove,
-}: {
-  label: string;
-  armed: boolean;
-  removeLabel: string;
-  onRemove: () => void;
-}) {
-  const tone = armed ? '$primaryForeground' : '$color';
-
-  return (
-    <XStack
-      items="center"
-      gap="$1"
-      pl="$2.5"
-      pr="$1.5"
-      py="$1"
-      rounded={999}
-      bg={armed ? '$primary' : '$muted'}
-    >
-      <SizableText size={TEXT.body} color={tone}>
-        {label}
-      </SizableText>
-      <YStack
-        onPress={onRemove}
-        hitSlop={HIT_SLOP}
-        pressStyle={{ opacity: 0.6 }}
-        accessibilityRole="button"
-        accessibilityLabel={removeLabel}
-      >
-        <X size={ICON.inline} color={armed ? tone : '$mutedForeground'} />
-      </YStack>
-    </XStack>
-  );
 }
 
 function SuggestionChip({
@@ -200,7 +162,8 @@ export function TagInput({
           <TagChip
             key={tag}
             label={tag}
-            armed={armed && index === value.length - 1}
+            size="regular"
+            highlighted={armed && index === value.length - 1}
             removeLabel={t('tags.remove', { name: tag })}
             onRemove={() => {
               setArmed(false);

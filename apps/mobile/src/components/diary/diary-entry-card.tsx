@@ -5,17 +5,16 @@ import { GoalDot } from '@/components/goals/goal-dot';
 import { slotColor } from '@/components/goals/slot-color';
 import { MOOD_LABELS } from '@/components/logs/mood-labels';
 import { PeriodMood } from '@/components/logs/period-mood';
-import { TagChips } from '@/components/tags/tag-chips';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
 import type { DiaryNote } from '@/features/diary';
 import { useTranslations } from '@/lib/i18n';
 
 import { periodLabel } from './diary-date';
+import { NoteMeta } from './note-meta';
 import { notePreview } from './note-preview';
 
 const NOTE_LINES = 4;
 const MOOD_FACE = 22;
-const TAG_PREVIEW = 3;
 const TINT_OPACITY = 0.1;
 
 export function DiaryEntryCard({
@@ -107,15 +106,7 @@ export function DiaryEntryCard({
           {preview}
         </Paragraph>
 
-        <SizableText
-          size={TEXT.caption}
-          color="$mutedForeground"
-          numberOfLines={1}
-        >
-          {when}
-        </SizableText>
-
-        <TagChips tags={note.tags} max={TAG_PREVIEW} />
+        <NoteMeta caption={when} tags={note.tags} collapsed />
       </YStack>
 
       <ChevronRight size={ICON.row} color="$mutedForeground" />

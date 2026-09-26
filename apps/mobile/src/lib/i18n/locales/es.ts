@@ -48,7 +48,6 @@ export const es = {
     title: 'Diario',
     new: 'Nueva nota',
     entry: {
-      more: '+%{count} más',
       readHint: 'Abre la nota.',
     },
     empty: {
@@ -117,6 +116,8 @@ export const es = {
     remove: 'Quitar %{name}',
     filterBy: 'Ver notas con %{name}',
     full: '%{count} de %{max} etiquetas',
+    more: '+%{count}',
+    moreLabel: '%{count} etiquetas más',
   },
   analysis: {
     title: 'Análisis',

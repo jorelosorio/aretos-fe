@@ -6,7 +6,7 @@ import { SectionTitle } from '@/components/common/section-title';
 import { NoteEditor } from '@/components/diary/note-editor';
 import type { NoteValue } from '@/components/diary/note-draft';
 import { notePreview } from '@/components/diary/note-preview';
-import { TagChips } from '@/components/tags/tag-chips';
+import { NoteMeta } from '@/components/diary/note-meta';
 import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';
 import {
   useAddCheckInNote,
@@ -20,7 +20,6 @@ import { useLog, type NoteBody, type PendingNote } from '@/features/logs';
 import { useTranslations, type AppLocale } from '@/lib/i18n';
 
 const PREVIEW_LINES = 3;
-const TAG_PREVIEW = 3;
 
 type Target =
   | { kind: 'new' }
@@ -76,10 +75,12 @@ function NoteRow({
       >
         {preview}
       </Paragraph>
-      <TagChips tags={tags} max={TAG_PREVIEW} />
-      <SizableText size={TEXT.caption} color={captionColor}>
-        {caption}
-      </SizableText>
+      <NoteMeta
+        caption={caption}
+        captionTone={captionColor}
+        tags={tags}
+        collapsed
+      />
     </YStack>
   );
 }

@@ -11,7 +11,6 @@ import { CompletionStatus } from '@/components/goals/completion-status';
 import { GoalDot } from '@/components/goals/goal-dot';
 import { MOOD_LABELS } from '@/components/logs/mood-labels';
 import { PeriodMood } from '@/components/logs/period-mood';
-import { TagChips } from '@/components/tags/tag-chips';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
 import {
   useNote,
@@ -23,6 +22,7 @@ import { useTranslations, type AppLocale } from '@/lib/i18n';
 
 import { periodLabel, writtenOnEntryDay } from './diary-date';
 import { NoteActionsMenu } from './note-actions-menu';
+import { NoteMeta } from './note-meta';
 
 const MOOD_FACE = 36;
 
@@ -185,20 +185,21 @@ export function NoteReaderScreen({ id }: { id: string }) {
         contentContainerStyle={{ pb: insets.bottom }}
       >
         <YStack p={SPACING.screen} gap={SPACING.section}>
-          <Paragraph
-            size={NOTE_TEXT.size}
-            lineHeight={NOTE_TEXT.lineHeight}
-            color="$color"
-            selectable
-          >
-            {note.body}
-          </Paragraph>
-
           <YStack gap={SPACING.group}>
-            <SizableText size={TEXT.caption} color="$mutedForeground">
-              {whenLabel(note, locale)}
-            </SizableText>
-            <TagChips tags={note.tags} onPress={filterBy} />
+            <Paragraph
+              size={NOTE_TEXT.size}
+              lineHeight={NOTE_TEXT.lineHeight}
+              color="$color"
+              selectable
+            >
+              {note.body}
+            </Paragraph>
+
+            <NoteMeta
+              caption={whenLabel(note, locale)}
+              tags={note.tags}
+              onTagPress={filterBy}
+            />
           </YStack>
 
           {checkIn !== null && (

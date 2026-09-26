@@ -47,7 +47,6 @@ export const en = {
     title: 'Diary',
     new: 'New note',
     entry: {
-      more: '+%{count} more',
       readHint: 'Opens the note.',
     },
     empty: {
@@ -114,6 +113,8 @@ export const en = {
     remove: 'Remove %{name}',
     filterBy: 'Show notes tagged %{name}',
     full: '%{count} of %{max} tags',
+    more: '+%{count}',
+    moreLabel: '%{count} more tags',
   },
   analysis: {
     title: 'Analysis',
