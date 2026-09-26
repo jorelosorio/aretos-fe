@@ -594,6 +594,7 @@ export const es = {
       triple: 'Alta',
       doubleBadge: 'Importancia media',
       tripleBadge: 'Importancia alta',
+      normalBadge: 'Importancia normal',
     },
     weightBadge: '×%{weight}',
     targetBadge: '≥ %{target} %{unit}',

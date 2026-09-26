@@ -1,8 +1,7 @@
 import { memo } from 'react';
-import { ChevronRight } from '@tamagui/lucide-icons-2';
 import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
-import { ICON, SPACING, TEXT } from '@/constants/layout';
+import { SPACING, TEXT } from '@/constants/layout';
 import type { Goal } from '@/features/goals';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
 
@@ -78,8 +77,6 @@ export const GoalCard = memo(function GoalCard({
           </SizableText>
         </XStack>
       </YStack>
-
-      <ChevronRight size={ICON.row} color="$mutedForeground" />
     </XStack>
   );
 });

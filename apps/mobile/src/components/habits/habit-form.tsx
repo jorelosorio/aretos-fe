@@ -1,6 +1,5 @@
 import { useState, type ReactNode } from 'react';
 import { Stack, useRouter } from 'expo-router';
-import { CircleCheck, Clock, Hash, Star } from '@tamagui/lucide-icons-2';
 import { Input, Label, SizableText, TextArea, YStack } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
@@ -17,6 +16,7 @@ import {
 } from '@/components/common/segmented-control';
 import { SPACING, TEXT } from '@/constants/layout';
 import { DEFAULT_TARGET, HabitTarget } from './habit-target';
+import { MODE_ICONS } from './mode-icons';
 import {
   hasThreshold,
   useCreateHabit,
@@ -78,25 +78,25 @@ export function HabitForm({
       value: 'binary',
       label: t('habits.mode.binary'),
       hint: t('habits.mode.binaryHint'),
-      Icon: CircleCheck,
+      Icon: MODE_ICONS.binary,
     },
     {
       value: 'count',
       label: t('habits.mode.count'),
       hint: t('habits.mode.countHint'),
-      Icon: Hash,
+      Icon: MODE_ICONS.count,
     },
     {
       value: 'duration',
       label: t('habits.mode.duration'),
       hint: t('habits.mode.durationHint'),
-      Icon: Clock,
+      Icon: MODE_ICONS.duration,
     },
     {
       value: 'rating',
       label: t('habits.mode.rating'),
       hint: t('habits.mode.ratingHint'),
-      Icon: Star,
+      Icon: MODE_ICONS.rating,
     },
   ];
 

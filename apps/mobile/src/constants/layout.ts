@@ -149,6 +149,14 @@ export const TEXT = {
  *   the header, so a goal and a habit are managed from the same place. They
  *   are never a visible button beside a form's confirm: one tap away from
  *   "Guardar" is too close for "Eliminar".
+ * - **A card that opens something carries no chevron.** The whole card is
+ *   the button, and its edge and its press state already say so; a `›` at
+ *   the end took a column from every card and read as a second, smaller
+ *   target. A card whose tap does something more specific than "open" may
+ *   show it as a small icon in its top-right corner — home's goal card shows
+ *   a pencil because a tap logs or edits the entry. A **list row**, like the
+ *   ones in Settings, keeps its chevron: that is the platform's own mark for
+ *   a row that leads to another screen, and rows have no edge to say it.
  * - **A menu opens without dimming the screen.** A blur would be the native
  *   backdrop, but the app has no blur view to draw one with (the installed
  *   glass effect is iOS 26 only and draws surfaces, not backdrops), and a

@@ -1,6 +1,6 @@
 import { Stack, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Archive, ChevronRight } from '@tamagui/lucide-icons-2';
+import { Archive } from '@tamagui/lucide-icons-2';
 import { Paragraph, ScrollView, SizableText, XStack, YStack } from 'tamagui';
 
 import { longDateLabel } from '@/components/common/date-label';
@@ -115,10 +115,6 @@ function CheckInCard({
           />
         )}
       </YStack>
-
-      {onPress !== undefined && (
-        <ChevronRight size={ICON.row} color="$mutedForeground" />
-      )}
     </XStack>
   );
 }
