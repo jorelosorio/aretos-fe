@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import { ChevronRight, Flame } from '@tamagui/lucide-icons-2';
-import { Separator, SizableText, XStack, YStack } from 'tamagui';
+import { Flame, Plus, SquarePen, Trophy } from '@tamagui/lucide-icons-2';
+import { SizableText, XStack, YStack } from 'tamagui';
 
 import { CompletionStatus } from '@/components/goals/completion-status';
 import { GoalDot } from '@/components/goals/goal-dot';
@@ -23,19 +23,18 @@ const STREAK_DAYS = {
   short: 'home.streaks.days',
   one: 'home.streaks.labelDay',
   many: 'home.streaks.labelDays',
-  best: 'home.streaks.bestDays',
 } as const satisfies Record<string, TranslationKey>;
 
 const STREAK_WEEKS = {
   short: 'home.streaks.weeks',
   one: 'home.streaks.labelWeek',
   many: 'home.streaks.labelWeeks',
-  best: 'home.streaks.bestWeeks',
 } as const satisfies Record<string, TranslationKey>;
 
-function StreakChip({ text }: { text: string }) {
+function StreakChip({ text, record }: { text: string; record: boolean }) {
   return (
     <XStack
+      shrink={0}
       items="center"
       gap="$1"
       px="$2"
@@ -43,8 +42,14 @@ function StreakChip({ text }: { text: string }) {
       rounded="$lg"
       bg="$accentSurface"
     >
+      {record && <Trophy size={ICON.inline} color="$primary" />}
       <Flame size={ICON.inline} color="$primary" />
-      <SizableText size={TEXT.caption} fontWeight="700" color="$primary">
+      <SizableText
+        size={TEXT.caption}
+        fontWeight="700"
+        color="$primary"
+        numberOfLines={1}
+      >
         {text}
       </SizableText>
     </XStack>
@@ -78,16 +83,12 @@ export const GoalStatusCard = memo(function GoalStatusCard({
   if (goal.habitCount === 0) action = t('home.cta.addHabit');
   else if (logged) action = t('home.cta.edit');
   else action = t(weekly ? 'home.cta.logWeek' : 'home.cta.log');
+  const ActionIcon = goal.habitCount === 0 ? Plus : SquarePen;
 
   const streak = weekly ? STREAK_WEEKS : STREAK_DAYS;
   const hasStreak = currentStreak > 0;
 
-  let note = '';
-  if (hasStreak && currentStreak >= longestStreak) {
-    note = t('home.streaks.bestNow');
-  } else if (longestStreak > 0) {
-    note = t(streak.best, { count: longestStreak });
-  }
+  const isRecord = currentStreak > 1 && currentStreak >= longestStreak;
 
   const label = [
     goal.name,
@@ -106,7 +107,7 @@ export const GoalStatusCard = memo(function GoalStatusCard({
         ]
       : [t('home.noHabits')]),
     ...(mood != null ? [t(MOOD_LABELS[mood])] : []),
-    ...(note !== '' ? [note] : []),
+    ...(isRecord ? [t('home.streaks.bestNow')] : []),
   ].join('. ');
 
   return (
@@ -140,29 +141,38 @@ export const GoalStatusCard = memo(function GoalStatusCard({
             </XStack>
 
             {hasStreak && (
-              <StreakChip text={t(streak.short, { count: currentStreak })} />
+              <StreakChip
+                text={t(streak.short, { count: currentStreak })}
+                record={isRecord}
+              />
             )}
           </XStack>
 
-          {hasHabits ? (
-            <CompletionStatus
-              status={status}
-              answered={answered}
-              total={total}
-              detail={`${t(
-                total === 1 ? 'habits.progressOne' : 'habits.progressMany',
-                { answered, total },
-              )} · ${cadence}`}
-            />
-          ) : (
-            <SizableText
-              size={TEXT.caption}
-              color="$mutedForeground"
-              numberOfLines={1}
-            >
-              {context}
-            </SizableText>
-          )}
+          <XStack items="center" gap={SPACING.items}>
+            <XStack flex={1} minW={0}>
+              {hasHabits ? (
+                <CompletionStatus
+                  status={status}
+                  answered={answered}
+                  total={total}
+                  detail={`${t(
+                    total === 1 ? 'habits.progressOne' : 'habits.progressMany',
+                    { answered, total },
+                  )} · ${cadence}`}
+                />
+              ) : (
+                <SizableText
+                  size={TEXT.caption}
+                  color="$mutedForeground"
+                  numberOfLines={1}
+                >
+                  {context}
+                </SizableText>
+              )}
+            </XStack>
+
+            <ActionIcon size={ICON.row} color="$primary" />
+          </XStack>
         </YStack>
 
         {hasHabits ? (
@@ -189,26 +199,6 @@ export const GoalStatusCard = memo(function GoalStatusCard({
           </SizableText>
         )}
       </YStack>
-
-      <Separator borderColor="$border" />
-
-      <XStack
-        items="center"
-        gap={SPACING.items}
-        px={SPACING.card}
-        py={SPACING.items}
-      >
-        <SizableText flex={1} size={TEXT.caption} color="$mutedForeground">
-          {note}
-        </SizableText>
-
-        <XStack items="center" gap="$1">
-          <SizableText size={TEXT.body} fontWeight="700" color="$primary">
-            {action}
-          </SizableText>
-          <ChevronRight size={ICON.row} color="$primary" />
-        </XStack>
-      </XStack>
     </YStack>
   );
 });

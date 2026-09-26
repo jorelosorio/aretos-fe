@@ -27,8 +27,6 @@ export const es = {
       labelDays: 'Racha de %{count} días',
       labelWeek: 'Racha de 1 semana',
       labelWeeks: 'Racha de %{count} semanas',
-      bestDays: 'Mejor racha: %{count} d',
-      bestWeeks: 'Mejor racha: %{count} sem',
       bestNow: 'Tu mejor racha hasta ahora',
     },
     summary: '%{logged} de %{total} registradas',

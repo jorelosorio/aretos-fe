@@ -26,8 +26,6 @@ export const en = {
       labelDays: 'A %{count}-day streak',
       labelWeek: 'A 1-week streak',
       labelWeeks: 'A %{count}-week streak',
-      bestDays: 'Best streak: %{count} d',
-      bestWeeks: 'Best streak: %{count} wk',
       bestNow: 'Your best streak yet',
     },
     summary: '%{logged} of %{total} logged',
