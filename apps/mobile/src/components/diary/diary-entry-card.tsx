@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Archive, ChevronRight } from '@tamagui/lucide-icons-2';
+import { Archive } from '@tamagui/lucide-icons-2';
 import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
 import { GoalDot } from '@/components/goals/goal-dot';
@@ -109,8 +109,6 @@ export const DiaryEntryCard = memo(function DiaryEntryCard({
 
         <NoteMeta caption={when} tags={note.tags} collapsed />
       </YStack>
-
-      <ChevronRight size={ICON.row} color="$mutedForeground" />
     </XStack>
   );
 });
