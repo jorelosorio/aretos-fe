@@ -256,6 +256,7 @@ export function CheckInScreen({
           title={t('logs.empty.noHabitsTitle')}
           body={t('logs.empty.noHabitsBody')}
           action={t('logs.empty.noHabitsAction')}
+          actionIcon={Plus}
           onAction={() =>
             router.replace({
               pathname: '/goals/[id]/habits/new',

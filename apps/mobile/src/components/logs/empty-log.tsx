@@ -13,6 +13,7 @@ export function EmptyLog({
   title,
   body,
   action,
+  actionIcon,
   onAction,
 }: {
   Icon: IconComponent;
@@ -20,6 +21,7 @@ export function EmptyLog({
   title: string;
   body: string;
   action?: string;
+  actionIcon?: IconComponent;
   onAction?: () => void;
 }) {
   return (
@@ -48,7 +50,12 @@ export function EmptyLog({
         </YStack>
 
         {action && onAction ? (
-          <Button size={BUTTON.primary} theme="accent" onPress={onAction}>
+          <Button
+            size={BUTTON.primary}
+            theme="accent"
+            icon={actionIcon}
+            onPress={onAction}
+          >
             {action}
           </Button>
         ) : null}

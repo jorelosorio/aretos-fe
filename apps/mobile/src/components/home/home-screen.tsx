@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
-import { CircleCheck, Target } from '@tamagui/lucide-icons-2';
+import { CircleCheck, Plus, Target } from '@tamagui/lucide-icons-2';
 import { SizableText, YStack } from 'tamagui';
 
 import { longDateLabel } from '@/components/common/date-label';
@@ -101,6 +101,7 @@ export function HomeScreen() {
         title={t('goals.empty.title')}
         body={t('goals.empty.body')}
         action={canCreate ? t('goals.new') : undefined}
+        actionIcon={Plus}
         onAction={() => router.push('/goals/new')}
       />
     );

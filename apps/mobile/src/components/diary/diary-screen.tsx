@@ -122,6 +122,7 @@ export function DiaryScreen() {
             title={t('diary.empty.title')}
             body={t('diary.empty.body')}
             action={canCreate ? t('diary.empty.action') : undefined}
+            actionIcon={Plus}
             onAction={canCreate ? () => router.push('/diary/new') : undefined}
           />
         )}
