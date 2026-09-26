@@ -108,6 +108,11 @@ export const es = {
       generic: 'Algo salió mal. Inténtalo de nuevo.',
     },
   },
+  calendar: {
+    choose: 'Elegir fecha',
+    previousMonth: 'Mes anterior',
+    nextMonth: 'Mes siguiente',
+  },
   filter: {
     more: '+%{count} más',
     less: 'Ver menos',

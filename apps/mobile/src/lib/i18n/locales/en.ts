@@ -105,6 +105,11 @@ export const en = {
       generic: 'Something went wrong. Try again.',
     },
   },
+  calendar: {
+    choose: 'Choose a date',
+    previousMonth: 'Previous month',
+    nextMonth: 'Next month',
+  },
   filter: {
     more: '+%{count} more',
     less: 'Show less',

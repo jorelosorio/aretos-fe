@@ -1,8 +1,8 @@
 import { Label, SizableText, TextArea, YStack } from 'tamagui';
 
+import { DateField } from '@/components/common/date-field';
 import { ErrorNotice } from '@/components/common/error-notice';
 import { FormScrollView } from '@/components/common/form-scroll-view';
-import { WeekPicker } from '@/components/logs/week-picker';
 import { TagField } from '@/components/tags/tag-field';
 import { SPACING, TEXT } from '@/constants/layout';
 import { NOTE_BODY_MAX } from '@/features/diary';
@@ -13,7 +13,6 @@ import { useTranslations } from '@/lib/i18n';
 import type { useNoteDraft } from './note-draft';
 
 const BODY_MIN_HEIGHT = 200;
-const NO_PERIODS = [] as const;
 
 export function NoteForm({
   draft,
@@ -45,13 +44,12 @@ export function NoteForm({
           <YStack gap={SPACING.group}>
             <Label color="$color">{t('diary.editor.date')}</Label>
             {entryDate !== null ? (
-              <WeekPicker
-                frequency="daily"
-                periods={NO_PERIODS}
-                selected={entryDate}
+              <DateField
+                value={entryDate}
                 today={today}
-                createdOn={createdOn}
-                onSelect={draft.setEntryDate}
+                min={createdOn < entryDate ? createdOn : entryDate}
+                max={today}
+                onChange={draft.setEntryDate}
               />
             ) : (
               <SizableText size={TEXT.body} color="$mutedForeground" px="$2">

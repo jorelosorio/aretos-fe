@@ -93,3 +93,12 @@ export function weekMonthLabel(key: string, locale: AppLocale): string {
     }).format(thursday),
   );
 }
+
+/** "Septiembre de 2026", for a month standing on its own line. */
+export function monthLabel(month: string, locale: AppLocale): string {
+  return capitalize(
+    dateFormat(locale, { month: 'long', year: 'numeric' }).format(
+      toDate(`${month}-01`),
+    ),
+  );
+}

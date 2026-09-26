@@ -301,7 +301,10 @@ export const ICON = {
  * - `detents` are the heights a sheet opens at, as a share of the screen.
  *   Two and only two: `half` for something glanced at, `tall` for something
  *   read. Dragging up always reaches the full height, so a third opening size
- *   would only be a guess at where the user was going to drag anyway.
+ *   would only be a guess at where the user was going to drag anyway. The one
+ *   exception is not a size at all: a sheet opened with `fit` measures its
+ *   own content and opens exactly that tall — for content that is one fixed
+ *   size, like a date picker, where either preset leaves blank sheet below.
  * - `topGap` is what stays visible above a fully expanded sheet, below the
  *   status bar. Without it an expanded sheet is indistinguishable from a
  *   pushed screen, and the drag down that closes it stops being discoverable.

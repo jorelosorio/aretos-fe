@@ -29,13 +29,14 @@ import { SectionTitle } from '@/components/common/section-title';
 import { SHEET, SPACING, TEXT } from '@/constants/layout';
 import { useTranslations } from '@/lib/i18n';
 
+import { fitResting, resistDrag, snapPoints } from './sheet-fit';
+
 export type SheetDetent = keyof typeof SHEET.detents;
 
 const ENTER = { duration: 420, easing: Easing.bezier(0.32, 0.72, 0, 1) };
 const EXIT = { duration: 260, easing: Easing.bezier(0.32, 0, 0.67, 0) };
 const SNAP = { damping: 32, stiffness: 320, mass: 1 };
 const FLING = 0.12;
-const RESISTANCE = 4;
 
 export function BottomSheet({
   open,
@@ -43,6 +44,7 @@ export function BottomSheet({
   subtitle,
   leading,
   detent = 'half',
+  allowExpand = true,
   onDismiss,
   children,
 }: {
@@ -50,7 +52,8 @@ export function BottomSheet({
   title: string;
   subtitle?: string;
   leading?: ReactNode;
-  detent?: SheetDetent;
+  detent?: SheetDetent | 'fit';
+  allowExpand?: boolean;
   onDismiss: () => void;
   children: ReactNode;
 }) {
@@ -61,8 +64,17 @@ export function BottomSheet({
   const insets = useSafeAreaInsets();
   const { height: screen } = useWindowDimensions();
 
+  const [chrome, setChrome] = useState(0);
+  const [content, setContent] = useState(0);
+
   const full = screen - insets.top - SHEET.topGap;
-  const resting = Math.max(0, full - screen * SHEET.detents[detent]);
+  const preset = (share: number) => Math.max(0, full - screen * share);
+  const resting =
+    detent === 'fit'
+      ? (fitResting({ full, chrome, content, bottom: insets.bottom }) ??
+        preset(SHEET.detents.half))
+      : preset(SHEET.detents[detent]);
+  const fits = detent === 'fit';
 
   const offset = useSharedValue(full);
   const start = useSharedValue(0);
@@ -93,6 +105,7 @@ export function BottomSheet({
 
   const toggle = () => {
     'worklet';
+    if (!allowExpand) return;
     snap(offset.get() > 0 ? 0 : resting);
   };
 
@@ -120,15 +133,16 @@ export function BottomSheet({
         .onUpdate((event) => {
           const next = start.get() + event.translationY;
           offset.set(
-            next < 0 ? Math.max(next / RESISTANCE, -SHEET.overdrag) : next,
+            resistDrag(next, allowExpand ? 0 : resting, SHEET.overdrag),
           );
         })
         .onEnd((event) => {
           const projected = offset.get() + event.velocityY * FLING;
-          const target = [0, resting, full].reduce((best, point) =>
-            Math.abs(point - projected) < Math.abs(best - projected)
-              ? point
-              : best,
+          const target = snapPoints(resting, full, allowExpand).reduce(
+            (best, point) =>
+              Math.abs(point - projected) < Math.abs(best - projected)
+                ? point
+                : best,
           );
 
           if (target === full) scheduleOnRN(onDismiss);
@@ -182,63 +196,76 @@ export function BottomSheet({
             borderTopRightRadius={SHEET.radius}
             overflow="hidden"
           >
-            <GestureDetector gesture={drag()}>
-              <View>
-                <YStack items="center" pt={SPACING.group} pb={SPACING.items}>
-                  <YStack
-                    width={SHEET.handle.width}
-                    height={SHEET.handle.height}
-                    rounded={SHEET.handle.height}
-                    bg="$mutedForeground"
-                    opacity={0.35}
-                    accessible
-                    accessibilityRole="button"
-                    accessibilityLabel={
-                      expanded ? t('sheet.collapse') : t('sheet.expand')
-                    }
-                    accessibilityActions={[{ name: 'activate' }]}
-                    onAccessibilityAction={toggle}
-                  />
-                </YStack>
-              </View>
-            </GestureDetector>
-
-            <XStack
-              items="center"
-              gap={SPACING.items}
-              px={SHEET.padding}
-              pt={SPACING.text}
-              pb={SPACING.section}
+            <View
+              onLayout={
+                fits
+                  ? (event) => setChrome(event.nativeEvent.layout.height)
+                  : undefined
+              }
             >
               <GestureDetector gesture={drag()}>
-                <View style={styles.heading}>
-                  <YStack gap={SPACING.text}>
-                    {leading === undefined ? (
-                      <SectionTitle>{title}</SectionTitle>
-                    ) : (
-                      <XStack items="center" gap="$2">
-                        {leading}
-                        <YStack shrink={1}>
-                          <SectionTitle>{title}</SectionTitle>
-                        </YStack>
-                      </XStack>
-                    )}
-
-                    {subtitle !== undefined && subtitle !== '' && (
-                      <SizableText size={TEXT.caption} color="$mutedForeground">
-                        {subtitle}
-                      </SizableText>
-                    )}
+                <View>
+                  <YStack items="center" pt={SPACING.group} pb={SPACING.items}>
+                    <YStack
+                      width={SHEET.handle.width}
+                      height={SHEET.handle.height}
+                      rounded={SHEET.handle.height}
+                      bg="$mutedForeground"
+                      opacity={0.35}
+                      accessible={allowExpand}
+                      accessibilityRole="button"
+                      accessibilityLabel={
+                        expanded ? t('sheet.collapse') : t('sheet.expand')
+                      }
+                      accessibilityActions={
+                        allowExpand ? [{ name: 'activate' }] : undefined
+                      }
+                      onAccessibilityAction={allowExpand ? toggle : undefined}
+                    />
                   </YStack>
                 </View>
               </GestureDetector>
 
-              <HeaderIconButton
-                Icon={X}
-                label={t('sheet.close')}
-                onPress={onDismiss}
-              />
-            </XStack>
+              <XStack
+                items="center"
+                gap={SPACING.items}
+                px={SHEET.padding}
+                pt={SPACING.text}
+                pb={SPACING.section}
+              >
+                <GestureDetector gesture={drag()}>
+                  <View style={styles.heading}>
+                    <YStack gap={SPACING.text}>
+                      {leading === undefined ? (
+                        <SectionTitle>{title}</SectionTitle>
+                      ) : (
+                        <XStack items="center" gap="$2">
+                          {leading}
+                          <YStack shrink={1}>
+                            <SectionTitle>{title}</SectionTitle>
+                          </YStack>
+                        </XStack>
+                      )}
+
+                      {subtitle !== undefined && subtitle !== '' && (
+                        <SizableText
+                          size={TEXT.caption}
+                          color="$mutedForeground"
+                        >
+                          {subtitle}
+                        </SizableText>
+                      )}
+                    </YStack>
+                  </View>
+                </GestureDetector>
+
+                <HeaderIconButton
+                  Icon={X}
+                  label={t('sheet.close')}
+                  onPress={onDismiss}
+                />
+              </XStack>
+            </View>
 
             <ScrollView
               flex={1}
@@ -246,7 +273,16 @@ export function BottomSheet({
                 pb: settled + SHEET.overdrag + insets.bottom,
               }}
             >
-              <YStack px={SHEET.padding}>{children}</YStack>
+              <YStack
+                px={SHEET.padding}
+                onLayout={
+                  fits
+                    ? (event) => setContent(event.nativeEvent.layout.height)
+                    : undefined
+                }
+              >
+                {children}
+              </YStack>
             </ScrollView>
           </YStack>
         </Animated.View>

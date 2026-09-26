@@ -162,7 +162,7 @@ export function NoteReaderScreen({ id }: { id: string }) {
   const openCheckIn = (target: DiaryCheckIn) =>
     router.push({
       pathname: '/goals/[id]/check-in',
-      params: { id: target.goal.id, date: note.entryDate },
+      params: { id: target.goal.id, date: note.entryDate, locked: '1' },
     });
 
   return (

@@ -36,6 +36,7 @@ function CheckInForm({
   selected,
   today,
   current,
+  locked,
   onSelect,
 }: {
   goal: Goal;
@@ -46,6 +47,7 @@ function CheckInForm({
   selected: DateKey;
   today: DateKey;
   current: DateKey;
+  locked: boolean;
   onSelect: (date: DateKey) => void;
 }) {
   const { t, locale } = useTranslations();
@@ -117,14 +119,16 @@ function CheckInForm({
       <YStack flex={1} bg="$background">
         <FormScrollView>
           <YStack p={SPACING.screen} gap={SPACING.section}>
-            <WeekPicker
-              frequency={goal.trackingFrequency}
-              periods={periods}
-              selected={selected}
-              today={today}
-              createdOn={goal.createdAt.slice(0, 10)}
-              onSelect={pick}
-            />
+            {!locked && (
+              <WeekPicker
+                frequency={goal.trackingFrequency}
+                periods={periods}
+                selected={selected}
+                today={today}
+                createdOn={goal.createdAt.slice(0, 10)}
+                onSelect={pick}
+              />
+            )}
 
             <YStack gap={SPACING.text}>
               <XStack
@@ -180,16 +184,18 @@ function CheckInForm({
 
                 <MoodPicker value={draft.mood} onChange={draft.setMood} />
 
-                <CheckInNotes
-                  logId={period?.logId ?? null}
-                  title={goal.name}
-                  subtitle={heading}
-                  pending={draft.pending}
-                  onAddPending={draft.addPending}
-                  onUpdatePending={draft.updatePending}
-                  onRemovePending={draft.removePending}
-                  busy={draft.isSaving}
-                />
+                {!locked && (
+                  <CheckInNotes
+                    logId={period?.logId ?? null}
+                    title={goal.name}
+                    subtitle={heading}
+                    pending={draft.pending}
+                    onAddPending={draft.addPending}
+                    onUpdatePending={draft.updatePending}
+                    onRemovePending={draft.removePending}
+                    busy={draft.isSaving}
+                  />
+                )}
               </>
             )}
           </YStack>
@@ -202,9 +208,11 @@ function CheckInForm({
 export function CheckInScreen({
   goalId,
   date: opensOn,
+  locked = false,
 }: {
   goalId: string;
   date?: string;
+  locked?: boolean;
 }) {
   const { t } = useTranslations();
   const router = useRouter();
@@ -281,6 +289,7 @@ export function CheckInScreen({
       selected={selected}
       today={progress.today}
       current={progress.currentPeriod.entryDate}
+      locked={locked}
       onSelect={select}
     />
   );
