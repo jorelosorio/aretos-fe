@@ -84,7 +84,6 @@ export const es = {
       save: 'Guardar',
       delete: 'Eliminar nota',
       back: 'Volver',
-      date: 'Fecha',
       body: 'Nota',
       discardTitle: '¿Descartar los cambios?',
       discardBody: 'Lo que escribiste no se guardará.',

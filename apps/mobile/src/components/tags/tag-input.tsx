@@ -164,6 +164,7 @@ export function TagInput({
             key={tag}
             label={tag}
             size="regular"
+            lines={2}
             highlighted={armed && index === value.length - 1}
             removeLabel={t('tags.remove', { name: capitalize(tag) })}
             onRemove={() => {

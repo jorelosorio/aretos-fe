@@ -50,6 +50,20 @@ export function shortDateLabel(key: string, locale: AppLocale): string {
   }).format(toDate(key));
 }
 
+/**
+ * "Thu, Sep 24" — enough to place a day without spelling it out, for a
+ * pill that should read at a glance rather than as a sentence.
+ */
+export function mediumDateLabel(key: string, locale: AppLocale): string {
+  return capitalize(
+    dateFormat(locale, {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
+    }).format(toDate(key)),
+  );
+}
+
 /** The day of the month, which is what a picker's circles carry. */
 export function dayNumber(key: string): string {
   return String(toDate(key).getDate());

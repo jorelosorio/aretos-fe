@@ -83,7 +83,6 @@ export const en = {
       save: 'Save',
       delete: 'Delete note',
       back: 'Back',
-      date: 'Date',
       body: 'Note',
       discardTitle: 'Discard your changes?',
       discardBody: "What you wrote won't be saved.",

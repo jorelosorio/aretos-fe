@@ -5,12 +5,14 @@ import { SizableText, XStack, YStack } from 'tamagui';
 import { ICON, TEXT } from '@/constants/layout';
 
 const HIT_SLOP = 8;
+const WRAPPING_RADIUS = 14;
 
 export type ChipLeading = (active: boolean) => ReactNode;
 
 export type ChipProps = {
   label: string;
   size?: 'small' | 'regular';
+  lines?: 1 | 2;
   leading?: ChipLeading;
   selected?: boolean;
   highlighted?: boolean;
@@ -23,6 +25,7 @@ export type ChipProps = {
 export function Chip({
   label,
   size = 'small',
+  lines = 1,
   leading,
   selected,
   highlighted = false,
@@ -42,7 +45,8 @@ export function Chip({
       pl={leading === undefined ? '$2.5' : '$2'}
       pr={onRemove === undefined ? '$2.5' : '$1.5'}
       py="$1"
-      rounded={999}
+      maxW="100%"
+      rounded={lines === 1 ? 999 : WRAPPING_RADIUS}
       bg={active ? '$primary' : '$muted'}
       onPress={onPress}
       pressStyle={onPress === undefined ? undefined : { opacity: 0.7 }}
@@ -52,9 +56,10 @@ export function Chip({
     >
       {leading !== undefined && <YStack mr="$1">{leading(active)}</YStack>}
       <SizableText
+        shrink={1}
         size={size === 'small' ? TEXT.caption : TEXT.body}
         color={text}
-        numberOfLines={1}
+        numberOfLines={lines}
       >
         {label}
       </SizableText>

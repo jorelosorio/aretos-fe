@@ -42,13 +42,7 @@ function whenLabel(note: DiaryNote, locale: AppLocale) {
   return `${day}, ${time}`;
 }
 
-function ContextPill({
-  checkIn,
-  onPress,
-}: {
-  checkIn: DiaryCheckIn | null;
-  onPress?: () => void;
-}) {
+function ContextPill({ checkIn }: { checkIn: DiaryCheckIn | null }) {
   const { t } = useTranslations();
 
   return (
@@ -60,9 +54,7 @@ function ContextPill({
       rounded={999}
       bg="$muted"
       maxW={220}
-      onPress={onPress}
-      pressStyle={onPress === undefined ? undefined : { opacity: 0.7 }}
-      accessibilityRole={onPress === undefined ? 'text' : 'button'}
+      accessibilityRole="text"
     >
       {checkIn !== null && <GoalDot slot={checkIn.goal.colorSlot} size={8} />}
       <SizableText
@@ -150,15 +142,6 @@ export function NoteReaderScreen({ id }: { id: string }) {
   const filterBy = (tag: string) =>
     router.dismissTo({ pathname: '/diary', params: { tag } });
 
-  const openGoal =
-    checkIn === null
-      ? undefined
-      : () =>
-          router.push({
-            pathname: '/goals/[id]',
-            params: { id: checkIn.goal.id },
-          });
-
   const openCheckIn = (target: DiaryCheckIn) =>
     router.push({
       pathname: '/goals/[id]/check-in',
@@ -171,9 +154,7 @@ export function NoteReaderScreen({ id }: { id: string }) {
         options={{
           title: '',
           headerTitleAlign: 'center',
-          headerTitle: () => (
-            <ContextPill checkIn={checkIn} onPress={openGoal} />
-          ),
+          headerTitle: () => <ContextPill checkIn={checkIn} />,
           headerRight: readOnly
             ? undefined
             : () => <NoteActionsMenu note={note} onEdit={edit} />,

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import {
   FlatList,
   type NativeScrollEvent,
@@ -49,7 +49,7 @@ function weekList(first: DateKey, last: DateKey): DateKey[] {
   return weeks.length === 0 ? [last] : weeks;
 }
 
-function DayCell({
+const DayCell = memo(function DayCell({
   day,
   locale,
   status,
@@ -57,7 +57,8 @@ function DayCell({
   isSelected,
   isToday,
   isFuture,
-  onPress,
+  target,
+  onSelect,
 }: {
   day: DateKey;
   locale: AppLocale;
@@ -66,7 +67,8 @@ function DayCell({
   isSelected: boolean;
   isToday: boolean;
   isFuture: boolean;
-  onPress: () => void;
+  target: DateKey;
+  onSelect: (date: DateKey) => void;
 }) {
   const theme = useTheme();
 
@@ -76,7 +78,7 @@ function DayCell({
       items="center"
       gap="$1"
       opacity={isFuture ? 0.35 : 1}
-      onPress={isFuture ? undefined : onPress}
+      onPress={isFuture ? undefined : () => onSelect(target)}
       pressStyle={isFuture ? undefined : { opacity: 0.6 }}
       accessibilityRole="button"
       accessibilityState={{ selected: isSelected, disabled: isFuture }}
@@ -113,7 +115,7 @@ function DayCell({
       </Svg>
     </YStack>
   );
-}
+});
 
 export function WeekPicker({
   frequency,
@@ -222,6 +224,9 @@ export function WeekPicker({
               index: item,
             })}
             onMomentumScrollEnd={onSettle}
+            windowSize={3}
+            initialNumToRender={1}
+            maxToRenderPerBatch={1}
             renderItem={({ item }) => (
               <XStack width={width} gap="$1">
                 {weekDays(item).map((day) => {
@@ -240,7 +245,8 @@ export function WeekPicker({
                       }
                       isToday={day === today}
                       isFuture={!byWeek && day > today}
-                      onPress={() => onSelect(byWeek ? item : day)}
+                      target={byWeek ? item : day}
+                      onSelect={onSelect}
                     />
                   );
                 })}
