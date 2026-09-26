@@ -56,8 +56,6 @@ export const en = {
     },
     filter: {
       all: 'All',
-      more: '+%{count} more',
-      less: 'Show less',
     },
     filtered: {
       title: 'No notes tagged “%{tag}”',
@@ -106,6 +104,10 @@ export const en = {
       network: "We couldn't reach the server. Check your connection.",
       generic: 'Something went wrong. Try again.',
     },
+  },
+  filter: {
+    more: '+%{count} more',
+    less: 'Show less',
   },
   tags: {
     label: 'Tags',

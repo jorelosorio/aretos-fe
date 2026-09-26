@@ -57,8 +57,6 @@ export const es = {
     },
     filter: {
       all: 'Todas',
-      more: '+%{count} más',
-      less: 'Ver menos',
     },
     filtered: {
       title: 'Sin notas con «%{tag}»',
@@ -109,6 +107,10 @@ export const es = {
       network: 'No pudimos conectar con el servidor. Revisa tu conexión.',
       generic: 'Algo salió mal. Inténtalo de nuevo.',
     },
+  },
+  filter: {
+    more: '+%{count} más',
+    less: 'Ver menos',
   },
   tags: {
     label: 'Etiquetas',

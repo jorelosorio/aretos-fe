@@ -9,7 +9,7 @@ import {
   Smile,
   Target,
 } from '@tamagui/lucide-icons-2';
-import { ScrollView, Separator, SizableText, XStack, YStack } from 'tamagui';
+import { ScrollView, SizableText, XStack, YStack } from 'tamagui';
 
 import { shortDateLabel } from '@/components/common/date-label';
 import { ErrorNotice } from '@/components/common/error-notice';
@@ -196,8 +196,6 @@ export function AnalysisScreen() {
         ) : (
           <>
             <YStack px={SPACING.screen} gap={SPACING.group}>
-              <Separator borderColor="$border" />
-
               <SegmentedControl
                 segments={sections}
                 value={section}

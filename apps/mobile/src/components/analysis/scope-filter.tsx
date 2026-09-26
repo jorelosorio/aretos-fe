@@ -1,53 +1,24 @@
-import { SizableText, XStack, YStack, type ColorTokens } from 'tamagui';
+import { YStack } from 'tamagui';
 
+import { ChipFilter } from '@/components/common/chip-filter';
+import type { ChipLeading } from '@/components/common/chip';
 import { slotColor } from '@/components/goals/slot-color';
-import { TEXT } from '@/constants/layout';
 import type { Goal } from '@/features/goals';
 import { useTranslations } from '@/lib/i18n';
 
-function Chip({
-  label,
-  selected,
-  dot,
-  onPress,
-}: {
-  label: string;
-  selected: boolean;
-  dot?: ColorTokens;
-  onPress: () => void;
-}) {
-  return (
-    <XStack
-      items="center"
-      gap="$1.5"
-      px="$3"
-      py="$2"
-      rounded="$xl2"
-      bg={selected ? '$primary' : '$muted'}
-      pressStyle={{ opacity: 0.7 }}
-      onPress={onPress}
-      accessibilityRole="button"
-      accessibilityState={{ selected }}
-      accessibilityLabel={label}
-    >
-      {dot !== undefined && (
-        <YStack
-          width={8}
-          height={8}
-          rounded={4}
-          bg={selected ? '$primaryForeground' : dot}
-        />
-      )}
+const DOT = 8;
 
-      <SizableText
-        size={TEXT.caption}
-        fontWeight="600"
-        color={selected ? '$primaryForeground' : '$mutedForeground'}
-      >
-        {label}
-      </SizableText>
-    </XStack>
-  );
+function goalMark(slot: number): ChipLeading {
+  return function GoalMark(active) {
+    return (
+      <YStack
+        width={DOT}
+        height={DOT}
+        rounded={DOT / 2}
+        bg={active ? '$primaryForeground' : slotColor(slot)}
+      />
+    );
+  };
 }
 
 export function ScopeFilter({
@@ -61,25 +32,16 @@ export function ScopeFilter({
 }) {
   const { t } = useTranslations();
 
-  if (goals.length === 0) return null;
-
   return (
-    <XStack flexWrap="wrap" gap="$2">
-      <Chip
-        label={t('analysis.scope.all')}
-        selected={value === null}
-        onPress={() => onChange(null)}
-      />
-
-      {goals.map((goal) => (
-        <Chip
-          key={goal.id}
-          label={goal.name}
-          dot={slotColor(goal.colorSlot)}
-          selected={value === goal.id}
-          onPress={() => onChange(goal.id)}
-        />
-      ))}
-    </XStack>
+    <ChipFilter
+      items={goals.map((goal) => ({
+        key: goal.id,
+        label: goal.name,
+        leading: goalMark(goal.colorSlot),
+      }))}
+      value={value}
+      onChange={onChange}
+      allLabel={t('analysis.scope.all')}
+    />
   );
 }
