@@ -1,6 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Plus, X } from '@tamagui/lucide-icons-2';
-import { Input, SizableText, XStack, YStack } from 'tamagui';
+import {
+  Input,
+  SizableText,
+  XStack,
+  YStack,
+  type TamaguiElement,
+} from 'tamagui';
 
 import { ICON, SPACING, TEXT } from '@/constants/layout';
 import {
@@ -14,6 +20,9 @@ import { useTranslations } from '@/lib/i18n';
 
 const SUGGESTIONS = 8;
 const DEBOUNCE_MS = 250;
+const INPUT_MIN_WIDTH = 120;
+const INPUT_HEIGHT = 32;
+const HIT_SLOP = 8;
 
 function useDebounced(value: string, delay: number) {
   const [debounced, setDebounced] = useState(value);
@@ -24,6 +33,45 @@ function useDebounced(value: string, delay: number) {
   }, [value, delay]);
 
   return debounced;
+}
+
+function TagChip({
+  label,
+  armed,
+  removeLabel,
+  onRemove,
+}: {
+  label: string;
+  armed: boolean;
+  removeLabel: string;
+  onRemove: () => void;
+}) {
+  const tone = armed ? '$primaryForeground' : '$color';
+
+  return (
+    <XStack
+      items="center"
+      gap="$1"
+      pl="$2.5"
+      pr="$1.5"
+      py="$1"
+      rounded={999}
+      bg={armed ? '$primary' : '$muted'}
+    >
+      <SizableText size={TEXT.body} color={tone}>
+        {label}
+      </SizableText>
+      <YStack
+        onPress={onRemove}
+        hitSlop={HIT_SLOP}
+        pressStyle={{ opacity: 0.6 }}
+        accessibilityRole="button"
+        accessibilityLabel={removeLabel}
+      >
+        <X size={ICON.inline} color={armed ? tone : '$mutedForeground'} />
+      </YStack>
+    </XStack>
+  );
 }
 
 function SuggestionChip({
@@ -69,11 +117,17 @@ export function TagInput({
   onTextChange: (text: string) => void;
 }) {
   const { t } = useTranslations();
+  const inputRef = useRef<TamaguiElement>(null);
+  const [focused, setFocused] = useState(false);
+  const [armed, setArmed] = useState(false);
+
   const query = useDebounced(text.trim(), DEBOUNCE_MS);
   const { data } = useTags(query, { limit: SUGGESTIONS + value.length });
 
+  const full = value.length >= TAGS_MAX;
   const taken = new Set(value.map((tag) => tag.toLowerCase()));
   const typed = text.trim();
+  const last = value[value.length - 1];
 
   const suggestions = (data ?? [])
     .filter((tag) => !taken.has(tag.name.toLowerCase()))
@@ -85,12 +139,17 @@ export function TagInput({
     !taken.has(typed.toLowerCase()) &&
     !suggestions.some((tag) => tag.name.toLowerCase() === typed.toLowerCase());
 
+  const showSuggestions =
+    !full && (focused || typed !== '') && (suggestions.length > 0 || canCreate);
+
   const add = (name: string) => {
     onChange(addTag(value, name));
     setText('');
+    setArmed(false);
   };
 
   const changeText = (next: string) => {
+    setArmed(false);
     const parts = next.split(',');
 
     if (parts.length === 1) {
@@ -106,44 +165,66 @@ export function TagInput({
     setText(parts[parts.length - 1]);
   };
 
+  const backspace = () => {
+    if (text !== '' || last === undefined) return;
+    if (!armed) {
+      setArmed(true);
+      return;
+    }
+    onChange(removeTag(value, last));
+    setArmed(false);
+  };
+
+  const blur = () => {
+    setFocused(false);
+    setArmed(false);
+    if (typed !== '') add(typed);
+  };
+
   return (
     <YStack gap={SPACING.group}>
-      {value.length > 0 && (
-        <XStack flexWrap="wrap" gap="$1.5">
-          {value.map((tag) => (
-            <XStack
-              key={tag}
-              items="center"
-              gap="$1"
-              pl="$2.5"
-              pr="$1.5"
-              py="$1"
-              rounded={999}
-              bg="$muted"
-              onPress={() => onChange(removeTag(value, tag))}
-              pressStyle={{ opacity: 0.7 }}
-              accessibilityRole="button"
-              accessibilityLabel={t('tags.remove', { name: tag })}
-            >
-              <SizableText size={TEXT.caption} color="$color">
-                {tag}
-              </SizableText>
-              <X size={ICON.inline} color="$mutedForeground" />
-            </XStack>
-          ))}
-        </XStack>
-      )}
+      <XStack
+        flexWrap="wrap"
+        items="center"
+        gap="$1.5"
+        px="$3"
+        py="$2"
+        minH={INPUT_HEIGHT + 20}
+        bg="$card"
+        rounded="$xl"
+        borderWidth={1}
+        borderColor={focused ? '$primary' : '$border'}
+        onPress={() => inputRef.current?.focus()}
+      >
+        {value.map((tag, index) => (
+          <TagChip
+            key={tag}
+            label={tag}
+            armed={armed && index === value.length - 1}
+            removeLabel={t('tags.remove', { name: tag })}
+            onRemove={() => {
+              setArmed(false);
+              onChange(removeTag(value, tag));
+            }}
+          />
+        ))}
 
-      {value.length >= TAGS_MAX ? (
-        <SizableText size={TEXT.caption} color="$mutedForeground">
-          {t('tags.full', { count: value.length, max: TAGS_MAX })}
-        </SizableText>
-      ) : (
-        <>
+        {!full && (
           <Input
+            ref={inputRef}
+            unstyled
+            flex={1}
+            minW={INPUT_MIN_WIDTH}
+            height={INPUT_HEIGHT}
             size="$4"
+            color="$color"
             value={text}
             onChangeText={changeText}
+            onKeyPress={(event) => {
+              if (event.nativeEvent.key === 'Backspace') backspace();
+            }}
+            onFocus={() => setFocused(true)}
+            onBlur={blur}
             onSubmitEditing={() => add(text)}
             submitBehavior="submit"
             returnKeyType="done"
@@ -152,32 +233,30 @@ export function TagInput({
             maxLength={TAG_MAX_LENGTH}
             autoCapitalize="none"
             autoCorrect={false}
-            bg="$card"
-            borderColor="$border"
             accessibilityLabel={t('tags.label')}
           />
+        )}
+      </XStack>
 
-          {(suggestions.length > 0 || canCreate) && (
-            <XStack flexWrap="wrap" gap="$1.5">
-              {suggestions.map((tag) => (
-                <SuggestionChip
-                  key={tag.id}
-                  label={tag.name}
-                  accessibilityLabel={t('tags.add', { name: tag.name })}
-                  onPress={() => add(tag.name)}
-                />
-              ))}
+      {showSuggestions && (
+        <XStack flexWrap="wrap" gap="$1.5">
+          {suggestions.map((tag) => (
+            <SuggestionChip
+              key={tag.id}
+              label={tag.name}
+              accessibilityLabel={t('tags.add', { name: tag.name })}
+              onPress={() => add(tag.name)}
+            />
+          ))}
 
-              {canCreate && (
-                <SuggestionChip
-                  label={t('tags.create', { name: typed })}
-                  accessibilityLabel={t('tags.create', { name: typed })}
-                  onPress={() => add(typed)}
-                />
-              )}
-            </XStack>
+          {canCreate && (
+            <SuggestionChip
+              label={t('tags.create', { name: typed })}
+              accessibilityLabel={t('tags.create', { name: typed })}
+              onPress={() => add(typed)}
+            />
           )}
-        </>
+        </XStack>
       )}
     </YStack>
   );

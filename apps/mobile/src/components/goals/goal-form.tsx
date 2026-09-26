@@ -24,7 +24,7 @@ import { HeaderTextButton } from '@/components/common/header-actions';
 import { OptionGroup, type Option } from '@/components/common/option-group';
 import { SectionTitle } from '@/components/common/section-title';
 import { GoalColorPicker } from '@/components/goals/goal-color-picker';
-import { TagInput } from '@/components/tags/tag-input';
+import { TagField } from '@/components/tags/tag-field';
 import {
   useCreateGoal,
   useGoalErrorMessage,
@@ -193,18 +193,14 @@ export function GoalForm({
               />
             </YStack>
 
-            <YStack gap={SPACING.group}>
-              <Label color="$color">{t('goals.form.tags')}</Label>
-              <TagInput
-                value={draft.tags}
-                onChange={(tags) => patch({ tags })}
-                text={tagText}
-                onTextChange={setTagText}
-              />
-              <SizableText size={TEXT.caption} color="$mutedForeground" px="$2">
-                {t('goals.form.tagsHint')}
-              </SizableText>
-            </YStack>
+            <TagField
+              value={draft.tags}
+              onChange={(tags) => patch({ tags })}
+              text={tagText}
+              onTextChange={setTagText}
+              label={t('goals.form.tags')}
+              hint={t('goals.form.tagsHint')}
+            />
 
             <GoalColorPicker
               value={draft.colorSlot}

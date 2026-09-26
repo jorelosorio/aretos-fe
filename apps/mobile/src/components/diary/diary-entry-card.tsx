@@ -61,6 +61,15 @@ export function DiaryEntryCard({
       accessibilityHint={t('diary.entry.readHint')}
     >
       <YStack flex={1} minW={0} gap={SPACING.text}>
+        <Paragraph
+          size={TEXT.body}
+          color="$cardForeground"
+          numberOfLines={NOTE_LINES}
+          ellipsizeMode="tail"
+        >
+          {preview}
+        </Paragraph>
+
         <XStack items="center" gap="$1.5">
           {checkIn !== null && (
             <>
@@ -92,15 +101,6 @@ export function DiaryEntryCard({
             {when}
           </SizableText>
         </XStack>
-
-        <Paragraph
-          size={TEXT.body}
-          color="$cardForeground"
-          numberOfLines={NOTE_LINES}
-          ellipsizeMode="tail"
-        >
-          {preview}
-        </Paragraph>
 
         {checkIn !== null && checkIn.total > 0 && (
           <CompletionStatus

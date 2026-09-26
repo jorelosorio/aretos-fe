@@ -8,13 +8,13 @@ import Animated, {
 } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import type { X } from '@tamagui/lucide-icons-2';
+import type { ChevronLeft } from '@tamagui/lucide-icons-2';
 import { Button, SizableText, XStack, YStack } from 'tamagui';
 
 import { SectionTitle } from '@/components/common/section-title';
 import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';
 
-type IconComponent = typeof X;
+type IconComponent = typeof ChevronLeft;
 
 const ENTER = { duration: 420, easing: Easing.bezier(0.32, 0.72, 0, 1) };
 const EXIT = { duration: 260, easing: Easing.bezier(0.32, 0, 0.67, 0) };
@@ -41,8 +41,8 @@ export function FullScreenSheet({
   children: ReactNode;
 }) {
   const insets = useSafeAreaInsets();
-  const { height } = useWindowDimensions();
-  const offset = useSharedValue(height);
+  const { width } = useWindowDimensions();
+  const offset = useSharedValue(width);
   const [mounted, setMounted] = useState(open);
 
   if (open && !mounted) setMounted(true);
@@ -53,18 +53,18 @@ export function FullScreenSheet({
 
   useEffect(() => {
     if (open) {
-      if (offset.get() < height) enter();
+      if (offset.get() < width) enter();
       return;
     }
     offset.set(
-      withTiming(height, EXIT, (finished) => {
+      withTiming(width, EXIT, (finished) => {
         if (finished) scheduleOnRN(setMounted, false);
       }),
     );
-  }, [open, height, offset, enter]);
+  }, [open, width, offset, enter]);
 
   const slide = useAnimatedStyle(() => ({
-    transform: [{ translateY: offset.get() }],
+    transform: [{ translateX: offset.get() }],
   }));
 
   return (
@@ -83,7 +83,7 @@ export function FullScreenSheet({
             shadowColor: '#000',
             shadowOpacity: 0.12,
             shadowRadius: 16,
-            shadowOffset: { width: 0, height: -4 },
+            shadowOffset: { width: -4, height: 0 },
             elevation: 12,
           },
           slide,
@@ -91,12 +91,20 @@ export function FullScreenSheet({
       >
         <YStack flex={1} bg="$background" pt={insets.top} pb={insets.bottom}>
           <XStack
-            items="flex-start"
-            justify="space-between"
+            items="center"
             gap={SPACING.items}
             px={SPACING.screen}
             py={SPACING.group}
           >
+            <Button
+              size={BUTTON.icon}
+              circular
+              chromeless
+              onPress={onDismiss}
+              icon={<Icon size={ICON.row} color="$color" />}
+              accessibilityLabel={iconLabel}
+            />
+
             <YStack flex={1} minW={0} gap={SPACING.text}>
               {leading === undefined ? (
                 <SectionTitle>{title}</SectionTitle>
@@ -118,14 +126,6 @@ export function FullScreenSheet({
 
             <XStack items="center" gap="$1">
               {actions}
-              <Button
-                size={BUTTON.icon}
-                circular
-                chromeless
-                onPress={onDismiss}
-                icon={<Icon size={ICON.row} color="$color" />}
-                accessibilityLabel={iconLabel}
-              />
             </XStack>
           </XStack>
 

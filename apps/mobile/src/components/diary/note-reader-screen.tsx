@@ -1,4 +1,3 @@
-import { useRef, useState } from 'react';
 import { Stack, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Archive } from '@tamagui/lucide-icons-2';
@@ -18,11 +17,8 @@ import { useTranslations } from '@/lib/i18n';
 
 import { periodLabel } from './diary-date';
 import { NoteActionsMenu } from './note-actions-menu';
-import { NoteComposer } from './note-composer';
 
 const MOOD_FACE = 28;
-
-type Composer = { session: number; open: boolean };
 
 export function NoteReaderScreen({ id }: { id: string }) {
   const { t, locale } = useTranslations();
@@ -31,19 +27,14 @@ export function NoteReaderScreen({ id }: { id: string }) {
   const toMessage = useNoteErrorMessage();
   const { data: note, error } = useNote(id);
 
-  const [composer, setComposer] = useState<Composer | null>(null);
-  const sessions = useRef(0);
-
   if (!note && error) return <ErrorNotice message={toMessage(error)} />;
   if (!note) return <ScreenLoader />;
 
   const { checkIn } = note;
   const readOnly = checkIn?.goal.archived === true;
 
-  const edit = () => {
-    sessions.current += 1;
-    setComposer({ session: sessions.current, open: true });
-  };
+  const edit = () =>
+    router.push({ pathname: '/diary/[id]/edit', params: { id: note.id } });
 
   const filterBy = (tag: string) =>
     router.dismissTo({ pathname: '/diary', params: { tag } });
@@ -121,19 +112,6 @@ export function NoteReaderScreen({ id }: { id: string }) {
           )}
         </YStack>
       </ScrollView>
-
-      {composer !== null && (
-        <NoteComposer
-          key={composer.session}
-          note={note}
-          open={composer.open}
-          onClose={() =>
-            setComposer((current) =>
-              current === null ? null : { ...current, open: false },
-            )
-          }
-        />
-      )}
     </>
   );
 }

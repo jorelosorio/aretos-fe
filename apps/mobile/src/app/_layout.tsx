@@ -74,8 +74,16 @@ function RootNavigator() {
         />
 
         <Stack.Screen
-          name="diary/[id]"
+          name="diary/new"
+          options={{ headerShown: true, title: t('diary.editor.newTitle') }}
+        />
+        <Stack.Screen
+          name="diary/[id]/index"
           options={{ headerShown: true, title: '' }}
+        />
+        <Stack.Screen
+          name="diary/[id]/edit"
+          options={{ headerShown: true, title: t('diary.editor.editTitle') }}
         />
 
         <Stack.Screen

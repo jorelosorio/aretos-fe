@@ -3,10 +3,8 @@ import { Plus } from '@tamagui/lucide-icons-2';
 import { Button, Paragraph, SizableText, YStack } from 'tamagui';
 
 import { SectionTitle } from '@/components/common/section-title';
-import {
-  NoteEditor,
-  type NoteEditorValue,
-} from '@/components/diary/note-editor';
+import { NoteEditor } from '@/components/diary/note-editor';
+import type { NoteValue } from '@/components/diary/note-draft';
 import { notePreview } from '@/components/diary/note-preview';
 import { TagChips } from '@/components/tags/tag-chips';
 import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';
@@ -18,12 +16,7 @@ import {
   type CheckInNote,
 } from '@/features/diary';
 import { useAllowance } from '@/features/limits';
-import {
-  todayKey,
-  useLog,
-  type NoteBody,
-  type PendingNote,
-} from '@/features/logs';
+import { useLog, type NoteBody, type PendingNote } from '@/features/logs';
 import { useTranslations, type AppLocale } from '@/lib/i18n';
 
 const PREVIEW_LINES = 3;
@@ -125,7 +118,7 @@ function CheckInNoteComposer({
     error: deleteError,
   } = useDeleteCheckInNote();
 
-  const save = ({ body, tags }: NoteEditorValue) => {
+  const save = ({ body, tags }: NoteValue) => {
     if (target.kind === 'pending') {
       onUpdatePending(target.note.key, { body, tags });
       onClose();
@@ -166,13 +159,12 @@ function CheckInNoteComposer({
     <NoteEditor
       open={open}
       title={title}
-      subtitle={subtitle}
+      period={subtitle}
       initial={{
         body: target.kind === 'new' ? '' : target.note.body,
         tags: target.kind === 'new' ? [] : target.note.tags,
         entryDate: null,
       }}
-      maxDate={todayKey()}
       busy={isAdding || isUpdating || isDeleting}
       error={toMessage(addError ?? updateError ?? deleteError)}
       onSave={save}

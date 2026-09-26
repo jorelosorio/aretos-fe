@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
@@ -24,10 +24,7 @@ import { monthLabel } from './diary-date';
 import { DiaryEntryCard } from './diary-entry-card';
 import { toRows } from './diary-rows';
 import { HistoryCutoffNotice } from './history-cutoff-notice';
-import { NoteComposer } from './note-composer';
 import { TagFilter } from './tag-filter';
-
-type Composer = { session: number; note: DiaryNote | null; open: boolean };
 
 export function DiaryScreen() {
   const { t, locale } = useTranslations();
@@ -40,8 +37,6 @@ export function DiaryScreen() {
   const { canCreate } = useAllowance('diary_note');
 
   const tag = params.tag === undefined || params.tag === '' ? null : params.tag;
-  const [composer, setComposer] = useState<Composer | null>(null);
-  const sessions = useRef(0);
 
   const {
     data,
@@ -62,11 +57,6 @@ export function DiaryScreen() {
   const read = (note: DiaryNote) =>
     router.push({ pathname: '/diary/[id]', params: { id: note.id } });
 
-  const compose = useCallback((note: DiaryNote | null) => {
-    sessions.current += 1;
-    setComposer({ session: sessions.current, note, open: true });
-  }, []);
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -75,11 +65,11 @@ export function DiaryScreen() {
           tone="$primary"
           label={t('diary.new')}
           disabled={!canCreate}
-          onPress={() => compose(null)}
+          onPress={() => router.push('/diary/new')}
         />
       ),
     });
-  }, [navigation, canCreate, compose, t]);
+  }, [navigation, router, canCreate, t]);
 
   return (
     <YStack flex={1} bg="$background">
@@ -140,7 +130,7 @@ export function DiaryScreen() {
               title={t('diary.empty.title')}
               body={t('diary.empty.body')}
               action={canCreate ? t('diary.empty.action') : undefined}
-              onAction={canCreate ? () => compose(null) : undefined}
+              onAction={canCreate ? () => router.push('/diary/new') : undefined}
             />
           )
         }
@@ -163,19 +153,6 @@ export function DiaryScreen() {
           )
         }
       />
-
-      {composer !== null && (
-        <NoteComposer
-          key={composer.session}
-          note={composer.note}
-          open={composer.open}
-          onClose={() =>
-            setComposer((current) =>
-              current === null ? null : { ...current, open: false },
-            )
-          }
-        />
-      )}
     </YStack>
   );
 }
