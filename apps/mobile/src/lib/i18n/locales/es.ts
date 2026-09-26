@@ -580,6 +580,8 @@ export const es = {
     section: 'Hábitos',
     countOne: '%{count} hábito',
     countMany: '%{count} hábitos',
+    progressOne: '%{answered} de %{total} hábito',
+    progressMany: '%{answered} de %{total} hábitos',
     new: 'Añadir un hábito',
     actions: 'Opciones',
     archive: 'Archivar',

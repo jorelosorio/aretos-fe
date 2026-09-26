@@ -579,6 +579,8 @@ export const en = {
     section: 'Habits',
     countOne: '%{count} habit',
     countMany: '%{count} habits',
+    progressOne: '%{answered} of %{total} habit',
+    progressMany: '%{answered} of %{total} habits',
     new: 'Add a habit',
     actions: 'Options',
     archive: 'Archive',

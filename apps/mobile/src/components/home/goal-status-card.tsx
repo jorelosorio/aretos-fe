@@ -4,13 +4,10 @@ import { Separator, SizableText, XStack, YStack } from 'tamagui';
 
 import { CompletionStatus } from '@/components/goals/completion-status';
 import { GoalDot } from '@/components/goals/goal-dot';
-import {
-  PERIOD_STATUS_COLORS,
-  PERIOD_STATUS_LABELS,
-} from '@/components/goals/period-status';
+import { PERIOD_STATUS_LABELS } from '@/components/goals/period-status';
 import { MOOD_LABELS } from '@/components/logs/mood-labels';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
-import type { Goal, GoalProgress, PeriodStatus } from '@/features/goals';
+import type { Goal, GoalProgress } from '@/features/goals';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
 
 import { WeekStrip } from './week-strip';
@@ -21,8 +18,6 @@ const FREQUENCY_LABELS: Record<Goal['trackingFrequency'], TranslationKey> = {
   weekly: 'goals.frequency.weekly',
   flexible: 'goals.frequency.flexible',
 };
-
-const TRACK_HEIGHT = 6;
 
 const STREAK_DAYS = {
   short: 'home.streaks.days',
@@ -56,36 +51,6 @@ function StreakChip({ text }: { text: string }) {
   );
 }
 
-function ProgressTrack({
-  answered,
-  total,
-  status,
-}: {
-  answered: number;
-  total: number;
-  status: PeriodStatus;
-}) {
-  const percent = total === 0 ? 0 : Math.round((answered / total) * 100);
-
-  return (
-    <YStack
-      height={TRACK_HEIGHT}
-      rounded={TRACK_HEIGHT / 2}
-      bg="$vizTrack"
-      overflow="hidden"
-    >
-      {percent > 0 && (
-        <YStack
-          height={TRACK_HEIGHT}
-          width={`${percent}%`}
-          rounded={TRACK_HEIGHT / 2}
-          bg={status === 'empty' ? '$primary' : PERIOD_STATUS_COLORS[status]}
-        />
-      )}
-    </YStack>
-  );
-}
-
 export const GoalStatusCard = memo(function GoalStatusCard({
   goal,
   progress,
@@ -103,10 +68,11 @@ export const GoalStatusCard = memo(function GoalStatusCard({
   const weekly = goal.trackingFrequency === 'weekly';
   const hasHabits = total > 0;
 
+  const cadence = t(FREQUENCY_LABELS[goal.trackingFrequency]);
   const context = `${t(
     goal.habitCount === 1 ? 'habits.countOne' : 'habits.countMany',
     { count: goal.habitCount },
-  )} · ${t(FREQUENCY_LABELS[goal.trackingFrequency])}`;
+  )} · ${cadence}`;
 
   let action: string;
   if (goal.habitCount === 0) action = t('home.cta.addHabit');
@@ -158,9 +124,9 @@ export const GoalStatusCard = memo(function GoalStatusCard({
       accessibilityHint={action}
     >
       <YStack gap={SPACING.items} p={SPACING.card}>
-        <XStack items="flex-start" gap={SPACING.items}>
-          <YStack flex={1} minW={0} gap={SPACING.text}>
-            <XStack items="center" gap="$2">
+        <YStack gap={SPACING.text}>
+          <XStack items="center" gap={SPACING.items}>
+            <XStack flex={1} minW={0} items="center" gap="$2">
               <GoalDot slot={goal.colorSlot} />
               <SizableText
                 flex={1}
@@ -172,6 +138,23 @@ export const GoalStatusCard = memo(function GoalStatusCard({
                 {goal.name}
               </SizableText>
             </XStack>
+
+            {hasStreak && (
+              <StreakChip text={t(streak.short, { count: currentStreak })} />
+            )}
+          </XStack>
+
+          {hasHabits ? (
+            <CompletionStatus
+              status={status}
+              answered={answered}
+              total={total}
+              detail={`${t(
+                total === 1 ? 'habits.progressOne' : 'habits.progressMany',
+                { answered, total },
+              )} · ${cadence}`}
+            />
+          ) : (
             <SizableText
               size={TEXT.caption}
               color="$mutedForeground"
@@ -179,29 +162,11 @@ export const GoalStatusCard = memo(function GoalStatusCard({
             >
               {context}
             </SizableText>
-          </YStack>
-
-          {hasStreak && (
-            <StreakChip text={t(streak.short, { count: currentStreak })} />
           )}
-        </XStack>
+        </YStack>
 
         {hasHabits ? (
           <>
-            <YStack gap={SPACING.group}>
-              <CompletionStatus
-                status={status}
-                answered={answered}
-                total={total}
-              />
-
-              <ProgressTrack
-                answered={answered}
-                total={total}
-                status={status}
-              />
-            </YStack>
-
             {weekly ? (
               <WeekWindow
                 entryDate={currentPeriod.entryDate}

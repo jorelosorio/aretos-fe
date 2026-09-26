@@ -1,7 +1,10 @@
+import Svg, { Circle as SvgCircle } from 'react-native-svg';
+import { useTheme } from '@tamagui/core';
 import { Check, Minus } from '@tamagui/lucide-icons-2';
 import { Circle, SizableText, XStack, YStack } from 'tamagui';
 
 import { dayNumber, weekdayInitial } from '@/components/common/date-label';
+import { resolveColor } from '@/components/common/theme-color';
 import { PeriodMood } from '@/components/logs/period-mood';
 import { ICON, TEXT } from '@/constants/layout';
 import type {
@@ -13,6 +16,8 @@ import { useTranslations } from '@/lib/i18n';
 
 const MARK = 20;
 const SEAM = 2;
+const DOT = 2;
+const DOTS = 12;
 const CORE_SIZE = '$0.75';
 
 const TRACK_FILL = '$outcomeBlank';
@@ -27,10 +32,25 @@ const RING = {
   empty: '$primary',
 } as const satisfies Record<PeriodStatus, string>;
 
-const GLYPH = {
-  complete: Check,
-  skipped: Minus,
-} as const satisfies Partial<Record<PeriodStatus, unknown>>;
+function DottedRing({ color }: { color: string }) {
+  const radius = (MARK - DOT) / 2;
+  const gap = (2 * Math.PI * radius) / DOTS;
+
+  return (
+    <Svg width={MARK} height={MARK}>
+      <SvgCircle
+        cx={MARK / 2}
+        cy={MARK / 2}
+        r={radius}
+        fill="none"
+        stroke={color}
+        strokeWidth={DOT}
+        strokeLinecap="round"
+        strokeDasharray={`0.01 ${gap - 0.01}`}
+      />
+    </Svg>
+  );
+}
 
 export function WeekStrip({
   periods,
@@ -44,7 +64,9 @@ export function WeekStrip({
   frequency: TrackingFrequency;
 }) {
   const { locale } = useTranslations();
+  const theme = useTheme();
   const byDay = frequency !== 'weekly';
+  const dotColor = resolveColor(theme, TRACK_RING);
 
   return (
     <XStack items="center" justify="flex-start" gap="$1">
@@ -54,12 +76,9 @@ export function WeekStrip({
           : period.entryDate === currentEntryDate;
         const counted = period.countsForStreak;
         const hasStatusRing = !counted && (period.status !== 'empty' || isNow);
+        const unlogged = !counted && !hasStatusRing;
         const ink = counted ? '$primaryForeground' : RING[period.status];
         const surface = isNow ? '$muted' : '$card';
-        const Glyph =
-          period.status === 'complete' || period.status === 'skipped'
-            ? GLYPH[period.status]
-            : null;
 
         return (
           <YStack
@@ -98,12 +117,20 @@ export function WeekStrip({
                   size={MARK}
                   items="center"
                   justify="center"
-                  bg={counted ? '$primary' : TRACK_FILL}
-                  borderWidth={counted ? 0 : hasStatusRing ? 2 : 1}
-                  borderColor={hasStatusRing ? RING[period.status] : TRACK_RING}
+                  bg={
+                    counted ? '$primary' : unlogged ? 'transparent' : TRACK_FILL
+                  }
+                  borderWidth={hasStatusRing ? 2 : 0}
+                  borderColor={RING[period.status]}
                 >
-                  {Glyph !== null && (
-                    <Glyph size={ICON.inline} color={ink} strokeWidth={3} />
+                  {unlogged && <DottedRing color={dotColor} />}
+
+                  {period.status === 'complete' && (
+                    <Check size={ICON.inline} color={ink} strokeWidth={3} />
+                  )}
+
+                  {period.status === 'skipped' && (
+                    <Minus size={ICON.inline} color={ink} strokeWidth={3} />
                   )}
 
                   {period.status === 'partial' && (
