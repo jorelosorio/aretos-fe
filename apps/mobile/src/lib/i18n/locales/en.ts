@@ -68,6 +68,8 @@ export const en = {
       edit: 'Edit note',
       delete: 'Delete note',
       archived: 'This goal is archived. Its notes are read-only.',
+      fromCheckIn: 'From your check-in',
+      openCheckIn: 'Opens the check-in for that period.',
     },
     deleteConfirm: {
       title: 'Delete this note?',

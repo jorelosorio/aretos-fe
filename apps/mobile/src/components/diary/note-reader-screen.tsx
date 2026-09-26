@@ -1,6 +1,6 @@
 import { Stack, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Archive } from '@tamagui/lucide-icons-2';
+import { Archive, ChevronRight } from '@tamagui/lucide-icons-2';
 import { Paragraph, ScrollView, SizableText, XStack, YStack } from 'tamagui';
 
 import { longDateLabel } from '@/components/common/date-label';
@@ -9,16 +9,126 @@ import { NOTE_TEXT } from '@/components/common/note-text';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { CompletionStatus } from '@/components/goals/completion-status';
 import { GoalDot } from '@/components/goals/goal-dot';
+import { MOOD_LABELS } from '@/components/logs/mood-labels';
 import { PeriodMood } from '@/components/logs/period-mood';
 import { TagChips } from '@/components/tags/tag-chips';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
-import { useNote, useNoteErrorMessage } from '@/features/diary';
-import { useTranslations } from '@/lib/i18n';
+import {
+  useNote,
+  useNoteErrorMessage,
+  type DiaryCheckIn,
+  type DiaryNote,
+} from '@/features/diary';
+import { useTranslations, type AppLocale } from '@/lib/i18n';
 
-import { periodLabel } from './diary-date';
+import { periodLabel, writtenOnEntryDay } from './diary-date';
 import { NoteActionsMenu } from './note-actions-menu';
 
-const MOOD_FACE = 28;
+const MOOD_FACE = 36;
+
+function whenLabel(note: DiaryNote, locale: AppLocale) {
+  const end = note.checkIn?.endDate ?? note.entryDate;
+  if (end !== note.entryDate) return periodLabel(note.entryDate, end, locale);
+
+  const day = longDateLabel(note.entryDate, locale);
+  if (!writtenOnEntryDay(note.createdAt, note.entryDate)) return day;
+
+  const time = new Intl.DateTimeFormat(locale, {
+    hour: 'numeric',
+    minute: '2-digit',
+  }).format(new Date(note.createdAt));
+
+  return `${day}, ${time}`;
+}
+
+function ContextPill({
+  checkIn,
+  onPress,
+}: {
+  checkIn: DiaryCheckIn | null;
+  onPress?: () => void;
+}) {
+  const { t } = useTranslations();
+
+  return (
+    <XStack
+      items="center"
+      gap="$1.5"
+      px="$3"
+      py="$1.5"
+      rounded={999}
+      bg="$muted"
+      maxW={220}
+      onPress={onPress}
+      pressStyle={onPress === undefined ? undefined : { opacity: 0.7 }}
+      accessibilityRole={onPress === undefined ? 'text' : 'button'}
+    >
+      {checkIn !== null && <GoalDot slot={checkIn.goal.colorSlot} size={8} />}
+      <SizableText
+        shrink={1}
+        size={TEXT.body}
+        fontWeight="600"
+        color="$color"
+        numberOfLines={1}
+      >
+        {checkIn === null ? t('diary.title') : checkIn.goal.name}
+      </SizableText>
+    </XStack>
+  );
+}
+
+function CheckInCard({
+  checkIn,
+  onPress,
+}: {
+  checkIn: DiaryCheckIn;
+  onPress?: () => void;
+}) {
+  const { t } = useTranslations();
+
+  return (
+    <XStack
+      items="center"
+      gap={SPACING.items}
+      p={SPACING.card}
+      bg="$card"
+      rounded="$xl2"
+      borderWidth={1}
+      borderColor="$border"
+      onPress={onPress}
+      pressStyle={onPress === undefined ? undefined : { bg: '$cardPress' }}
+      accessibilityRole={onPress === undefined ? 'summary' : 'button'}
+      accessibilityHint={
+        onPress === undefined ? undefined : t('diary.viewer.openCheckIn')
+      }
+      accessibilityLabel={[
+        t('diary.viewer.fromCheckIn'),
+        checkIn.mood === null ? null : t(MOOD_LABELS[checkIn.mood]),
+      ]
+        .filter((part): part is string => part !== null)
+        .join('. ')}
+    >
+      <PeriodMood mood={checkIn.mood} size={MOOD_FACE} active />
+
+      <YStack flex={1} minW={0} gap={SPACING.text}>
+        <SizableText size={TEXT.body} fontWeight="700" color="$cardForeground">
+          {t('diary.viewer.fromCheckIn')}
+        </SizableText>
+        {checkIn.total > 0 && (
+          <CompletionStatus
+            status={checkIn.status}
+            answered={checkIn.answered}
+            total={checkIn.total}
+          />
+        )}
+      </YStack>
+
+      {onPress !== undefined && (
+        <ChevronRight size={ICON.row} color="$mutedForeground" />
+      )}
+    </XStack>
+  );
+}
 
 export function NoteReaderScreen({ id }: { id: string }) {
   const { t, locale } = useTranslations();
@@ -39,14 +149,30 @@ export function NoteReaderScreen({ id }: { id: string }) {
   const filterBy = (tag: string) =>
     router.dismissTo({ pathname: '/diary', params: { tag } });
 
+  const openGoal =
+    checkIn === null
+      ? undefined
+      : () =>
+          router.push({
+            pathname: '/goals/[id]',
+            params: { id: checkIn.goal.id },
+          });
+
+  const openCheckIn = (target: DiaryCheckIn) =>
+    router.push({
+      pathname: '/goals/[id]/check-in',
+      params: { id: target.goal.id, date: note.entryDate },
+    });
+
   return (
     <>
       <Stack.Screen
         options={{
-          title:
-            checkIn === null
-              ? longDateLabel(note.entryDate, locale)
-              : checkIn.goal.name,
+          title: '',
+          headerTitleAlign: 'center',
+          headerTitle: () => (
+            <ContextPill checkIn={checkIn} onPress={openGoal} />
+          ),
           headerRight: readOnly
             ? undefined
             : () => <NoteActionsMenu note={note} onEdit={edit} />,
@@ -59,34 +185,6 @@ export function NoteReaderScreen({ id }: { id: string }) {
         contentContainerStyle={{ pb: insets.bottom }}
       >
         <YStack p={SPACING.screen} gap={SPACING.section}>
-          {checkIn !== null && (
-            <XStack items="center" gap={SPACING.items}>
-              <YStack flex={1} minW={0} gap={SPACING.text}>
-                <XStack items="center" gap="$1.5">
-                  <GoalDot slot={checkIn.goal.colorSlot} size={8} />
-                  <SizableText
-                    shrink={1}
-                    size={TEXT.caption}
-                    color="$mutedForeground"
-                    numberOfLines={1}
-                  >
-                    {periodLabel(note.entryDate, checkIn.endDate, locale)}
-                  </SizableText>
-                </XStack>
-
-                {checkIn.total > 0 && (
-                  <CompletionStatus
-                    status={checkIn.status}
-                    answered={checkIn.answered}
-                    total={checkIn.total}
-                  />
-                )}
-              </YStack>
-
-              <PeriodMood mood={checkIn.mood} size={MOOD_FACE} active />
-            </XStack>
-          )}
-
           <Paragraph
             size={NOTE_TEXT.size}
             lineHeight={NOTE_TEXT.lineHeight}
@@ -96,7 +194,19 @@ export function NoteReaderScreen({ id }: { id: string }) {
             {note.body}
           </Paragraph>
 
-          <TagChips tags={note.tags} onPress={filterBy} />
+          <YStack gap={SPACING.group}>
+            <SizableText size={TEXT.caption} color="$mutedForeground">
+              {whenLabel(note, locale)}
+            </SizableText>
+            <TagChips tags={note.tags} onPress={filterBy} />
+          </YStack>
+
+          {checkIn !== null && (
+            <CheckInCard
+              checkIn={checkIn}
+              onPress={readOnly ? undefined : () => openCheckIn(checkIn)}
+            />
+          )}
 
           {readOnly && (
             <XStack items="center" gap="$2">

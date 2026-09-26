@@ -97,3 +97,20 @@ export function periodLabel(
 
   return `${start} – ${dayMonth(end, locale)}`;
 }
+
+/**
+ * Whether the time a note was written says anything about its day. A note
+ * backdated to Tuesday but written on Thursday at 14:50 would read "Tuesday,
+ * 14:50" — a moment that never happened — so the time shows only when the
+ * two agree. Compared in the device's zone, the one the day was picked in.
+ */
+export function writtenOnEntryDay(createdAt: string, entryDate: string) {
+  const written = new Date(createdAt);
+  const day = [
+    written.getFullYear(),
+    String(written.getMonth() + 1).padStart(2, '0'),
+    String(written.getDate()).padStart(2, '0'),
+  ].join('-');
+
+  return day === entryDate;
+}

@@ -69,6 +69,8 @@ export const es = {
       edit: 'Editar nota',
       delete: 'Eliminar nota',
       archived: 'Esta meta está archivada. Sus notas solo se pueden leer.',
+      fromCheckIn: 'De tu registro',
+      openCheckIn: 'Abre el registro de ese periodo.',
     },
     deleteConfirm: {
       title: '¿Eliminar esta nota?',
