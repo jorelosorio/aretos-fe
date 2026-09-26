@@ -19,6 +19,7 @@ import {
 } from '@/features/diary';
 import { useAllowance } from '@/features/limits';
 import { useTranslations } from '@/lib/i18n';
+import { capitalize } from '@/utils/text';
 
 import { monthLabel } from './diary-date';
 import { DiaryEntryCard } from './diary-entry-card';
@@ -119,7 +120,7 @@ export function DiaryScreen() {
           ) : error ? null : tag !== null ? (
             <EmptyLog
               Icon={Tag}
-              title={t('diary.filtered.title', { tag })}
+              title={t('diary.filtered.title', { tag: capitalize(tag) })}
               body={t('diary.filtered.body')}
               action={t('diary.filtered.action')}
               onAction={() => selectTag(null)}

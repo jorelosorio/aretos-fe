@@ -12,6 +12,7 @@
 
 import type { TrackingFrequency } from '@/features/goals';
 import type { DateKey } from '@/features/logs';
+import { capitalize } from '@/utils/text';
 import type { AppLocale, TranslateFn } from '@/lib/i18n';
 
 /** Local again, for the same reason `fromDateKey` is: `new Date(key)` is UTC. */
@@ -21,11 +22,13 @@ function toDate(key: DateKey): Date {
 }
 
 const dayMonth = (key: DateKey, locale: AppLocale) =>
-  new Intl.DateTimeFormat(locale, {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'short',
-  }).format(toDate(key));
+  capitalize(
+    new Intl.DateTimeFormat(locale, {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'short',
+    }).format(toDate(key)),
+  );
 
 const shortDate = (key: DateKey, locale: AppLocale) =>
   new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short' }).format(

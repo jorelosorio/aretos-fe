@@ -1,4 +1,4 @@
-import { writtenOnEntryDay } from './diary-date';
+import { periodLabel, writtenOnEntryDay } from './diary-date';
 
 describe('writtenOnEntryDay', () => {
   const at = (day: number, hour: number) =>
@@ -10,5 +10,13 @@ describe('writtenOnEntryDay', () => {
 
   it('is false for a note dated to another day', () => {
     expect(writtenOnEntryDay(at(25, 9), '2026-09-24')).toBe(false);
+  });
+});
+
+describe('periodLabel', () => {
+  it('capitalises a single day, which Spanish writes in lower case', () => {
+    expect(periodLabel('2026-09-24', '2026-09-24', 'es')).toMatch(
+      /^[A-ZÁÉÍÓÚÑ]/,
+    );
   });
 });

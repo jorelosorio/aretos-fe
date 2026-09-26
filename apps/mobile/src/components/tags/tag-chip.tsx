@@ -2,8 +2,10 @@ import { Tag, X } from '@tamagui/lucide-icons-2';
 import { SizableText, XStack, YStack } from 'tamagui';
 
 import { ICON, TEXT } from '@/constants/layout';
+import { capitalize } from '@/utils/text';
 
 const HIT_SLOP = 8;
+const TAG_ICON = 11;
 
 export function TagChip({
   label,
@@ -43,15 +45,15 @@ export function TagChip({
       pressStyle={onPress === undefined ? undefined : { opacity: 0.7 }}
       accessibilityRole={onPress === undefined ? 'text' : 'button'}
       accessibilityState={selected === undefined ? undefined : { selected }}
-      accessibilityLabel={accessibilityLabel ?? label}
+      accessibilityLabel={accessibilityLabel ?? capitalize(label)}
     >
-      {icon && <Tag size={ICON.inline} color={mark} />}
+      {icon && <Tag size={TAG_ICON} color={mark} />}
       <SizableText
         size={size === 'small' ? TEXT.caption : TEXT.body}
         color={text}
         numberOfLines={1}
       >
-        {label}
+        {capitalize(label)}
       </SizableText>
       {onRemove !== undefined && (
         <YStack

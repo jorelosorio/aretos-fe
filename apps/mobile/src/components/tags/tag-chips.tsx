@@ -2,6 +2,7 @@ import { SizableText, XStack } from 'tamagui';
 
 import { TEXT } from '@/constants/layout';
 import { useTranslations } from '@/lib/i18n';
+import { capitalize } from '@/utils/text';
 
 import { TagChip } from './tag-chip';
 
@@ -29,7 +30,9 @@ export function TagChips({
           label={tag}
           onPress={onPress === undefined ? undefined : () => onPress(tag)}
           accessibilityLabel={
-            onPress === undefined ? tag : t('tags.filterBy', { name: tag })
+            onPress === undefined
+              ? capitalize(tag)
+              : t('tags.filterBy', { name: capitalize(tag) })
           }
         />
       ))}

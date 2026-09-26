@@ -13,12 +13,15 @@ import type { Series, SeriesPoint } from '@/features/analysis';
 import type { AppLocale } from '@/lib/i18n';
 
 import { shortDateLabel } from '@/components/common/date-label';
+import { capitalize } from '@/utils/text';
 import type { LinePoint } from '@/components/viz/line-chart';
 
 function monthLabel(key: string, locale: AppLocale): string {
   const [year, month] = key.split('-').map(Number);
-  return new Intl.DateTimeFormat(locale, { month: 'short' }).format(
-    new Date(year, month - 1, 1),
+  return capitalize(
+    new Intl.DateTimeFormat(locale, { month: 'short' }).format(
+      new Date(year, month - 1, 1),
+    ),
   );
 }
 

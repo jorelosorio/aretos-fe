@@ -30,21 +30,18 @@ function ToggleChip({
       px="$2.5"
       py="$1"
       rounded={999}
-      bg="$secondary"
+      borderWidth={1}
+      borderColor="$primary"
       onPress={onPress}
       pressStyle={{ opacity: 0.7 }}
       accessibilityRole="button"
       accessibilityState={{ expanded }}
       accessibilityLabel={label}
     >
-      <SizableText
-        size={TEXT.caption}
-        fontWeight="600"
-        color="$secondaryForeground"
-      >
+      <SizableText size={TEXT.caption} fontWeight="600" color="$primary">
         {label}
       </SizableText>
-      <Icon size={ICON.inline} color="$secondaryForeground" />
+      <Icon size={ICON.inline} color="$primary" />
     </XStack>
   );
 }

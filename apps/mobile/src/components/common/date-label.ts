@@ -12,6 +12,7 @@
  */
 
 import type { AppLocale } from '@/lib/i18n';
+import { capitalize } from '@/utils/text';
 
 /**
  * Local again, for the same reason `features/logs` parses its own keys:
@@ -25,15 +26,15 @@ function toDate(key: string): Date {
 
 /** One letter, for a strip with seven columns and no room for more. */
 export function weekdayInitial(key: string, locale: AppLocale): string {
-  return new Intl.DateTimeFormat(locale, { weekday: 'narrow' }).format(
-    toDate(key),
+  return capitalize(
+    new Intl.DateTimeFormat(locale, { weekday: 'narrow' }).format(toDate(key)),
   );
 }
 
 /** The weekday's short name, for a strip that can afford three letters. */
 export function weekdayLabel(key: string, locale: AppLocale): string {
-  return new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(
-    toDate(key),
+  return capitalize(
+    new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(toDate(key)),
   );
 }
 
@@ -69,7 +70,7 @@ export function longDateLabel(key: string, locale: AppLocale): string {
     month: 'long',
   }).format(toDate(key));
 
-  return text.charAt(0).toUpperCase() + text.slice(1);
+  return capitalize(text);
 }
 
 /**
@@ -84,8 +85,10 @@ export function weekMonthLabel(key: string, locale: AppLocale): string {
   const thursday = toDate(key);
   thursday.setDate(thursday.getDate() + 3);
 
-  return new Intl.DateTimeFormat(locale, {
-    month: 'long',
-    year: 'numeric',
-  }).format(thursday);
+  return capitalize(
+    new Intl.DateTimeFormat(locale, {
+      month: 'long',
+      year: 'numeric',
+    }).format(thursday),
+  );
 }

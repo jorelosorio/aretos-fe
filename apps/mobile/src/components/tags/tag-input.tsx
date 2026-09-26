@@ -17,6 +17,7 @@ import {
   useTags,
 } from '@/features/tags';
 import { useTranslations } from '@/lib/i18n';
+import { capitalize } from '@/utils/text';
 
 import { TagChip } from './tag-chip';
 
@@ -164,7 +165,7 @@ export function TagInput({
             label={tag}
             size="regular"
             highlighted={armed && index === value.length - 1}
-            removeLabel={t('tags.remove', { name: tag })}
+            removeLabel={t('tags.remove', { name: capitalize(tag) })}
             onRemove={() => {
               setArmed(false);
               onChange(removeTag(value, tag));
@@ -206,16 +207,16 @@ export function TagInput({
           {suggestions.map((tag) => (
             <SuggestionChip
               key={tag.id}
-              label={tag.name}
-              accessibilityLabel={t('tags.add', { name: tag.name })}
+              label={capitalize(tag.name)}
+              accessibilityLabel={t('tags.add', { name: capitalize(tag.name) })}
               onPress={() => add(tag.name)}
             />
           ))}
 
           {canCreate && (
             <SuggestionChip
-              label={t('tags.create', { name: typed })}
-              accessibilityLabel={t('tags.create', { name: typed })}
+              label={t('tags.create', { name: capitalize(typed) })}
+              accessibilityLabel={t('tags.create', { name: capitalize(typed) })}
               onPress={() => add(typed)}
             />
           )}

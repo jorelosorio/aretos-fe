@@ -18,6 +18,7 @@
  * differently.
  */
 
+import { capitalize } from '@/utils/text';
 import type { AppLocale } from '@/lib/i18n';
 
 /**
@@ -54,15 +55,17 @@ export function monthLabel(month: string, locale: AppLocale): string {
     year: 'numeric',
   }).format(toDate(`${month}-01`));
 
-  return text.charAt(0).toUpperCase() + text.slice(1);
+  return capitalize(text);
 }
 
 const weekdayDay = (key: string, locale: AppLocale) =>
-  new Intl.DateTimeFormat(locale, {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short',
-  }).format(toDate(key));
+  capitalize(
+    new Intl.DateTimeFormat(locale, {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
+    }).format(toDate(key)),
+  );
 
 const dayOnly = (key: string, locale: AppLocale) =>
   new Intl.DateTimeFormat(locale, { day: 'numeric' }).format(toDate(key));
