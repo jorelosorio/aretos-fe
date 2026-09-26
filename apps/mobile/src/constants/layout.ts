@@ -93,10 +93,10 @@ export const TEXT = {
    */
   heading: '$5',
   /**
-   * A card's subject when the card is one of several like it: a goal's or a
-   * habit's name in a list. One step below `heading` because the same name
-   * reads larger where the whole screen is about that one thing — a goal's
-   * own detail screen uses `title` for it instead.
+   * A card's subject: a goal's or a habit's name, wherever it sits in the
+   * content. One size everywhere, a goal's own detail screen included — it
+   * once set the name at `title` there, a step louder than the same name on
+   * every other card, when the native header above already names the goal.
    */
   subheading: '$4',
   /** Running prose: whatever is read as sentences, however short. */

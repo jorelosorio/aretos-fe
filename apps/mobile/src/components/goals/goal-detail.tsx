@@ -65,23 +65,25 @@ function GoalSummary({ goal, habitCount }: { goal: Goal; habitCount: number }) {
       borderWidth={1}
       borderColor="$border"
     >
-      <XStack items="center" gap={SPACING.group}>
-        <GoalDot slot={goal.colorSlot} size={14} />
-        <SizableText
-          flex={1}
-          size={TEXT.title}
-          fontWeight="700"
-          color="$cardForeground"
-        >
-          {goal.name}
-        </SizableText>
-      </XStack>
+      <YStack gap={SPACING.text}>
+        <XStack items="center" gap="$2">
+          <GoalDot slot={goal.colorSlot} />
+          <SizableText
+            flex={1}
+            size={TEXT.subheading}
+            fontWeight="700"
+            color="$cardForeground"
+          >
+            {goal.name}
+          </SizableText>
+        </XStack>
 
-      {goal.description !== '' && (
-        <Paragraph size={TEXT.body} color="$mutedForeground">
-          {goal.description}
-        </Paragraph>
-      )}
+        {goal.description !== '' && (
+          <Paragraph size={TEXT.body} color="$mutedForeground">
+            {goal.description}
+          </Paragraph>
+        )}
+      </YStack>
 
       <TagChips tags={goal.tags} />
 
@@ -193,7 +195,7 @@ export function GoalDetail({ goal }: { goal: Goal }) {
             gap={SPACING.section}
             px={SPACING.screen}
             pt={SPACING.screen}
-            pb={SPACING.items}
+            pb={SPACING.group}
           >
             <GoalSummary goal={goal} habitCount={habits?.length ?? 0} />
 
