@@ -15,6 +15,7 @@ import { HeaderTextButton } from '@/components/common/header-actions';
 import { OptionGroup, type Option } from '@/components/common/option-group';
 import { SectionTitle } from '@/components/common/section-title';
 import { GoalColorPicker } from '@/components/goals/goal-color-picker';
+import { useTagDraft } from '@/components/tags/tag-draft';
 import { TagField } from '@/components/tags/tag-field';
 import {
   useCreateGoal,
@@ -25,7 +26,6 @@ import {
   type StreakRule,
   type TrackingFrequency,
 } from '@/features/goals';
-import { addTag } from '@/features/tags';
 import { useTranslations } from '@/lib/i18n';
 import { SPACING, TEXT } from '@/constants/layout';
 
@@ -51,7 +51,7 @@ export function GoalForm({
   const { updateGoal, isUpdating, error: updateError } = useUpdateGoal();
 
   const [draft, setDraft] = useState(initial);
-  const [tagText, setTagText] = useState('');
+  const tags = useTagDraft(initial.tags);
 
   const patch = (change: Partial<GoalDraft>) =>
     setDraft((current) => ({ ...current, ...change }));
@@ -101,7 +101,7 @@ export function GoalForm({
     const value: GoalDraft = {
       ...draft,
       name,
-      tags: addTag(draft.tags, tagText),
+      tags: tags.value,
     };
 
     await (
@@ -175,14 +175,7 @@ export function GoalForm({
               />
             </YStack>
 
-            <TagField
-              value={draft.tags}
-              onChange={(tags) => patch({ tags })}
-              text={tagText}
-              onTextChange={setTagText}
-              label={t('goals.form.tags')}
-              hint={t('goals.form.tagsHint')}
-            />
+            <TagField draft={tags} label={t('goals.form.tags')} />
 
             <GoalColorPicker
               value={draft.colorSlot}

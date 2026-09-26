@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
+import { useTagDraft } from '@/components/tags/tag-draft';
 import type { DateKey } from '@/features/logs';
-import { addTag, sameTags } from '@/features/tags';
+import { sameTags } from '@/features/tags';
 
 /**
  * What the note form edits. `entryDate` is null for a check-in's note: its
@@ -29,20 +30,15 @@ export function noteChanged(value: NoteValue, initial: NoteValue): boolean {
 /**
  * The form's state, shared by the pushed diary editor and the check-in's
  * sheet so both save exactly the same thing.
- *
- * A tag typed but not yet confirmed is part of `value`: pressing Save is as
- * clear a "yes" as pressing Return, and dropping the text silently would lose
- * what the person just wrote.
  */
 export function useNoteDraft(initial: NoteValue) {
   const [body, setBody] = useState(initial.body);
-  const [tags, setTags] = useState<string[]>([...initial.tags]);
-  const [tagText, setTagText] = useState('');
+  const tags = useTagDraft(initial.tags);
   const [entryDate, setEntryDate] = useState(initial.entryDate);
 
   const value: NoteValue = {
     body: body.trim(),
-    tags: addTag(tags, tagText),
+    tags: tags.value,
     entryDate,
   };
   const dirty = noteChanged({ ...value, body }, initial);
@@ -51,9 +47,6 @@ export function useNoteDraft(initial: NoteValue) {
     body,
     setBody,
     tags,
-    setTags,
-    tagText,
-    setTagText,
     entryDate,
     setEntryDate,
     value,

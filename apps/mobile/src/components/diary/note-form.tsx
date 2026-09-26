@@ -90,12 +90,7 @@ export function NoteForm({
           </SizableText>
         </YStack>
 
-        <TagField
-          value={draft.tags}
-          onChange={draft.setTags}
-          text={draft.tagText}
-          onTextChange={draft.setTagText}
-        />
+        <TagField draft={draft.tags} />
       </YStack>
     </FormScrollView>
   );

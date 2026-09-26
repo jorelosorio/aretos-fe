@@ -1,68 +1,43 @@
-import { Info } from '@tamagui/lucide-icons-2';
-import { Label, SizableText, XStack, YStack } from 'tamagui';
+import { Label, SizableText, YStack } from 'tamagui';
 
-import { ICON, SPACING, TEXT } from '@/constants/layout';
+import { SPACING, TEXT } from '@/constants/layout';
 import { TAGS_MAX } from '@/features/tags';
 import { useTranslations } from '@/lib/i18n';
 
+import type { TagDraft } from './tag-draft';
 import { TagInput } from './tag-input';
 
 export function TagField({
-  value,
-  onChange,
-  text,
-  onTextChange,
+  draft,
   label,
-  hint,
 }: {
-  value: readonly string[];
-  onChange: (tags: string[]) => void;
-  text: string;
-  onTextChange: (text: string) => void;
+  draft: TagDraft;
   label?: string;
-  hint?: string;
 }) {
   const { t } = useTranslations();
+  const count = draft.tags.length;
 
   return (
     <YStack gap={SPACING.group}>
       <Label color="$color">{label ?? t('tags.label')}</Label>
 
       <TagInput
-        value={value}
-        onChange={onChange}
-        text={text}
-        onTextChange={onTextChange}
+        value={draft.tags}
+        onChange={draft.setTags}
+        text={draft.text}
+        onTextChange={draft.setText}
       />
 
-      <XStack items="flex-start" gap={SPACING.items} px="$2">
-        <XStack flex={1} items="flex-start" gap="$1.5">
-          {hint !== undefined && (
-            <>
-              <Info size={ICON.inline} color="$mutedForeground" mt={2} />
-              <SizableText
-                flex={1}
-                size={TEXT.caption}
-                color="$mutedForeground"
-              >
-                {hint}
-              </SizableText>
-            </>
-          )}
-        </XStack>
-
-        <SizableText
-          size={TEXT.caption}
-          color="$mutedForeground"
-          accessibilityLabel={t('tags.full', {
-            count: value.length,
-            max: TAGS_MAX,
-          })}
-          accessibilityLiveRegion="polite"
-        >
-          {`${value.length} / ${TAGS_MAX}`}
-        </SizableText>
-      </XStack>
+      <SizableText
+        size={TEXT.caption}
+        color="$mutedForeground"
+        px="$2"
+        text="right"
+        accessibilityLabel={t('tags.full', { count, max: TAGS_MAX })}
+        accessibilityLiveRegion="polite"
+      >
+        {`${count} / ${TAGS_MAX}`}
+      </SizableText>
     </YStack>
   );
 }

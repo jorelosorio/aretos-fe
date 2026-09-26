@@ -82,3 +82,28 @@ flat file into a folder (`hooks/use-goals.ts`) only once it earns it.
 `features/auth` is the reference implementation. It carries two files beyond
 the template (`session.ts`, `refresh.ts`) because it is the one feature that
 owns the session; a CRUD feature needs neither.
+
+## Writing form copy
+
+A form is a blank page the person fills in their own way. Aretos is not an
+assistant interviewing them, so the copy around a free-text input names the
+field and never suggests what to write in it.
+
+- **A placeholder names what the field holds,** as a short noun phrase:
+  `Nombre de la meta`, `Detalles de la meta`, `Tu nota`. A field whose job is
+  an action may name the action instead: `Añadir una etiqueta`.
+- **Never a question.** `¿Por qué te importa?` on a goal's description reads as
+  something to answer, and the person writes "because I want to" in a field
+  meant for anything they care to say about the goal.
+- **Never an example or a template.** `Ej. Llega a tiempo` gets copied, or
+  quietly narrows what feels allowed. A fill-in pattern like `Si… entonces…`
+  does the same.
+- **Hints explain; they do not model an answer.** A hint may say what the field
+  is for or why it helps ("deciding when and where beforehand raises the
+  odds"). It does not show a sample entry.
+- **The label carries the meaning.** A placeholder disappears on the first
+  keystroke, so nothing the person needs in order to understand the field may
+  live only there.
+
+A title above a set of fixed options — a choice, not a text field — may be a
+question, because the options are its answers: `¿Cómo lo registras?`.
