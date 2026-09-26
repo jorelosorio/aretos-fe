@@ -15,8 +15,11 @@ export const es = {
     close: 'Cerrar',
   },
   home: {
-    greeting: 'Hola, %{name}',
-    welcomeBack: 'Bienvenido de vuelta',
+    greeting: {
+      morning: 'Buenos días',
+      afternoon: 'Buenas tardes',
+      evening: 'Buenas noches',
+    },
     streaks: {
       days: '%{count} d',
       weeks: '%{count} sem',
@@ -30,10 +33,11 @@ export const es = {
     },
     summary: '%{logged} de %{total} registradas',
     sections: {
-      pending: 'Por registrar',
+      pending: 'Hoy',
       logged: 'Registradas',
     },
     allLogged: 'Todo registrado. ¡Bien hecho!',
+    noneLogged: 'Aún no has registrado nada.',
     noHabits: 'Sin hábitos todavía',
     cta: {
       log: 'Registrar hoy',

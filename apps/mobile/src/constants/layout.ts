@@ -67,8 +67,10 @@ export const TEXT = {
    */
   display: '$7',
   /**
-   * The most prominent text below the native header: the home greeting, an
-   * empty state's message. At most one visible at a time — two would fight
+   * The most prominent text below the native header: Home's date, which
+   * heads its list the way a headline heads a page, or an empty state's
+   * message. Home's greeting sits above the date at `subheading` — a name and
+   * a hello, not the point of the screen. At most one visible at a time — two would fight
    * over which is the point — but a screen may hold several behind mutually
    * exclusive states, the way an empty goals list and a populated one never
    * show together.

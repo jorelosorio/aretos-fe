@@ -14,8 +14,11 @@ export const en = {
     close: 'Close',
   },
   home: {
-    greeting: 'Hello, %{name}',
-    welcomeBack: 'Welcome back',
+    greeting: {
+      morning: 'Good morning',
+      afternoon: 'Good afternoon',
+      evening: 'Good evening',
+    },
     streaks: {
       days: '%{count} d',
       weeks: '%{count} wk',
@@ -29,10 +32,11 @@ export const en = {
     },
     summary: '%{logged} of %{total} logged',
     sections: {
-      pending: 'To log',
+      pending: 'Today',
       logged: 'Logged',
     },
     allLogged: 'All logged. Nice work!',
+    noneLogged: 'Nothing logged yet.',
     noHabits: 'No habits yet',
     cta: {
       log: 'Log today',

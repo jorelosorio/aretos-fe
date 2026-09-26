@@ -1,16 +1,18 @@
-import { Circle, Image, SizableText, XStack, YStack } from 'tamagui';
+import { Image, SizableText, Square, XStack, YStack } from 'tamagui';
 
-import { longDateLabel } from '@/components/common/date-label';
 import { SPACING, TEXT } from '@/constants/layout';
 import { useProfile } from '@/features/user';
 import { useTranslations } from '@/lib/i18n';
 
-const AVATAR_SIZE = '$4';
+import { partOfDay } from './part-of-day';
+
+const AVATAR_SIZE = '$5';
 
 function Avatar({ name, url }: { name: string; url: string }) {
   return (
-    <Circle
+    <Square
       size={AVATAR_SIZE}
+      rounded="$xl2"
       items="center"
       justify="center"
       bg="$accentSurface"
@@ -32,54 +34,39 @@ function Avatar({ name, url }: { name: string; url: string }) {
           accessibilityIgnoresInvertColors
         />
       )}
-    </Circle>
+    </Square>
   );
 }
 
-export function HomeHeader({
-  today,
-  summary,
-}: {
-  today: string | null;
-  summary?: string;
-}) {
-  const { t, locale } = useTranslations();
+export function HomeHeader() {
+  const { t } = useTranslations();
   const { data: profile } = useProfile();
 
   const name = profile?.displayName ?? '';
   const initial = name || profile?.email || '';
+  const greeting = t(`home.greeting.${partOfDay(new Date())}`);
 
   return (
     <XStack items="center" gap={SPACING.items}>
       <Avatar name={initial} url={profile?.avatarUrl ?? ''} />
 
-      <YStack flex={1} gap={SPACING.text}>
+      <YStack flex={1} minW={0} gap={SPACING.text}>
         <SizableText
-          size={TEXT.title}
+          size={TEXT.subheading}
           fontWeight="700"
           color="$color"
           numberOfLines={1}
         >
-          {name === '' ? t('home.welcomeBack') : t('home.greeting', { name })}
+          {name === '' ? greeting : name}
         </SizableText>
 
-        {today !== null && (
+        {name !== '' && (
           <SizableText
             size={TEXT.caption}
             color="$mutedForeground"
             numberOfLines={1}
           >
-            {longDateLabel(today, locale)}
-          </SizableText>
-        )}
-
-        {summary !== undefined && (
-          <SizableText
-            size={TEXT.caption}
-            color="$mutedForeground"
-            numberOfLines={1}
-          >
-            {summary}
+            {greeting}
           </SizableText>
         )}
       </YStack>
