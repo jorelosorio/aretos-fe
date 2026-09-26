@@ -11,8 +11,8 @@ import type {
 } from '@/features/goals';
 import { useTranslations } from '@/lib/i18n';
 
-const STEP_SIZE = '$1';
-const MOOD_SIZE = 18;
+const MARK = 20;
+const SEAM = 2;
 const CORE_SIZE = '$0.75';
 
 const TRACK_FILL = '$outcomeBlank';
@@ -55,6 +55,7 @@ export function WeekStrip({
         const counted = period.countsForStreak;
         const hasStatusRing = !counted && (period.status !== 'empty' || isNow);
         const ink = counted ? '$primaryForeground' : RING[period.status];
+        const surface = isNow ? '$muted' : '$card';
         const Glyph =
           period.status === 'complete' || period.status === 'skipped'
             ? GLYPH[period.status]
@@ -68,7 +69,7 @@ export function WeekStrip({
             items="center"
             justify="center"
             gap="$1.5"
-            px="$1"
+            px="$0.5"
             py="$2"
             rounded="$lg"
             bg={isNow ? '$muted' : 'transparent'}
@@ -91,24 +92,34 @@ export function WeekStrip({
               {dayNumber(period.entryDate)}
             </SizableText>
 
-            <Circle
-              size={STEP_SIZE}
-              items="center"
-              justify="center"
-              bg={counted ? '$primary' : TRACK_FILL}
-              borderWidth={counted ? 0 : hasStatusRing ? 2 : 1}
-              borderColor={hasStatusRing ? RING[period.status] : TRACK_RING}
-            >
-              {Glyph !== null && (
-                <Glyph size={ICON.inline} color={ink} strokeWidth={3} />
-              )}
+            <XStack items="center">
+              <Circle p={SEAM} bg={surface} z={1}>
+                <Circle
+                  size={MARK}
+                  items="center"
+                  justify="center"
+                  bg={counted ? '$primary' : TRACK_FILL}
+                  borderWidth={counted ? 0 : hasStatusRing ? 2 : 1}
+                  borderColor={hasStatusRing ? RING[period.status] : TRACK_RING}
+                >
+                  {Glyph !== null && (
+                    <Glyph size={ICON.inline} color={ink} strokeWidth={3} />
+                  )}
 
-              {period.status === 'partial' && (
-                <Circle size={CORE_SIZE} bg={ink} />
-              )}
-            </Circle>
+                  {period.status === 'partial' && (
+                    <Circle size={CORE_SIZE} bg={ink} />
+                  )}
+                </Circle>
+              </Circle>
 
-            <PeriodMood mood={period.mood} size={MOOD_SIZE} active={isNow} />
+              {period.mood !== null && (
+                <Circle p={SEAM} bg={surface} ml={-(MARK + SEAM * 2) / 2}>
+                  <Circle size={MARK} bg="$accentSurface">
+                    <PeriodMood mood={period.mood} size={MARK} active />
+                  </Circle>
+                </Circle>
+              )}
+            </XStack>
           </YStack>
         );
       })}
