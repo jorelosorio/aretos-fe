@@ -11,7 +11,7 @@
         <path d="M116,196Q116,208 128,208Q116,208 116,220Q116,208 104,208Q116,208 116,196Z" style="fill:rgb(240,168,121);"/>
         <path d="M398,246Q398,256 408,256Q398,256 398,266Q398,256 388,256Q398,256 398,246Z" style="fill:rgb(69,90,100);"/>
         <path d="M292,96Q292,104 300,104Q292,104 292,112Q292,104 284,104Q292,104 292,96Z" style="fill:rgb(240,168,121);"/>
-        <circle cx="78" cy="262" r="4" style="fill:rgb(219,219,219);"/>
+        <circle cx="78" cy="262" r="4" style="fill:#ded3c0;"/>
         <circle cx="428" cy="330" r="4.5" style="fill:rgb(240,168,121);"/>
         <circle cx="180" cy="118" r="3.5" style="fill:rgb(69,90,100);"/>
     </g>
@@ -19,36 +19,36 @@
     <g id="checklist" transform="rotate(-4 250 292)">
         <rect x="166" y="173" width="180" height="255" rx="16" style="fill:rgb(38,50,56);"/>
         <rect x="160" y="165" width="180" height="255" rx="16" style="fill:rgb(69,90,100);"/>
-        <rect x="175" y="190" width="150" height="215" rx="8" style="fill:white;"/>
-        <rect x="175" y="390" width="150" height="15" rx="0" style="fill:rgb(235,235,235);"/>
+        <rect x="175" y="190" width="150" height="215" rx="8" style="fill:#f9f0e2;"/>
+        <rect x="175" y="390" width="150" height="15" rx="0" style="fill:#efe3ce;"/>
         <rect x="210" y="150" width="80" height="32" rx="9" style="fill:rgb(38,50,56);"/>
         <rect x="236" y="157" width="28" height="8" rx="4" style="fill:rgb(69,90,100);"/>
 
         <g id="row-1">
             <circle cx="205" cy="235" r="13" style="fill:rgb(240,168,121);"/>
-            <path d="M199,235L203.5,239.5L211.5,230.5" style="fill:none;stroke:white;stroke-width:3.5;"/>
-            <rect x="228" y="226" width="80" height="7" rx="3.5" style="fill:rgb(219,219,219);"/>
-            <rect x="228" y="238" width="52" height="7" rx="3.5" style="fill:rgb(235,235,235);"/>
+            <path d="M199,235L203.5,239.5L211.5,230.5" style="fill:none;stroke:#f9f0e2;stroke-width:3.5;"/>
+            <rect x="228" y="226" width="80" height="7" rx="3.5" style="fill:#ded3c0;"/>
+            <rect x="228" y="238" width="52" height="7" rx="3.5" style="fill:#efe3ce;"/>
         </g>
         <g id="row-2">
             <circle cx="205" cy="290" r="13" style="fill:rgb(240,168,121);"/>
-            <path d="M199,290L203.5,294.5L211.5,285.5" style="fill:none;stroke:white;stroke-width:3.5;"/>
-            <rect x="228" y="281" width="70" height="7" rx="3.5" style="fill:rgb(219,219,219);"/>
-            <rect x="228" y="293" width="60" height="7" rx="3.5" style="fill:rgb(235,235,235);"/>
+            <path d="M199,290L203.5,294.5L211.5,285.5" style="fill:none;stroke:#f9f0e2;stroke-width:3.5;"/>
+            <rect x="228" y="281" width="70" height="7" rx="3.5" style="fill:#ded3c0;"/>
+            <rect x="228" y="293" width="60" height="7" rx="3.5" style="fill:#efe3ce;"/>
         </g>
         <g id="row-3">
             <circle cx="205" cy="345" r="13" style="fill:rgb(240,168,121);"/>
-            <path d="M199,345L203.5,349.5L211.5,340.5" style="fill:none;stroke:white;stroke-width:3.5;"/>
-            <rect x="228" y="336" width="84" height="7" rx="3.5" style="fill:rgb(219,219,219);"/>
-            <rect x="228" y="348" width="44" height="7" rx="3.5" style="fill:rgb(235,235,235);"/>
+            <path d="M199,345L203.5,349.5L211.5,340.5" style="fill:none;stroke:#f9f0e2;stroke-width:3.5;"/>
+            <rect x="228" y="336" width="84" height="7" rx="3.5" style="fill:#ded3c0;"/>
+            <rect x="228" y="348" width="44" height="7" rx="3.5" style="fill:#efe3ce;"/>
         </g>
     </g>
 
     <g id="badge">
         <circle cx="346" cy="184" r="36" style="fill:rgb(211,118,106);"/>
         <circle cx="341" cy="178" r="36" style="fill:rgb(240,168,121);"/>
-        <circle cx="341" cy="178" r="27" style="fill:none;stroke:white;stroke-opacity:0.45;stroke-width:2.5;"/>
-        <path d="M327,179L337,189L356,168" style="fill:none;stroke:white;stroke-width:7;"/>
+        <circle cx="341" cy="178" r="27" style="fill:none;stroke:#f9f0e2;stroke-opacity:0.45;stroke-width:2.5;"/>
+        <path d="M327,179L337,189L356,168" style="fill:none;stroke:#f9f0e2;stroke-width:7;"/>
     </g>
 
     <g id="plant">
@@ -57,23 +57,23 @@
         <path d="M123,376C151,366 168,342 172,312C145,322 129,346 123,376Z" style="fill:rgb(69,90,100);"/>
         <path d="M121,370L122,286" style="fill:none;stroke:rgb(38,50,56);stroke-opacity:0.35;stroke-width:1.5;"/>
         <path d="M117,372L80,318" style="fill:none;stroke:rgb(38,50,56);stroke-opacity:0.35;stroke-width:1.5;"/>
-        <path d="M125,372L160,324" style="fill:none;stroke:white;stroke-opacity:0.35;stroke-width:1.5;"/>
+        <path d="M125,372L160,324" style="fill:none;stroke:#f9f0e2;stroke-opacity:0.35;stroke-width:1.5;"/>
         <path d="M90,382L152,382L144,434L98,434Z" style="fill:rgb(69,90,100);"/>
         <path d="M144,382L152,382L144,434L136,434Z" style="fill:rgb(38,50,56);fill-opacity:0.35;"/>
         <rect x="85" y="372" width="72" height="13" rx="4" style="fill:rgb(38,50,56);"/>
     </g>
 
     <g id="mug">
-        <path d="M376,378C370,368 382,362 376,352" style="fill:none;stroke:rgb(219,219,219);stroke-width:3;"/>
-        <path d="M392,378C386,368 398,362 392,352" style="fill:none;stroke:rgb(219,219,219);stroke-width:3;"/>
+        <path d="M376,378C370,368 382,362 376,352" style="fill:none;stroke:#ded3c0;stroke-width:3;"/>
+        <path d="M392,378C386,368 398,362 392,352" style="fill:none;stroke:#ded3c0;stroke-width:3;"/>
         <path d="M407,396C425,396 425,423 405,421" style="fill:none;stroke:rgb(38,50,56);stroke-width:3.5;"/>
-        <path d="M362,388L408,388L404,432C403.7,434.3 402,436 399.5,436L370.5,436C368,436 366.3,434.3 366,432Z" style="fill:white;stroke:rgb(38,50,56);stroke-width:3;"/>
+        <path d="M362,388L408,388L404,432C403.7,434.3 402,436 399.5,436L370.5,436C368,436 366.3,434.3 366,432Z" style="fill:#f9f0e2;stroke:rgb(38,50,56);stroke-width:3;"/>
         <path d="M363.1,401L406.9,401L405.9,413L364.1,413Z" style="fill:rgb(240,168,121);"/>
     </g>
 
     <g id="pencil" transform="rotate(-10 236 428)">
         <rect x="184" y="423" width="10" height="11" rx="2" style="fill:rgb(211,118,106);"/>
-        <rect x="193" y="423" width="6" height="11" style="fill:rgb(219,219,219);"/>
+        <rect x="193" y="423" width="6" height="11" style="fill:#ded3c0;"/>
         <rect x="199" y="423" width="72" height="11" style="fill:rgb(240,168,121);"/>
         <rect x="199" y="428.5" width="72" height="5.5" style="fill:rgb(211,118,106);fill-opacity:0.35;"/>
         <path d="M271,423L287,428.5L271,434Z" style="fill:rgb(245,222,205);"/>
