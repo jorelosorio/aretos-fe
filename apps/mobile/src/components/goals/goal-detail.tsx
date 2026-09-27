@@ -62,8 +62,6 @@ function GoalSummary({ goal, habitCount }: { goal: Goal; habitCount: number }) {
       p={SPACING.card}
       bg="$card"
       rounded="$xl2"
-      borderWidth={1}
-      borderColor="$border"
     >
       <YStack gap={SPACING.text}>
         <XStack items="center" gap="$2">
@@ -110,8 +108,6 @@ function ArchivedNotice() {
       p={SPACING.card}
       bg="$card"
       rounded="$xl2"
-      borderWidth={1}
-      borderColor="$border"
     >
       <YStack
         width={36}

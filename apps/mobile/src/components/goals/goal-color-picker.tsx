@@ -32,8 +32,6 @@ export function GoalColorPicker({
         p={SPACING.card}
         bg="$card"
         rounded="$xl2"
-        borderWidth={1}
-        borderColor="$border"
       >
         <XStack
           flexWrap="wrap"

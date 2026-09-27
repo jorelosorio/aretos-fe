@@ -60,8 +60,6 @@ export function HabitTarget({
           p={SPACING.card}
           bg="$card"
           rounded="$xl2"
-          borderWidth={1}
-          borderColor="$border"
         >
           <SizableText
             size={TEXT.display}

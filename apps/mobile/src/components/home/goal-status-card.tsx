@@ -118,8 +118,6 @@ export const GoalStatusCard = memo(function GoalStatusCard({
       pressStyle={{ bg: '$cardPress' }}
       bg="$card"
       rounded="$xl2"
-      borderWidth={1}
-      borderColor="$border"
       overflow="hidden"
       accessible
       accessibilityRole="button"

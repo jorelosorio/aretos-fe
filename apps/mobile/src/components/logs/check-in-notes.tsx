@@ -60,8 +60,6 @@ function NoteRow({
       p={SPACING.card}
       bg="$card"
       rounded="$xl2"
-      borderWidth={1}
-      borderColor="$border"
       onPress={disabled ? undefined : onPress}
       pressStyle={disabled ? undefined : { bg: '$cardPress' }}
       accessibilityRole="button"

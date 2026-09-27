@@ -25,8 +25,6 @@ export function RowGroup({
       <YStack
         bg="$card"
         rounded="$xl2"
-        borderWidth={1}
-        borderColor="$border"
         overflow="hidden"
       >
         {rows.map((row, index) => (

@@ -25,8 +25,6 @@ export function HistoryCutoffNotice({ cutoff }: { cutoff: string }) {
       p={SPACING.card}
       bg="$card"
       rounded="$xl2"
-      borderWidth={1}
-      borderColor="$border"
     >
       <YStack
         width={36}

@@ -33,8 +33,6 @@ export function OptionGroup<T extends string>({
       <YStack
         bg="$card"
         rounded="$xl2"
-        borderWidth={1}
-        borderColor="$border"
         overflow="hidden"
       >
         {options.map((option, index) => {

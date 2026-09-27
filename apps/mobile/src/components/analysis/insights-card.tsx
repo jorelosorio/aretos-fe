@@ -71,8 +71,6 @@ export function InsightsCard({ report }: { report: AnalysisReport }) {
     <YStack
       bg="$card"
       rounded="$xl2"
-      borderWidth={1}
-      borderColor="$border"
       p={SPACING.card}
       gap={SPACING.section}
     >

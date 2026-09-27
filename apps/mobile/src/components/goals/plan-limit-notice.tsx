@@ -29,8 +29,6 @@ export function PlanLimitNotice({ allowance }: { allowance: Allowance }) {
       p={SPACING.card}
       bg="$card"
       rounded="$xl2"
-      borderWidth={1}
-      borderColor="$border"
     >
       <YStack
         width={36}

@@ -37,8 +37,6 @@ export const GoalCard = memo(function GoalCard({
       p={SPACING.card}
       bg="$card"
       rounded="$xl2"
-      borderWidth={1}
-      borderColor="$border"
       accessibilityRole="button"
       accessibilityLabel={`${goal.name}. ${actions}`}
     >

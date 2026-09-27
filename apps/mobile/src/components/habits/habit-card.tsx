@@ -59,8 +59,6 @@ export const HabitCard = memo(function HabitCard({
       p={SPACING.card}
       bg="$card"
       rounded="$xl2"
-      borderWidth={1}
-      borderColor="$border"
       accessibilityRole={onOpen ? 'button' : undefined}
       accessibilityLabel={habit.name}
     >

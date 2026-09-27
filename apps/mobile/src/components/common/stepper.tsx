@@ -28,8 +28,6 @@ export function Stepper({
       p="$2"
       bg="$card"
       rounded="$xl2"
-      borderWidth={1}
-      borderColor="$border"
       accessibilityRole="adjustable"
       accessibilityLabel={label}
       accessibilityValue={{ min, max, now: value }}

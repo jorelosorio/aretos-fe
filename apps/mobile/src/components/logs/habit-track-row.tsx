@@ -163,8 +163,6 @@ export function HabitTrackRow({
         p={SPACING.cardTight}
         bg="$card"
         rounded="$xl2"
-        borderWidth={1}
-        borderColor="$border"
         opacity={entry.skipped ? 0.65 : 1}
       >
         <XStack items="center" gap={SPACING.items}>

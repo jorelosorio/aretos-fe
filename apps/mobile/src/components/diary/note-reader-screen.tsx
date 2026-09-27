@@ -86,8 +86,6 @@ function CheckInCard({
       p={SPACING.card}
       bg="$card"
       rounded="$xl2"
-      borderWidth={1}
-      borderColor="$border"
       onPress={onPress}
       pressStyle={onPress === undefined ? undefined : { bg: '$cardPress' }}
       accessibilityRole={onPress === undefined ? 'summary' : 'button'}

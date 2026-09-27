@@ -26,8 +26,6 @@ export function ChartCard({
     <YStack
       bg="$card"
       rounded="$xl2"
-      borderWidth={1}
-      borderColor="$border"
       p={SPACING.card}
       gap={SPACING.items}
     >
