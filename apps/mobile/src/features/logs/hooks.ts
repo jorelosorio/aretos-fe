@@ -70,13 +70,17 @@ export function useLog(id: string | null) {
 function useInvalidateLogs({ usageMoved }: { usageMoved: boolean }) {
   const queryClient = useQueryClient();
 
+  // All at once, for the reason `useInvalidateGoals` gives: the check-in's
+  // save resolves only after these refetch.
   return async () => {
-    await queryClient.invalidateQueries({ queryKey: logKeys.all });
-    await queryClient.invalidateQueries({ queryKey: goalKeys.all });
-    await queryClient.invalidateQueries({ queryKey: diaryKeys.all });
-    if (usageMoved) {
-      await queryClient.invalidateQueries({ queryKey: limitKeys.all });
-    }
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: logKeys.all }),
+      queryClient.invalidateQueries({ queryKey: goalKeys.all }),
+      queryClient.invalidateQueries({ queryKey: diaryKeys.all }),
+      ...(usageMoved
+        ? [queryClient.invalidateQueries({ queryKey: limitKeys.all })]
+        : []),
+    ]);
   };
 }
 

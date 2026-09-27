@@ -66,12 +66,16 @@ export function useHabit(id: string) {
 function useInvalidateHabits({ usageMoved }: { usageMoved: boolean }) {
   const queryClient = useQueryClient();
 
+  // All at once, for the reason `useInvalidateGoals` gives: the form closes
+  // when these finish refetching.
   return async () => {
-    await queryClient.invalidateQueries({ queryKey: habitKeys.all });
-    await queryClient.invalidateQueries({ queryKey: goalKeys.all });
-    if (usageMoved) {
-      await queryClient.invalidateQueries({ queryKey: limitKeys.all });
-    }
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: habitKeys.all }),
+      queryClient.invalidateQueries({ queryKey: goalKeys.all }),
+      ...(usageMoved
+        ? [queryClient.invalidateQueries({ queryKey: limitKeys.all })]
+        : []),
+    ]);
   };
 }
 

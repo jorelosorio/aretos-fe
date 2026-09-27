@@ -123,14 +123,19 @@ export function useGoalCheckIn(id: string, date?: string) {
 function useInvalidateGoals({ usageMoved }: { usageMoved: boolean }) {
   const queryClient = useQueryClient();
 
+  // All at once: the save resolves only after these refetch, and the form
+  // closes on that, so awaiting them one by one kept it open for a round
+  // trip per key.
   return async () => {
-    await queryClient.invalidateQueries({ queryKey: goalKeys.all });
-    // Saving a name on a goal creates the tag, and its `uses` moves either
-    // way, so the suggestions are stale after any write that carried tags.
-    await queryClient.invalidateQueries({ queryKey: tagKeys.all });
-    if (usageMoved) {
-      await queryClient.invalidateQueries({ queryKey: limitKeys.all });
-    }
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: goalKeys.all }),
+      // Saving a name on a goal creates the tag, and its `uses` moves either
+      // way, so the suggestions are stale after any write that carried tags.
+      queryClient.invalidateQueries({ queryKey: tagKeys.all }),
+      ...(usageMoved
+        ? [queryClient.invalidateQueries({ queryKey: limitKeys.all })]
+        : []),
+    ]);
   };
 }
 

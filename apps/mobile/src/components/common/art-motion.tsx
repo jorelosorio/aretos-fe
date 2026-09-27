@@ -1,5 +1,6 @@
 import { useEffect, type ComponentProps, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useIsFocused } from 'expo-router';
 import Animated, {
   cancelAnimation,
   Easing,
@@ -60,7 +61,10 @@ function offset([x, y]: readonly [number, number], unit: number) {
 }
 
 export function useArtMotion(size: number): Motion {
-  return { unit: size / VIEWBOX, still: useReducedMotion() };
+  const reduced = useReducedMotion();
+  const focused = useIsFocused();
+
+  return { unit: size / VIEWBOX, still: reduced || !focused };
 }
 
 export function ArtFrame({
