@@ -55,7 +55,7 @@ export function HabitTarget({
 
       {mode === 'duration' && (
         <SliderCard
-          display={`${value} ${t('habits.unit.duration')}`}
+          format={(minutes) => `${minutes} ${t('habits.unit.duration')}`}
           value={value}
           min={DURATION_MIN}
           max={DURATION_MAX}

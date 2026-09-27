@@ -1,9 +1,13 @@
-import { SizableText, Slider, YStack } from 'tamagui';
+import { SizableText, Slider, XStack, YStack } from 'tamagui';
 
 import { SPACING, TEXT } from '@/constants/layout';
 
+const THUMB = 28;
+const THUMB_RING = 3;
+const THUMB_SHADOW = '0px 1px 4px rgba(0, 0, 0, 0.24)';
+
 export function SliderCard({
-  display,
+  format,
   value,
   min,
   max,
@@ -11,7 +15,7 @@ export function SliderCard({
   onChange,
   label,
 }: {
-  display: string;
+  format: (value: number) => string;
   value: number;
   min: number;
   max: number;
@@ -27,28 +31,43 @@ export function SliderCard({
         color="$primary"
         text="center"
       >
-        {display}
+        {format(value)}
       </SizableText>
 
-      <Slider
-        min={min}
-        max={max}
-        step={step}
-        value={[value]}
-        onValueChange={([next]) => onChange(next)}
-        accessibilityLabel={label}
-      >
-        <Slider.Track bg="$muted" size="$1">
-          <Slider.TrackActive bg="$primary" />
-        </Slider.Track>
-        <Slider.Thumb
-          index={0}
-          circular
-          size="$2"
-          bg="$primary"
-          borderColor="$background"
-        />
-      </Slider>
+      <YStack gap={SPACING.group}>
+        <Slider
+          size="$4"
+          min={min}
+          max={max}
+          step={step}
+          value={[value]}
+          onValueChange={([next]) => onChange(next)}
+          accessibilityLabel={label}
+        >
+          <Slider.Track bg="$muted">
+            <Slider.TrackActive bg="$primary" />
+          </Slider.Track>
+          <Slider.Thumb
+            index={0}
+            circular
+            size={THUMB}
+            bg="$card"
+            borderWidth={THUMB_RING}
+            borderColor="$primary"
+            boxShadow={THUMB_SHADOW}
+            pressStyle={{ bg: '$card', borderColor: '$primary', scale: 1.15 }}
+          />
+        </Slider>
+
+        <XStack justify="space-between">
+          <SizableText size={TEXT.micro} color="$mutedForeground">
+            {format(min)}
+          </SizableText>
+          <SizableText size={TEXT.micro} color="$mutedForeground">
+            {format(max)}
+          </SizableText>
+        </XStack>
+      </YStack>
     </YStack>
   );
 }

@@ -184,7 +184,7 @@ export function GoalForm({
         {draft.streakRule === 'threshold' && (
           <FormSection title={t('goals.form.threshold')}>
             <SliderCard
-              display={`${draft.streakThreshold}%`}
+              format={(percent) => `${percent}%`}
               value={draft.streakThreshold}
               min={THRESHOLD_MIN}
               max={THRESHOLD_MAX}
