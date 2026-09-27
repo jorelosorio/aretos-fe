@@ -1,5 +1,5 @@
 ---
-title: "Lists and Grids: Virtualization Is Mandatory"
+title: 'Lists and Grids: Virtualization Is Mandatory'
 impact: CRITICAL
 tags: lists, grids, virtualization, flashlist, flatlist, tv
 ---
@@ -9,6 +9,7 @@ tags: lists, grids, virtualization, flashlist, flatlist, tv
 TV UIs are grids of lists inside lists. Home screens have 10-15 rows with 10-20 items each. Without virtualization, your app will be unusable on TV hardware.
 
 ## Quick Reference
+
 - **Always virtualize large feeds** — Use FlatList/VirtualizedList, FlashList, or RecyclerListView instead of mounting every poster
 - Keep poster rows lightweight; heavy shadows/gradients compound across dozens of focused cards
 - Preload only the next likely row/screen; aggressive poster prefetch can trigger TV memory kills
@@ -23,6 +24,7 @@ TV UIs are grids of lists inside lists. Home screens have 10-15 rows with 10-20 
 - **Large assets:** Movie posters, 4K stills are heavier than mobile thumbnails
 
 ## Bad: Non-Virtualized Grid
+
 ```jsx
 <ScrollView>
   {rows.map((row) => (
@@ -30,15 +32,15 @@ TV UIs are grids of lists inside lists. Home screens have 10-15 rows with 10-20 
   ))}
 </ScrollView>
 ```
+
 Every item in every row exists in memory all the time.
 
 ## Better: Virtualized with FlashList
+
 ```jsx
-<FlashList
-  data={movies}
-  renderItem={renderPoster}
-/>
+<FlashList data={movies} renderItem={renderPoster} />
 ```
+
 Only a "window" of items exists in memory at any time.
 
 ## React Native TV VirtualizedList
@@ -76,6 +78,7 @@ Use `additionalRenderRegions` sparingly for critical ranges that must not blank 
 - **Apple TV:** Generally smoothest rendering, but older models still choke on giant grids.
 
 ## Related Skills
+
 - [perf-overview.md](./perf-overview.md) — Overall performance strategy
 - [perf-memory.md](./perf-memory.md) — Image and memory optimization
 - [design-layout.md](./design-layout.md) — Row/card layout patterns

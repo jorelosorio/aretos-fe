@@ -96,16 +96,16 @@ State the decision, deadline, current alternative, and measurable driver. A fram
 
 Inspect these dimensions:
 
-| Dimension | Minimum evidence |
-| --- | --- |
-| Product | Supported platforms, app variants, shared versus platform-specific roadmap, critical flows, accessibility, analytics, and edge cases |
-| Native surface | SDKs, modules, permissions, background work, app extensions, payments, hardware APIs, custom rendering, and viable React Native paths |
-| Continuity | Auth and sessions, secure and persisted storage, push tokens, deep links, subscriptions, installed-user update, legal, security, and offline constraints |
-| Verification | Reproducible builds, test accounts, manual and automated QA, device control, native-reference evidence, performance baselines, and independent review |
-| Release | Current cadence and recovery, internal distribution, flags, experiments, store rollout, and desired binary plus optional OTA lanes |
-| Ownership | Decision authority and owners for artifacts, parity, native boundaries, shared foundations, verification, and releases |
-| Agent governance | Approved model and source boundary, protected secrets and test data, least-privilege access, evidence retention, audit trail, and human architecture and release approval |
-| Delivery baseline | Duplicate implementation and review, waiting and handoffs, parity gap, two-platform verification, release metrics, defects, rework, and maintenance cost |
+| Dimension         | Minimum evidence                                                                                                                                                          |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Product           | Supported platforms, app variants, shared versus platform-specific roadmap, critical flows, accessibility, analytics, and edge cases                                      |
+| Native surface    | SDKs, modules, permissions, background work, app extensions, payments, hardware APIs, custom rendering, and viable React Native paths                                     |
+| Continuity        | Auth and sessions, secure and persisted storage, push tokens, deep links, subscriptions, installed-user update, legal, security, and offline constraints                  |
+| Verification      | Reproducible builds, test accounts, manual and automated QA, device control, native-reference evidence, performance baselines, and independent review                     |
+| Release           | Current cadence and recovery, internal distribution, flags, experiments, store rollout, and desired binary plus optional OTA lanes                                        |
+| Ownership         | Decision authority and owners for artifacts, parity, native boundaries, shared foundations, verification, and releases                                                    |
+| Agent governance  | Approved model and source boundary, protected secrets and test data, least-privilege access, evidence retention, audit trail, and human architecture and release approval |
+| Delivery baseline | Duplicate implementation and review, waiting and handoffs, parity gap, two-platform verification, release metrics, defects, rework, and maintenance cost                  |
 
 For an OTA-dependent plan, require an owner plus runtime compatibility, rollout, observability, rollback or republish, and audit policy. OTA availability alone is not a migration benefit.
 
@@ -117,13 +117,13 @@ Use a small migration core that combines existing product and native knowledge w
 
 Choose one outcome and state why the alternatives lose.
 
-| Outcome | Recommend when |
-| --- | --- |
-| **Path A: brownfield** | Release or installed-user continuity dominates, native coupling is deep, flows can move independently, or whole-app cutover risk is unacceptable. Include the cost of host boundaries and dual architecture. |
-| **Path B: greenfield** | Behavior is recoverable, native dependencies have credible replacements, continuity can be proven, verification is strong, and legacy scope can be controlled until replacement. |
-| **Path C: greenfield-first checkpoint with brownfield fallback** | Greenfield offers a simpler target but material uncertainty remains, and completed React Native work can be proven inside the native hosts before scaling. |
-| **Defer** | The business case is plausible, but evidence, verification, ownership, budget, or release readiness is missing. Name the smallest readiness work and reopening condition. |
-| **Do not migrate** | The native system meets the desired outcomes, duplicated mobile delivery is not material, the roadmap is asymmetric, platform-specific work dominates, or risk-adjusted return is not credible. |
+| Outcome                                                          | Recommend when                                                                                                                                                                                               |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Path A: brownfield**                                           | Release or installed-user continuity dominates, native coupling is deep, flows can move independently, or whole-app cutover risk is unacceptable. Include the cost of host boundaries and dual architecture. |
+| **Path B: greenfield**                                           | Behavior is recoverable, native dependencies have credible replacements, continuity can be proven, verification is strong, and legacy scope can be controlled until replacement.                             |
+| **Path C: greenfield-first checkpoint with brownfield fallback** | Greenfield offers a simpler target but material uncertainty remains, and completed React Native work can be proven inside the native hosts before scaling.                                                   |
+| **Defer**                                                        | The business case is plausible, but evidence, verification, ownership, budget, or release readiness is missing. Name the smallest readiness work and reopening condition.                                    |
+| **Do not migrate**                                               | The native system meets the desired outcomes, duplicated mobile delivery is not material, the roadmap is asymmetric, platform-specific work dominates, or risk-adjusted return is not credible.              |
 
 Treat Path C as Callstack's emerging post-2025 operating model, not an industry benchmark. Agent access makes behavioral porting more viable; only a measured checkpoint on this product establishes speed and quality.
 

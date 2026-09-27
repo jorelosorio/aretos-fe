@@ -7,6 +7,7 @@ tags: layout, cards, swimlanes, safe-zones, overscan, responsive, tv-design
 # Layout Patterns and Common Components
 
 ## Quick Reference
+
 - Use safe zones (5-10% margin) to prevent overscan clipping
 - Leave enough spacing for focus indicators to scale or glow without overlapping adjacent cards
 - Keep row-to-row and card-to-card focus movement visually predictable
@@ -44,6 +45,7 @@ Do not combine TV snapping modes with paging assumptions without testing D-pad f
 ## Overlays
 
 Video controls, pause menus:
+
 - Fade in quickly, fade out after inactivity
 - Predictable focus order (left to right)
 - Dim content beneath but don't hide completely
@@ -51,6 +53,7 @@ Video controls, pause menus:
 ## Safe Zones
 
 Many TVs apply overscan — outer 5-10% may get cropped:
+
 - Keep all essential elements (text, logos, buttons) inside 5-10% margin
 - Backgrounds and hero images can extend to the edge
 - Use gridlines or bounding boxes during development to visualize safe boundaries
@@ -58,6 +61,7 @@ Many TVs apply overscan — outer 5-10% may get cropped:
 ## Responsive TV Design
 
 TVs range from 32" to 85" and don't all render pixels identically:
+
 - **Use relative units** (viewport height/width, percentages) not fixed pixels
 - **Center critical content** — peripheral areas less reliable
 - **Test multiple display modes:** Standard, Cinema, Game, HDR
@@ -70,6 +74,7 @@ TVs range from 32" to 85" and don't all render pixels identically:
 - TV design prioritizes clarity over space efficiency
 
 ## Related Skills
+
 - [design-10foot.md](./design-10foot.md) — 10-foot experience principles
 - [design-typography.md](./design-typography.md) — Text sizing and readability
 - [perf-lists.md](./perf-lists.md) — List virtualization for performance

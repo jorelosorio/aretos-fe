@@ -15,6 +15,7 @@ TV UIs are viewed from ~3 m (10 ft) with a D-pad remote, not 30 cm with a touchs
 - Directional navigation rules → [nav-directional.md](./nav-directional.md)
 
 ## Quick Reference
+
 - Design for legibility at 3 m; verify by testing from a couch with a remote, not at a desk with a keyboard.
 - Acknowledge every remote press with a visual cue within ~100 ms.
 - Keep focus/transition animations under 200 ms so they never delay the next input.
@@ -50,6 +51,7 @@ Test each completed screen from the intended viewing position (couch, remote, ~3
 If a step fails, reduce the number of focusable elements or realign the layout before adding manual `nextFocus*` overrides.
 
 ## Related Skills
+
 - [design-layout.md](./design-layout.md) — Layout patterns, safe zones, component design
 - [design-typography.md](./design-typography.md) — Text sizing for distance
 - [design-color.md](./design-color.md) — Contrast and color for TV displays

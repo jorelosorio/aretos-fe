@@ -9,6 +9,7 @@ tags: animations, reanimated, native-driver, transforms, focus, tv
 Animations make a TV app feel polished — if they're smooth. On TV hardware, JS-driven animations tank performance fast because the JS thread competes with focus handling, list rendering, and playback controls.
 
 ## Quick Reference
+
 - Keep focus animations short: 100-150ms
 - Keep focus animations off the JS thread; JS also handles remote input and player controls
 - Avoid focus animations that change layout or move adjacent focus targets
@@ -23,16 +24,18 @@ Animations make a TV app feel polished — if they're smooth. On TV hardware, JS
 ## Focus Scale Animation
 
 **Bad (JS thread):**
+
 ```jsx
 const [scale, setScale] = useState(1);
 useEffect(() => {
   if (isFocused) setScale(1.1);
   else setScale(1);
 }, [isFocused]);
-<View style={{ transform: [{ scale }] }} />
+<View style={{ transform: [{ scale }] }} />;
 ```
 
 **Better (native-driven):**
+
 ```jsx
 const scale = useRef(new Animated.Value(1)).current;
 useEffect(() => {
@@ -41,7 +44,7 @@ useEffect(() => {
     useNativeDriver: true,
   }).start();
 }, [isFocused]);
-<Animated.View style={{ transform: [{ scale }] }} />
+<Animated.View style={{ transform: [{ scale }] }} />;
 ```
 
 Runs entirely on UI thread — JS is free for input and logic.
@@ -51,6 +54,7 @@ Runs entirely on UI thread — JS is free for input and logic.
 JS-driven chains (fade → scale → shadow) cause multiple layout passes.
 
 **Better:**
+
 - Combine into one `Animated.parallel` call, all using native driver
 - Or use **Reanimated 3** to orchestrate in a single worklet off JS thread
 
@@ -75,6 +79,7 @@ JS-driven chains (fade → scale → shadow) cause multiple layout passes.
 > When in doubt, animate less. On TV, a fast and crisp focus change beats a slow, fancy effect every time.
 
 ## Related Skills
+
 - [focus-performance.md](./focus-performance.md) — Focus-specific render optimization
 - [perf-overview.md](./perf-overview.md) — Overall performance strategy
 - [perf-lists.md](./perf-lists.md) — List scrolling performance

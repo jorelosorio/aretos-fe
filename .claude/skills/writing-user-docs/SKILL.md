@@ -7,7 +7,7 @@ description: House style for user-facing documentation — voice, scope, structu
 
 Write for the person using the tool, not the person who built it.
 
-"User" means whoever uses the thing. For an app, that's an end user. For a library, it's the developer who installs it. Either way they are *not* implementing it, and the docs should reflect that.
+"User" means whoever uses the thing. For an app, that's an end user. For a library, it's the developer who installs it. Either way they are _not_ implementing it, and the docs should reflect that.
 
 ## Voice
 
@@ -16,7 +16,7 @@ Everyday English — the way you'd explain it to a colleague sitting next to you
 - **Second person, active, present tense.** "You tap Save," not "the Save button should be tapped" or "the user will then be able to save."
 - **Cut "just," "simply," "easy," "obviously."** They add nothing when things work, and read as mockery when they don't.
 - **No marketing adjectives.** "Powerful," "seamless," "robust," "intuitive" — that's the author admiring the product. The reader is mid-task and doesn't care.
-- **One term per concept, matching the UI exactly.** If the button says *Workspace*, the docs never say "project" or "team space." Varying your vocabulary is good prose and bad documentation — every synonym reads as a new concept.
+- **One term per concept, matching the UI exactly.** If the button says _Workspace_, the docs never say "project" or "team space." Varying your vocabulary is good prose and bad documentation — every synonym reads as a new concept.
 
 ## Scope: what goes in
 

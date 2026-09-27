@@ -9,6 +9,7 @@ tags: performance, device-tiers, kpis, startup, hardware, tv
 TV hardware is significantly weaker than modern phones. A 65" TV is often closer to a budget Android phone in CPU/GPU terms — while also decoding 4K video.
 
 ## Quick Reference
+
 - Set performance budgets from the weakest supported TV device
 - Keep one low-end streaming stick or TV in the regular test matrix
 - Measure input latency, FPS during focus movement, memory, startup, and time to playback
@@ -24,15 +25,19 @@ TV hardware is significantly weaker than modern phones. A 65" TV is often closer
 ## Device Tiers — Progressive Enhancement
 
 ### Low-End (Fire TV Stick Gen 1)
+
 Keep it lean. Drop fancy gradients, heavy shadows, long transitions. Stick to snappy focus highlights, lightweight lists, instant feedback. Responsiveness beats visual flair.
 
 ### Mid-Range (Samsung Smart TV mid-tier)
+
 Layer in some polish. Quick scale/fade here and there. Still performance-first.
 
 ### High-End (Apple TV 4K, Nvidia Shield)
+
 Add visual polish: parallax banners, chained animations, cinematic transitions.
 
 **Implementation:**
+
 - Detect hardware class at runtime (device model, RAM, OS version)
 - Maintain feature flags for performance tiers (basic, standard, enhanced)
 - Shared baseline layout + conditional animations/effects per tier
@@ -40,12 +45,12 @@ Add visual polish: parallax banners, chained animations, cinematic transitions.
 
 ## KPIs to Track
 
-| Metric | Low-End Target | Mid-End | High-End |
-|--------|---------------|---------|----------|
-| Cold start time | <5s | <4s | <4s |
-| Time to playback | <10s | <7s | <7s |
-| Time to first meaningful paint | <3s | <2s | <1.5s |
-| FPS during navigation | 60 | 60 | 60 |
+| Metric                         | Low-End Target | Mid-End | High-End |
+| ------------------------------ | -------------- | ------- | -------- |
+| Cold start time                | <5s            | <4s     | <4s      |
+| Time to playback               | <10s           | <7s     | <7s      |
+| Time to first meaningful paint | <3s            | <2s     | <1.5s    |
+| FPS during navigation          | 60             | 60      | 60       |
 
 ## TV-Specific Performance Checks
 
@@ -73,6 +78,7 @@ AppRegistry.registerComponent(appName, () => {
 - Fail CI if metrics regress beyond thresholds
 
 ## Related Skills
+
 - [perf-animations.md](./perf-animations.md) — Animation performance
 - [perf-lists.md](./perf-lists.md) — List virtualization
 - [perf-network.md](./perf-network.md) — Network optimization

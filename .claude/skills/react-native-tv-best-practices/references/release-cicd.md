@@ -9,6 +9,7 @@ tags: cicd, build-fingerprinting, diff-triggers, app-store, multi-platform, tv
 In TV development, a simple "build and test" pipeline explodes in complexity. Every step multiplies by the number of platforms and targets you support.
 
 ## Quick Reference
+
 - TV CI/CD = mobile pipeline × 6+ platforms × multiple device SKUs
 - Run static, unit, and integration checks before device-heavy E2E
 - **Build fingerprinting** — skip native builds when only JS changed
@@ -24,6 +25,7 @@ TV: same steps × tvOS, Android TV, Fire TV, webOS, Tizen, Vega OS. Native build
 ## Move Work Out of Device E2E
 
 Shift E2E tests into faster integration tests using RNTL:
+
 - Abstract platform-specific quirks (D-pad keycodes)
 - Cover JS-owned state transitions before launching devices
 - Keep device E2E for native focus-engine behavior, launch, routing, playback startup, and platform packaging
@@ -66,6 +68,7 @@ Map directories to platforms → trigger only affected builds.
 ## Performance in CI
 
 Embed performance markers in your app:
+
 ```jsx
 import { performance } from 'react-native-performance';
 performance.mark('app_start');
@@ -76,6 +79,7 @@ AppRegistry.registerComponent(appName, () => {
 ```
 
 Collect via automated tests on:
+
 - AWS Device Farm for Fire TV / Android TV
 - Local device rack for tvOS and Tizen
 - Push metrics to Grafana/Datadog
@@ -84,12 +88,14 @@ Collect via automated tests on:
 ## App Store Requirements
 
 Different platforms have different review processes:
+
 - **Amazon Fire TV** — Amazon Appstore submission
 - **Android TV** — Google Play Store with TV-specific requirements
 - **Apple TV** — App Store review (tvOS-specific guidelines)
 - **webOS / Tizen** — Platform-specific submission portals
 
 ## Related Skills
+
 - [test-strategy.md](./test-strategy.md) — Testing approach and tools
 - [test-e2e.md](./test-e2e.md) — E2E testing and device farms
 - [setup-architecture.md](./setup-architecture.md) — Multi-platform project structure

@@ -9,6 +9,7 @@ tags: architecture, code-sharing, monorepo, platform-extensions, cross-platform,
 The choice of structure depends on your project's scope and whether your app is part of a larger multi-platform product.
 
 ## Quick Reference
+
 - Monorepo is the most common structure for TV apps (platforms require bundled applications)
 - Reuse business logic, state, hooks, and API layers before reusing screen UI
 - Expect TV screen UI, focus behavior, and platform packaging to need dedicated implementations
@@ -45,6 +46,7 @@ if (Platform.isTV) {
 ## Platform-Specific Components
 
 For UI that differs by focus model or TV layout, use file extensions:
+
 ```
 MyComponent.ios.tv.tsx
 MyComponent.android.tv.tsx
@@ -65,7 +67,7 @@ const styles = StyleSheet.create({
   container: {
     ...Platform.select({
       ios: { shadowColor: '#000', shadowOpacity: 0.2 }, // tvOS uses shadow*
-      android: { elevation: 4 },                        // Android TV / Fire TV
+      android: { elevation: 4 }, // Android TV / Fire TV
       // Vega (Platform.OS === 'kepler') matches neither — add a `kepler` key if needed
     }),
     ...(Platform.isTV ? { padding: 24 } : {}),
@@ -76,6 +78,7 @@ const styles = StyleSheet.create({
 ## Android TV Setup
 
 Minimal changes — same APK runs on TV:
+
 - Add `android.software.leanback` support in manifest
 - Add `LEANBACK_LAUNCHER` intent filter
 
@@ -92,6 +95,7 @@ Put web-native code in `web/` folder. Use Rsbuild (or your preferred bundler) fo
 Standalone setup using React Native 0.72 (React 18). Follow official Vega OS docs. Code sharing may be limited by React 18/19 API differences.
 
 ## Related Skills
+
 - [setup-getting-started.md](./setup-getting-started.md) — Project creation and dependencies
 - [setup-cross-platform.md](./setup-cross-platform.md) — Handling platform inconsistencies
 - [release-cicd.md](./release-cicd.md) — CI/CD for multi-platform TV apps

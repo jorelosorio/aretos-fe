@@ -9,6 +9,7 @@ tags: e2e, appium, webdriverio, device-farms, tvos, android-tv
 For full behavioral testing, Appium is the best option for React Native TV. It supports Android TV and Apple TV via UIAutomator and XCUITest. Web-based platforms test through browser automation.
 
 ## Quick Reference
+
 - Use Appium + WebdriverIO for native TV platforms
 - Use `driver.pressKeyCode` to simulate D-pad navigation
 - Use accessibility labels as selectors (`~home-button`)
@@ -18,28 +19,32 @@ For full behavioral testing, Appium is the best option for React Native TV. It s
 
 ```typescript
 // wdio.conf.ts
-capabilities: [{
-  platformName: 'Android',
-  automationName: 'UiAutomator2',
-  deviceName: 'Android TV Emulator',
-  appPackage: 'com.mycompany.tvapp',
-  appActivity: 'com.mycompany.tvapp.MainActivity',
-  newCommandTimeout: 300,
-}]
+capabilities: [
+  {
+    platformName: 'Android',
+    automationName: 'UiAutomator2',
+    deviceName: 'Android TV Emulator',
+    appPackage: 'com.mycompany.tvapp',
+    appActivity: 'com.mycompany.tvapp.MainActivity',
+    newCommandTimeout: 300,
+  },
+];
 ```
 
 ## Appium Setup — Apple TV
 
 ```typescript
-capabilities: [{
-  platformName: 'iOS',
-  platformVersion: '17.0',
-  deviceName: 'Apple TV',
-  automationName: 'XCUITest',
-  udid: 'auto',
-  app: '/path/to/your/TVApp.app',
-  newCommandTimeout: 300,
-}]
+capabilities: [
+  {
+    platformName: 'iOS',
+    platformVersion: '17.0',
+    deviceName: 'Apple TV',
+    automationName: 'XCUITest',
+    udid: 'auto',
+    app: '/path/to/your/TVApp.app',
+    newCommandTimeout: 300,
+  },
+];
 ```
 
 ## Example Test
@@ -58,6 +63,7 @@ describe('TV App Navigation', () => {
 ```
 
 Make components accessible for selectors:
+
 ```jsx
 <Pressable accessibilityLabel="home-button" onPress={goHome}>
   <Text>Home</Text>
@@ -95,11 +101,11 @@ describe('Web TV App (webOS)', () => {
 
 Real-device testing is essential — emulators can't replicate remote input, performance, or display quirks.
 
-| Service | Supported | Integration |
-|---------|-----------|-------------|
-| AWS Device Farm | Android, iOS, custom | Upload APK/IPA, use ARN refs |
-| BrowserStack | Android, iOS, web | `bs://` app IDs, wdio service |
-| Sauce Labs | Android, iOS, web | `storage:` app refs |
+| Service         | Supported            | Integration                   |
+| --------------- | -------------------- | ----------------------------- |
+| AWS Device Farm | Android, iOS, custom | Upload APK/IPA, use ARN refs  |
+| BrowserStack    | Android, iOS, web    | `bs://` app IDs, wdio service |
+| Sauce Labs      | Android, iOS, web    | `storage:` app refs           |
 
 ### Running on Device Farms
 
@@ -109,6 +115,7 @@ Real-device testing is essential — emulators can't replicate remote input, per
 4. Run: `npx wdio run wdio.browserstack.conf.ts`
 
 ### AWS Device Farm
+
 ```bash
 aws devicefarm schedule-run \
   --project-arn arn:... \
@@ -125,6 +132,7 @@ aws devicefarm schedule-run \
 - For platform-specific quirks, real devices are the only reliable test
 
 ## Related Skills
+
 - [test-strategy.md](./test-strategy.md) — Overall testing approach
 - [test-javascript.md](./test-javascript.md) — JS-level tests with tvRemote helpers
 - [release-cicd.md](./release-cicd.md) — CI/CD pipeline integration

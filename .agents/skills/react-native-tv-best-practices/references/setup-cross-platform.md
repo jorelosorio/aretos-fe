@@ -9,6 +9,7 @@ tags: cross-platform, platform-detection, platform-select, spatial-navigation, t
 When building for both mobile and TV, small platform differences add up. Centralize platform-specific logic and leverage libraries with built-in platform support.
 
 ## Quick Reference
+
 - Use `Platform.isTV` for conditional TV logic
 - Use platform-specific file extensions for drastically different UI
 - Abstract platform-specific styles with `Platform.select()`
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
   container: {
     ...Platform.select({
       ios: { shadowColor: '#000', shadowOpacity: 0.2 }, // tvOS uses shadow*
-      android: { elevation: 4 },                        // Android TV / Fire TV
+      android: { elevation: 4 }, // Android TV / Fire TV
       // Vega (Platform.OS === 'kepler') matches neither — add a `kepler` key if needed
     }),
     ...(Platform.isTV ? { padding: 24 } : {}),
@@ -57,6 +58,7 @@ const styles = StyleSheet.create({
 ## Third-Party Libraries
 
 Check if a library already addresses your cross-platform needs before building custom solutions:
+
 - **react-navigation** — Handles navigation patterns across platforms
 - **react-native-gesture-handler** — Platform-aware gesture handling
 - **@bamlab/react-tv-space-navigation** — Spatial navigation across TV platforms
@@ -71,6 +73,7 @@ Check if a library already addresses your cross-platform needs before building c
 The `react-native-tvos` fork does not prevent mobile builds. It extends core with TV-specific features while maintaining API compatibility. Mobile app logic stays intact.
 
 ## Related Skills
+
 - [setup-getting-started.md](./setup-getting-started.md) — Project setup
 - [setup-architecture.md](./setup-architecture.md) — Code sharing strategies
 - [focus-management.md](./focus-management.md) — Cross-platform focus handling

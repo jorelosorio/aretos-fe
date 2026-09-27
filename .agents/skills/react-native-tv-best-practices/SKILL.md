@@ -60,14 +60,14 @@ The focus, 10-foot design, performance, accessibility, and player guidance appli
 
 ## Priority-Ordered Guidelines
 
-| Priority | Category | Impact | Prefix |
-|----------|----------|--------|--------|
-| 1 | Focus and D-pad navigation | CRITICAL | `focus-*`, `nav-*` |
-| 2 | List, animation, and input performance | CRITICAL | `perf-*` |
-| 3 | Playback and DRM failures | HIGH | `video-*` |
-| 4 | 10-foot readability and layout | HIGH | `design-*` |
-| 5 | TV accessibility | HIGH | `a11y-*` |
-| 6 | Stack setup, testing, and release | MEDIUM | `setup-*`, `test-*`, `release-*` |
+| Priority | Category                               | Impact   | Prefix                           |
+| -------- | -------------------------------------- | -------- | -------------------------------- |
+| 1        | Focus and D-pad navigation             | CRITICAL | `focus-*`, `nav-*`               |
+| 2        | List, animation, and input performance | CRITICAL | `perf-*`                         |
+| 3        | Playback and DRM failures              | HIGH     | `video-*`                        |
+| 4        | 10-foot readability and layout         | HIGH     | `design-*`                       |
+| 5        | TV accessibility                       | HIGH     | `a11y-*`                         |
+| 6        | Stack setup, testing, and release      | MEDIUM   | `setup-*`, `test-*`, `release-*` |
 
 ## Quick Reference
 
@@ -81,50 +81,50 @@ The focus, 10-foot design, performance, accessibility, and player guidance appli
 
 ### Focus and Navigation
 
-| File | Impact | Description |
-|------|--------|-------------|
-| [focus-management.md](references/focus-management.md) | CRITICAL | Focus engines, focus guides, `nextFocus*`, and focus restoration |
-| [focus-performance.md](references/focus-performance.md) | CRITICAL | Avoiding frame drops from focus event handling |
-| [nav-directional.md](references/nav-directional.md) | CRITICAL | Directional navigation rules across TV platforms |
-| [nav-patterns.md](references/nav-patterns.md) | CRITICAL | Global/local navigation, modals, tabs, and Back behavior |
-| [nav-keyboard.md](references/nav-keyboard.md) | MEDIUM | Search and text input with remotes |
+| File                                                    | Impact   | Description                                                      |
+| ------------------------------------------------------- | -------- | ---------------------------------------------------------------- |
+| [focus-management.md](references/focus-management.md)   | CRITICAL | Focus engines, focus guides, `nextFocus*`, and focus restoration |
+| [focus-performance.md](references/focus-performance.md) | CRITICAL | Avoiding frame drops from focus event handling                   |
+| [nav-directional.md](references/nav-directional.md)     | CRITICAL | Directional navigation rules across TV platforms                 |
+| [nav-patterns.md](references/nav-patterns.md)           | CRITICAL | Global/local navigation, modals, tabs, and Back behavior         |
+| [nav-keyboard.md](references/nav-keyboard.md)           | MEDIUM   | Search and text input with remotes                               |
 
 ### Design
 
-| File | Impact | Description |
-|------|--------|-------------|
-| [design-10foot.md](references/design-10foot.md) | HIGH | 10-foot review heuristics |
-| [design-typography.md](references/design-typography.md) | HIGH | TV type sizing and readability |
-| [design-layout.md](references/design-layout.md) | HIGH | Safe areas, spacing, carousels, and focus room |
-| [design-color.md](references/design-color.md) | MEDIUM | Contrast and TV display color constraints |
+| File                                                    | Impact | Description                                    |
+| ------------------------------------------------------- | ------ | ---------------------------------------------- |
+| [design-10foot.md](references/design-10foot.md)         | HIGH   | 10-foot review heuristics                      |
+| [design-typography.md](references/design-typography.md) | HIGH   | TV type sizing and readability                 |
+| [design-layout.md](references/design-layout.md)         | HIGH   | Safe areas, spacing, carousels, and focus room |
+| [design-color.md](references/design-color.md)           | MEDIUM | Contrast and TV display color constraints      |
 
 ### Performance
 
-| File | Impact | Description |
-|------|--------|-------------|
-| [perf-overview.md](references/perf-overview.md) | HIGH | TV performance targets and profiling order |
-| [perf-lists.md](references/perf-lists.md) | CRITICAL | Virtualized rows and poster-heavy lists |
-| [perf-animations.md](references/perf-animations.md) | CRITICAL | Focus and transition animation performance |
-| [perf-memory.md](references/perf-memory.md) | HIGH | Low-memory TV crashes and image/video pressure |
-| [perf-network.md](references/perf-network.md) | HIGH | Remote input, request stalls, and network resilience |
+| File                                                | Impact   | Description                                          |
+| --------------------------------------------------- | -------- | ---------------------------------------------------- |
+| [perf-overview.md](references/perf-overview.md)     | HIGH     | TV performance targets and profiling order           |
+| [perf-lists.md](references/perf-lists.md)           | CRITICAL | Virtualized rows and poster-heavy lists              |
+| [perf-animations.md](references/perf-animations.md) | CRITICAL | Focus and transition animation performance           |
+| [perf-memory.md](references/perf-memory.md)         | HIGH     | Low-memory TV crashes and image/video pressure       |
+| [perf-network.md](references/perf-network.md)       | HIGH     | Remote input, request stalls, and network resilience |
 
 ### Video, Accessibility, Setup, Testing
 
-| File | Impact | Description |
-|------|--------|-------------|
-| [video-streaming.md](references/video-streaming.md) | HIGH | TV platform protocol/DRM selection |
-| [video-players.md](references/video-players.md) | HIGH | Player choices and custom controls |
-| [video-debugging.md](references/video-debugging.md) | HIGH | Manifest, DRM, codec, and playback debugging |
-| [a11y-overview.md](references/a11y-overview.md) | MEDIUM | TV-specific accessibility differences |
-| [a11y-implementation.md](references/a11y-implementation.md) | HIGH | Accessible labels, roles, live regions, and focus |
-| [a11y-checklist.md](references/a11y-checklist.md) | MEDIUM | Launch accessibility audit checklist |
-| [setup-getting-started.md](references/setup-getting-started.md) | MEDIUM | `react-native-tvos` and Expo TV setup |
-| [setup-cross-platform.md](references/setup-cross-platform.md) | MEDIUM | Platform detection and cross-platform caveats |
-| [setup-architecture.md](references/setup-architecture.md) | MEDIUM | Code sharing and project structure |
-| [test-strategy.md](references/test-strategy.md) | MEDIUM | TV testing scope and coverage split |
-| [test-javascript.md](references/test-javascript.md) | MEDIUM | JS-level remote/focus test helpers |
-| [test-e2e.md](references/test-e2e.md) | MEDIUM | Appium and TV E2E coverage |
-| [release-cicd.md](references/release-cicd.md) | MEDIUM | CI, build fingerprinting, and release checks |
+| File                                                            | Impact | Description                                       |
+| --------------------------------------------------------------- | ------ | ------------------------------------------------- |
+| [video-streaming.md](references/video-streaming.md)             | HIGH   | TV platform protocol/DRM selection                |
+| [video-players.md](references/video-players.md)                 | HIGH   | Player choices and custom controls                |
+| [video-debugging.md](references/video-debugging.md)             | HIGH   | Manifest, DRM, codec, and playback debugging      |
+| [a11y-overview.md](references/a11y-overview.md)                 | MEDIUM | TV-specific accessibility differences             |
+| [a11y-implementation.md](references/a11y-implementation.md)     | HIGH   | Accessible labels, roles, live regions, and focus |
+| [a11y-checklist.md](references/a11y-checklist.md)               | MEDIUM | Launch accessibility audit checklist              |
+| [setup-getting-started.md](references/setup-getting-started.md) | MEDIUM | `react-native-tvos` and Expo TV setup             |
+| [setup-cross-platform.md](references/setup-cross-platform.md)   | MEDIUM | Platform detection and cross-platform caveats     |
+| [setup-architecture.md](references/setup-architecture.md)       | MEDIUM | Code sharing and project structure                |
+| [test-strategy.md](references/test-strategy.md)                 | MEDIUM | TV testing scope and coverage split               |
+| [test-javascript.md](references/test-javascript.md)             | MEDIUM | JS-level remote/focus test helpers                |
+| [test-e2e.md](references/test-e2e.md)                           | MEDIUM | Appium and TV E2E coverage                        |
+| [release-cicd.md](references/release-cicd.md)                   | MEDIUM | CI, build fingerprinting, and release checks      |
 
 ## Problem → Skill Mapping
 

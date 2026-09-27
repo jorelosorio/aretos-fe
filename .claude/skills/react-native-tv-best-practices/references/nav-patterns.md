@@ -9,6 +9,7 @@ tags: navigation, drawer, tabs, modals, back-navigation, focus-restoration, tv
 TV navigation uses two layers: global navigation (between sections) and local navigation (within sections). The goal is predictable navigation — users should reach content with minimal button presses and no confusion.
 
 ## Quick Reference
+
 - Use drawer for global navigation, tabs for local navigation
 - Always restore focus when returning from modals/overlays
 - Keep the back button behavior consistent: each press = one layer back
@@ -17,6 +18,7 @@ TV navigation uses two layers: global navigation (between sections) and local na
 ## Drawer Navigation (Global)
 
 The main menu, typically on the left edge:
+
 - Opens when user presses left from leftmost area (or menu/back button)
 - Rest of screen dims slightly to signal context shift
 - Focus is trapped inside until user exits or selects
@@ -30,6 +32,7 @@ The main menu, typically on the left edge:
 ```
 
 **Best practices:**
+
 - Limit to 5-7 items
 - Use clear labels (icons + text)
 - Restore focus to previously active element when drawer closes
@@ -38,6 +41,7 @@ The main menu, typically on the left edge:
 ## Tab Navigation (Local)
 
 Organizes content within a single section:
+
 - Typically beneath hero banner or above first row
 - 3-5 tabs maximum
 - Left/right to switch tabs, down to enter content rows
@@ -65,6 +69,7 @@ Modals are temporary, focused interruptions:
 ```
 
 **Guidelines:**
+
 - Trap focus inside — dim/blur background
 - Transitions ~150ms
 - Never stack multiple modals
@@ -74,6 +79,7 @@ Modals are temporary, focused interruptions:
 ## Back Navigation & Focus Restoration
 
 When users press back, they expect:
+
 1. Return to the same screen
 2. Focus on the element they were using before
 
@@ -88,10 +94,12 @@ function ConfirmModal({ visible, onClose, returnRef }) {
       <Pressable hasTVPreferredFocus onPress={onClose}>
         Confirm
       </Pressable>
-      <Pressable onPress={() => {
-        onClose();
-        returnRef?.current?.focus();
-      }}>
+      <Pressable
+        onPress={() => {
+          onClose();
+          returnRef?.current?.focus();
+        }}
+      >
         Cancel
       </Pressable>
     </TVFocusGuideView>
@@ -113,30 +121,37 @@ Each back press should move back one layer and restore previous focus state. Thi
 ## Implementation with React Navigation
 
 ### Drawer
+
 ```jsx
 const Drawer = createDrawerNavigator();
-<Drawer.Navigator screenOptions={{
-  drawerType: 'permanent',
-  drawerStyle: { width: 240 },
-}}>
+<Drawer.Navigator
+  screenOptions={{
+    drawerType: 'permanent',
+    drawerStyle: { width: 240 },
+  }}
+>
   <Drawer.Screen name="Home" component={HomeScreen} />
   <Drawer.Screen name="Movies" component={MoviesScreen} />
-</Drawer.Navigator>
+</Drawer.Navigator>;
 ```
 
 ### Tabs
+
 ```jsx
 const Tab = createBottomTabNavigator();
-<Tab.Navigator screenOptions={{
-  tabBarStyle: { height: 80 },
-  tabBarLabelStyle: { fontSize: 18 },
-}}>
+<Tab.Navigator
+  screenOptions={{
+    tabBarStyle: { height: 80 },
+    tabBarLabelStyle: { fontSize: 18 },
+  }}
+>
   <Tab.Screen name="Home" component={HomeScreen} />
   <Tab.Screen name="Movies" component={MoviesScreen} />
-</Tab.Navigator>
+</Tab.Navigator>;
 ```
 
 ## Related Skills
+
 - [focus-management.md](./focus-management.md) — TVFocusGuideView, focus traps
 - [nav-directional.md](./nav-directional.md) — How focus engines work
 - [nav-keyboard.md](./nav-keyboard.md) — Keyboard handling on TV

@@ -9,6 +9,7 @@ tags: testing, rntl, tvremote, focus, hardware-key-events, tv
 TV tests use the same React Native Testing Library but need custom helpers for remote-controlled navigation — you can't emulate D-pad with click events.
 
 ## Quick Reference
+
 - Create a local `tvRemote` helper for focus/blur/press events owned by JS
 - Focus movement must be explicit; RNTL does not run the native TV focus engine
 - Test native focus-engine behavior in E2E, not in JS-only tests
@@ -102,12 +103,14 @@ The native focus engine handles actual focus movement. In JavaScript tests, ther
 ## Performance Testing with Reassure
 
 Reuse integration test scenarios to measure render characteristics:
+
 ```jsx
 // Same RNTL tests, but Reassure measures render times
 // Compare results against a stable baseline
 ```
 
 ## Related Skills
+
 - [test-strategy.md](./test-strategy.md) — Overall testing approach
 - [test-e2e.md](./test-e2e.md) — End-to-end testing with Appium
 - [focus-management.md](./focus-management.md) — Focus APIs being tested

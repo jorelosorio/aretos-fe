@@ -9,6 +9,7 @@ tags: network, prefetching, caching, optimistic-ui, payloads, tv
 On TV, there's no "loading spinner safety net." People expect content to instantly fill the screen. If nothing happens after a remote press, they'll assume the app froze — and press again (duplicate requests).
 
 ## Quick Reference
+
 - Show something within 200ms of navigation — even a blurred poster or placeholder
 - Prefetch the next likely screen while current one is stable
 - Never block navigation/focus on network responses
@@ -24,15 +25,18 @@ On TV, there's no "loading spinner safety net." People expect content to instant
 ## Problem: Blocking Navigation
 
 **Bad:**
+
 ```jsx
 const onRowFocus = async (rowId) => {
   const details = await fetchRowDetails(rowId); // Blocks focus
   setDetails(details);
 };
 ```
+
 User presses down, nothing highlights until network returns.
 
 **Better (optimistic UI):**
+
 ```jsx
 const onRowFocus = (rowId) => {
   highlightRow(rowId); // Instant visual feedback
@@ -62,6 +66,7 @@ const onRowFocus = (rowId) => {
 > Optimize first paint time, not just throughput. Show something within 200ms of navigation.
 
 ## Related Skills
+
 - [perf-overview.md](./perf-overview.md) — Overall performance strategy
 - [perf-memory.md](./perf-memory.md) — Memory impact of caching
 - [perf-lists.md](./perf-lists.md) — Virtualized list rendering

@@ -7,6 +7,7 @@ tags: accessibility, screen-reader, focus, voiceover, talkback, tv
 # Accessibility Implementation in React Native TV
 
 ## Quick Reference
+
 - For agent-run checks, load the `agent-device` skill first, then read `agent-device help workflow`
 - Use `agent-device` accessibility-tree evidence to inspect exposed labels, roles, states, focus, and modal behavior
 - Use manual screen-reader testing only for spoken-output timing, audio behavior, and platform quirks that automation cannot prove
@@ -65,6 +66,7 @@ Escalate to manual screen-reader testing for the parts `agent-device` cannot ver
 ## Cross-Platform Focus
 
 Prefer `TVFocusGuideView` over `nextFocus*` for shared layouts. `destinations` takes an array of resolved components (`ref.current`), not the ref objects and not string IDs. Don't build it inline — `ref.current` is `null` on the first render and mutating a ref triggers no re-render, so the guide would register nothing. Hoist the resolved components into state once the children have mounted:
+
 ```jsx
 const playRef = useRef(null);
 const infoRef = useRef(null);
@@ -77,13 +79,23 @@ useEffect(() => {
 }, []);
 
 <TVFocusGuideView destinations={destinations}>
-  <TouchableOpacity ref={playRef} accessibilityRole="button" accessibilityLabel="Play" />
-  <TouchableOpacity ref={infoRef} accessibilityRole="button" accessibilityLabel="Info" />
-</TVFocusGuideView>
+  <TouchableOpacity
+    ref={playRef}
+    accessibilityRole="button"
+    accessibilityLabel="Play"
+  />
+  <TouchableOpacity
+    ref={infoRef}
+    accessibilityRole="button"
+    accessibilityLabel="Info"
+  />
+</TVFocusGuideView>;
 ```
+
 See [focus-management.md](./focus-management.md) for when `nextFocus*` overrides are acceptable.
 
 ## Related Skills
+
 - [a11y-overview.md](./a11y-overview.md) — Accessibility fundamentals for TV
 - [a11y-checklist.md](./a11y-checklist.md) — Pre-launch checklist
 - [focus-management.md](./focus-management.md) — Focus APIs

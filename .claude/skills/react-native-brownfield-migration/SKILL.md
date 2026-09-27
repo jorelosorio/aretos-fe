@@ -73,34 +73,34 @@ Reference this package when:
 
 ## Quick Reference
 
-| File | Description |
-|------|-------------|
-| [quick-start.md][quick-start] | Shared preflight and mandatory path-selection gate |
-| [expo-create-app.md][expo-create-app] | Scaffold a new Expo app before Expo brownfield setup |
-| [expo-quick-start.md][expo-quick-start] | Expo plugin setup and packaging readiness |
-| [expo-ios-integration.md][expo-ios-integration] | Expo iOS packaging and host startup integration |
-| [expo-android-integration.md][expo-android-integration] | Expo Android packaging, publish, and host integration |
-| [bare-quick-start.md][bare-quick-start] | Bare React Native baseline setup |
-| [bare-ios-xcframework-generation.md][bare-ios-xcframework-generation] | Bare iOS XCFramework generation |
-| [bare-android-aar-generation.md][bare-android-aar-generation] | Bare Android AAR generation and publish |
-| [bare-ios-native-integration.md][bare-ios-native-integration] | Bare iOS host integration |
-| [bare-android-native-integration.md][bare-android-native-integration] | Bare Android host integration |
+| File                                                                  | Description                                           |
+| --------------------------------------------------------------------- | ----------------------------------------------------- |
+| [quick-start.md][quick-start]                                         | Shared preflight and mandatory path-selection gate    |
+| [expo-create-app.md][expo-create-app]                                 | Scaffold a new Expo app before Expo brownfield setup  |
+| [expo-quick-start.md][expo-quick-start]                               | Expo plugin setup and packaging readiness             |
+| [expo-ios-integration.md][expo-ios-integration]                       | Expo iOS packaging and host startup integration       |
+| [expo-android-integration.md][expo-android-integration]               | Expo Android packaging, publish, and host integration |
+| [bare-quick-start.md][bare-quick-start]                               | Bare React Native baseline setup                      |
+| [bare-ios-xcframework-generation.md][bare-ios-xcframework-generation] | Bare iOS XCFramework generation                       |
+| [bare-android-aar-generation.md][bare-android-aar-generation]         | Bare Android AAR generation and publish               |
+| [bare-ios-native-integration.md][bare-ios-native-integration]         | Bare iOS host integration                             |
+| [bare-android-native-integration.md][bare-android-native-integration] | Bare Android host integration                         |
 
 ## Problem -> Skill Mapping
 
-| Problem | Start With |
-|---------|------------|
-| Need migration path decision first | [assess-react-native-migration](../assess-react-native-migration/SKILL.md) |
-| Need Expo vs bare path decision | [quick-start.md][quick-start] |
-| Need to create a new Expo app for brownfield | [expo-create-app.md][expo-create-app] |
-| Need Expo brownfield setup and plugin wiring | [expo-quick-start.md][expo-quick-start] |
-| Need Expo iOS brownfield integration | [expo-ios-integration.md][expo-ios-integration] |
-| Need Expo Android brownfield integration | [expo-android-integration.md][expo-android-integration] |
-| Need bare RN baseline setup | [bare-quick-start.md][bare-quick-start] |
-| Need bare RN iOS XCFramework generation | [bare-ios-xcframework-generation.md][bare-ios-xcframework-generation] |
-| Need bare RN Android AAR generation/publish | [bare-android-aar-generation.md][bare-android-aar-generation] |
-| Need bare RN iOS host integration | [bare-ios-native-integration.md][bare-ios-native-integration] |
-| Need bare RN Android host integration | [bare-android-native-integration.md][bare-android-native-integration] |
+| Problem                                      | Start With                                                                 |
+| -------------------------------------------- | -------------------------------------------------------------------------- |
+| Need migration path decision first           | [assess-react-native-migration](../assess-react-native-migration/SKILL.md) |
+| Need Expo vs bare path decision              | [quick-start.md][quick-start]                                              |
+| Need to create a new Expo app for brownfield | [expo-create-app.md][expo-create-app]                                      |
+| Need Expo brownfield setup and plugin wiring | [expo-quick-start.md][expo-quick-start]                                    |
+| Need Expo iOS brownfield integration         | [expo-ios-integration.md][expo-ios-integration]                            |
+| Need Expo Android brownfield integration     | [expo-android-integration.md][expo-android-integration]                    |
+| Need bare RN baseline setup                  | [bare-quick-start.md][bare-quick-start]                                    |
+| Need bare RN iOS XCFramework generation      | [bare-ios-xcframework-generation.md][bare-ios-xcframework-generation]      |
+| Need bare RN Android AAR generation/publish  | [bare-android-aar-generation.md][bare-android-aar-generation]              |
+| Need bare RN iOS host integration            | [bare-ios-native-integration.md][bare-ios-native-integration]              |
+| Need bare RN Android host integration        | [bare-android-native-integration.md][bare-android-native-integration]      |
 
 ## Related Skills
 

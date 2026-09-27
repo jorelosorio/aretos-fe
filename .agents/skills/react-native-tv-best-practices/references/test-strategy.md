@@ -9,6 +9,7 @@ tags: testing, integration-tests, rntl, focus, remote-input, tv
 TV testing should prove the remote-controlled paths that break differently from mobile: focus order, Back/Menu behavior, player controls, low-memory carousels, and platform packaging.
 
 ## Quick Reference
+
 - Use integration tests for JS-owned focus state, player-control state, and remote event handlers
 - Use E2E tests for native focus engine behavior, app launch, routing, playback startup, and Back/Menu behavior
 - For agent-run accessibility smoke, load the `agent-device` skill and read `agent-device help workflow`, then inspect labels, roles, states, and focused elements from the accessibility tree
@@ -19,10 +20,15 @@ TV testing should prove the remote-controlled paths that break differently from 
 ## JS Integration Tests
 
 Prefer a saved or generated app state that includes rows, entitlement state, player state, and modal state:
+
 ```jsx
 const snapshot = require('my-state.json');
 const { Wrapper } = loadStateFromSnapshot(snapshot);
-render(<Wrapper><VideoPlayer /></Wrapper>);
+render(
+  <Wrapper>
+    <VideoPlayer />
+  </Wrapper>,
+);
 ```
 
 - Mock native player/focus modules when JS tests cannot load them
@@ -38,6 +44,7 @@ See [test-javascript.md](./test-javascript.md) for the local `tvRemote` helper p
 - Device matrix: at least one Apple TV target, one Android TV/Fire TV target, and any required Vega/Tizen/webOS target
 
 ## Related Skills
+
 - [test-javascript.md](./test-javascript.md) — JS test setup and tvRemote helpers
 - [test-e2e.md](./test-e2e.md) — E2E testing with Appium and device farms
 - [perf-overview.md](./perf-overview.md) — Performance KPIs to test

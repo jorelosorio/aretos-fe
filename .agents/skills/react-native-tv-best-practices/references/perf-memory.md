@@ -9,6 +9,7 @@ tags: memory, ram, image-optimization, garbage-collection, tv-performance
 On TVs, you're sharing RAM with the OS, video decoder, DRM, audio buffers, and even the live TV tuner. Your UI runs in the leftovers.
 
 ## Quick Reference
+
 - Many devices have 1-1.5 GB total — your app might only get 300-500 MB
 - 4K video streams eat 100-200 MB just for decoded frames
 - Poster/backdrop caches are the biggest UI-side memory lever
@@ -23,18 +24,19 @@ On TVs, you're sharing RAM with the OS, video decoder, DRM, audio buffers, and e
 ## Image Memory Optimization
 
 **Bad:**
+
 ```jsx
 <Image source={{ uri: posterUrl }} />
 ```
+
 Without cache control, changing `posterUrl` holds multiple decoded bitmaps until GC runs.
 
 **Better:**
+
 ```jsx
-<Image
-  source={{ uri: posterUrl, cache: 'force-cache' }}
-  resizeMode="cover"
-/>
+<Image source={{ uri: posterUrl, cache: 'force-cache' }} resizeMode="cover" />
 ```
+
 Or use `react-native-fast-image` for cache control.
 
 ## List Item Memory
@@ -65,6 +67,7 @@ Even with virtualization, if row components keep large objects in state (full me
 - **Apple TV 4K:** More generous RAM (4 GB) but don't assume you can skip optimization.
 
 ## Related Skills
+
 - [perf-overview.md](./perf-overview.md) — Overall performance strategy
 - [perf-lists.md](./perf-lists.md) — Virtualized lists reduce memory
 - [perf-network.md](./perf-network.md) — Caching and payload optimization

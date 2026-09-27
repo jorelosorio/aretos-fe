@@ -7,6 +7,7 @@ tags: video, debugging, ffmpeg, ffprobe, charles, proxyman, profiling
 # Debugging Video Streams
 
 ## Quick Reference
+
 - Inspect the stream with `ffprobe` before changing React player code
 - Verify manifest requests, DRM license exchange, ABR switches, and decoder support separately
 - Use a proxy for network/license failures; use RN/React tooling for duplicate UI requests or player state desync
@@ -25,6 +26,7 @@ tags: video, debugging, ffmpeg, ffprobe, charles, proxyman, profiling
 Install the proxy CA certificate on the simulator, emulator, or device before expecting HTTPS manifests or license requests to decrypt.
 
 ## Related Skills
+
 - [video-streaming.md](./video-streaming.md) — Streaming architecture
 - [video-players.md](./video-players.md) — Player implementations
 - [perf-overview.md](./perf-overview.md) — Overall performance strategy

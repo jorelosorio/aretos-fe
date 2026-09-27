@@ -7,6 +7,7 @@ tags: video, players, react-native-video, exoplayer, avplayer, shaka, drm
 # Video Players for React Native TV
 
 ## Quick Reference
+
 - Choose the player after the target platform and DRM/protocol path are known
 - Native TV targets usually end at AVPlayer/ExoPlayer through a wrapper or native module
 - Web-based TV targets can use Shaka, hls.js, or dash.js in the browser context
@@ -14,15 +15,15 @@ tags: video, players, react-native-video, exoplayer, avplayer, shaka, drm
 
 ## Available Players
 
-| Player | Platform | Best For |
-|--------|----------|----------|
-| AVPlayer | iOS, tvOS | Native Apple playback, FairPlay DRM |
-| ExoPlayer | Android TV, Fire TV | Wide format support, Widevine DRM |
-| react-native-video | Cross-platform | Wraps AVPlayer + ExoPlayer; easiest setup |
-| react-native-theoplayer | Cross-platform | THEOplayer SDK wrapper |
-| Shaka Player | JS (all platforms) | DASH + HLS, advanced ABR, multiple DRMs |
-| hls.js | Web-based TVs | HLS playback in browsers |
-| dash.js | Web-based TVs | MPEG-DASH reference player |
+| Player                  | Platform            | Best For                                  |
+| ----------------------- | ------------------- | ----------------------------------------- |
+| AVPlayer                | iOS, tvOS           | Native Apple playback, FairPlay DRM       |
+| ExoPlayer               | Android TV, Fire TV | Wide format support, Widevine DRM         |
+| react-native-video      | Cross-platform      | Wraps AVPlayer + ExoPlayer; easiest setup |
+| react-native-theoplayer | Cross-platform      | THEOplayer SDK wrapper                    |
+| Shaka Player            | JS (all platforms)  | DASH + HLS, advanced ABR, multiple DRMs   |
+| hls.js                  | Web-based TVs       | HLS playback in browsers                  |
+| dash.js                 | Web-based TVs       | MPEG-DASH reference player                |
 
 ## Player-Control Checks
 
@@ -34,6 +35,7 @@ tags: video, players, react-native-video, exoplayer, avplayer, shaka, drm
 ## Thumbnail Generation — BIF Format
 
 The Broadcast Image Format bundles all thumbnails in one indexed binary file:
+
 - Single network request (vs. individual image downloads)
 - Indexed structure for instant lookup by timestamp
 - `thumbIndex = Math.floor(videoTime / interval)`
@@ -55,14 +57,15 @@ For complex streaming (live sports, multi-DRM, custom ABR), choose the architect
 
 ## When to Use What
 
-| Scenario | Recommendation |
-|----------|---------------|
-| Basic HLS/MP4 playback | react-native-video |
-| Simple DRM (single platform) | react-native-video with DRM config |
-| Enterprise multi-DRM, live sports | Shaka Player or native players |
-| Web-based TVs (Tizen, webOS) | Shaka Player, hls.js, or dash.js |
+| Scenario                          | Recommendation                     |
+| --------------------------------- | ---------------------------------- |
+| Basic HLS/MP4 playback            | react-native-video                 |
+| Simple DRM (single platform)      | react-native-video with DRM config |
+| Enterprise multi-DRM, live sports | Shaka Player or native players     |
+| Web-based TVs (Tizen, webOS)      | Shaka Player, hls.js, or dash.js   |
 
 ## Related Skills
+
 - [video-streaming.md](./video-streaming.md) — Streaming architecture and protocols
 - [video-debugging.md](./video-debugging.md) — Debugging tools
 - [focus-management.md](./focus-management.md) — Focus handling during playback

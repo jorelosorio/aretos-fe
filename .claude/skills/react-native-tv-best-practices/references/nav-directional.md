@@ -55,15 +55,15 @@ For most apps, the best focus management is no explicit management at all:
 
 ```jsx
 <View style={styles.row}>
-	{items.map((item) => (
-		<Pressable
-			key={item.id}
-			onPress={() => select(item)}
-			onFocus={() => setFocusedItem(item.id)}
-		>
-			<Image source={item.poster} />
-		</Pressable>
-	))}
+  {items.map((item) => (
+    <Pressable
+      key={item.id}
+      onPress={() => select(item)}
+      onFocus={() => setFocusedItem(item.id)}
+    >
+      <Image source={item.poster} />
+    </Pressable>
+  ))}
 </View>
 ```
 
