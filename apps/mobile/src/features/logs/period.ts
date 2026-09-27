@@ -12,6 +12,7 @@
  */
 
 import type { TrackingFrequency } from '@/features/goals';
+import { fromDateKey } from '@/utils/date-key';
 
 /** A `YYYY-MM-DD` day, which is how every date crosses the wire. */
 export type DateKey = string;
@@ -26,18 +27,6 @@ export function dateKey(date: Date): DateKey {
 /** Today where the user is, which is the only place "today" means anything. */
 export function todayKey(): DateKey {
   return dateKey(new Date());
-}
-
-/**
- * Parsed as a local date, not as an instant.
- *
- * `new Date('2026-03-01')` is UTC midnight by spec, which in any negative
- * offset is still February 28th locally — a whole day of logs filed under the
- * wrong date. The parts have to be handed over separately.
- */
-function fromDateKey(key: DateKey): Date {
-  const [year, month, day] = key.split('-').map(Number);
-  return new Date(year, month - 1, day);
 }
 
 /**

@@ -14,7 +14,7 @@ import type {
 } from '@/features/analysis';
 import { useTranslations } from '@/lib/i18n';
 
-const WEEKDAY_KEYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as const;
+import { WEEKDAY_KEYS } from './insights';
 
 const BAND_COLORS = {
   steady: '$good',
@@ -94,65 +94,61 @@ export function RhythmCard({
       subtitle={t('analysis.rhythm.subtitle')}
       why={t('analysis.rhythm.why')}
     >
-      {(width) => (
-        <YStack gap={SPACING.section}>
-          <BarChart width={width} bars={bars} />
+      <YStack gap={SPACING.section}>
+        <BarChart bars={bars} />
 
-          {extremes !== null ? (
-            <XStack gap={SPACING.items}>
-              <DayStat
-                label={t('analysis.rhythm.best')}
-                day={t(
-                  `analysis.weekday.${WEEKDAY_KEYS[extremes.best.weekday]}`,
-                )}
-                rate={extremes.best.rate}
-                color="$good"
-              />
-              <DayStat
-                label={t('analysis.rhythm.worst')}
-                day={t(
-                  `analysis.weekday.${WEEKDAY_KEYS[extremes.worst.weekday]}`,
-                )}
-                rate={extremes.worst.rate}
-                color="$outcomeMissed"
-              />
-            </XStack>
-          ) : (
-            <NotEnoughData
-              need={t('analysis.rhythm.needExtremes', {
-                count: thresholds.minPerGroup,
-              })}
+        {extremes !== null ? (
+          <XStack gap={SPACING.items}>
+            <DayStat
+              label={t('analysis.rhythm.best')}
+              day={t(`analysis.weekday.${WEEKDAY_KEYS[extremes.best.weekday]}`)}
+              rate={extremes.best.rate}
+              color="$good"
             />
-          )}
+            <DayStat
+              label={t('analysis.rhythm.worst')}
+              day={t(
+                `analysis.weekday.${WEEKDAY_KEYS[extremes.worst.weekday]}`,
+              )}
+              rate={extremes.worst.rate}
+              color="$outcomeMissed"
+            />
+          </XStack>
+        ) : (
+          <NotEnoughData
+            need={t('analysis.rhythm.needExtremes', {
+              count: thresholds.minPerGroup,
+            })}
+          />
+        )}
 
-          {regularity !== null ? (
-            <YStack gap={SPACING.text}>
-              <SizableText size={TEXT.caption} color="$mutedForeground">
-                {t('analysis.rhythm.regularity')}
-              </SizableText>
-              <SizableText
-                size={TEXT.heading}
-                fontWeight="700"
-                color={BAND_COLORS[regularity.band]}
-              >
-                {t(`analysis.rhythm.regularityBand.${regularity.band}`)}
-              </SizableText>
-              <SizableText size={TEXT.caption} color="$mutedForeground">
-                {t('analysis.rhythm.regularityReading', {
-                  low: formatRate(regularity.typicalLow, empty),
-                  high: formatRate(regularity.typicalHigh, empty),
-                })}
-              </SizableText>
-            </YStack>
-          ) : (
-            <NotEnoughData
-              need={t('analysis.rhythm.needRegularity', {
-                count: thresholds.minPerGroup,
+        {regularity !== null ? (
+          <YStack gap={SPACING.text}>
+            <SizableText size={TEXT.caption} color="$mutedForeground">
+              {t('analysis.rhythm.regularity')}
+            </SizableText>
+            <SizableText
+              size={TEXT.heading}
+              fontWeight="700"
+              color={BAND_COLORS[regularity.band]}
+            >
+              {t(`analysis.rhythm.regularityBand.${regularity.band}`)}
+            </SizableText>
+            <SizableText size={TEXT.caption} color="$mutedForeground">
+              {t('analysis.rhythm.regularityReading', {
+                low: formatRate(regularity.typicalLow, empty),
+                high: formatRate(regularity.typicalHigh, empty),
               })}
-            />
-          )}
-        </YStack>
-      )}
+            </SizableText>
+          </YStack>
+        ) : (
+          <NotEnoughData
+            need={t('analysis.rhythm.needRegularity', {
+              count: thresholds.minPerGroup,
+            })}
+          />
+        )}
+      </YStack>
     </ChartCard>
   );
 }

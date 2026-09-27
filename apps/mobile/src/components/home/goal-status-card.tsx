@@ -2,8 +2,10 @@ import { memo } from 'react';
 import { Flame, Plus, SquarePen, Trophy } from '@tamagui/lucide-icons-2';
 import { Circle, SizableText, XStack, YStack } from 'tamagui';
 
+import { Card } from '@/components/common/card';
 import { CompletionStatus } from '@/components/goals/completion-status';
-import { GoalDot } from '@/components/goals/goal-dot';
+import { FREQUENCY_LABELS } from '@/components/goals/frequency-labels';
+import { GoalName } from '@/components/goals/goal-name';
 import { PERIOD_STATUS_LABELS } from '@/components/goals/period-status';
 import { MOOD_LABELS } from '@/components/logs/mood-labels';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
@@ -12,12 +14,6 @@ import { useTranslations, type TranslationKey } from '@/lib/i18n';
 
 import { WeekStrip } from './week-strip';
 import { WeekWindow } from './week-window';
-
-const FREQUENCY_LABELS: Record<Goal['trackingFrequency'], TranslationKey> = {
-  daily: 'goals.frequency.daily',
-  weekly: 'goals.frequency.weekly',
-  flexible: 'goals.frequency.flexible',
-};
 
 const ACTION_SIZE = 28;
 
@@ -113,92 +109,77 @@ export const GoalStatusCard = memo(function GoalStatusCard({
   ].join('. ');
 
   return (
-    <YStack
-      onPress={() => onOpen(goal)}
-      pressStyle={{ bg: '$cardPress' }}
-      bg="$card"
-      rounded="$xl2"
+    <Card
+      pressable
       overflow="hidden"
+      onPress={() => onOpen(goal)}
       accessible
       accessibilityRole="button"
       accessibilityLabel={label}
       accessibilityHint={action}
     >
-      <YStack gap={SPACING.items} p={SPACING.card}>
-        <YStack gap={SPACING.text}>
-          <XStack items="center" gap={SPACING.items}>
-            <XStack flex={1} minW={0} items="center" gap="$2">
-              <GoalDot slot={goal.colorSlot} />
-              <SizableText
-                flex={1}
-                size={TEXT.subheading}
-                fontWeight="700"
-                color="$cardForeground"
-                numberOfLines={2}
-              >
-                {goal.name}
-              </SizableText>
-            </XStack>
+      <YStack gap={SPACING.text}>
+        <XStack items="center" gap={SPACING.items}>
+          <GoalName slot={goal.colorSlot} name={goal.name} lines={2} />
 
-            <XStack shrink={0} items="center" gap="$2">
-              {hasStreak && (
-                <StreakChip
-                  text={t(streak.short, { count: currentStreak })}
-                  record={isRecord}
-                />
-              )}
-
-              <Circle size={ACTION_SIZE} bg="$muted">
-                <ActionIcon size={ICON.inline} color="$primary" />
-              </Circle>
-            </XStack>
-          </XStack>
-
-          {hasHabits ? (
-            <CompletionStatus
-              status={status}
-              answered={answered}
-              total={total}
-              detail={`${t(
-                total === 1 ? 'habits.progressOne' : 'habits.progressMany',
-                { answered, total },
-              )} · ${cadence}`}
-            />
-          ) : (
-            <SizableText
-              size={TEXT.caption}
-              color="$mutedForeground"
-              numberOfLines={1}
-            >
-              {context}
-            </SizableText>
-          )}
-        </YStack>
-
-        {hasHabits ? (
-          <>
-            {weekly ? (
-              <WeekWindow
-                entryDate={currentPeriod.entryDate}
-                endDate={currentPeriod.endDate}
-                daysLeft={daysLeft}
-                mood={mood}
-              />
-            ) : (
-              <WeekStrip
-                periods={progress.periods}
-                currentEntryDate={currentPeriod.entryDate}
-                today={progress.today}
-                frequency={goal.trackingFrequency}
+          <XStack shrink={0} items="center" gap="$2">
+            {hasStreak && (
+              <StreakChip
+                text={t(streak.short, { count: currentStreak })}
+                record={isRecord}
               />
             )}
-          </>
+
+            <Circle size={ACTION_SIZE} bg="$muted">
+              <ActionIcon size={ICON.inline} color="$primary" />
+            </Circle>
+          </XStack>
+        </XStack>
+
+        {hasHabits ? (
+          <CompletionStatus
+            status={status}
+            answered={answered}
+            total={total}
+            detail={`${t(
+              total === 1 ? 'habits.progressOne' : 'habits.progressMany',
+              { answered, total },
+            )} · ${cadence}`}
+          />
         ) : (
-          <SizableText size={TEXT.body} color="$mutedForeground">
-            {t('home.noHabits')}
+          <SizableText
+            size={TEXT.caption}
+            color="$mutedForeground"
+            numberOfLines={1}
+          >
+            {context}
           </SizableText>
         )}
       </YStack>
-    </YStack>
+
+      {hasHabits ? (
+        <>
+          {weekly ? (
+            <WeekWindow
+              entryDate={currentPeriod.entryDate}
+              endDate={currentPeriod.endDate}
+              daysLeft={daysLeft}
+              mood={mood}
+            />
+          ) : (
+            <WeekStrip
+              periods={progress.periods}
+              currentEntryDate={currentPeriod.entryDate}
+              today={progress.today}
+              frequency={goal.trackingFrequency}
+            />
+          )}
+        </>
+      ) : (
+        <SizableText size={TEXT.body} color="$mutedForeground">
+          {t('home.noHabits')}
+        </SizableText>
+      )}
+    </Card>
   );
 });

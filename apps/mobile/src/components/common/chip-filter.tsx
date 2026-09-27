@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2';
-import { SizableText, XStack } from 'tamagui';
+import { SizableText, XStack, type ColorTokens } from 'tamagui';
 
 import { ICON, TEXT } from '@/constants/layout';
 import { useTranslations } from '@/lib/i18n';
 
-import { Chip, type ChipLeading } from './chip';
+import { Chip } from './chip';
+import type { IconComponent } from './icon-component';
 import { visibleItems } from './chip-filter-items';
 
 const COLLAPSED_ITEMS = 10;
@@ -13,7 +14,8 @@ const COLLAPSED_ITEMS = 10;
 export type ChipFilterItem = {
   key: string;
   label: string;
-  leading?: ChipLeading;
+  Icon?: IconComponent;
+  dot?: ColorTokens;
 };
 
 function ToggleChip({
@@ -87,7 +89,8 @@ export function ChipFilter({
           <Chip
             key={item.key}
             label={item.label}
-            leading={item.leading}
+            Icon={item.Icon}
+            dot={item.dot}
             selected={value === item.key}
             onPress={() => onChange(value === item.key ? null : item.key)}
           />

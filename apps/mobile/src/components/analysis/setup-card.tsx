@@ -87,24 +87,6 @@ export function SetupCard({ setup }: { setup: Setup }) {
       title={t('analysis.setup.title')}
       subtitle={t('analysis.setup.subtitle')}
       why={t('analysis.setup.why')}
-      footnote={
-        <YStack gap={SPACING.text}>
-          <SizableText size={TEXT.caption} color="$mutedForeground">
-            {t('analysis.setup.counts', {
-              goals: setup.goals,
-              habits: setup.habits,
-            })}
-          </SizableText>
-          <SizableText size={TEXT.caption} color="$mutedForeground">
-            {t('analysis.setup.modes', {
-              binary: setup.modes.binary ?? 0,
-              count: setup.modes.count ?? 0,
-              duration: setup.modes.duration ?? 0,
-              rating: setup.modes.rating ?? 0,
-            })}
-          </SizableText>
-        </YStack>
-      }
     >
       <YStack gap={SPACING.items}>
         <CoverageRow
@@ -124,6 +106,22 @@ export function SetupCard({ setup }: { setup: Setup }) {
           hint={t('analysis.setup.weightedHint')}
           coverage={setup.weighted}
         />
+      </YStack>
+      <YStack gap={SPACING.text}>
+        <SizableText size={TEXT.caption} color="$mutedForeground">
+          {t('analysis.setup.counts', {
+            goals: setup.goals,
+            habits: setup.habits,
+          })}
+        </SizableText>
+        <SizableText size={TEXT.caption} color="$mutedForeground">
+          {t('analysis.setup.modes', {
+            binary: setup.modes.binary ?? 0,
+            count: setup.modes.count ?? 0,
+            duration: setup.modes.duration ?? 0,
+            rating: setup.modes.rating ?? 0,
+          })}
+        </SizableText>
       </YStack>
     </ChartCard>
   );

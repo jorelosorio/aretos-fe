@@ -1,17 +1,13 @@
 import { memo } from 'react';
 import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
+import { Card } from '@/components/common/card';
 import { SPACING, TEXT } from '@/constants/layout';
 import type { Goal } from '@/features/goals';
-import { useTranslations, type TranslationKey } from '@/lib/i18n';
+import { useTranslations } from '@/lib/i18n';
 
-import { GoalDot } from './goal-dot';
-
-const FREQUENCY_LABELS: Record<Goal['trackingFrequency'], TranslationKey> = {
-  daily: 'goals.frequency.daily',
-  weekly: 'goals.frequency.weekly',
-  flexible: 'goals.frequency.flexible',
-};
+import { FREQUENCY_LABELS } from './frequency-labels';
+import { GoalName } from './goal-name';
 
 export const GoalCard = memo(function GoalCard({
   goal,
@@ -29,29 +25,16 @@ export const GoalCard = memo(function GoalCard({
   });
 
   return (
-    <XStack
-      onPress={() => onOpen(goal)}
-      pressStyle={{ bg: '$cardPress' }}
+    <Card
+      row
+      pressable
       items="center"
-      gap={SPACING.items}
-      p={SPACING.card}
-      bg="$card"
-      rounded="$xl2"
+      onPress={() => onOpen(goal)}
       accessibilityRole="button"
       accessibilityLabel={`${goal.name}. ${actions}`}
     >
       <YStack flex={1} gap={SPACING.text}>
-        <XStack items="center" gap="$2">
-          <GoalDot slot={goal.colorSlot} />
-          <SizableText
-            flex={1}
-            size={TEXT.subheading}
-            fontWeight="700"
-            color="$cardForeground"
-          >
-            {goal.name}
-          </SizableText>
-        </XStack>
+        <GoalName slot={goal.colorSlot} name={goal.name} />
 
         {goal.description !== '' && (
           <Paragraph
@@ -75,6 +58,6 @@ export const GoalCard = memo(function GoalCard({
           </SizableText>
         </XStack>
       </YStack>
-    </XStack>
+    </Card>
   );
 });

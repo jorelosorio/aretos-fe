@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useState } from 'react';
 import { Stack, useRouter } from 'expo-router';
 
 import { ErrorNotice } from '@/components/common/error-notice';
@@ -14,6 +14,7 @@ import {
   SegmentedControl,
   type Segment,
 } from '@/components/common/segmented-control';
+import { HabitActionsMenu } from './habit-actions-menu';
 import { DEFAULT_TARGET, HabitTarget } from './habit-target';
 import { MODE_ICONS } from './mode-icons';
 import {
@@ -40,12 +41,12 @@ export function HabitForm({
   goalId,
   habitId,
   initial,
-  menu,
+  archived = false,
 }: {
   goalId: string;
   habitId?: string;
   initial: HabitDraft;
-  menu?: ReactNode;
+  archived?: boolean;
 }) {
   const { t } = useTranslations();
   const router = useRouter();
@@ -129,7 +130,9 @@ export function HabitForm({
                 disabled={!name}
                 busy={busy}
               />
-              {menu}
+              {habitId !== undefined && (
+                <HabitActionsMenu habitId={habitId} archived={archived} />
+              )}
             </HeaderActions>
           ),
         }}

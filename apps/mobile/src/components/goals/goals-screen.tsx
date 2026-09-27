@@ -3,10 +3,9 @@ import { FlatList, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
 import { Archive, Plus, Target } from '@tamagui/lucide-icons-2';
-import { Button, Paragraph, SizableText, YStack } from 'tamagui';
+import { YStack } from 'tamagui';
 
-import { EmptyArt } from '@/components/common/empty-art';
-import type { Illustration } from '@/components/common/illustrations';
+import { EmptyState } from '@/components/common/empty-state';
 import { ErrorNotice } from '@/components/common/error-notice';
 import { useTabBarInset } from '@/components/common/floating-tab-bar';
 import { ScreenLoader } from '@/components/common/screen-loader';
@@ -15,7 +14,7 @@ import {
   type Segment,
 } from '@/components/common/segmented-control';
 import { ILLUSTRATIONS } from '@/components/common/illustrations';
-import { BUTTON, SPACING, TEXT } from '@/constants/layout';
+import { SPACING } from '@/constants/layout';
 import { useGoalErrorMessage, useGoals, type Goal } from '@/features/goals';
 import { useAllowance } from '@/features/limits';
 import { useTranslations } from '@/lib/i18n';
@@ -106,77 +105,26 @@ export function GoalsScreen() {
           isPending ? (
             <ScreenLoader />
           ) : (
-            <YStack flex={1} px={SPACING.screen} pb={SPACING.screen}>
-              <EmptyGoals
-                Icon={archived ? Archive : Target}
-                illustration={
-                  archived ? ILLUSTRATIONS.noArchived : ILLUSTRATIONS.noGoals
-                }
-                title={t(
-                  archived ? 'goals.empty.archivedTitle' : 'goals.empty.title',
-                )}
-                body={t(
-                  archived ? 'goals.empty.archivedBody' : 'goals.empty.body',
-                )}
-                onCreate={archived || !canCreate ? undefined : create}
-              />
-            </YStack>
+            <EmptyState
+              Icon={archived ? Archive : Target}
+              illustration={
+                archived ? ILLUSTRATIONS.noArchived : ILLUSTRATIONS.noGoals
+              }
+              title={t(
+                archived ? 'goals.empty.archivedTitle' : 'goals.empty.title',
+              )}
+              body={t(
+                archived ? 'goals.empty.archivedBody' : 'goals.empty.body',
+              )}
+              action={
+                archived || !canCreate
+                  ? undefined
+                  : { label: t('goals.new'), Icon: Plus, onPress: create }
+              }
+            />
           )
         }
       />
-    </YStack>
-  );
-}
-
-function EmptyGoals({
-  Icon,
-  illustration,
-  title,
-  body,
-  onCreate,
-}: {
-  Icon: typeof Target;
-  illustration?: Illustration;
-  title: string;
-  body: string;
-  onCreate?: () => void;
-}) {
-  const { t } = useTranslations();
-
-  return (
-    <YStack
-      flex={1}
-      items="center"
-      justify="center"
-      gap={SPACING.section}
-      p={SPACING.section}
-    >
-      <EmptyArt Icon={Icon} illustration={illustration} />
-
-      <YStack gap={SPACING.group} items="center">
-        <SizableText
-          size={TEXT.title}
-          fontWeight="700"
-          color="$color"
-          text="center"
-        >
-          {title}
-        </SizableText>
-        <Paragraph size={TEXT.body} color="$mutedForeground" text="center">
-          {body}
-        </Paragraph>
-      </YStack>
-
-      {onCreate && (
-        <Button
-          size={BUTTON.primary}
-          theme="accent"
-          icon={Plus}
-          onPress={onCreate}
-        >
-          {t('goals.new')}
-        </Button>
-      )}
     </YStack>
   );
 }

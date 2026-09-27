@@ -27,7 +27,6 @@ export function CadenceCard({ cadence }: { cadence: Cadence }) {
       title={t('analysis.cadence.title')}
       subtitle={t('analysis.cadence.subtitle')}
       why={t('analysis.cadence.why')}
-      footnote={<BasisNote basis={cadence.basis} />}
     >
       <YStack gap={SPACING.items}>
         <Meter
@@ -78,6 +77,7 @@ export function CadenceCard({ cadence }: { cadence: Cadence }) {
           </XStack>
         ))}
       </XStack>
+      <BasisNote basis={cadence.basis} />
     </ChartCard>
   );
 }

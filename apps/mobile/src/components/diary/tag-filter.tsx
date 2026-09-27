@@ -1,7 +1,7 @@
+import { Tag } from '@tamagui/lucide-icons-2';
 import { YStack } from 'tamagui';
 
 import { ChipFilter } from '@/components/common/chip-filter';
-import { tagMark } from '@/components/tags/tag-chip';
 import { SPACING } from '@/constants/layout';
 import { useTags } from '@/features/tags';
 import { useTranslations } from '@/lib/i18n';
@@ -36,7 +36,7 @@ export function TagFilter({
         items={names.map((name) => ({
           key: name.toLowerCase(),
           label: capitalize(name),
-          leading: tagMark,
+          Icon: Tag,
         }))}
         value={active}
         onChange={(key) =>

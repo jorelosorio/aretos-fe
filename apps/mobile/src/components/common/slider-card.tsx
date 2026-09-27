@@ -2,6 +2,8 @@ import { SizableText, Slider, XStack, YStack } from 'tamagui';
 
 import { SPACING, TEXT } from '@/constants/layout';
 
+import { Card } from './card';
+
 const THUMB = 28;
 const THUMB_RING = 3;
 const THUMB_SHADOW = '0px 1px 4px rgba(0, 0, 0, 0.24)';
@@ -24,7 +26,7 @@ export function SliderCard({
   label: string;
 }) {
   return (
-    <YStack gap={SPACING.items} p={SPACING.card} bg="$card" rounded="$xl2">
+    <Card>
       <SizableText
         size={TEXT.display}
         fontWeight="700"
@@ -68,6 +70,6 @@ export function SliderCard({
           </SizableText>
         </XStack>
       </YStack>
-    </YStack>
+    </Card>
   );
 }

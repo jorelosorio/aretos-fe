@@ -12,7 +12,6 @@ import {
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
 import Animated, {
-  Easing,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
@@ -30,11 +29,9 @@ import { SHEET, SPACING, TEXT } from '@/constants/layout';
 import { useTranslations } from '@/lib/i18n';
 
 import { fitResting, resistDrag, snapPoints } from './sheet-fit';
+import { SHEET_ENTER, SHEET_EXIT } from './sheet-motion';
 
 export type SheetDetent = keyof typeof SHEET.detents;
-
-const ENTER = { duration: 420, easing: Easing.bezier(0.32, 0.72, 0, 1) };
-const EXIT = { duration: 260, easing: Easing.bezier(0.32, 0, 0.67, 0) };
 const SNAP = { damping: 32, stiffness: 320, mass: 1 };
 const FLING = 0.12;
 
@@ -42,7 +39,6 @@ export function BottomSheet({
   open,
   title,
   subtitle,
-  leading,
   detent = 'half',
   allowExpand = true,
   onDismiss,
@@ -51,7 +47,6 @@ export function BottomSheet({
   open: boolean;
   title: string;
   subtitle?: string;
-  leading?: ReactNode;
   detent?: SheetDetent | 'fit';
   allowExpand?: boolean;
   onDismiss: () => void;
@@ -97,7 +92,7 @@ export function BottomSheet({
 
   const enter = useCallback(() => {
     offset.set(
-      withTiming(resting, ENTER, (finished) => {
+      withTiming(resting, SHEET_ENTER, (finished) => {
         if (finished) scheduleOnRN(setSettled, resting);
       }),
     );
@@ -117,7 +112,7 @@ export function BottomSheet({
     if (!mounted) return;
 
     offset.set(
-      withTiming(full, EXIT, (finished) => {
+      withTiming(full, SHEET_EXIT, (finished) => {
         if (finished) scheduleOnRN(setMounted, false);
       }),
     );
@@ -236,16 +231,7 @@ export function BottomSheet({
                 <GestureDetector gesture={drag()}>
                   <View style={styles.heading}>
                     <YStack gap={SPACING.text}>
-                      {leading === undefined ? (
-                        <SectionTitle>{title}</SectionTitle>
-                      ) : (
-                        <XStack items="center" gap="$2">
-                          {leading}
-                          <YStack shrink={1}>
-                            <SectionTitle>{title}</SectionTitle>
-                          </YStack>
-                        </XStack>
-                      )}
+                      <SectionTitle>{title}</SectionTitle>
 
                       {subtitle !== undefined && subtitle !== '' && (
                         <SizableText

@@ -1,14 +1,9 @@
 import { History } from '@tamagui/lucide-icons-2';
-import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
-import { ICON, SPACING, TEXT } from '@/constants/layout';
+import { Notice } from '@/components/common/notice';
 import { useTranslations } from '@/lib/i18n';
 import { dateFormat } from '@/utils/date-format';
-
-function toDate(key: string): Date {
-  const [year, month, day] = key.split('-').map(Number);
-  return new Date(year, month - 1, day);
-}
+import { fromDateKey } from '@/utils/date-key';
 
 export function HistoryCutoffNotice({ cutoff }: { cutoff: string }) {
   const { t, locale } = useTranslations();
@@ -17,33 +12,13 @@ export function HistoryCutoffNotice({ cutoff }: { cutoff: string }) {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
-  }).format(toDate(cutoff));
+  }).format(fromDateKey(cutoff));
 
   return (
-    <XStack gap={SPACING.items} p={SPACING.card} bg="$card" rounded="$xl2">
-      <YStack
-        width={36}
-        height={36}
-        items="center"
-        justify="center"
-        rounded="$xl"
-        bg="$muted"
-      >
-        <History size={ICON.row} color="$primary" />
-      </YStack>
-
-      <YStack flex={1} gap={SPACING.text}>
-        <SizableText
-          size={TEXT.heading}
-          fontWeight="700"
-          color="$cardForeground"
-        >
-          {t('diary.cutoff.title')}
-        </SizableText>
-        <Paragraph size={TEXT.body} color="$mutedForeground">
-          {t('diary.cutoff.body', { date })}
-        </Paragraph>
-      </YStack>
-    </XStack>
+    <Notice
+      Icon={History}
+      title={t('diary.cutoff.title')}
+      body={t('diary.cutoff.body', { date })}
+    />
   );
 }

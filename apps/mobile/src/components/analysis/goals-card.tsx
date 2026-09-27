@@ -7,7 +7,7 @@ import {
 import { Separator, SizableText, XStack, YStack } from 'tamagui';
 
 import { shortDateLabel } from '@/components/common/date-label';
-import { GoalDot } from '@/components/goals/goal-dot';
+import { GoalName } from '@/components/goals/goal-name';
 import { ChartCard } from '@/components/viz/chart-card';
 import { formatRate } from '@/components/viz/format';
 import { Heatmap } from '@/components/viz/heatmap';
@@ -40,15 +40,7 @@ function MiniStat({ label, value }: { label: string; value: string }) {
   );
 }
 
-function GoalRow({
-  goal,
-  width,
-  pending,
-}: {
-  goal: AnalysisGoal;
-  width: number;
-  pending: boolean;
-}) {
+function GoalRow({ goal, pending }: { goal: AnalysisGoal; pending: boolean }) {
   const { t, locale } = useTranslations();
   const empty = t('analysis.empty');
 
@@ -69,18 +61,7 @@ function GoalRow({
   return (
     <YStack gap={SPACING.items}>
       <XStack items="center" gap="$2">
-        <GoalDot slot={goal.colorSlot} />
-
-        <SizableText
-          flex={1}
-          minW={0}
-          size={TEXT.subheading}
-          fontWeight="700"
-          color="$cardForeground"
-          numberOfLines={1}
-        >
-          {goal.name}
-        </SizableText>
+        <GoalName slot={goal.colorSlot} name={goal.name} lines={1} />
 
         {direction !== null && TrendIcon !== null && (
           <XStack items="center" gap="$1">
@@ -128,7 +109,7 @@ function GoalRow({
         </YStack>
       </XStack>
 
-      <Heatmap width={width} cells={goal.heatmap} compact pending={pending} />
+      <Heatmap cells={goal.heatmap} compact pending={pending} />
 
       <SizableText size={TEXT.caption} color="$mutedForeground">
         {footer}
@@ -154,16 +135,14 @@ export function GoalsCard({
       subtitle={t('analysis.goals.subtitle')}
       why={t('analysis.goals.why')}
     >
-      {(width) => (
-        <YStack gap={SPACING.section}>
-          {goals.map((goal, index) => (
-            <YStack key={goal.id} gap={SPACING.section}>
-              {index > 0 && <Separator borderColor="$border" />}
-              <GoalRow goal={goal} width={width} pending={pending} />
-            </YStack>
-          ))}
-        </YStack>
-      )}
+      <YStack gap={SPACING.section}>
+        {goals.map((goal, index) => (
+          <YStack key={goal.id} gap={SPACING.section}>
+            {index > 0 && <Separator borderColor="$border" />}
+            <GoalRow goal={goal} pending={pending} />
+          </YStack>
+        ))}
+      </YStack>
     </ChartCard>
   );
 }

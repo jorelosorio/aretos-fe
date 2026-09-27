@@ -5,6 +5,7 @@ import { SizableText } from 'tamagui';
 import { resolveColor } from '@/components/common/theme-color';
 import { TEXT } from '@/constants/layout';
 
+import { useChartWidth } from './chart-width';
 import { percentOf } from './format';
 import { barLayout } from './chart-layout';
 
@@ -20,14 +21,13 @@ const CHART_HEIGHT = 140;
 const TOP_LABEL_ROOM = 20;
 
 export function BarChart({
-  width,
   bars,
   color = '$primary',
 }: {
-  width: number;
   bars: readonly BarDatum[];
   color?: string;
 }) {
+  const width = useChartWidth();
   const theme = useTheme();
 
   const { barWidth, spacing, initialSpacing } = barLayout(width, bars.length);

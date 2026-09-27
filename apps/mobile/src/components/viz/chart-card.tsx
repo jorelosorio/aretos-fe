@@ -2,28 +2,29 @@ import { useState, type ReactNode } from 'react';
 import { Info, X } from '@tamagui/lucide-icons-2';
 import { Button, SizableText, XStack, YStack } from 'tamagui';
 
+import { Card } from '@/components/common/card';
 import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';
 import { useTranslations } from '@/lib/i18n';
+
+import { ChartWidthContext } from './chart-width';
 
 export function ChartCard({
   title,
   subtitle,
   why,
-  footnote,
   children,
 }: {
   title: string;
   subtitle?: string;
   why?: string;
-  footnote?: ReactNode;
-  children: ReactNode | ((width: number) => ReactNode);
+  children: ReactNode;
 }) {
   const { t } = useTranslations();
   const [width, setWidth] = useState(0);
   const [explaining, setExplaining] = useState(false);
 
   return (
-    <YStack bg="$card" rounded="$xl2" p={SPACING.card} gap={SPACING.items}>
+    <Card>
       <XStack items="flex-start" gap={SPACING.group}>
         <YStack flex={1} minW={0} gap={SPACING.text}>
           <SizableText
@@ -70,20 +71,17 @@ export function ChartCard({
         </YStack>
       )}
 
-      {typeof children === 'function' ? (
-        <YStack
-          onLayout={(event) => {
-            const measured = Math.floor(event.nativeEvent.layout.width);
-            setWidth((current) => (current === measured ? current : measured));
-          }}
-        >
-          {width > 0 && children(width)}
-        </YStack>
-      ) : (
-        children
-      )}
-
-      {footnote}
-    </YStack>
+      <YStack
+        gap={SPACING.items}
+        onLayout={(event) => {
+          const measured = Math.floor(event.nativeEvent.layout.width);
+          setWidth((current) => (current === measured ? current : measured));
+        }}
+      >
+        {width > 0 && (
+          <ChartWidthContext value={width}>{children}</ChartWidthContext>
+        )}
+      </YStack>
+    </Card>
   );
 }

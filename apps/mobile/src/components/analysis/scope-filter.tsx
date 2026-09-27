@@ -1,25 +1,7 @@
-import { YStack } from 'tamagui';
-
 import { ChipFilter } from '@/components/common/chip-filter';
-import type { ChipLeading } from '@/components/common/chip';
 import { slotColor } from '@/components/goals/slot-color';
 import type { Goal } from '@/features/goals';
 import { useTranslations } from '@/lib/i18n';
-
-const DOT = 8;
-
-function goalMark(slot: number): ChipLeading {
-  return function GoalMark(active) {
-    return (
-      <YStack
-        width={DOT}
-        height={DOT}
-        rounded={DOT / 2}
-        bg={active ? '$primaryForeground' : slotColor(slot)}
-      />
-    );
-  };
-}
 
 export function ScopeFilter({
   goals,
@@ -37,7 +19,7 @@ export function ScopeFilter({
       items={goals.map((goal) => ({
         key: goal.id,
         label: goal.name,
-        leading: goalMark(goal.colorSlot),
+        dot: slotColor(goal.colorSlot),
       }))}
       value={value}
       onChange={onChange}

@@ -11,7 +11,7 @@ import { useTabBarInset } from '@/components/common/floating-tab-bar';
 import { HeaderIconButton } from '@/components/common/header-actions';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
-import { EmptyLog } from '@/components/logs/empty-log';
+import { EmptyState } from '@/components/common/empty-state';
 import { ILLUSTRATIONS } from '@/components/common/illustrations';
 import { SPACING } from '@/constants/layout';
 import {
@@ -108,22 +108,30 @@ export function DiaryScreen() {
         {isPending ? (
           <ScreenLoader />
         ) : error ? null : tag !== null ? (
-          <EmptyLog
+          <EmptyState
             Icon={Tag}
             title={t('diary.filtered.title', { tag: capitalize(tag) })}
             body={t('diary.filtered.body')}
-            action={t('diary.filtered.action')}
-            onAction={() => selectTag(null)}
+            action={{
+              label: t('diary.filtered.action'),
+              onPress: () => selectTag(null),
+            }}
           />
         ) : (
-          <EmptyLog
+          <EmptyState
             Icon={NotebookPen}
             illustration={ILLUSTRATIONS.emptyDiary}
             title={t('diary.empty.title')}
             body={t('diary.empty.body')}
-            action={canCreate ? t('diary.empty.action') : undefined}
-            actionIcon={Plus}
-            onAction={canCreate ? () => router.push('/diary/new') : undefined}
+            action={
+              canCreate
+                ? {
+                    label: t('diary.empty.action'),
+                    Icon: Plus,
+                    onPress: () => router.push('/diary/new'),
+                  }
+                : undefined
+            }
           />
         )}
       </ScrollView>

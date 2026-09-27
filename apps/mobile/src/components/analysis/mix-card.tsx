@@ -45,29 +45,24 @@ export function MixCard({ mix }: { mix: OutcomeMix }) {
       title={t('analysis.mix.title')}
       subtitle={t('analysis.mix.subtitle')}
       why={t('analysis.mix.why')}
-      footnote={
-        excluded > 0 ? (
-          <SizableText size={TEXT.caption} color="$mutedForeground">
-            {t('analysis.mix.excluded', {
-              count: excluded,
-              skipped: mix.skipped,
-              blank: mix.blank,
-            })}
-          </SizableText>
-        ) : undefined
-      }
     >
-      {(width) => (
-        <DonutChart
-          width={width}
-          slices={slices}
-          centerValue={formatRate(mix.rate, t('analysis.empty'))}
-          centerLabel={t('analysis.mix.center', {
-            achieved: mix.achieved,
-            opportunities: mix.opportunities,
+      <DonutChart
+        slices={slices}
+        centerValue={formatRate(mix.rate, t('analysis.empty'))}
+        centerLabel={t('analysis.mix.center', {
+          achieved: mix.achieved,
+          opportunities: mix.opportunities,
+        })}
+      />
+      {excluded > 0 ? (
+        <SizableText size={TEXT.caption} color="$mutedForeground">
+          {t('analysis.mix.excluded', {
+            count: excluded,
+            skipped: mix.skipped,
+            blank: mix.blank,
           })}
-        />
-      )}
+        </SizableText>
+      ) : undefined}
     </ChartCard>
   );
 }

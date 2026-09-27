@@ -10,16 +10,10 @@ import {
 } from '@/components/common/date-label';
 import { HeaderIconButton } from '@/components/common/header-actions';
 import { SectionTitle } from '@/components/common/section-title';
-import { SPACING, TEXT } from '@/constants/layout';
+import { DAY_CELL, SPACING, TEXT } from '@/constants/layout';
 import { useTranslations, type AppLocale } from '@/lib/i18n';
 
-import { monthGrid, monthOf, shiftMonth } from './month-grid';
-
-const CELL = 38;
-const MONDAY_FIRST_WEEK = Array.from(
-  { length: 7 },
-  (_, day) => `2026-09-${21 + day}`,
-);
+import { monthGrid, monthOf, shiftMonth, weekdayColumns } from './month-grid';
 
 function DayCell({
   day,
@@ -48,7 +42,7 @@ function DayCell({
       accessibilityLabel={longDateLabel(day, locale)}
     >
       <Circle
-        size={CELL}
+        size={DAY_CELL}
         bg={selected ? '$primary' : 'transparent'}
         borderWidth={selected ? 0 : today ? 2 : 0}
         borderColor="$primary"
@@ -80,6 +74,7 @@ export function MonthCalendar({
 }) {
   const { t, locale } = useTranslations();
   const [month, setMonth] = useState(monthOf(value));
+  const grid = monthGrid(month);
 
   const canGoBack = min === undefined || month > monthOf(min);
   const canGoForward = max === undefined || month < monthOf(max);
@@ -105,9 +100,9 @@ export function MonthCalendar({
       </XStack>
 
       <XStack>
-        {MONDAY_FIRST_WEEK.map((day) => (
+        {weekdayColumns(grid).map((day, column) => (
           <SizableText
-            key={day}
+            key={column}
             flex={1}
             text="center"
             size={TEXT.micro}
@@ -119,11 +114,11 @@ export function MonthCalendar({
       </XStack>
 
       <YStack gap="$1">
-        {monthGrid(month).map((week, row) => (
+        {grid.map((week, row) => (
           <XStack key={`${month}:${row}`}>
             {week.map((day, column) =>
               day === null ? (
-                <YStack key={`${row}:${column}`} flex={1} height={CELL} />
+                <YStack key={`${row}:${column}`} flex={1} height={DAY_CELL} />
               ) : (
                 <DayCell
                   key={day}

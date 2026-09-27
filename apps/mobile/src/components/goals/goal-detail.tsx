@@ -4,34 +4,24 @@ import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@tamagui/core';
 import { Archive, ListChecks, Plus } from '@tamagui/lucide-icons-2';
-import {
-  Button,
-  Paragraph,
-  Separator,
-  SizableText,
-  XStack,
-  YStack,
-} from 'tamagui';
+import { Paragraph, Separator, SizableText, XStack, YStack } from 'tamagui';
 
-import { EmptyArt } from '@/components/common/empty-art';
+import { Card } from '@/components/common/card';
+import { EmptyState } from '@/components/common/empty-state';
 import { ErrorNotice } from '@/components/common/error-notice';
+import { Notice } from '@/components/common/notice';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
 import { HabitCard } from '@/components/habits/habit-card';
 import { TagChips } from '@/components/tags/tag-chips';
-import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';
+import { SPACING, TEXT } from '@/constants/layout';
 
-import { GoalDot } from './goal-dot';
+import { FREQUENCY_LABELS } from './frequency-labels';
+import { GoalName } from './goal-name';
 import type { Goal } from '@/features/goals';
 import { useHabitErrorMessage, useHabits, type Habit } from '@/features/habits';
 import { useAllowance } from '@/features/limits';
-import { useTranslations, type TranslationKey } from '@/lib/i18n';
-
-const FREQUENCY_LABELS: Record<Goal['trackingFrequency'], TranslationKey> = {
-  daily: 'goals.frequency.daily',
-  weekly: 'goals.frequency.weekly',
-  flexible: 'goals.frequency.flexible',
-};
+import { useTranslations } from '@/lib/i18n';
 
 const FOOTER_SPACE = 16;
 
@@ -57,19 +47,9 @@ function GoalSummary({ goal, habitCount }: { goal: Goal; habitCount: number }) {
       : t('goals.streak.loggedShort');
 
   return (
-    <YStack gap={SPACING.items} p={SPACING.card} bg="$card" rounded="$xl2">
+    <Card>
       <YStack gap={SPACING.text}>
-        <XStack items="center" gap="$2">
-          <GoalDot slot={goal.colorSlot} />
-          <SizableText
-            flex={1}
-            size={TEXT.subheading}
-            fontWeight="700"
-            color="$cardForeground"
-          >
-            {goal.name}
-          </SizableText>
-        </XStack>
+        <GoalName slot={goal.colorSlot} name={goal.name} />
 
         {goal.description !== '' && (
           <Paragraph size={TEXT.body} color="$mutedForeground">
@@ -90,39 +70,7 @@ function GoalSummary({ goal, habitCount }: { goal: Goal; habitCount: number }) {
         />
         <Stat label={t('goals.stats.streak')} value={streak} />
       </XStack>
-    </YStack>
-  );
-}
-
-function ArchivedNotice() {
-  const { t } = useTranslations();
-
-  return (
-    <XStack gap={SPACING.items} p={SPACING.card} bg="$card" rounded="$xl2">
-      <YStack
-        width={36}
-        height={36}
-        items="center"
-        justify="center"
-        rounded="$xl"
-        bg="$muted"
-      >
-        <Archive size={ICON.row} color="$primary" />
-      </YStack>
-
-      <YStack flex={1} gap={SPACING.text}>
-        <SizableText
-          size={TEXT.heading}
-          fontWeight="700"
-          color="$cardForeground"
-        >
-          {t('goals.archivedNotice.title')}
-        </SizableText>
-        <Paragraph size={TEXT.body} color="$mutedForeground">
-          {t('goals.archivedNotice.body')}
-        </Paragraph>
-      </YStack>
-    </XStack>
+    </Card>
   );
 }
 
@@ -185,7 +133,13 @@ export function GoalDetail({ goal }: { goal: Goal }) {
           >
             <GoalSummary goal={goal} habitCount={habits?.length ?? 0} />
 
-            {goal.archived && <ArchivedNotice />}
+            {goal.archived && (
+              <Notice
+                Icon={Archive}
+                title={t('goals.archivedNotice.title')}
+                body={t('goals.archivedNotice.body')}
+              />
+            )}
 
             <ErrorNotice message={toMessage(error)} />
 
@@ -205,45 +159,21 @@ export function GoalDetail({ goal }: { goal: Goal }) {
             <ScreenLoader />
           ) : (
             <YStack px={SPACING.screen}>
-              <EmptyHabits onCreate={canAdd ? addHabit : undefined} />
+              <EmptyState
+                compact
+                Icon={ListChecks}
+                title={t('habits.empty.title')}
+                body={t('habits.empty.body')}
+                action={
+                  canAdd
+                    ? { label: t('habits.new'), Icon: Plus, onPress: addHabit }
+                    : undefined
+                }
+              />
             </YStack>
           )
         }
       />
-    </YStack>
-  );
-}
-
-function EmptyHabits({ onCreate }: { onCreate?: () => void }) {
-  const { t } = useTranslations();
-
-  return (
-    <YStack items="center" gap={SPACING.group} p={SPACING.section}>
-      <EmptyArt Icon={ListChecks} />
-      <SizableText
-        size={TEXT.title}
-        fontWeight="700"
-        color="$color"
-        text="center"
-      >
-        {t('habits.empty.title')}
-      </SizableText>
-      <Paragraph size={TEXT.body} color="$mutedForeground" text="center">
-        {t('habits.empty.body')}
-      </Paragraph>
-
-      {onCreate && (
-        <YStack pt={SPACING.group}>
-          <Button
-            size={BUTTON.primary}
-            theme="accent"
-            icon={Plus}
-            onPress={onCreate}
-          >
-            {t('habits.new')}
-          </Button>
-        </YStack>
-      )}
     </YStack>
   );
 }

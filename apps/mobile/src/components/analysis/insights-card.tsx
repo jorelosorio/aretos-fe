@@ -9,6 +9,7 @@ import {
 } from '@tamagui/lucide-icons-2';
 import { SizableText, XStack, YStack } from 'tamagui';
 
+import { Card } from '@/components/common/card';
 import { formatRate } from '@/components/viz/format';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
 import type {
@@ -68,7 +69,7 @@ export function InsightsCard({ report }: { report: AnalysisReport }) {
   const { cadence } = report;
 
   return (
-    <YStack bg="$card" rounded="$xl2" p={SPACING.card} gap={SPACING.section}>
+    <Card gap={SPACING.section}>
       <YStack gap={SPACING.items}>
         <SizableText
           size={TEXT.subheading}
@@ -131,6 +132,6 @@ export function InsightsCard({ report }: { report: AnalysisReport }) {
           })
         )}
       </YStack>
-    </YStack>
+    </Card>
   );
 }

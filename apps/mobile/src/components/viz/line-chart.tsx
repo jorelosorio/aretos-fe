@@ -5,6 +5,7 @@ import { SizableText, XStack, YStack } from 'tamagui';
 import { resolveColor } from '@/components/common/theme-color';
 import { SPACING, TEXT } from '@/constants/layout';
 
+import { useChartWidth } from './chart-width';
 import { lineLayout } from './chart-layout';
 
 export type LinePoint = { key: string; label: string; value: number };
@@ -15,7 +16,6 @@ const INSET = 6;
 const SECTIONS = 2;
 
 export function LineChart({
-  width,
   points,
   min,
   max,
@@ -23,7 +23,6 @@ export function LineChart({
   color = '$primary',
   area = false,
 }: {
-  width: number;
   points: readonly LinePoint[];
   min: number;
   max: number;
@@ -31,6 +30,7 @@ export function LineChart({
   color?: string;
   area?: boolean;
 }) {
+  const width = useChartWidth();
   const theme = useTheme();
 
   if (points.length < 2) return null;

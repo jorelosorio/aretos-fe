@@ -2,7 +2,6 @@ import { useLocalSearchParams } from 'expo-router';
 
 import { ErrorNotice } from '@/components/common/error-notice';
 import { ScreenLoader } from '@/components/common/screen-loader';
-import { HabitActionsMenu } from '@/components/habits/habit-actions-menu';
 import { HabitForm } from '@/components/habits/habit-form';
 import { useHabit, useHabitErrorMessage } from '@/features/habits';
 
@@ -25,7 +24,7 @@ export default function EditHabit() {
         successThreshold: habit.successThreshold,
         ifThenPlan: habit.ifThenPlan,
       }}
-      menu={<HabitActionsMenu habitId={habit.id} archived={habit.archived} />}
+      archived={habit.archived}
     />
   );
 }

@@ -5,6 +5,8 @@ import { SizableText, XStack, YStack, type ColorTokens } from 'tamagui';
 import { resolveColor } from '@/components/common/theme-color';
 import { SPACING, TEXT } from '@/constants/layout';
 
+import { useChartWidth } from './chart-width';
+
 export type DonutSlice = {
   key: string;
   label: string;
@@ -13,16 +15,15 @@ export type DonutSlice = {
 };
 
 export function DonutChart({
-  width,
   slices,
   centerValue,
   centerLabel,
 }: {
-  width: number;
   slices: readonly DonutSlice[];
   centerValue: string;
   centerLabel: string;
 }) {
+  const width = useChartWidth();
   const theme = useTheme();
 
   const radius = Math.min(Math.round(width / 2), 110);

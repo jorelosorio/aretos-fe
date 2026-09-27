@@ -1,12 +1,10 @@
 import { useWindowDimensions } from 'react-native';
 import { Image } from 'expo-image';
-import type { Check } from '@tamagui/lucide-icons-2';
 
 import { ILLUSTRATION_SIZE } from '@/constants/layout';
 
+import type { IconComponent } from './icon-component';
 import type { Illustration } from './illustrations';
-
-type IconComponent = typeof Check;
 
 export function EmptyArt({
   Icon,

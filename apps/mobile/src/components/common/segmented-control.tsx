@@ -1,9 +1,8 @@
-import type { Check } from '@tamagui/lucide-icons-2';
 import { SizableText, XStack, YStack } from 'tamagui';
 
 import { ICON, TEXT } from '@/constants/layout';
 
-type IconComponent = typeof Check;
+import type { IconComponent } from './icon-component';
 
 export type Segment<T extends string> = {
   value: T;

@@ -1,6 +1,7 @@
 import { Check } from '@tamagui/lucide-icons-2';
 import { XStack, YStack } from 'tamagui';
 
+import { Card } from '@/components/common/card';
 import { FormSection } from '@/components/common/form-section';
 import { ICON, SPACING } from '@/constants/layout';
 import { useTranslations } from '@/lib/i18n';
@@ -25,7 +26,7 @@ export function GoalColorPicker({
 
   return (
     <FormSection title={t('goals.form.color')} hint={hint}>
-      <YStack p={SPACING.card} bg="$card" rounded="$xl2">
+      <Card>
         <XStack
           flexWrap="wrap"
           rowGap={SPACING.items}
@@ -67,7 +68,7 @@ export function GoalColorPicker({
             );
           })}
         </XStack>
-      </YStack>
+      </Card>
     </FormSection>
   );
 }

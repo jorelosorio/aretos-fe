@@ -76,52 +76,39 @@ export function HeatmapCard({
       title={t('analysis.heatmap.title')}
       subtitle={t('analysis.heatmap.subtitle')}
       why={t('analysis.heatmap.why')}
-      footnote={
-        <YStack gap={SPACING.items}>
-          {selected !== null && <DayDetail cell={selected} />}
+    >
+      <Heatmap
+        cells={cells}
+        pending={pending}
+        selected={selected?.date ?? null}
+        onSelect={(cell) =>
+          setSelected((current) => (current?.date === cell.date ? null : cell))
+        }
+      />
+      <YStack gap={SPACING.items}>
+        {selected !== null && <DayDetail cell={selected} />}
 
-          <XStack items="center" gap="$1.5">
-            <SizableText size={TEXT.caption} color="$mutedForeground">
-              {t('analysis.heatmap.less')}
-            </SizableText>
+        <XStack items="center" gap="$1.5">
+          <SizableText size={TEXT.caption} color="$mutedForeground">
+            {t('analysis.heatmap.less')}
+          </SizableText>
 
-            {HEAT_LEGEND.map((token) => (
-              <YStack
-                key={token}
-                width={12}
-                height={12}
-                rounded={2}
-                bg={token}
-              />
-            ))}
-
-            <SizableText size={TEXT.caption} color="$mutedForeground">
-              {t('analysis.heatmap.more')}
-            </SizableText>
-          </XStack>
+          {HEAT_LEGEND.map((token) => (
+            <YStack key={token} width={12} height={12} rounded={2} bg={token} />
+          ))}
 
           <SizableText size={TEXT.caption} color="$mutedForeground">
-            {t('analysis.heatmap.summary', {
-              logged: calendar.logged,
-              tracked: calendar.due,
-            })}
+            {t('analysis.heatmap.more')}
           </SizableText>
-        </YStack>
-      }
-    >
-      {(width) => (
-        <Heatmap
-          width={width}
-          cells={cells}
-          pending={pending}
-          selected={selected?.date ?? null}
-          onSelect={(cell) =>
-            setSelected((current) =>
-              current?.date === cell.date ? null : cell,
-            )
-          }
-        />
-      )}
+        </XStack>
+
+        <SizableText size={TEXT.caption} color="$mutedForeground">
+          {t('analysis.heatmap.summary', {
+            logged: calendar.logged,
+            tracked: calendar.due,
+          })}
+        </SizableText>
+      </YStack>
     </ChartCard>
   );
 }

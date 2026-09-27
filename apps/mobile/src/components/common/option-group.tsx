@@ -1,12 +1,7 @@
-import { Fragment } from 'react';
-import { Check } from '@tamagui/lucide-icons-2';
-import { Separator, SizableText, XStack, YStack } from 'tamagui';
-
-import { ICON, SPACING, TEXT } from '@/constants/layout';
-
+import { CardList } from './card-list';
 import { FormSection } from './form-section';
-
-type IconComponent = typeof Check;
+import type { IconComponent } from './icon-component';
+import { ListRow } from './list-row';
 
 export type Option<T extends string> = {
   value: T;
@@ -28,54 +23,18 @@ export function OptionGroup<T extends string>({
 }) {
   return (
     <FormSection title={title}>
-      <YStack bg="$card" rounded="$xl2" overflow="hidden">
-        {options.map((option, index) => {
-          const selected = option.value === value;
-
-          return (
-            <Fragment key={option.value}>
-              {index > 0 && <Separator borderColor="$border" />}
-
-              <XStack
-                onPress={() => onChange(option.value)}
-                pressStyle={{ bg: '$cardPress' }}
-                items="center"
-                gap={SPACING.items}
-                px={SPACING.card}
-                py={SPACING.items}
-                accessibilityRole="radio"
-                accessibilityState={{ selected }}
-                accessibilityLabel={option.label}
-                accessibilityHint={option.hint}
-              >
-                <option.Icon
-                  size={ICON.row}
-                  color={selected ? '$primary' : '$mutedForeground'}
-                />
-
-                <YStack flex={1} gap={SPACING.text}>
-                  <SizableText
-                    size={TEXT.body}
-                    fontWeight={selected ? '600' : '400'}
-                    color="$cardForeground"
-                  >
-                    {option.label}
-                  </SizableText>
-                  {option.hint && (
-                    <SizableText size={TEXT.caption} color="$mutedForeground">
-                      {option.hint}
-                    </SizableText>
-                  )}
-                </YStack>
-
-                <YStack width={ICON.row} items="center">
-                  {selected && <Check size={ICON.row} color="$primary" />}
-                </YStack>
-              </XStack>
-            </Fragment>
-          );
-        })}
-      </YStack>
+      <CardList>
+        {options.map((option) => (
+          <ListRow
+            key={option.value}
+            label={option.label}
+            hint={option.hint}
+            Icon={option.Icon}
+            selected={option.value === value}
+            onPress={() => onChange(option.value)}
+          />
+        ))}
+      </CardList>
     </FormSection>
   );
 }

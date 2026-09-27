@@ -31,7 +31,20 @@ export type Insight = {
   text: string;
 };
 
-const WEEKDAY_KEYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as const;
+/**
+ * The translation key for each weekday, indexed the way the server numbers
+ * them: 0 is Monday. Shared with the rhythm card so a weekday reads the same
+ * in a highlight sentence and on the chart beneath it.
+ */
+export const WEEKDAY_KEYS = [
+  'mon',
+  'tue',
+  'wed',
+  'thu',
+  'fri',
+  'sat',
+  'sun',
+] as const;
 
 function word(
   highlight: Highlight,

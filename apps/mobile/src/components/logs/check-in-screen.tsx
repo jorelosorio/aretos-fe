@@ -21,7 +21,7 @@ import { useLogDraft, useLogErrorMessage, type DateKey } from '@/features/logs';
 import { useTranslations } from '@/lib/i18n';
 
 import { CheckInNotes } from './check-in-notes';
-import { EmptyLog } from './empty-log';
+import { EmptyState } from '@/components/common/empty-state';
 import { HabitTrackRow } from './habit-track-row';
 import { MoodPicker } from './mood-picker';
 import { periodLabel } from './period-label';
@@ -243,18 +243,19 @@ export function CheckInScreen({
             ),
           }}
         />
-        <EmptyLog
+        <EmptyState
           Icon={Plus}
           title={t('logs.empty.noHabitsTitle')}
           body={t('logs.empty.noHabitsBody')}
-          action={t('logs.empty.noHabitsAction')}
-          actionIcon={Plus}
-          onAction={() =>
-            router.replace({
-              pathname: '/goals/[id]/habits/new',
-              params: { id: goal.id },
-            })
-          }
+          action={{
+            label: t('logs.empty.noHabitsAction'),
+            Icon: Plus,
+            onPress: () =>
+              router.replace({
+                pathname: '/goals/[id]/habits/new',
+                params: { id: goal.id },
+              }),
+          }}
         />
       </>
     );

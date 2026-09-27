@@ -20,7 +20,7 @@ import {
   SegmentedControl,
   type Segment,
 } from '@/components/common/segmented-control';
-import { EmptyLog } from '@/components/logs/empty-log';
+import { EmptyState } from '@/components/common/empty-state';
 import { ILLUSTRATIONS } from '@/components/common/illustrations';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
 import {
@@ -188,7 +188,7 @@ export function AnalysisScreen() {
         ) : isPending ? (
           <ScreenLoader />
         ) : report.setup.goals === 0 || report.calendar.logged === 0 ? (
-          <EmptyLog
+          <EmptyState
             Icon={ChartNoAxesColumn}
             illustration={ILLUSTRATIONS.noData}
             title={t('analysis.noData.title')}

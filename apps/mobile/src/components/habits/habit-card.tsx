@@ -2,7 +2,8 @@ import { memo } from 'react';
 import { Lightbulb, Target, Weight } from '@tamagui/lucide-icons-2';
 import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
-import { Chip, type ChipLeading } from '@/components/common/chip';
+import { Card } from '@/components/common/card';
+import { Chip } from '@/components/common/chip';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
 import type { Habit } from '@/features/habits';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
@@ -23,19 +24,6 @@ const MODE_LABELS: Record<Habit['trackingMode'], TranslationKey> = {
   rating: 'habits.mode.rating',
 };
 
-const MARK = { size: ICON.inline, color: '$mutedForeground' } as const;
-
-const MODE_MARKS: Record<Habit['trackingMode'], ChipLeading> = {
-  binary: () => <MODE_ICONS.binary {...MARK} />,
-  count: () => <MODE_ICONS.count {...MARK} />,
-  duration: () => <MODE_ICONS.duration {...MARK} />,
-  rating: () => <MODE_ICONS.rating {...MARK} />,
-};
-
-const targetMark: ChipLeading = () => <Target {...MARK} />;
-
-const weightMark: ChipLeading = () => <Weight {...MARK} />;
-
 export const HabitCard = memo(function HabitCard({
   habit,
   onOpen,
@@ -51,14 +39,11 @@ export const HabitCard = memo(function HabitCard({
     : t('habits.weightBadge', { weight: habit.weight });
 
   return (
-    <XStack
+    <Card
+      row
       onPress={onOpen === undefined ? undefined : () => onOpen(habit)}
-      pressStyle={onOpen ? { bg: '$cardPress' } : undefined}
+      pressable={onOpen !== undefined}
       items="center"
-      gap={SPACING.items}
-      p={SPACING.card}
-      bg="$card"
-      rounded="$xl2"
       accessibilityRole={onOpen ? 'button' : undefined}
       accessibilityLabel={habit.name}
     >
@@ -74,7 +59,7 @@ export const HabitCard = memo(function HabitCard({
         <XStack gap="$1.5" items="center" flexWrap="wrap">
           <Chip
             label={t(MODE_LABELS[habit.trackingMode])}
-            leading={MODE_MARKS[habit.trackingMode]}
+            Icon={MODE_ICONS[habit.trackingMode]}
           />
           {habit.successThreshold !== null && unit && (
             <Chip
@@ -82,10 +67,10 @@ export const HabitCard = memo(function HabitCard({
                 target: habit.successThreshold,
                 unit: t(unit),
               })}
-              leading={targetMark}
+              Icon={Target}
             />
           )}
-          <Chip label={weight} leading={weightMark} />
+          <Chip label={weight} Icon={Weight} />
         </XStack>
 
         {habit.ifThenPlan !== '' && (
@@ -97,6 +82,6 @@ export const HabitCard = memo(function HabitCard({
           </XStack>
         )}
       </YStack>
-    </XStack>
+    </Card>
   );
 });

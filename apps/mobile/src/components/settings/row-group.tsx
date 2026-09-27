@@ -1,13 +1,13 @@
-import { Fragment, type ReactNode } from 'react';
-import { Separator, SizableText, XStack, YStack } from 'tamagui';
-
+import { CardList } from '@/components/common/card-list';
 import { FormSection } from '@/components/common/form-section';
-import { SPACING, TEXT } from '@/constants/layout';
+import type { IconComponent } from '@/components/common/icon-component';
+import { ListRow } from '@/components/common/list-row';
 
 export type Row = {
   label: string;
   onPress: () => void;
-  trailing: ReactNode;
+  Icon: IconComponent;
+  busy?: boolean;
   disabled?: boolean;
 };
 
@@ -20,32 +20,18 @@ export function RowGroup({
 }) {
   return (
     <FormSection title={title}>
-      <YStack bg="$card" rounded="$xl2" overflow="hidden">
-        {rows.map((row, index) => (
-          <Fragment key={row.label}>
-            {index > 0 && <Separator borderColor="$border" />}
-
-            <XStack
-              onPress={row.disabled ? undefined : row.onPress}
-              pressStyle={row.disabled ? undefined : { bg: '$cardPress' }}
-              opacity={row.disabled ? 0.6 : 1}
-              accessibilityState={{ disabled: row.disabled === true }}
-              items="center"
-              gap={SPACING.items}
-              px={SPACING.card}
-              py={SPACING.items}
-              accessibilityRole="button"
-              accessibilityLabel={row.label}
-            >
-              <SizableText flex={1} size={TEXT.body} color="$cardForeground">
-                {row.label}
-              </SizableText>
-
-              {row.trailing}
-            </XStack>
-          </Fragment>
+      <CardList>
+        {rows.map((row) => (
+          <ListRow
+            key={row.label}
+            label={row.label}
+            TrailingIcon={row.Icon}
+            busy={row.busy}
+            disabled={row.disabled}
+            onPress={row.onPress}
+          />
         ))}
-      </YStack>
+      </CardList>
     </FormSection>
   );
 }

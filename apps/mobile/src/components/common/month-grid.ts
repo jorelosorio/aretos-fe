@@ -38,3 +38,20 @@ export function monthGrid(month: string): (string | null)[][] {
     cells.slice(week * 7, week * 7 + 7),
   );
 }
+
+/**
+ * One real day from each column of a month's grid, Monday's column first —
+ * what the picker names its weekday header from.
+ *
+ * Taken from the grid rather than from a hard-coded week so the header can
+ * never disagree with the columns beneath it. Every column holds at least
+ * one day of the month: even February's 28 days fill each weekday four
+ * times, so no column comes back empty.
+ */
+export function weekdayColumns(grid: (string | null)[][]): string[] {
+  return Array.from({ length: 7 }, (_, column) => {
+    const day = grid.find((week) => week[column] !== null)?.[column];
+    if (day == null) throw new Error(`Column ${column} has no day`);
+    return day;
+  });
+}

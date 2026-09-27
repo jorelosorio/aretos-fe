@@ -3,10 +3,6 @@ import { Alert, Platform } from 'react-native';
 import { ArrowLeft, ChevronLeft, Trash2 } from '@tamagui/lucide-icons-2';
 
 import { FullScreenSheet } from '@/components/common/full-screen-sheet';
-import {
-  HeaderIconButton,
-  HeaderTextButton,
-} from '@/components/common/header-actions';
 import { runExclusive } from '@/lib/exclusive';
 import { useTranslations } from '@/lib/i18n';
 
@@ -85,24 +81,26 @@ export function NoteEditor({
       Icon={BackIcon}
       iconLabel={t('diary.editor.back')}
       onDismiss={dismiss}
-      actions={
-        <>
-          {onDelete !== undefined && (
-            <HeaderIconButton
-              Icon={Trash2}
-              label={t('diary.editor.delete')}
-              onPress={confirmDelete}
-              disabled={busy}
-            />
-          )}
-          <HeaderTextButton
-            label={t('diary.editor.save')}
-            onPress={submit}
-            disabled={!canSave}
-            busy={busy}
-          />
-        </>
-      }
+      actions={[
+        ...(onDelete === undefined
+          ? []
+          : [
+              {
+                kind: 'icon' as const,
+                Icon: Trash2,
+                label: t('diary.editor.delete'),
+                onPress: confirmDelete,
+                disabled: busy,
+              },
+            ]),
+        {
+          kind: 'text',
+          label: t('diary.editor.save'),
+          onPress: submit,
+          disabled: !canSave,
+          busy,
+        },
+      ]}
     >
       <NoteForm
         draft={draft}

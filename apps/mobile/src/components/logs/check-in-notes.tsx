@@ -1,13 +1,14 @@
 import { useRef, useState } from 'react';
 import { Plus } from '@tamagui/lucide-icons-2';
-import { Button, Paragraph, SizableText, YStack } from 'tamagui';
+import { Paragraph } from 'tamagui';
 
+import { Card } from '@/components/common/card';
 import { FormSection } from '@/components/common/form-section';
 import { NoteEditor } from '@/components/diary/note-editor';
 import type { NoteValue } from '@/components/diary/note-draft';
 import { notePreview } from '@/components/diary/note-preview';
 import { NoteMeta } from '@/components/diary/note-meta';
-import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';
+import { SPACING, TEXT } from '@/constants/layout';
 import {
   useAddCheckInNote,
   useDeleteCheckInNote,
@@ -21,7 +22,6 @@ import { useTranslations, type AppLocale } from '@/lib/i18n';
 import { dateFormat } from '@/utils/date-format';
 
 const PREVIEW_LINES = 3;
-const HIT_SLOP = 8;
 
 type Target =
   | { kind: 'new' }
@@ -56,13 +56,10 @@ function NoteRow({
   const preview = notePreview(body);
 
   return (
-    <YStack
+    <Card
       gap={SPACING.group}
-      p={SPACING.card}
-      bg="$card"
-      rounded="$xl2"
       onPress={disabled ? undefined : onPress}
-      pressStyle={disabled ? undefined : { bg: '$cardPress' }}
+      pressable={!disabled}
       accessibilityRole="button"
       accessibilityState={{ disabled }}
       accessibilityLabel={`${preview}. ${caption}`}
@@ -81,7 +78,7 @@ function NoteRow({
         tags={tags}
         collapsed
       />
-    </YStack>
+    </Card>
   );
 }
 
@@ -212,22 +209,12 @@ export function CheckInNotes({
   return (
     <FormSection
       title={t('logs.notes.title')}
-      action={
-        <Button
-          size={BUTTON.compact}
-          chromeless
-          px={0}
-          hitSlop={HIT_SLOP}
-          disabled={!canCreate || busy}
-          opacity={canCreate && !busy ? 1 : 0.4}
-          onPress={() => edit({ kind: 'new' })}
-          icon={<Plus size={ICON.row} color="$primary" />}
-        >
-          <SizableText size={TEXT.body} fontWeight="700" color="$primary">
-            {t('logs.notes.add')}
-          </SizableText>
-        </Button>
-      }
+      action={{
+        label: t('logs.notes.add'),
+        Icon: Plus,
+        onPress: () => edit({ kind: 'new' }),
+        disabled: !canCreate || busy,
+      }}
     >
       {notes.map((note) => (
         <NoteRow

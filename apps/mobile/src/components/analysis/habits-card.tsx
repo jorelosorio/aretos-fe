@@ -1,6 +1,6 @@
 import { Separator, SizableText, XStack, YStack } from 'tamagui';
 
-import { GoalDot } from '@/components/goals/goal-dot';
+import { GoalName } from '@/components/goals/goal-name';
 import { UNIT_LABELS } from '@/components/habits/unit-labels';
 import { ChartCard } from '@/components/viz/chart-card';
 import { formatRate } from '@/components/viz/format';
@@ -155,11 +155,7 @@ export function HabitsCard({
     <ChartCard
       title={t('analysis.habits.title')}
       subtitle={t('analysis.habits.subtitle')}
-      why={t('analysis.habits.why', {
-        median,
-        low: thresholds.lallyRangeDays[0],
-        high: thresholds.lallyRangeDays[1],
-      })}
+      why={t('analysis.habits.why')}
     >
       <YStack gap={SPACING.section}>
         {groups.map(({ goal, habits: grouped }, index) => (
@@ -167,16 +163,11 @@ export function HabitsCard({
             {index > 0 && <Separator borderColor="$border" />}
 
             {groups.length > 1 && (
-              <XStack items="center" gap="$2">
-                <GoalDot slot={goal.colorSlot} size={8} />
-                <SizableText
-                  size={TEXT.caption}
-                  fontWeight="700"
-                  color="$mutedForeground"
-                >
-                  {goal.name}
-                </SizableText>
-              </XStack>
+              <GoalName
+                variant="caption"
+                slot={goal.colorSlot}
+                name={goal.name}
+              />
             )}
 
             <YStack gap={SPACING.section}>

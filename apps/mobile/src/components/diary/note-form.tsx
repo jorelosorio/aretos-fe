@@ -4,6 +4,7 @@ import { SizableText, TextArea, YStack, type ColorTokens } from 'tamagui';
 
 import { DatePill, DateSheet } from '@/components/common/date-pill';
 import { ErrorNotice } from '@/components/common/error-notice';
+import { FormCounter } from '@/components/common/form-section';
 import { FormScrollView } from '@/components/common/form-scroll-view';
 import { NOTE_TEXT } from '@/components/common/note-text';
 import { TagInput } from '@/components/tags/tag-input';
@@ -19,28 +20,6 @@ import type { useNoteDraft } from './note-draft';
 const BODY_MIN_HEIGHT = 240;
 const BODY_COUNT_FROM = NOTE_BODY_MAX - 200;
 const TAG_COUNT_FROM = TAGS_MAX - 5;
-
-function Count({
-  count,
-  max,
-  label,
-}: {
-  count: number;
-  max: number;
-  label?: string;
-}) {
-  return (
-    <SizableText
-      size={TEXT.caption}
-      color={count >= max ? '$destructive' : '$mutedForeground'}
-      text="right"
-      accessibilityLabel={label}
-      accessibilityLiveRegion="polite"
-    >
-      {`${count} / ${max}`}
-    </SizableText>
-  );
-}
 
 export function NoteForm({
   draft,
@@ -96,7 +75,7 @@ export function NoteForm({
           />
 
           {tagCount >= TAG_COUNT_FROM && (
-            <Count
+            <FormCounter
               count={tagCount}
               max={TAGS_MAX}
               label={t('tags.full', { count: tagCount, max: TAGS_MAX })}
@@ -129,7 +108,7 @@ export function NoteForm({
 
         {draft.body.length >= BODY_COUNT_FROM && (
           <YStack px={SPACING.screen} pb={SPACING.group}>
-            <Count count={draft.body.length} max={NOTE_BODY_MAX} />
+            <FormCounter count={draft.body.length} max={NOTE_BODY_MAX} />
           </YStack>
         )}
       </YStack>

@@ -197,16 +197,16 @@ export const en = {
       automatic:
         'You follow through as well on low days as on good ones: your habits no longer depend on how you feel.',
       dependent:
-        'On low days you follow through %{low}; on good days, %{high}. A plan for the low days closes that gap.',
+        'On low days you follow through %{low}; on good days, %{high}. A plan for the low days can help close that gap.',
       formedOne:
-        '“%{habit}” is past the %{median} repetitions a habit typically takes to become automatic.',
+        '“%{habit}” has passed %{median} repetitions: it is now automatic.',
       formedMany:
-        '%{count} habits are past the %{median} repetitions it typically takes to become automatic.',
+        '%{count} habits have passed %{median} repetitions: they are now automatic.',
       closest:
         '“%{habit}” is at %{count} of %{median} repetitions: the closest one to becoming automatic.',
       streak:
         '%{count} periods in a row on “%{goal}”, your longest active streak.',
-      plan: 'Only %{count} of %{of} habits have an if-then plan, the technique that most raises the odds of following through.',
+      plan: 'Only %{count} of %{of} habits have a plan for when and where you will do them.',
       none: 'Keep logging: a few more days and your patterns show up here.',
     },
     setup: {
@@ -216,9 +216,9 @@ export const en = {
       counts: '%{goals} goals · %{habits} active habits',
       modes:
         '%{binary} yes/no · %{count} count · %{duration} duration · %{rating} rating',
-      planned: 'If-then plan',
+      planned: 'Plan',
       plannedHint:
-        'Deciding in advance when and where you will do it is what most closes the gap between intending and doing.',
+        'Deciding in advance when and where you will do it makes it easier to follow through.',
       thresholded: 'Success threshold',
       thresholdedHint:
         'Without one, a minute counts the same as an hour. It defines what “done” means for measured habits.',
@@ -276,7 +276,7 @@ export const en = {
     rhythm: {
       title: 'Your week',
       subtitle: 'Which days you follow through and which slip away.',
-      why: 'An average hides the shape of the week. If one day keeps dropping, it is usually a scheduling problem rather than a willpower one, and it is fixed by changing when you do it.',
+      why: 'An average hides the shape of the week. If one day keeps dropping, try changing when you do it that day.',
       best: 'Your best day',
       worst: 'Your weakest day',
       outOfTen: '%{count} of every 10',
@@ -294,7 +294,7 @@ export const en = {
     trend: {
       title: 'Are you improving?',
       subtitle: 'The second half of the period against the first.',
-      why: 'Comparing the two halves by date shows where you are heading without one bad week hiding everything. Small changes count as steady on purpose.',
+      why: 'This shows where you are heading without one bad week hiding everything. Small changes read as steady.',
       first: 'First half',
       second: 'Second half',
       half: '%{count} days',
@@ -323,7 +323,7 @@ export const en = {
     moodPerformance: {
       title: 'Mood vs. follow-through',
       subtitle: 'Do you follow through as well when you feel low?',
-      why: 'A formed habit is cued by context (the time, the place), not by how you feel. If you follow through as well on bad days as on good ones, the habit is carrying itself.',
+      why: 'If you follow through as well on low days as on good ones, the habit no longer depends on your mood: it carries itself.',
       low: 'Low mood',
       neutral: 'Neutral mood',
       high: 'High mood',
@@ -339,14 +339,14 @@ export const en = {
         mixed:
           'On low days you follow through %{low}, on good days %{high}: mood still weighs a little.',
         dependent:
-          'On low days you follow through %{low}, on good days %{high}. A concrete plan for low days usually closes that gap.',
+          'On low days you follow through %{low}, on good days %{high}. A concrete plan for low days can help close that gap.',
       },
       need: '%{count} days at each end of the scale',
     },
     direction: {
       title: 'Which comes first?',
       subtitle: 'Whether your mood drives what you do, or the other way round.',
-      why: 'Pairing each day with the next hints at what influences what. It is a clue, not proof: something outside, like poor sleep, could move both.',
+      why: 'This hints at what influences what. It is a clue, not proof: something else, like poor sleep, could move both.',
       sameDay: 'The same day',
       moodLeads: 'Today’s mood and tomorrow’s follow-through',
       performanceLeads: 'Today’s follow-through and tomorrow’s mood',
@@ -392,7 +392,7 @@ export const en = {
     habits: {
       title: 'On the way to automatic',
       subtitle: 'How many times you have followed through on each habit.',
-      why: 'A University College London study (Lally et al., 2010) found a habit takes a median of %{median} repetitions to become automatic, with individual cases between %{low} and %{high}. Missing a single day does not reset the count: that is why we count repetitions, not streaks.',
+      why: 'Every time you follow through adds a repetition, and repetitions are what make a habit automatic. Missing a single day does not reset the count: that is why we count repetitions, not streaks.',
       repetitions: '%{count} of %{median}',
       stage: {
         starting: 'Starting',
@@ -617,17 +617,16 @@ export const en = {
       weight: 'Importance',
       weightHint:
         'The more important a habit, the further it moves the goal: medium counts double a normal one, high counts triple.',
-      plan: 'If-then plan (optional)',
-      planPlaceholder: 'Your if-then plan',
+      plan: 'Plan (optional)',
+      planPlaceholder: 'Your plan',
       planHint:
-        'Deciding when and where you will do it beforehand is what most raises the odds that you will.',
+        'When and where you will do it. Deciding it beforehand makes it easier to follow through.',
       save: 'Save',
       update: 'Update',
     },
     mode: {
       binary: 'Yes / No',
-      binaryHint:
-        'You did it or you did not. The least friction possible — ideal for character habits.',
+      binaryHint: 'You did it or you did not. The simplest way to log.',
       count: 'Count',
       countHint: 'Count how many times it happened (calls made, thanks given).',
       duration: 'Duration',

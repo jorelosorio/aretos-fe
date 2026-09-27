@@ -1,28 +1,26 @@
 import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { Modal, useWindowDimensions } from 'react-native';
 import Animated, {
-  Easing,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import type { ChevronLeft } from '@tamagui/lucide-icons-2';
 import { Button, SizableText, XStack, YStack } from 'tamagui';
 
+import type { IconComponent } from '@/components/common/icon-component';
+import {
+  HeaderButtons,
+  type HeaderAction,
+} from '@/components/common/header-actions';
 import { SectionTitle } from '@/components/common/section-title';
+import { SHEET_ENTER, SHEET_EXIT } from '@/components/common/sheet-motion';
 import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';
-
-type IconComponent = typeof ChevronLeft;
-
-const ENTER = { duration: 420, easing: Easing.bezier(0.32, 0.72, 0, 1) };
-const EXIT = { duration: 260, easing: Easing.bezier(0.32, 0, 0.67, 0) };
 
 export function FullScreenSheet({
   open,
   title,
-  leading,
   meta,
   Icon,
   iconLabel,
@@ -32,11 +30,10 @@ export function FullScreenSheet({
 }: {
   open: boolean;
   title: string;
-  leading?: ReactNode;
   meta: string;
   Icon: IconComponent;
   iconLabel: string;
-  actions?: ReactNode;
+  actions?: readonly HeaderAction[];
   onDismiss: () => void;
   children: ReactNode;
 }) {
@@ -48,7 +45,7 @@ export function FullScreenSheet({
   if (open && !mounted) setMounted(true);
 
   const enter = useCallback(() => {
-    offset.set(withTiming(0, ENTER));
+    offset.set(withTiming(0, SHEET_ENTER));
   }, [offset]);
 
   useEffect(() => {
@@ -57,7 +54,7 @@ export function FullScreenSheet({
       return;
     }
     offset.set(
-      withTiming(width, EXIT, (finished) => {
+      withTiming(width, SHEET_EXIT, (finished) => {
         if (finished) scheduleOnRN(setMounted, false);
       }),
     );
@@ -106,16 +103,7 @@ export function FullScreenSheet({
             />
 
             <YStack flex={1} minW={0} gap={SPACING.text}>
-              {leading === undefined ? (
-                <SectionTitle>{title}</SectionTitle>
-              ) : (
-                <XStack items="center" gap="$2">
-                  {leading}
-                  <YStack shrink={1}>
-                    <SectionTitle>{title}</SectionTitle>
-                  </YStack>
-                </XStack>
-              )}
+              <SectionTitle>{title}</SectionTitle>
 
               {meta !== '' && (
                 <SizableText size={TEXT.caption} color="$mutedForeground">
@@ -124,9 +112,7 @@ export function FullScreenSheet({
               )}
             </YStack>
 
-            <XStack items="center" gap="$1">
-              {actions}
-            </XStack>
+            {actions !== undefined && <HeaderButtons actions={actions} />}
           </XStack>
 
           {children}

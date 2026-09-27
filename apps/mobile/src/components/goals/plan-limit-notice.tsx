@@ -1,6 +1,7 @@
 import { Info, Layers } from '@tamagui/lucide-icons-2';
-import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
+import { Paragraph, XStack } from 'tamagui';
 
+import { Notice } from '@/components/common/notice';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
 import type { Allowance } from '@/features/limits';
 import { useTranslations } from '@/lib/i18n';
@@ -24,33 +25,15 @@ export function PlanLimitNotice({ allowance }: { allowance: Allowance }) {
   }
 
   return (
-    <XStack gap={SPACING.items} p={SPACING.card} bg="$card" rounded="$xl2">
-      <YStack
-        width={36}
-        height={36}
-        items="center"
-        justify="center"
-        rounded="$xl"
-        bg="$muted"
-      >
-        <Layers size={ICON.row} color="$primary" />
-      </YStack>
-
-      <YStack flex={1} gap={SPACING.text}>
-        <SizableText
-          size={TEXT.heading}
-          fontWeight="700"
-          color="$cardForeground"
-        >
-          {t(limit === null ? 'goals.limit.blockedTitle' : 'goals.limit.title')}
-        </SizableText>
-        <Paragraph size={TEXT.body} color="$mutedForeground">
-          {t(limit === null ? 'goals.limit.blocked' : 'goals.limit.reached', {
-            used,
-            limit,
-          })}
-        </Paragraph>
-      </YStack>
-    </XStack>
+    <Notice
+      Icon={Layers}
+      title={t(
+        limit === null ? 'goals.limit.blockedTitle' : 'goals.limit.title',
+      )}
+      body={t(limit === null ? 'goals.limit.blocked' : 'goals.limit.reached', {
+        used,
+        limit,
+      })}
+    />
   );
 }

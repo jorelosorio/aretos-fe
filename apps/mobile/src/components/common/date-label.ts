@@ -13,29 +13,20 @@
 
 import type { AppLocale } from '@/lib/i18n';
 import { dateFormat } from '@/utils/date-format';
+import { fromDateKey } from '@/utils/date-key';
 import { capitalize } from '@/utils/text';
-
-/**
- * Local again, for the same reason `features/logs` parses its own keys:
- * `new Date('2026-03-01')` is UTC midnight, which is still February in any
- * negative offset — a whole column of the strip under the wrong weekday.
- */
-function toDate(key: string): Date {
-  const [year, month, day] = key.split('-').map(Number);
-  return new Date(year, month - 1, day);
-}
 
 /** One letter, for a strip with seven columns and no room for more. */
 export function weekdayInitial(key: string, locale: AppLocale): string {
   return capitalize(
-    dateFormat(locale, { weekday: 'narrow' }).format(toDate(key)),
+    dateFormat(locale, { weekday: 'narrow' }).format(fromDateKey(key)),
   );
 }
 
 /** The weekday's short name, for a strip that can afford three letters. */
 export function weekdayLabel(key: string, locale: AppLocale): string {
   return capitalize(
-    dateFormat(locale, { weekday: 'short' }).format(toDate(key)),
+    dateFormat(locale, { weekday: 'short' }).format(fromDateKey(key)),
   );
 }
 
@@ -47,7 +38,7 @@ export function shortDateLabel(key: string, locale: AppLocale): string {
   return dateFormat(locale, {
     day: 'numeric',
     month: 'short',
-  }).format(toDate(key));
+  }).format(fromDateKey(key));
 }
 
 /**
@@ -60,13 +51,13 @@ export function mediumDateLabel(key: string, locale: AppLocale): string {
       weekday: 'short',
       day: 'numeric',
       month: 'short',
-    }).format(toDate(key)),
+    }).format(fromDateKey(key)),
   );
 }
 
 /** The day of the month, which is what a picker's circles carry. */
 export function dayNumber(key: string): string {
-  return String(toDate(key).getDate());
+  return String(fromDateKey(key).getDate());
 }
 
 /**
@@ -83,7 +74,7 @@ export function longDateLabel(key: string, locale: AppLocale): string {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
-  }).format(toDate(key));
+  }).format(fromDateKey(key));
 
   return capitalize(text);
 }
@@ -97,7 +88,7 @@ export function longDateLabel(key: string, locale: AppLocale): string {
  * last week of March as February in some years.
  */
 export function weekMonthLabel(key: string, locale: AppLocale): string {
-  const thursday = toDate(key);
+  const thursday = fromDateKey(key);
   thursday.setDate(thursday.getDate() + 3);
 
   return capitalize(
@@ -108,11 +99,11 @@ export function weekMonthLabel(key: string, locale: AppLocale): string {
   );
 }
 
-/** "Septiembre de 2026", for a month standing on its own line. */
+/** "Septiembre de <year>", for a month standing on its own line. */
 export function monthLabel(month: string, locale: AppLocale): string {
   return capitalize(
     dateFormat(locale, { month: 'long', year: 'numeric' }).format(
-      toDate(`${month}-01`),
+      fromDateKey(`${month}-01`),
     ),
   );
 }

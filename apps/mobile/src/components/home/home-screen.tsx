@@ -19,7 +19,7 @@ import {
   SegmentedControl,
   type Segment,
 } from '@/components/common/segmented-control';
-import { EmptyLog } from '@/components/logs/empty-log';
+import { EmptyState } from '@/components/common/empty-state';
 import { ILLUSTRATIONS } from '@/components/common/illustrations';
 import { SPACING, TEXT } from '@/constants/layout';
 import { useGoalErrorMessage, useGoals, type Goal } from '@/features/goals';
@@ -81,7 +81,7 @@ export function HomeScreen() {
     empty = <ScreenLoader />;
   } else if (scored.length > 0 && tab === 'pending') {
     empty = (
-      <EmptyLog
+      <EmptyState
         Icon={CircleCheck}
         illustration={ILLUSTRATIONS.allLogged}
         title={t('home.allLogged')}
@@ -90,7 +90,7 @@ export function HomeScreen() {
     );
   } else if (scored.length > 0) {
     empty = (
-      <EmptyLog
+      <EmptyState
         Icon={CalendarDays}
         illustration={ILLUSTRATIONS.nothingLogged}
         title={t('home.noneLogged')}
@@ -99,14 +99,20 @@ export function HomeScreen() {
     );
   } else if (!goals.error) {
     empty = (
-      <EmptyLog
+      <EmptyState
         Icon={Target}
         illustration={ILLUSTRATIONS.noGoals}
         title={t('goals.empty.title')}
         body={t('goals.empty.body')}
-        action={canCreate ? t('goals.new') : undefined}
-        actionIcon={Plus}
-        onAction={() => router.push('/goals/new')}
+        action={
+          canCreate
+            ? {
+                label: t('goals.new'),
+                Icon: Plus,
+                onPress: () => router.push('/goals/new'),
+              }
+            : undefined
+        }
       />
     );
   }

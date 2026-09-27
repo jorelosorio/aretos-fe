@@ -36,7 +36,6 @@ export function MoodPerformanceCard({
       title={t('analysis.moodPerformance.title')}
       subtitle={t('analysis.moodPerformance.subtitle')}
       why={t('analysis.moodPerformance.why')}
-      footnote={<BasisNote basis={performance.basis} />}
     >
       {automaticity !== null && (
         <YStack gap={SPACING.text}>
@@ -90,6 +89,7 @@ export function MoodPerformanceCard({
           })}
         />
       )}
+      <BasisNote basis={performance.basis} />
     </ChartCard>
   );
 }

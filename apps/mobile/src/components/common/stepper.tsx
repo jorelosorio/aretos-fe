@@ -1,6 +1,9 @@
 import { Minus, Plus } from '@tamagui/lucide-icons-2';
-import { Button, SizableText, XStack } from 'tamagui';
+import { Button, SizableText } from 'tamagui';
+
 import { BUTTON, ICON, TEXT } from '@/constants/layout';
+
+import { Card } from './card';
 
 export function Stepper({
   value,
@@ -22,12 +25,11 @@ export function Stepper({
   const clamp = (next: number) => Math.min(max, Math.max(min, next));
 
   return (
-    <XStack
+    <Card
+      row
       items="center"
       justify="space-between"
       p="$2"
-      bg="$card"
-      rounded="$xl2"
       accessibilityRole="adjustable"
       accessibilityLabel={label}
       accessibilityValue={{ min, max, now: value }}
@@ -57,6 +59,6 @@ export function Stepper({
         icon={<Plus size={ICON.row} color="$color" />}
         accessibilityLabel={`${label} +`}
       />
-    </XStack>
+    </Card>
   );
 }

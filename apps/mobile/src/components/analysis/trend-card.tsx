@@ -69,74 +69,71 @@ export function TrendCard({
 
   return (
     <ChartCard {...card}>
-      {(width) => (
-        <YStack gap={SPACING.section}>
-          {direction !== null && Icon !== null && (
-            <YStack gap={SPACING.text}>
-              <XStack items="center" gap="$2">
-                <SizableText
-                  size={TEXT.display}
-                  fontWeight="700"
-                  color="$mutedForeground"
-                >
-                  {formatRate(trend.first.rate, empty)}
-                </SizableText>
-                <ArrowRight size={ICON.feature} color="$mutedForeground" />
-                <SizableText
-                  size={TEXT.display}
-                  fontWeight="700"
-                  color={DIRECTION_COLOR[direction]}
-                >
-                  {formatRate(trend.second.rate, empty)}
-                </SizableText>
-              </XStack>
-
-              <XStack items="center" gap="$1.5">
-                <Icon size={ICON.row} color={DIRECTION_COLOR[direction]} />
-                <SizableText
-                  size={TEXT.body}
-                  fontWeight="600"
-                  color={DIRECTION_COLOR[direction]}
-                >
-                  {t(`analysis.trend.direction.${direction}`)}
-                </SizableText>
-              </XStack>
-            </YStack>
-          )}
-
-          {points.length > 1 && (
-            <YStack gap={SPACING.group}>
-              <SizableText size={TEXT.caption} color="$mutedForeground">
-                {t('analysis.overTime')}
+      <YStack gap={SPACING.section}>
+        {direction !== null && Icon !== null && (
+          <YStack gap={SPACING.text}>
+            <XStack items="center" gap="$2">
+              <SizableText
+                size={TEXT.display}
+                fontWeight="700"
+                color="$mutedForeground"
+              >
+                {formatRate(trend.first.rate, empty)}
               </SizableText>
-              <LineChart
-                width={width}
-                points={points}
-                min={0}
-                max={1}
-                yLabels={['0%', '50%', '100%']}
-                area
-              />
-            </YStack>
-          )}
+              <ArrowRight size={ICON.feature} color="$mutedForeground" />
+              <SizableText
+                size={TEXT.display}
+                fontWeight="700"
+                color={DIRECTION_COLOR[direction]}
+              >
+                {formatRate(trend.second.rate, empty)}
+              </SizableText>
+            </XStack>
 
-          <YStack gap={SPACING.items}>
-            <Meter
-              label={t('analysis.trend.first')}
-              rate={trend.first.rate}
-              caption={range(trend.first)}
-              muted
-            />
-            <Meter
-              label={t('analysis.trend.second')}
-              rate={trend.second.rate}
-              caption={range(trend.second)}
+            <XStack items="center" gap="$1.5">
+              <Icon size={ICON.row} color={DIRECTION_COLOR[direction]} />
+              <SizableText
+                size={TEXT.body}
+                fontWeight="600"
+                color={DIRECTION_COLOR[direction]}
+              >
+                {t(`analysis.trend.direction.${direction}`)}
+              </SizableText>
+            </XStack>
+          </YStack>
+        )}
+
+        {points.length > 1 && (
+          <YStack gap={SPACING.group}>
+            <SizableText size={TEXT.caption} color="$mutedForeground">
+              {t('analysis.overTime')}
+            </SizableText>
+            <LineChart
+              points={points}
+              min={0}
+              max={1}
+              yLabels={['0%', '50%', '100%']}
+              area
             />
           </YStack>
+        )}
 
-          {direction === null && <NotEnoughData need={need} />}
+        <YStack gap={SPACING.items}>
+          <Meter
+            label={t('analysis.trend.first')}
+            rate={trend.first.rate}
+            caption={range(trend.first)}
+            muted
+          />
+          <Meter
+            label={t('analysis.trend.second')}
+            rate={trend.second.rate}
+            caption={range(trend.second)}
+          />
         </YStack>
-      )}
+
+        {direction === null && <NotEnoughData need={need} />}
+      </YStack>
     </ChartCard>
   );
 }

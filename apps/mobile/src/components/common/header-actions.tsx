@@ -1,12 +1,9 @@
 import type { ReactNode } from 'react';
-import type { Plus } from '@tamagui/lucide-icons-2';
 import { Button, SizableText, Spinner, XStack } from 'tamagui';
 
-import { BUTTON, ICON, TEXT } from '@/constants/layout';
+import { BUTTON, HIT_SLOP, ICON, TEXT } from '@/constants/layout';
 
-type IconComponent = typeof Plus;
-
-const HIT_SLOP = 8;
+import type { IconComponent } from './icon-component';
 
 export function HeaderActions({ children }: { children: ReactNode }) {
   return (
@@ -78,5 +75,51 @@ export function HeaderTextButton({
         </SizableText>
       )}
     </Button>
+  );
+}
+
+export type HeaderAction =
+  | {
+      kind: 'icon';
+      Icon: IconComponent;
+      label: string;
+      onPress: () => void;
+      disabled?: boolean;
+    }
+  | {
+      kind: 'text';
+      label: string;
+      onPress: () => void;
+      disabled?: boolean;
+      busy?: boolean;
+    };
+
+export function HeaderButtons({
+  actions,
+}: {
+  actions: readonly HeaderAction[];
+}) {
+  return (
+    <HeaderActions>
+      {actions.map((action) =>
+        action.kind === 'icon' ? (
+          <HeaderIconButton
+            key={action.label}
+            Icon={action.Icon}
+            label={action.label}
+            onPress={action.onPress}
+            disabled={action.disabled}
+          />
+        ) : (
+          <HeaderTextButton
+            key={action.label}
+            label={action.label}
+            onPress={action.onPress}
+            disabled={action.disabled}
+            busy={action.busy}
+          />
+        ),
+      )}
+    </HeaderActions>
   );
 }

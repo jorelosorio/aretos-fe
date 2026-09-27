@@ -366,3 +366,23 @@ export const SHEET = {
   },
   handle: { width: 36, height: 5 },
 } as const;
+
+/**
+ * How far past its drawn edge a small control still takes a tap, in points.
+ *
+ * For the controls drawn smaller than the 44/48pt platform minimum because a
+ * bigger shape would crowd what sits beside it: a chip's remove mark, a
+ * header's icon, a section's text action. The hit area grows instead of the
+ * drawing. A control packed tighter than its neighbours' reach, like the
+ * colour swatches, keeps a smaller slop of its own so taps do not overlap.
+ */
+export const HIT_SLOP = 8;
+
+/**
+ * The side of one day's cell in a calendar or a week strip, in points.
+ *
+ * One number for the month calendar and the check-in week picker because
+ * they show the same thing — a day that can be picked — and a day that
+ * changed size between the two would read as two different controls.
+ */
+export const DAY_CELL = 38;

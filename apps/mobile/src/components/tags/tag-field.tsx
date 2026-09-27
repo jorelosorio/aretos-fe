@@ -1,4 +1,4 @@
-import { FormHint, FormSection } from '@/components/common/form-section';
+import { FormSection } from '@/components/common/form-section';
 import { TAGS_MAX } from '@/features/tags';
 import { useTranslations } from '@/lib/i18n';
 
@@ -18,15 +18,11 @@ export function TagField({
   return (
     <FormSection
       title={label ?? t('tags.label')}
-      hint={
-        <FormHint
-          text="right"
-          accessibilityLabel={t('tags.full', { count, max: TAGS_MAX })}
-          accessibilityLiveRegion="polite"
-        >
-          {`${count} / ${TAGS_MAX}`}
-        </FormHint>
-      }
+      counter={{
+        count,
+        max: TAGS_MAX,
+        label: t('tags.full', { count, max: TAGS_MAX }),
+      }}
     >
       <TagInput
         value={draft.tags}

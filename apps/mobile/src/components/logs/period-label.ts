@@ -13,14 +13,9 @@
 import type { TrackingFrequency } from '@/features/goals';
 import type { DateKey } from '@/features/logs';
 import { dateFormat } from '@/utils/date-format';
+import { fromDateKey } from '@/utils/date-key';
 import { capitalize } from '@/utils/text';
 import type { AppLocale, TranslateFn } from '@/lib/i18n';
-
-/** Local again, for the same reason `fromDateKey` is: `new Date(key)` is UTC. */
-function toDate(key: DateKey): Date {
-  const [year, month, day] = key.split('-').map(Number);
-  return new Date(year, month - 1, day);
-}
 
 const dayMonth = (key: DateKey, locale: AppLocale) =>
   capitalize(
@@ -28,11 +23,13 @@ const dayMonth = (key: DateKey, locale: AppLocale) =>
       weekday: 'long',
       day: 'numeric',
       month: 'short',
-    }).format(toDate(key)),
+    }).format(fromDateKey(key)),
   );
 
 const shortDate = (key: DateKey, locale: AppLocale) =>
-  dateFormat(locale, { day: 'numeric', month: 'short' }).format(toDate(key));
+  dateFormat(locale, { day: 'numeric', month: 'short' }).format(
+    fromDateKey(key),
+  );
 
 /**
  * "Hoy" for the period the person is in, its date otherwise.

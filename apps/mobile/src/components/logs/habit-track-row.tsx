@@ -16,6 +16,7 @@ import {
   YStack,
 } from 'tamagui';
 
+import { Card } from '@/components/common/card';
 import { UNIT_LABELS } from '@/components/habits/unit-labels';
 import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';
 import type { Habit } from '@/features/habits';
@@ -156,13 +157,11 @@ export function HabitTrackRow({
         <Connector hidden={isLast} />
       </YStack>
 
-      <YStack
+      <Card
         flex={1}
         gap={SPACING.text}
         mb={isLast ? 0 : SPACING.items}
-        p={SPACING.cardTight}
-        bg="$card"
-        rounded="$xl2"
+        density="tight"
         opacity={entry.skipped ? 0.65 : 1}
       >
         <XStack items="center" gap={SPACING.items}>
@@ -250,7 +249,7 @@ export function HabitTrackRow({
             )}
           </YStack>
         )}
-      </YStack>
+      </Card>
     </XStack>
   );
 }

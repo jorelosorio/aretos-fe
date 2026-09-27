@@ -19,18 +19,9 @@
  */
 
 import { dateFormat } from '@/utils/date-format';
+import { fromDateKey } from '@/utils/date-key';
 import { capitalize } from '@/utils/text';
 import type { AppLocale } from '@/lib/i18n';
-
-/**
- * Local again, for the reason `features/logs/period.ts` spells out:
- * `new Date('2026-03-01')` is UTC midnight by spec, which in any negative
- * offset is still February 28th locally.
- */
-function toDate(key: string): Date {
-  const [year, month, day] = key.split('-').map(Number);
-  return new Date(year, month - 1, day);
-}
 
 /**
  * The `YYYY-MM` an entry groups under.
@@ -43,7 +34,7 @@ function toDate(key: string): Date {
 export const monthKey = (entryDate: string): string => entryDate.slice(0, 7);
 
 /**
- * "Septiembre de 2026" for the heading a month's entries sit under.
+ * "Septiembre de <year>" for the heading a month's entries sit under.
  *
  * Capitalised on the way out for the reason `date-label.ts`'s
  * `longDateLabel` is: Spanish writes its months in lower case, and `Intl`
@@ -58,14 +49,16 @@ const weekdayDay = (key: string, locale: AppLocale) =>
       weekday: 'short',
       day: 'numeric',
       month: 'short',
-    }).format(toDate(key)),
+    }).format(fromDateKey(key)),
   );
 
 const dayOnly = (key: string, locale: AppLocale) =>
-  dateFormat(locale, { day: 'numeric' }).format(toDate(key));
+  dateFormat(locale, { day: 'numeric' }).format(fromDateKey(key));
 
 const dayMonth = (key: string, locale: AppLocale) =>
-  dateFormat(locale, { day: 'numeric', month: 'short' }).format(toDate(key));
+  dateFormat(locale, { day: 'numeric', month: 'short' }).format(
+    fromDateKey(key),
+  );
 
 /**
  * The span an entry covers, as short as it can be said.

@@ -10,7 +10,7 @@ import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons-2';
 import { Button, Circle, SizableText, XStack, YStack } from 'tamagui';
 
 import { resolveColor } from '@/components/common/theme-color';
-import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';
+import { BUTTON, DAY_CELL, ICON, SPACING, TEXT } from '@/constants/layout';
 import type {
   GoalPeriod,
   PeriodStatus,
@@ -36,7 +36,6 @@ import {
   PERIOD_STATUS_LABELS,
 } from '@/components/goals/period-status';
 
-const CELL = 38;
 const DOT = 6;
 
 function weekList(first: DateKey, last: DateKey): DateKey[] {
@@ -89,7 +88,7 @@ const DayCell = memo(function DayCell({
       </SizableText>
 
       <Circle
-        size={CELL}
+        size={DAY_CELL}
         bg={isSelected ? '$primary' : '$card'}
         borderWidth={isSelected ? 0 : isToday ? 2 : 1}
         borderColor={isToday ? '$primary' : '$border'}

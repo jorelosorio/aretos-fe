@@ -1,4 +1,4 @@
-import { monthGrid, monthOf, shiftMonth } from './month-grid';
+import { monthGrid, monthOf, shiftMonth, weekdayColumns } from './month-grid';
 
 describe('monthGrid', () => {
   it('lays a month out in Monday-first weeks, padding the edges', () => {
@@ -40,5 +40,32 @@ describe('shiftMonth', () => {
 describe('monthOf', () => {
   it('is the YYYY-MM a day belongs to', () => {
     expect(monthOf('2026-09-24')).toBe('2026-09');
+  });
+});
+
+describe('weekdayColumns', () => {
+  const weekday = (key: string) => {
+    const [year, month, day] = key.split('-').map(Number);
+    return (new Date(year, month - 1, day).getDay() + 6) % 7;
+  };
+
+  it('skips padding to find a real day in every column', () => {
+    expect(weekdayColumns(monthGrid('2026-09'))).toEqual([
+      '2026-09-07',
+      '2026-09-01',
+      '2026-09-02',
+      '2026-09-03',
+      '2026-09-04',
+      '2026-09-05',
+      '2026-09-06',
+    ]);
+  });
+
+  it('puts each day under its own weekday, Monday first', () => {
+    for (const month of ['2026-02', '2027-02', '2026-03', '2026-12']) {
+      weekdayColumns(monthGrid(month)).forEach((day, column) =>
+        expect(weekday(day)).toBe(column),
+      );
+    }
   });
 });

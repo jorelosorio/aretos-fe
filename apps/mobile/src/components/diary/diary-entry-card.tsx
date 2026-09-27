@@ -1,12 +1,12 @@
 import { memo } from 'react';
-import { Archive } from '@tamagui/lucide-icons-2';
-import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
+import { Paragraph, XStack, YStack } from 'tamagui';
 
-import { GoalDot } from '@/components/goals/goal-dot';
+import { Card } from '@/components/common/card';
+import { GoalName } from '@/components/goals/goal-name';
 import { slotColor } from '@/components/goals/slot-color';
 import { MOOD_LABELS } from '@/components/logs/mood-labels';
 import { PeriodMood } from '@/components/logs/period-mood';
-import { ICON, SPACING, TEXT } from '@/constants/layout';
+import { SPACING, TEXT } from '@/constants/layout';
 import type { DiaryNote } from '@/features/diary';
 import { useTranslations } from '@/lib/i18n';
 
@@ -47,15 +47,12 @@ export const DiaryEntryCard = memo(function DiaryEntryCard({
     .join('. ');
 
   return (
-    <XStack
-      onPress={() => onOpen(note)}
-      pressStyle={{ bg: '$cardPress' }}
+    <Card
+      row
+      pressable
       items="center"
-      gap={SPACING.items}
-      p={SPACING.card}
-      bg="$card"
-      rounded="$xl2"
       overflow="hidden"
+      onPress={() => onOpen(note)}
       accessibilityRole="button"
       accessibilityLabel={label}
       accessibilityHint={t('diary.entry.readHint')}
@@ -76,21 +73,13 @@ export const DiaryEntryCard = memo(function DiaryEntryCard({
       <YStack flex={1} minW={0} gap={SPACING.group}>
         {checkIn !== null && (
           <XStack items="center" gap={SPACING.items}>
-            <XStack flex={1} minW={0} items="center" gap="$1.5">
-              <GoalDot slot={checkIn.goal.colorSlot} size={8} />
-              <SizableText
-                shrink={1}
-                size={TEXT.body}
-                fontWeight="700"
-                color="$cardForeground"
-                numberOfLines={1}
-              >
-                {checkIn.goal.name}
-              </SizableText>
-              {checkIn.goal.archived && (
-                <Archive size={ICON.inline} color="$mutedForeground" />
-              )}
-            </XStack>
+            <GoalName
+              variant="inline"
+              slot={checkIn.goal.colorSlot}
+              name={checkIn.goal.name}
+              lines={1}
+              archived={checkIn.goal.archived}
+            />
 
             <PeriodMood mood={mood} size={MOOD_FACE} active />
           </XStack>
@@ -107,6 +96,6 @@ export const DiaryEntryCard = memo(function DiaryEntryCard({
 
         <NoteMeta caption={when} tags={note.tags} collapsed />
       </YStack>
-    </XStack>
+    </Card>
   );
 });

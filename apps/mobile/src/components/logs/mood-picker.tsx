@@ -23,20 +23,7 @@ export function MoodPicker({
   const theme = useTheme();
 
   return (
-    <FormSection
-      title={
-        <>
-          {t('logs.mood.question')}{' '}
-          <SizableText
-            size={TEXT.body}
-            fontFamily="$body"
-            color="$mutedForeground"
-          >
-            {t('logs.mood.optional')}
-          </SizableText>
-        </>
-      }
-    >
+    <FormSection title={t('logs.mood.question')} note={t('logs.mood.optional')}>
       <XStack
         gap={SPACING.group}
         accessibilityRole="radiogroup"

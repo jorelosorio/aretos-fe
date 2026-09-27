@@ -3,6 +3,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Archive } from '@tamagui/lucide-icons-2';
 import { Paragraph, ScrollView, SizableText, XStack, YStack } from 'tamagui';
 
+import { Card } from '@/components/common/card';
 import { longDateLabel } from '@/components/common/date-label';
 import { ErrorNotice } from '@/components/common/error-notice';
 import { NOTE_TEXT } from '@/components/common/note-text';
@@ -80,14 +81,11 @@ function CheckInCard({
   const { t } = useTranslations();
 
   return (
-    <XStack
+    <Card
+      row
       items="center"
-      gap={SPACING.items}
-      p={SPACING.card}
-      bg="$card"
-      rounded="$xl2"
       onPress={onPress}
-      pressStyle={onPress === undefined ? undefined : { bg: '$cardPress' }}
+      pressable={onPress !== undefined}
       accessibilityRole={onPress === undefined ? 'summary' : 'button'}
       accessibilityHint={
         onPress === undefined ? undefined : t('diary.viewer.openCheckIn')
@@ -113,7 +111,7 @@ function CheckInCard({
           />
         )}
       </YStack>
-    </XStack>
+    </Card>
   );
 }
 

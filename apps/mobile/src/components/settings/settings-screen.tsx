@@ -7,14 +7,14 @@ import {
   Smartphone,
   Sun,
 } from '@tamagui/lucide-icons-2';
-import { ScrollView, Spinner, YStack } from 'tamagui';
+import { ScrollView, YStack } from 'tamagui';
 
 import { useConfirmSignOut } from '@/components/auth/use-confirm-sign-out';
 import { useTabBarInset } from '@/components/common/floating-tab-bar';
 import { OptionGroup, type Option } from '@/components/common/option-group';
 import { RowGroup } from '@/components/settings/row-group';
 import { APP_LOCALES, useTranslations } from '@/lib/i18n';
-import { ICON, SPACING } from '@/constants/layout';
+import { SPACING } from '@/constants/layout';
 import {
   setPreferences,
   usePreferences,
@@ -76,9 +76,7 @@ export function SettingsScreen() {
             {
               label: t('settings.licenses'),
               onPress: () => router.push('/settings/licenses'),
-              trailing: (
-                <ChevronRight size={ICON.row} color="$mutedForeground" />
-              ),
+              Icon: ChevronRight,
             },
           ]}
         />
@@ -90,11 +88,8 @@ export function SettingsScreen() {
               label: isSigningOut ? t('auth.signingOut') : t('auth.signOut'),
               onPress: confirmSignOut,
               disabled: isSigningOut,
-              trailing: isSigningOut ? (
-                <Spinner color="$mutedForeground" />
-              ) : (
-                <LogOut size={ICON.row} color="$mutedForeground" />
-              ),
+              Icon: LogOut,
+              busy: isSigningOut,
             },
           ]}
         />

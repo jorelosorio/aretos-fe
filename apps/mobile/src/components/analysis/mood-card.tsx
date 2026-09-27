@@ -52,63 +52,58 @@ export function MoodCard({
       title={t('analysis.moods.title')}
       subtitle={t('analysis.moods.subtitle')}
       why={t('analysis.moods.why')}
-      footnote={
-        <SizableText size={TEXT.caption} color="$mutedForeground">
-          {t('analysis.moods.summary', {
-            answered: moods.answered,
-            total: moods.total,
-            rate: formatRate(moods.responseRate, empty),
-          })}
-        </SizableText>
-      }
     >
-      {(width) => (
-        <YStack gap={SPACING.section}>
-          {moods.mean !== null && rounded !== null && (
-            <XStack items="center" gap={SPACING.items}>
-              <MoodFace
-                score={rounded}
-                size={AVERAGE_FACE}
-                color={theme.primary.val}
-              />
-              <YStack gap={SPACING.text}>
-                <SizableText size={TEXT.caption} color="$mutedForeground">
-                  {t('analysis.moods.average')}
-                </SizableText>
-                <SizableText
-                  size={TEXT.heading}
-                  fontWeight="700"
-                  color="$cardForeground"
-                >
-                  {`${formatMood(moods.mean)} · ${t(MOOD_LABELS[rounded])}`}
-                </SizableText>
-              </YStack>
-            </XStack>
-          )}
-
-          {points.length > 1 && (
-            <YStack gap={SPACING.group}>
+      <YStack gap={SPACING.section}>
+        {moods.mean !== null && rounded !== null && (
+          <XStack items="center" gap={SPACING.items}>
+            <MoodFace
+              score={rounded}
+              size={AVERAGE_FACE}
+              color={theme.primary.val}
+            />
+            <YStack gap={SPACING.text}>
               <SizableText size={TEXT.caption} color="$mutedForeground">
-                {t('analysis.overTime')}
+                {t('analysis.moods.average')}
               </SizableText>
-              <LineChart
-                width={width}
-                points={points}
-                min={1}
-                max={5}
-                yLabels={['1', '3', '5']}
-              />
+              <SizableText
+                size={TEXT.heading}
+                fontWeight="700"
+                color="$cardForeground"
+              >
+                {`${formatMood(moods.mean)} · ${t(MOOD_LABELS[rounded])}`}
+              </SizableText>
             </YStack>
-          )}
+          </XStack>
+        )}
 
+        {points.length > 1 && (
           <YStack gap={SPACING.group}>
             <SizableText size={TEXT.caption} color="$mutedForeground">
-              {t('analysis.moods.distribution')}
+              {t('analysis.overTime')}
             </SizableText>
-            <BarChart width={width} bars={bars} />
+            <LineChart
+              points={points}
+              min={1}
+              max={5}
+              yLabels={['1', '3', '5']}
+            />
           </YStack>
+        )}
+
+        <YStack gap={SPACING.group}>
+          <SizableText size={TEXT.caption} color="$mutedForeground">
+            {t('analysis.moods.distribution')}
+          </SizableText>
+          <BarChart bars={bars} />
         </YStack>
-      )}
+      </YStack>
+      <SizableText size={TEXT.caption} color="$mutedForeground">
+        {t('analysis.moods.summary', {
+          answered: moods.answered,
+          total: moods.total,
+          rate: formatRate(moods.responseRate, empty),
+        })}
+      </SizableText>
     </ChartCard>
   );
 }

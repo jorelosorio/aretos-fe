@@ -199,16 +199,16 @@ export const es = {
       automatic:
         'Cumples igual en días de ánimo bajo que en días buenos: tus hábitos ya no dependen de cómo te sientes.',
       dependent:
-        'Con ánimo bajo cumples %{low}; con ánimo alto, %{high}. Un plan para los días flojos cierra esa brecha.',
+        'Con ánimo bajo cumples %{low}; con ánimo alto, %{high}. Un plan para los días flojos puede ayudar a cerrar esa brecha.',
       formedOne:
-        '«%{habit}» ya pasó las %{median} repeticiones que suele tomar un hábito en volverse automático.',
+        '«%{habit}» ya pasó las %{median} repeticiones: ya es automático.',
       formedMany:
-        '%{count} hábitos ya pasaron las %{median} repeticiones que suele tomar volverse automático.',
+        '%{count} hábitos ya pasaron las %{median} repeticiones: ya son automáticos.',
       closest:
         '«%{habit}» lleva %{count} de %{median} repeticiones: es el que está más cerca de volverse automático.',
       streak:
         'Llevas %{count} períodos seguidos en «%{goal}», tu racha activa más larga.',
-      plan: 'Solo %{count} de %{of} hábitos tienen un plan si-entonces, la técnica que más sube la probabilidad de cumplir.',
+      plan: 'Solo %{count} de %{of} hábitos tienen un plan de cuándo y dónde hacerlos.',
       none: 'Sigue registrando: con unos días más aparecen aquí tus patrones.',
     },
     setup: {
@@ -218,9 +218,9 @@ export const es = {
       counts: '%{goals} metas · %{habits} hábitos activos',
       modes:
         '%{binary} sí/no · %{count} cantidad · %{duration} duración · %{rating} escala',
-      planned: 'Plan si-entonces',
+      planned: 'Plan',
       plannedHint:
-        'Decidir de antemano cuándo y dónde lo harás es lo que más acerca la intención a la acción.',
+        'Decidir de antemano cuándo y dónde lo harás hace más fácil cumplirlo.',
       thresholded: 'Umbral de éxito',
       thresholdedHint:
         'Sin umbral, un minuto cuenta igual que una hora. Define qué es «logrado» en hábitos que se miden.',
@@ -278,7 +278,7 @@ export const es = {
     rhythm: {
       title: 'Tu semana',
       subtitle: 'Qué días cumples más y cuáles se te escapan.',
-      why: 'El promedio esconde la forma de la semana. Si un día concreto cae siempre, suele ser un problema de agenda y no de fuerza de voluntad: se arregla cambiando cuándo lo haces.',
+      why: 'El promedio esconde la forma de la semana. Si un día concreto cae siempre, prueba a cambiar cuándo lo haces ese día.',
       best: 'Tu mejor día',
       worst: 'Tu día más flojo',
       outOfTen: '%{count} de cada 10',
@@ -296,7 +296,7 @@ export const es = {
     trend: {
       title: '¿Vas mejorando?',
       subtitle: 'La segunda mitad del período contra la primera.',
-      why: 'Comparar las dos mitades por fecha muestra hacia dónde vas sin que una semana mala lo tape todo. Los cambios pequeños cuentan como estables a propósito.',
+      why: 'Muestra hacia dónde vas sin que una semana mala lo tape todo. Los cambios pequeños se leen como estables.',
       first: 'Primera mitad',
       second: 'Segunda mitad',
       half: '%{count} días',
@@ -324,7 +324,7 @@ export const es = {
     moodPerformance: {
       title: 'Ánimo contra logro',
       subtitle: '¿Cumples igual cuando estás bajo de ánimo?',
-      why: 'Un hábito formado responde al contexto (la hora, el lugar), no a cómo te sientes. Si cumples igual en días malos que en buenos, el hábito ya se sostiene solo.',
+      why: 'Si cumples igual en días de ánimo bajo que en días buenos, el hábito ya no depende de tu ánimo: se sostiene solo.',
       low: 'Ánimo bajo',
       neutral: 'Ánimo neutro',
       high: 'Ánimo alto',
@@ -340,14 +340,14 @@ export const es = {
         mixed:
           'Con ánimo bajo cumples %{low} y con ánimo alto %{high}: el ánimo todavía pesa un poco.',
         dependent:
-          'Con ánimo bajo cumples %{low} y con ánimo alto %{high}. Un plan concreto para los días flojos suele cerrar esa brecha.',
+          'Con ánimo bajo cumples %{low} y con ánimo alto %{high}. Un plan concreto para los días flojos puede ayudar a cerrar esa brecha.',
       },
       need: '%{count} días en cada extremo de la escala',
     },
     direction: {
       title: '¿Qué va primero?',
       subtitle: 'Si tu ánimo empuja lo que haces, o al revés.',
-      why: 'Emparejar cada día con el siguiente sugiere qué influye en qué. Es una pista, no una prueba: algo externo, como dormir mal, podría mover ambos.',
+      why: 'Esto sugiere qué influye en qué. Es una pista, no una prueba: algo externo, como dormir mal, podría mover ambos.',
       sameDay: 'El mismo día',
       moodLeads: 'Tu ánimo de hoy y lo que cumples mañana',
       performanceLeads: 'Lo que cumples hoy y tu ánimo de mañana',
@@ -392,7 +392,7 @@ export const es = {
     habits: {
       title: 'Camino a volverse automático',
       subtitle: 'Cuántas veces has cumplido cada hábito.',
-      why: 'Un estudio de la University College London (Lally et al., 2010) encontró que un hábito tarda una mediana de %{median} repeticiones en volverse automático, con casos entre %{low} y %{high}. Fallar un día suelto no reinicia la cuenta: por eso contamos repeticiones, no rachas.',
+      why: 'Cada vez que cumples sumas una repetición, y las repeticiones son las que vuelven automático un hábito. Fallar un día suelto no reinicia la cuenta: por eso contamos repeticiones, no rachas.',
       repetitions: '%{count} de %{median}',
       stage: {
         starting: 'Empezando',
@@ -619,17 +619,16 @@ export const es = {
       weight: 'Importancia',
       weightHint:
         'Cuanta más importancia tiene un hábito, más mueve el progreso de la meta: media cuenta el doble que normal, y alta el triple.',
-      plan: 'Plan si-entonces (opcional)',
-      planPlaceholder: 'Tu plan si-entonces',
+      plan: 'Plan (opcional)',
+      planPlaceholder: 'Tu plan',
       planHint:
-        'Decidir de antemano cuándo y dónde lo harás es lo que más sube la probabilidad de hacerlo.',
+        'Cuándo y dónde lo harás. Decidirlo de antemano hace más fácil cumplirlo.',
       save: 'Guardar',
       update: 'Actualizar',
     },
     mode: {
       binary: 'Sí / No',
-      binaryHint:
-        'Lo hiciste o no. La menor fricción posible — ideal para hábitos de carácter.',
+      binaryHint: 'Lo hiciste o no. La forma más simple de registrar.',
       count: 'Cantidad',
       countHint:
         'Cuenta cuántas veces ocurrió (llamadas hechas, gracias dados).',

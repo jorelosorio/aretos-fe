@@ -1,14 +1,13 @@
 import { Fragment, useRef, useState } from 'react';
 import { Modal, Platform, Pressable, StyleSheet } from 'react-native';
-import { Ellipsis, EllipsisVertical, type Plus } from '@tamagui/lucide-icons-2';
+import { Ellipsis, EllipsisVertical } from '@tamagui/lucide-icons-2';
 import { Separator, SizableText, XStack, YStack } from 'tamagui';
 
 import { ICON, SPACING, TEXT } from '@/constants/layout';
 
 import { HeaderIconButton } from './header-actions';
+import type { IconComponent } from './icon-component';
 import { useHeaderMetrics } from './header-metrics';
-
-type IconComponent = typeof Plus;
 
 export type MenuAction = {
   key: string;

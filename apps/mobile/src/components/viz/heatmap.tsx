@@ -9,6 +9,7 @@ import { TEXT } from '@/constants/layout';
 import type { HeatCell } from '@/features/analysis';
 import { useTranslations } from '@/lib/i18n';
 
+import { useChartWidth } from './chart-width';
 import { HEAT_EMPTY, heatToken } from './heat-level';
 import {
   cellAt,
@@ -182,20 +183,19 @@ function Skeleton({
 }
 
 export function Heatmap({
-  width,
   cells,
   compact = false,
   pending = false,
   selected = null,
   onSelect,
 }: {
-  width: number;
   cells: readonly HeatCell[];
   compact?: boolean;
   pending?: boolean;
   selected?: string | null;
   onSelect?: (cell: HeatCell) => void;
 }) {
+  const width = useChartWidth();
   const { t } = useTranslations();
   const layout = useMemo(() => placeCells(cells), [cells]);
   const drawn = useDeferredValue(layout, null);
