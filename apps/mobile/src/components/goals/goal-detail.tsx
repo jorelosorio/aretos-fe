@@ -57,12 +57,7 @@ function GoalSummary({ goal, habitCount }: { goal: Goal; habitCount: number }) {
       : t('goals.streak.loggedShort');
 
   return (
-    <YStack
-      gap={SPACING.items}
-      p={SPACING.card}
-      bg="$card"
-      rounded="$xl2"
-    >
+    <YStack gap={SPACING.items} p={SPACING.card} bg="$card" rounded="$xl2">
       <YStack gap={SPACING.text}>
         <XStack items="center" gap="$2">
           <GoalDot slot={goal.colorSlot} />
@@ -103,12 +98,7 @@ function ArchivedNotice() {
   const { t } = useTranslations();
 
   return (
-    <XStack
-      gap={SPACING.items}
-      p={SPACING.card}
-      bg="$card"
-      rounded="$xl2"
-    >
+    <XStack gap={SPACING.items} p={SPACING.card} bg="$card" rounded="$xl2">
       <YStack
         width={36}
         height={36}

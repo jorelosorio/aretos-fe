@@ -68,12 +68,7 @@ export function InsightsCard({ report }: { report: AnalysisReport }) {
   const { cadence } = report;
 
   return (
-    <YStack
-      bg="$card"
-      rounded="$xl2"
-      p={SPACING.card}
-      gap={SPACING.section}
-    >
+    <YStack bg="$card" rounded="$xl2" p={SPACING.card} gap={SPACING.section}>
       <YStack gap={SPACING.items}>
         <SizableText
           size={TEXT.subheading}

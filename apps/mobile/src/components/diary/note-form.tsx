@@ -113,7 +113,7 @@ export function NoteForm({
           value={draft.body}
           onChangeText={draft.setBody}
           placeholder={t('diary.editor.placeholder')}
-          placeholderTextColor={theme.mutedForeground.val as ColorTokens}
+          placeholderTextColor={theme.fieldPlaceholder.val as ColorTokens}
           accessibilityLabel={t('diary.editor.body')}
           maxLength={NOTE_BODY_MAX}
           multiline

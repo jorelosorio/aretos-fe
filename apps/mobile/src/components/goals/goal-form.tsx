@@ -7,13 +7,14 @@ import {
   Gauge,
   Shuffle,
 } from '@tamagui/lucide-icons-2';
-import { Input, Label, SizableText, Slider, TextArea, YStack } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
-import { FormScrollView } from '@/components/common/form-scroll-view';
+import { FormInput, FormTextArea } from '@/components/common/form-field';
+import { FormScreen } from '@/components/common/form-screen';
+import { FormSection } from '@/components/common/form-section';
 import { HeaderTextButton } from '@/components/common/header-actions';
 import { OptionGroup, type Option } from '@/components/common/option-group';
-import { SectionTitle } from '@/components/common/section-title';
+import { SliderCard } from '@/components/common/slider-card';
 import { GoalColorPicker } from '@/components/goals/goal-color-picker';
 import { useTagDraft } from '@/components/tags/tag-draft';
 import { TagField } from '@/components/tags/tag-field';
@@ -27,7 +28,6 @@ import {
   type TrackingFrequency,
 } from '@/features/goals';
 import { useTranslations } from '@/lib/i18n';
-import { SPACING, TEXT } from '@/constants/layout';
 
 const NAME_MAX = 120;
 const DESCRIPTION_MAX = 1000;
@@ -128,127 +128,73 @@ export function GoalForm({
         }}
       />
 
-      <YStack flex={1} bg="$background">
-        <FormScrollView>
-          <YStack flex={1} p={SPACING.screen} gap={SPACING.section}>
-            <ErrorNotice message={toMessage(createError ?? updateError)} />
+      <FormScreen>
+        <ErrorNotice message={toMessage(createError ?? updateError)} />
 
-            <YStack gap={SPACING.group}>
-              <Label htmlFor="goal-name" color="$color">
-                {t('goals.form.name')}
-              </Label>
-              <Input
-                id="goal-name"
-                size="$5"
-                value={draft.name}
-                onChangeText={(value) => patch({ name: value })}
-                placeholder={t('goals.form.namePlaceholder')}
-                placeholderTextColor="$mutedForeground"
-                maxLength={NAME_MAX}
-                autoFocus={!goalId}
-                bg="$field"
-                borderColor="$fieldBorder"
-              />
-              <SizableText size={TEXT.caption} color="$mutedForeground" px="$2">
-                {t('goals.form.nameHint')}
-              </SizableText>
-            </YStack>
+        <FormSection
+          title={t('goals.form.name')}
+          hint={t('goals.form.nameHint')}
+        >
+          <FormInput
+            accessibilityLabel={t('goals.form.name')}
+            value={draft.name}
+            onChangeText={(value) => patch({ name: value })}
+            placeholder={t('goals.form.namePlaceholder')}
+            maxLength={NAME_MAX}
+            autoFocus={!goalId}
+          />
+        </FormSection>
 
-            <YStack gap={SPACING.group}>
-              <Label htmlFor="goal-description" color="$color">
-                {t('goals.form.description')}
-              </Label>
-              <TextArea
-                id="goal-description"
-                size="$5"
-                value={draft.description}
-                onChangeText={(value) => patch({ description: value })}
-                placeholder={t('goals.form.descriptionPlaceholder')}
-                placeholderTextColor="$mutedForeground"
-                maxLength={DESCRIPTION_MAX}
-                multiline
-                numberOfLines={4}
-                minH={112}
-                verticalAlign="top"
-                bg="$field"
-                borderColor="$fieldBorder"
-              />
-            </YStack>
+        <FormSection title={t('goals.form.description')}>
+          <FormTextArea
+            accessibilityLabel={t('goals.form.description')}
+            value={draft.description}
+            onChangeText={(value) => patch({ description: value })}
+            placeholder={t('goals.form.descriptionPlaceholder')}
+            maxLength={DESCRIPTION_MAX}
+          />
+        </FormSection>
 
-            <TagField draft={tags} label={t('goals.form.tags')} />
+        <TagField draft={tags} label={t('goals.form.tags')} />
 
-            <GoalColorPicker
-              value={draft.colorSlot}
-              onChange={(slot) => patch({ colorSlot: slot })}
-              hint={t(
-                draft.colorSlot === null
-                  ? 'goals.form.colorAuto'
-                  : 'goals.form.colorHint',
-              )}
+        <GoalColorPicker
+          value={draft.colorSlot}
+          onChange={(slot) => patch({ colorSlot: slot })}
+          hint={t(
+            draft.colorSlot === null
+              ? 'goals.form.colorAuto'
+              : 'goals.form.colorHint',
+          )}
+        />
+
+        <OptionGroup
+          title={t('goals.form.frequency')}
+          options={frequencies}
+          value={draft.trackingFrequency}
+          onChange={(value) => patch({ trackingFrequency: value })}
+        />
+
+        <OptionGroup
+          title={t('goals.form.streakRule')}
+          options={streakRules}
+          value={draft.streakRule}
+          onChange={(value) => patch({ streakRule: value })}
+        />
+
+        {draft.streakRule === 'threshold' && (
+          <FormSection title={t('goals.form.threshold')}>
+            <SliderCard
+              display={`${draft.streakThreshold}%`}
+              value={draft.streakThreshold}
+              min={THRESHOLD_MIN}
+              max={THRESHOLD_MAX}
+              step={THRESHOLD_STEP}
+              onChange={(value) => patch({ streakThreshold: value })}
+              label={t('goals.form.threshold')}
             />
-
-            <OptionGroup
-              title={t('goals.form.frequency')}
-              options={frequencies}
-              value={draft.trackingFrequency}
-              onChange={(value) => patch({ trackingFrequency: value })}
-            />
-
-            <YStack gap={SPACING.items}>
-              <OptionGroup
-                title={t('goals.form.streakRule')}
-                options={streakRules}
-                value={draft.streakRule}
-                onChange={(value) => patch({ streakRule: value })}
-              />
-
-              {draft.streakRule === 'threshold' && (
-                <YStack gap={SPACING.group}>
-                  <SectionTitle>{t('goals.form.threshold')}</SectionTitle>
-
-                  <YStack
-                    gap={SPACING.items}
-                    p={SPACING.card}
-                    bg="$card"
-                    rounded="$xl2"
-                  >
-                    <SizableText
-                      size={TEXT.display}
-                      fontWeight="700"
-                      color="$primary"
-                      text="center"
-                    >
-                      {`${draft.streakThreshold}%`}
-                    </SizableText>
-
-                    <Slider
-                      min={THRESHOLD_MIN}
-                      max={THRESHOLD_MAX}
-                      step={THRESHOLD_STEP}
-                      value={[draft.streakThreshold]}
-                      onValueChange={([value]) =>
-                        patch({ streakThreshold: value })
-                      }
-                      accessibilityLabel={t('goals.form.threshold')}
-                    >
-                      <Slider.Track bg="$muted" size="$1">
-                        <Slider.TrackActive bg="$primary" />
-                      </Slider.Track>
-                      <Slider.Thumb
-                        index={0}
-                        circular
-                        size="$2"
-                        bg="$primary"
-                        borderColor="$background"
-                      />
-                    </Slider>
-                  </YStack>
-                </YStack>
-              )}
-            </YStack>
-          </YStack>
-        </FormScrollView>
-      </YStack>
+          </FormSection>
+        )}
+      </FormScreen>
     </>
   );
 }

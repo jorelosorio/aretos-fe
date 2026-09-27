@@ -23,12 +23,7 @@ export function ChartCard({
   const [explaining, setExplaining] = useState(false);
 
   return (
-    <YStack
-      bg="$card"
-      rounded="$xl2"
-      p={SPACING.card}
-      gap={SPACING.items}
-    >
+    <YStack bg="$card" rounded="$xl2" p={SPACING.card} gap={SPACING.items}>
       <XStack items="flex-start" gap={SPACING.group}>
         <YStack flex={1} minW={0} gap={SPACING.text}>
           <SizableText

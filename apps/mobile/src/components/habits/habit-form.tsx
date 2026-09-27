@@ -1,20 +1,19 @@
 import { useState, type ReactNode } from 'react';
 import { Stack, useRouter } from 'expo-router';
-import { Input, Label, SizableText, TextArea, YStack } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
-import { FormScrollView } from '@/components/common/form-scroll-view';
+import { FormInput, FormTextArea } from '@/components/common/form-field';
+import { FormScreen } from '@/components/common/form-screen';
+import { FormSection } from '@/components/common/form-section';
 import {
   HeaderActions,
   HeaderTextButton,
 } from '@/components/common/header-actions';
 import { OptionGroup, type Option } from '@/components/common/option-group';
-import { SectionTitle } from '@/components/common/section-title';
 import {
   SegmentedControl,
   type Segment,
 } from '@/components/common/segmented-control';
-import { SPACING, TEXT } from '@/constants/layout';
 import { DEFAULT_TARGET, HabitTarget } from './habit-target';
 import { MODE_ICONS } from './mode-icons';
 import {
@@ -136,87 +135,62 @@ export function HabitForm({
         }}
       />
 
-      <YStack flex={1} bg="$background">
-        <FormScrollView>
-          <YStack flex={1} p={SPACING.screen} gap={SPACING.section}>
-            <ErrorNotice message={toMessage(createError ?? updateError)} />
+      <FormScreen>
+        <ErrorNotice message={toMessage(createError ?? updateError)} />
 
-            <YStack gap={SPACING.group}>
-              <Label htmlFor="habit-name" color="$color">
-                {t('habits.form.name')}
-              </Label>
-              <Input
-                id="habit-name"
-                size="$5"
-                value={draft.name}
-                onChangeText={(value) => patch({ name: value })}
-                placeholder={t('habits.form.namePlaceholder')}
-                placeholderTextColor="$mutedForeground"
-                maxLength={NAME_MAX}
-                autoFocus={!habitId}
-                bg="$field"
-                borderColor="$fieldBorder"
-              />
-              <SizableText size={TEXT.caption} color="$mutedForeground" px="$2">
-                {t('habits.form.nameHint')}
-              </SizableText>
-            </YStack>
+        <FormSection
+          title={t('habits.form.name')}
+          hint={t('habits.form.nameHint')}
+        >
+          <FormInput
+            accessibilityLabel={t('habits.form.name')}
+            value={draft.name}
+            onChangeText={(value) => patch({ name: value })}
+            placeholder={t('habits.form.namePlaceholder')}
+            maxLength={NAME_MAX}
+            autoFocus={!habitId}
+          />
+        </FormSection>
 
-            <OptionGroup
-              title={t('habits.form.mode')}
-              options={modes}
-              value={draft.trackingMode}
-              onChange={selectMode}
-            />
+        <OptionGroup
+          title={t('habits.form.mode')}
+          options={modes}
+          value={draft.trackingMode}
+          onChange={selectMode}
+        />
 
-            <HabitTarget
-              mode={draft.trackingMode}
-              value={
-                draft.successThreshold ??
-                DEFAULT_TARGET[draft.trackingMode] ??
-                1
-              }
-              onChange={(value) => patch({ successThreshold: value })}
-            />
+        <HabitTarget
+          mode={draft.trackingMode}
+          value={
+            draft.successThreshold ?? DEFAULT_TARGET[draft.trackingMode] ?? 1
+          }
+          onChange={(value) => patch({ successThreshold: value })}
+        />
 
-            <YStack gap={SPACING.group}>
-              <SectionTitle>{t('habits.form.weight')}</SectionTitle>
-              <SegmentedControl
-                segments={weights}
-                value={String(draft.weight) as (typeof WEIGHTS)[number]}
-                onChange={(value) => patch({ weight: Number(value) })}
-              />
-              <SizableText size={TEXT.caption} color="$mutedForeground" px="$2">
-                {t('habits.form.weightHint')}
-              </SizableText>
-            </YStack>
+        <FormSection
+          title={t('habits.form.weight')}
+          hint={t('habits.form.weightHint')}
+        >
+          <SegmentedControl
+            segments={weights}
+            value={String(draft.weight) as (typeof WEIGHTS)[number]}
+            onChange={(value) => patch({ weight: Number(value) })}
+          />
+        </FormSection>
 
-            <YStack gap={SPACING.group}>
-              <Label htmlFor="habit-plan" color="$color">
-                {t('habits.form.plan')}
-              </Label>
-              <TextArea
-                id="habit-plan"
-                size="$5"
-                value={draft.ifThenPlan}
-                onChangeText={(value) => patch({ ifThenPlan: value })}
-                placeholder={t('habits.form.planPlaceholder')}
-                placeholderTextColor="$mutedForeground"
-                maxLength={PLAN_MAX}
-                multiline
-                numberOfLines={4}
-                minH={112}
-                verticalAlign="top"
-                bg="$field"
-                borderColor="$fieldBorder"
-              />
-              <SizableText size={TEXT.caption} color="$mutedForeground" px="$2">
-                {t('habits.form.planHint')}
-              </SizableText>
-            </YStack>
-          </YStack>
-        </FormScrollView>
-      </YStack>
+        <FormSection
+          title={t('habits.form.plan')}
+          hint={t('habits.form.planHint')}
+        >
+          <FormTextArea
+            accessibilityLabel={t('habits.form.plan')}
+            value={draft.ifThenPlan}
+            onChangeText={(value) => patch({ ifThenPlan: value })}
+            placeholder={t('habits.form.planPlaceholder')}
+            maxLength={PLAN_MAX}
+          />
+        </FormSection>
+      </FormScreen>
     </>
   );
 }

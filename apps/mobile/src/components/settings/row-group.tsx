@@ -1,7 +1,7 @@
 import { Fragment, type ReactNode } from 'react';
 import { Separator, SizableText, XStack, YStack } from 'tamagui';
 
-import { SectionTitle } from '@/components/common/section-title';
+import { FormSection } from '@/components/common/form-section';
 import { SPACING, TEXT } from '@/constants/layout';
 
 export type Row = {
@@ -19,14 +19,8 @@ export function RowGroup({
   rows: readonly Row[];
 }) {
   return (
-    <YStack gap={SPACING.group}>
-      <SectionTitle>{title}</SectionTitle>
-
-      <YStack
-        bg="$card"
-        rounded="$xl2"
-        overflow="hidden"
-      >
+    <FormSection title={title}>
+      <YStack bg="$card" rounded="$xl2" overflow="hidden">
         {rows.map((row, index) => (
           <Fragment key={row.label}>
             {index > 0 && <Separator borderColor="$border" />}
@@ -52,6 +46,6 @@ export function RowGroup({
           </Fragment>
         ))}
       </YStack>
-    </YStack>
+    </FormSection>
   );
 }

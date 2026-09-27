@@ -8,6 +8,7 @@ import {
   type TamaguiElement,
 } from 'tamagui';
 
+import { FIELD } from '@/components/common/form-field';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
 import {
   TAGS_MAX,
@@ -153,8 +154,7 @@ export function TagInput({
         px="$3"
         py="$2"
         minH={INPUT_HEIGHT + 20}
-        bg="$field"
-        rounded="$xl"
+        {...FIELD}
         borderWidth={1}
         borderColor={focused ? '$primary' : '$fieldBorder'}
         onPress={() => inputRef.current?.focus()}
@@ -182,7 +182,7 @@ export function TagInput({
             flex={1}
             minW={INPUT_MIN_WIDTH}
             height={INPUT_HEIGHT}
-            size="$4"
+            size="$5"
             color="$color"
             value={text}
             onChangeText={changeText}
@@ -195,7 +195,7 @@ export function TagInput({
             submitBehavior="submit"
             returnKeyType="done"
             placeholder={t('tags.placeholder')}
-            placeholderTextColor="$mutedForeground"
+            placeholderTextColor="$fieldPlaceholder"
             maxLength={TAG_MAX_LENGTH}
             autoCapitalize="none"
             autoCorrect={false}

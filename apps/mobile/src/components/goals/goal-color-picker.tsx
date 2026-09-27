@@ -1,8 +1,8 @@
 import { Check } from '@tamagui/lucide-icons-2';
-import { SizableText, XStack, YStack } from 'tamagui';
+import { XStack, YStack } from 'tamagui';
 
-import { SectionTitle } from '@/components/common/section-title';
-import { ICON, SPACING, TEXT } from '@/constants/layout';
+import { FormSection } from '@/components/common/form-section';
+import { ICON, SPACING } from '@/constants/layout';
 import { useTranslations } from '@/lib/i18n';
 
 import { GOAL_COLORS } from './slot-color';
@@ -24,15 +24,8 @@ export function GoalColorPicker({
   const { t } = useTranslations();
 
   return (
-    <YStack gap={SPACING.group}>
-      <SectionTitle>{t('goals.form.color')}</SectionTitle>
-
-      <YStack
-        gap={SPACING.items}
-        p={SPACING.card}
-        bg="$card"
-        rounded="$xl2"
-      >
+    <FormSection title={t('goals.form.color')} hint={hint}>
+      <YStack p={SPACING.card} bg="$card" rounded="$xl2">
         <XStack
           flexWrap="wrap"
           rowGap={SPACING.items}
@@ -74,11 +67,7 @@ export function GoalColorPicker({
             );
           })}
         </XStack>
-
-        <SizableText size={TEXT.caption} color="$mutedForeground">
-          {hint}
-        </SizableText>
       </YStack>
-    </YStack>
+    </FormSection>
   );
 }

@@ -1,12 +1,10 @@
-import { Paragraph, SizableText, Slider, YStack } from 'tamagui';
-
+import { FormSection } from '@/components/common/form-section';
 import {
   SegmentedControl,
   type Segment,
 } from '@/components/common/segmented-control';
-import { SectionTitle } from '@/components/common/section-title';
+import { SliderCard } from '@/components/common/slider-card';
 import { Stepper } from '@/components/common/stepper';
-import { SPACING, TEXT } from '@/constants/layout';
 import type { TrackingMode } from '@/features/habits';
 import { useTranslations } from '@/lib/i18n';
 
@@ -40,9 +38,10 @@ export function HabitTarget({
   if (mode === 'binary') return null;
 
   return (
-    <YStack gap={SPACING.group}>
-      <SectionTitle>{t('habits.form.target')}</SectionTitle>
-
+    <FormSection
+      title={t('habits.form.target')}
+      hint={t('habits.form.targetHint')}
+    >
       {mode === 'count' && (
         <Stepper
           value={value}
@@ -55,41 +54,15 @@ export function HabitTarget({
       )}
 
       {mode === 'duration' && (
-        <YStack
-          gap={SPACING.items}
-          p={SPACING.card}
-          bg="$card"
-          rounded="$xl2"
-        >
-          <SizableText
-            size={TEXT.display}
-            fontWeight="700"
-            color="$primary"
-            text="center"
-          >
-            {`${value} ${t('habits.unit.duration')}`}
-          </SizableText>
-
-          <Slider
-            min={DURATION_MIN}
-            max={DURATION_MAX}
-            step={DURATION_STEP}
-            value={[value]}
-            onValueChange={([next]) => onChange(next)}
-            accessibilityLabel={t('habits.form.target')}
-          >
-            <Slider.Track bg="$muted" size="$1">
-              <Slider.TrackActive bg="$primary" />
-            </Slider.Track>
-            <Slider.Thumb
-              index={0}
-              circular
-              size="$2"
-              bg="$primary"
-              borderColor="$background"
-            />
-          </Slider>
-        </YStack>
+        <SliderCard
+          display={`${value} ${t('habits.unit.duration')}`}
+          value={value}
+          min={DURATION_MIN}
+          max={DURATION_MAX}
+          step={DURATION_STEP}
+          onChange={onChange}
+          label={t('habits.form.target')}
+        />
       )}
 
       {mode === 'rating' && (
@@ -104,10 +77,6 @@ export function HabitTarget({
           onChange={(next) => onChange(Number(next))}
         />
       )}
-
-      <Paragraph size={TEXT.caption} color="$mutedForeground" px="$2">
-        {t('habits.form.targetHint')}
-      </Paragraph>
-    </YStack>
+    </FormSection>
   );
 }

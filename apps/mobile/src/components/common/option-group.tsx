@@ -4,7 +4,7 @@ import { Separator, SizableText, XStack, YStack } from 'tamagui';
 
 import { ICON, SPACING, TEXT } from '@/constants/layout';
 
-import { SectionTitle } from './section-title';
+import { FormSection } from './form-section';
 
 type IconComponent = typeof Check;
 
@@ -27,14 +27,8 @@ export function OptionGroup<T extends string>({
   onChange: (value: T) => void;
 }) {
   return (
-    <YStack gap={SPACING.group}>
-      <SectionTitle>{title}</SectionTitle>
-
-      <YStack
-        bg="$card"
-        rounded="$xl2"
-        overflow="hidden"
-      >
+    <FormSection title={title}>
+      <YStack bg="$card" rounded="$xl2" overflow="hidden">
         {options.map((option, index) => {
           const selected = option.value === value;
 
@@ -82,6 +76,6 @@ export function OptionGroup<T extends string>({
           );
         })}
       </YStack>
-    </YStack>
+    </FormSection>
   );
 }

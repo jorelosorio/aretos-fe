@@ -147,9 +147,13 @@ const lightRoles = {
   // `border`, the one cue that it takes typing rather than a tap.
   // `fieldChip` is what a tag chip sits as inside one: `muted`, as on any
   // other card.
+  // `fieldPlaceholder` is a step below `mutedForeground`, so what a field is
+  // for never reads as something already typed in it. Short of 4.5:1 by
+  // design: the label above carries the meaning, not the placeholder.
   field: '#fffaf1',
   fieldBorder: '#ded3c0',
   fieldChip: '#efe3ce',
+  fieldPlaceholder: '#8a8073',
   popover: '#fffaf1',
   popoverForeground: '#2a211b',
 
@@ -158,7 +162,10 @@ const lightRoles = {
   secondary: '#efe3ce',
   secondaryForeground: '#2a211b',
   muted: '#efe3ce',
-  mutedForeground: '#474036',
+  // Two palette steps below the text rather than one, so a hint or a
+  // placeholder reads as secondary beside what the person typed. Still 4.5:1
+  // on card, page and muted.
+  mutedForeground: '#686054',
   accentSurface: '#fff1e8',
   accentSurfaceForeground: '#67301a',
   destructive: status.danger,
@@ -229,6 +236,7 @@ const darkRoles: typeof lightRoles = {
   field: '#2a221c',
   fieldBorder: 'rgba(245, 234, 222, 0.12)',
   fieldChip: '#171310',
+  fieldPlaceholder: '#9a8f80',
   popover: '#2a221c',
   popoverForeground: '#f5eade',
 

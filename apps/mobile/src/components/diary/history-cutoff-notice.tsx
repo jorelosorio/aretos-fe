@@ -20,12 +20,7 @@ export function HistoryCutoffNotice({ cutoff }: { cutoff: string }) {
   }).format(toDate(cutoff));
 
   return (
-    <XStack
-      gap={SPACING.items}
-      p={SPACING.card}
-      bg="$card"
-      rounded="$xl2"
-    >
+    <XStack gap={SPACING.items} p={SPACING.card} bg="$card" rounded="$xl2">
       <YStack
         width={36}
         height={36}

@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react';
 import { Plus } from '@tamagui/lucide-icons-2';
-import { Button, Paragraph, SizableText, XStack, YStack } from 'tamagui';
+import { Button, Paragraph, SizableText, YStack } from 'tamagui';
 
-import { SectionTitle } from '@/components/common/section-title';
+import { FormSection } from '@/components/common/form-section';
 import { NoteEditor } from '@/components/diary/note-editor';
 import type { NoteValue } from '@/components/diary/note-draft';
 import { notePreview } from '@/components/diary/note-preview';
@@ -210,10 +210,9 @@ export function CheckInNotes({
   };
 
   return (
-    <YStack gap={SPACING.group}>
-      <XStack items="center" justify="space-between" gap={SPACING.items}>
-        <SectionTitle>{t('logs.notes.title')}</SectionTitle>
-
+    <FormSection
+      title={t('logs.notes.title')}
+      action={
         <Button
           size={BUTTON.compact}
           chromeless
@@ -228,8 +227,8 @@ export function CheckInNotes({
             {t('logs.notes.add')}
           </SizableText>
         </Button>
-      </XStack>
-
+      }
+    >
       {notes.map((note) => (
         <NoteRow
           key={note.id}
@@ -276,6 +275,6 @@ export function CheckInNotes({
           }
         />
       )}
-    </YStack>
+    </FormSection>
   );
 }

@@ -4,7 +4,7 @@ import { Check, Plus } from '@tamagui/lucide-icons-2';
 import { SizableText, XStack, YStack } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
-import { FormScrollView } from '@/components/common/form-scroll-view';
+import { FormScreen } from '@/components/common/form-screen';
 import { HeaderTextButton } from '@/components/common/header-actions';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
@@ -116,91 +116,83 @@ function CheckInForm({
         }}
       />
 
-      <YStack flex={1} bg="$background">
-        <FormScrollView>
-          <YStack p={SPACING.screen} gap={SPACING.section}>
-            {!locked && (
-              <WeekPicker
-                frequency={goal.trackingFrequency}
-                periods={periods}
-                selected={selected}
-                today={today}
-                createdOn={goal.createdAt.slice(0, 10)}
-                onSelect={pick}
-              />
-            )}
+      <FormScreen>
+        {!locked && (
+          <WeekPicker
+            frequency={goal.trackingFrequency}
+            periods={periods}
+            selected={selected}
+            today={today}
+            createdOn={goal.createdAt.slice(0, 10)}
+            onSelect={pick}
+          />
+        )}
 
-            <YStack gap={SPACING.text}>
-              <XStack
-                items="center"
-                justify="space-between"
-                gap={SPACING.items}
+        <YStack gap={SPACING.text}>
+          <XStack items="center" justify="space-between" gap={SPACING.items}>
+            <SectionTitle>{heading}</SectionTitle>
+
+            {!draft.isLoading && (
+              <SizableText
+                size={TEXT.caption}
+                fontWeight="600"
+                color="$mutedForeground"
               >
-                <SectionTitle>{heading}</SectionTitle>
+                {t('logs.progress', {
+                  answered: draft.answered,
+                  total: draft.total,
+                })}
+              </SizableText>
+            )}
+          </XStack>
 
-                {!draft.isLoading && (
-                  <SizableText
-                    size={TEXT.caption}
-                    fontWeight="600"
-                    color="$mutedForeground"
-                  >
-                    {t('logs.progress', {
-                      answered: draft.answered,
-                      total: draft.total,
-                    })}
-                  </SizableText>
-                )}
-              </XStack>
+          {period?.logged === true && (
+            <XStack items="center" gap="$2">
+              <Check size={ICON.inline} color="$outcomeDone" />
+              <SizableText size={TEXT.caption} color="$mutedForeground">
+                {t('logs.editing')}
+              </SizableText>
+            </XStack>
+          )}
+        </YStack>
 
-              {period?.logged === true && (
-                <XStack items="center" gap="$2">
-                  <Check size={ICON.inline} color="$outcomeDone" />
-                  <SizableText size={TEXT.caption} color="$mutedForeground">
-                    {t('logs.editing')}
-                  </SizableText>
-                </XStack>
-              )}
+        <ErrorNotice message={toMessage(draft.saveError)} />
+
+        {draft.isLoading ? (
+          <ScreenLoader />
+        ) : (
+          <>
+            <YStack>
+              {habits.map((habit, position) => (
+                <HabitTrackRow
+                  key={habit.id}
+                  habit={habit}
+                  entry={draft.entryFor(habit.id)}
+                  isFirst={position === 0}
+                  isLast={position === habits.length - 1}
+                  onChange={(patch) => draft.setEntry(habit.id, patch)}
+                  onToggleSkip={() => draft.toggleSkip(habit.id)}
+                />
+              ))}
             </YStack>
 
-            <ErrorNotice message={toMessage(draft.saveError)} />
+            <MoodPicker value={draft.mood} onChange={draft.setMood} />
 
-            {draft.isLoading ? (
-              <ScreenLoader />
-            ) : (
-              <>
-                <YStack>
-                  {habits.map((habit, position) => (
-                    <HabitTrackRow
-                      key={habit.id}
-                      habit={habit}
-                      entry={draft.entryFor(habit.id)}
-                      isFirst={position === 0}
-                      isLast={position === habits.length - 1}
-                      onChange={(patch) => draft.setEntry(habit.id, patch)}
-                      onToggleSkip={() => draft.toggleSkip(habit.id)}
-                    />
-                  ))}
-                </YStack>
-
-                <MoodPicker value={draft.mood} onChange={draft.setMood} />
-
-                {!locked && (
-                  <CheckInNotes
-                    logId={period?.logId ?? null}
-                    title={goal.name}
-                    subtitle={heading}
-                    pending={draft.pending}
-                    onAddPending={draft.addPending}
-                    onUpdatePending={draft.updatePending}
-                    onRemovePending={draft.removePending}
-                    busy={draft.isSaving}
-                  />
-                )}
-              </>
+            {!locked && (
+              <CheckInNotes
+                logId={period?.logId ?? null}
+                title={goal.name}
+                subtitle={heading}
+                pending={draft.pending}
+                onAddPending={draft.addPending}
+                onUpdatePending={draft.updatePending}
+                onRemovePending={draft.removePending}
+                busy={draft.isSaving}
+              />
             )}
-          </YStack>
-        </FormScrollView>
-      </YStack>
+          </>
+        )}
+      </FormScreen>
     </>
   );
 }
