@@ -451,6 +451,7 @@ export const es = {
     notes: {
       title: 'Notas',
       add: 'Añadir nota',
+      empty: 'Aún no hay notas',
       pending: 'Se guarda con el registro',
       failed: 'Esta nota no se guardó.',
     },

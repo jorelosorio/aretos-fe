@@ -1,9 +1,11 @@
 import { useRef, useState } from 'react';
 import { useRouter } from 'expo-router';
+import { NotebookPen } from '@tamagui/lucide-icons-2/icons/NotebookPen';
 import { Plus } from '@tamagui/lucide-icons-2/icons/Plus';
 import { Paragraph } from 'tamagui';
 
 import { Card } from '@/components/common/card';
+import { EmptySlot } from '@/components/common/empty-slot';
 import { FormSection } from '@/components/common/form-section';
 import { NoteEditor } from '@/components/diary/note-editor';
 import type { NoteValue } from '@/components/diary/note-draft';
@@ -187,6 +189,10 @@ export function CheckInNotes({
         disabled: !canCreate || busy,
       }}
     >
+      {notes.length === 0 && pending.length === 0 && (
+        <EmptySlot Icon={NotebookPen} label={t('logs.notes.empty')} />
+      )}
+
       {notes.map((note) => (
         <NoteRow
           key={note.id}

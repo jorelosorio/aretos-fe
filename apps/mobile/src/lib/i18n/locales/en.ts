@@ -451,6 +451,7 @@ export const en = {
     notes: {
       title: 'Notes',
       add: 'Add note',
+      empty: 'No notes yet',
       pending: 'Saves with the check-in',
       failed: "This note didn't save.",
     },
