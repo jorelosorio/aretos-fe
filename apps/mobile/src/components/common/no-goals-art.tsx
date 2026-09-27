@@ -9,6 +9,7 @@ import {
 } from './art-motion';
 import {
   BACKDROP,
+  BOUNDS,
   BADGES,
   DOTS,
   FOREARM,
@@ -26,7 +27,7 @@ export function NoGoalsArt({ size }: { size: number }) {
   const motion = useArtMotion(size);
 
   return (
-    <ArtFrame size={size}>
+    <ArtFrame size={size} bounds={BOUNDS}>
       <Layer xml={BACKDROP} />
 
       {SPARKLES.map((layer, index) => (

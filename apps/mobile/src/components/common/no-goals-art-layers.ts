@@ -19,7 +19,10 @@
  * around, a sparkle twinkles from, or a dot pulses at.
  */
 
-import type { ArtLayer } from './art-layer';
+import type { ArtBounds, ArtLayer } from './art-layer';
+
+/** Measured from the rendered layers; see `ArtBounds`. */
+export const BOUNDS: ArtBounds = [46, 28, 454, 462];
 
 /** Where the fist meets the forearm: the hand and pencil tap by turning here. */
 export const WRIST = [285, 335] as const;

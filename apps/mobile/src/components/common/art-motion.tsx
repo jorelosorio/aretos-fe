@@ -14,7 +14,12 @@ import Animated, {
 } from 'react-native-reanimated';
 import { SvgXml } from 'react-native-svg';
 
-import { VIEWBOX, type ArtLayer } from './art-layer';
+import {
+  ART_EXTENT,
+  VIEWBOX,
+  type ArtBounds,
+  type ArtLayer,
+} from './art-layer';
 
 const TAP_ANGLE = 4;
 const TAP_OUT = 150;
@@ -60,18 +65,39 @@ export function useArtMotion(size: number): Motion {
 
 export function ArtFrame({
   size,
+  bounds,
   children,
 }: {
   size: number;
+  bounds: ArtBounds;
   children: ReactNode;
 }) {
+  const [left, top, right, bottom] = bounds;
+  const unit = size / VIEWBOX;
+  const scale = ART_EXTENT / Math.max(right - left, bottom - top);
+  const shiftX = (VIEWBOX / 2 - (left + right) / 2) * scale * unit;
+  const shiftY = (VIEWBOX / 2 - (top + bottom) / 2) * scale * unit;
+
   return (
     <View
       style={{ width: size, height: size }}
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
     >
-      {children}
+      <View
+        style={[
+          StyleSheet.absoluteFill,
+          {
+            transform: [
+              { translateX: shiftX },
+              { translateY: shiftY },
+              { scale },
+            ],
+          },
+        ]}
+      >
+        {children}
+      </View>
     </View>
   );
 }

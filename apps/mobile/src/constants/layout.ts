@@ -288,6 +288,19 @@ export const TAB_BAR = {
    * and nothing else in the pill to read.
    */
   icon: 40,
+  /**
+   * The halo that lifts the pill, as a `boxShadow` with no offset so it
+   * spreads evenly round every edge. It used to be `elevation` plus an iOS
+   * shadow offset downwards, which put it under the bar only: Android lights
+   * `elevation` from above, so the sides and top got almost nothing, and the
+   * pill read as resting on the content rather than floating over it. Faint
+   * in dark for the reason `SHEET.shadow` is: a dense black halo on a
+   * near-black screen reads as a band, not as depth.
+   */
+  shadow: {
+    light: '0px 0px 22px rgba(0, 0, 0, 0.14)',
+    dark: '0px 0px 18px rgba(0, 0, 0, 0.35)',
+  },
 } as const;
 
 /**

@@ -1,3 +1,4 @@
+import { useThemeName } from '@tamagui/core';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { styled, XStack, YStack } from 'tamagui';
 
@@ -23,6 +24,8 @@ export function FloatingTabBar({
   navigation,
 }: TabBarProps) {
   const insets = useSafeAreaInsets();
+  const shadow =
+    TAB_BAR.shadow[useThemeName().startsWith('dark') ? 'dark' : 'light'];
 
   const tabs = state.routes.flatMap((route, index) => {
     const { options } = descriptors[route.key];
@@ -79,11 +82,7 @@ export function FloatingTabBar({
         rounded={TAB_BAR.height / 2}
         borderWidth={1}
         borderColor="$border"
-        shadowColor="#000"
-        shadowOpacity={0.18}
-        shadowRadius={20}
-        shadowOffset={{ width: 0, height: 6 }}
-        elevation={8}
+        style={{ boxShadow: shadow }}
       >
         {tabs}
       </XStack>

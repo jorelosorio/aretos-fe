@@ -10,6 +10,7 @@ import {
 import {
   ARM,
   BACKDROP,
+  BOUNDS,
   BADGE,
   BARS,
   BOARD,
@@ -23,7 +24,7 @@ export function NoDataArt({ size }: { size: number }) {
   const motion = useArtMotion(size);
 
   return (
-    <ArtFrame size={size}>
+    <ArtFrame size={size} bounds={BOUNDS}>
       <Layer xml={BACKDROP} />
 
       {SPARKLES.map((layer, index) => (

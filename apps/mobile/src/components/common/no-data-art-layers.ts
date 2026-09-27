@@ -16,7 +16,10 @@
  * middle of its baseline, where it grows from.
  */
 
-import type { ArtLayer } from './art-layer';
+import type { ArtBounds, ArtLayer } from './art-layer';
+
+/** Measured from the rendered layers; see `ArtBounds`. */
+export const BOUNDS: ArtBounds = [12, 39, 482, 437];
 
 export const SHOULDER = [386.6, 140.8] as const;
 

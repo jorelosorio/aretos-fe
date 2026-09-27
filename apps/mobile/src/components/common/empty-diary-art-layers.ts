@@ -20,7 +20,10 @@
  * her sleeve; moving the hand alone opened a seam at the wrist.
  */
 
-import type { ArtLayer } from './art-layer';
+import type { ArtBounds, ArtLayer } from './art-layer';
+
+/** Measured from the rendered layers; see `ArtBounds`. */
+export const BOUNDS: ArtBounds = [30, 87, 471, 474];
 
 export const INK_START = [384, 412] as const;
 

@@ -10,6 +10,7 @@ import {
   ARM,
   ARM_ANCHOR,
   BACKDROP,
+  BOUNDS,
   BADGE,
   HAND,
   INK,
@@ -25,7 +26,7 @@ export function EmptyDiaryArt({ size }: { size: number }) {
   const motion = useArtMotion(size);
 
   return (
-    <ArtFrame size={size}>
+    <ArtFrame size={size} bounds={BOUNDS}>
       <Layer xml={BACKDROP} />
 
       {SPARKLES.map((layer, index) => (

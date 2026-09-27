@@ -10,3 +10,22 @@
 export type ArtLayer = { xml: string; center: readonly [number, number] };
 
 export const VIEWBOX = 500;
+
+/**
+ * A drawing's visible extent in `VIEWBOX` units, as `[left, top, right,
+ * bottom]` — backdrop, badges and sparkles included, measured once from the
+ * rendered layers.
+ */
+export type ArtBounds = readonly [number, number, number, number];
+
+/**
+ * How large every illustration's visible content is drawn: its longer side
+ * spans this many units, centred in the frame.
+ *
+ * The drawings were composed at whatever size suited each one, so in the
+ * same square one filled it edge to edge and another sat smaller and low,
+ * and side by side they read as different sizes. Fitting each to one box
+ * makes them match; `all-logged.svg`, which is not layered, has the same fit
+ * baked into its outer group.
+ */
+export const ART_EXTENT = 440;
