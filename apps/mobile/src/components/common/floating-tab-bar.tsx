@@ -80,8 +80,6 @@ export function FloatingTabBar({
         px="$2"
         bg="$card"
         rounded={TAB_BAR.height / 2}
-        borderWidth={1}
-        borderColor="$border"
         style={{ boxShadow: shadow }}
       >
         {tabs}

@@ -255,14 +255,15 @@ export const HEADER_INSET = 8;
  * that with `useTabBarInset` as bottom padding: the pill plus a `gap` above
  * it, so the last item comes to rest clear of the bar rather than touching it.
  *
- * Content passing behind is why the pill carries a border and a wide, soft
- * shadow: it is a `$card` over lists of `$card`, and without an edge a goal
- * card scrolling underneath merged into it. Two things were tried and
- * dropped. A scrim fading content out behind the pill hid everything below
- * it — an opaque bottom bar with extra steps, so the bar stopped floating.
- * A lighter "elevated" surface colour for the pill read as a different
- * component rather than as the same card raised. The pill stays `$card`;
- * the shadow halo is what lifts it.
+ * Content passing behind is why the pill carries a wide, soft shadow: it is
+ * a `$card` over lists of `$card`, and without an edge a goal card scrolling
+ * underneath merged into it. The halo now runs round every side, so it is
+ * the edge on its own — a border drawn inside it only doubled the outline.
+ * Two things were tried and dropped. A scrim fading content out behind the
+ * pill hid everything below it — an opaque bottom bar with extra steps, so
+ * the bar stopped floating. A lighter "elevated" surface colour for the pill
+ * read as a different component rather than as the same card raised. The
+ * pill stays `$card`; the shadow halo is what lifts it.
  */
 export const TAB_BAR = {
   height: 56,
@@ -289,17 +290,21 @@ export const TAB_BAR = {
    */
   icon: 40,
   /**
-   * The halo that lifts the pill, as a `boxShadow` with no offset so it
-   * spreads evenly round every edge. It used to be `elevation` plus an iOS
-   * shadow offset downwards, which put it under the bar only: Android lights
-   * `elevation` from above, so the sides and top got almost nothing, and the
-   * pill read as resting on the content rather than floating over it. Faint
-   * in dark for the reason `SHEET.shadow` is: a dense black halo on a
-   * near-black screen reads as a band, not as depth.
+   * The halo that lifts the pill, as a `boxShadow`: a wide blur with only a
+   * slight drop, so it reads as a drop shadow yet still spreads round every
+   * edge. It used to be `elevation` plus an iOS shadow offset downwards,
+   * which put it under the bar only: Android lights `elevation` from above,
+   * so the sides and top got almost nothing, and the pill read as resting on
+   * the content rather than floating over it.
+   *
+   * The pill has no border, so this blur is its edge on its own. Wide and
+   * soft rather than tight, because a tight halo round a borderless shape
+   * reads as a drawn outline. Softer in dark for the reason `SHEET.shadow`
+   * is: a dense black halo on a near-black screen reads as a band.
    */
   shadow: {
-    light: '0px 0px 22px rgba(0, 0, 0, 0.14)',
-    dark: '0px 0px 18px rgba(0, 0, 0, 0.35)',
+    light: '0px 4px 32px rgba(0, 0, 0, 0.16)',
+    dark: '0px 4px 28px rgba(0, 0, 0, 0.45)',
   },
 } as const;
 
