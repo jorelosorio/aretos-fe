@@ -1,6 +1,17 @@
+import type { ComponentType } from 'react';
+import type { ImageSourcePropType } from 'react-native';
+
 import allLogged from '@/assets/illustrations/all-logged.svg';
 import emptyDiary from '@/assets/illustrations/empty-diary.svg';
-import noGoals from '@/assets/illustrations/no-goals.svg';
+
+import { NoGoalsArt } from './no-goals-art';
+
+/**
+ * A drawing an empty state can show: a still image, or a component that draws
+ * itself at the size it is given — the form an animated one takes.
+ */
+export type Illustration =
+  ImageSourcePropType | ComponentType<{ size: number }>;
 
 /**
  * The app's illustrations, named by the state they stand for.
@@ -13,18 +24,21 @@ import noGoals from '@/assets/illustrations/no-goals.svg';
  * Changing a drawing here can change what has to be credited: Storyset asks
  * for the collection the drawing came from, so a swap across collections means
  * `credits.ts` moves with it.
+ *
+ * This lives in `components/` rather than `constants/` since `noGoals` became
+ * animated: an entry can now be a component, and `constants/` sits below the
+ * components in the import order.
  */
 export const ILLUSTRATIONS = {
   /**
-   * No goals yet: home and the goals list.
+   * No goals yet: home, the goals list and the analysis tab.
    *
-   * Storyset's "Mind map" (Work collection), simplified: the girl, her desk,
-   * the book and the plant are theirs, unchanged; the mind map of eight icons
-   * and a light bulb above her is replaced by three goal ideas drawn like
-   * `allLogged`'s badge, with its backdrop and sparkles, so the two empty
-   * states read as one set. Still their drawing, so the Work credit stays.
+   * Animated: the girl taps her pencil against her cheek, the three goal
+   * ideas float, the sparkles twinkle and the thought dots pulse in turn.
+   * Still under Reduce Motion. The drawing and its credit are described in
+   * `no-goals-art-layers.ts`.
    */
-  noGoals,
+  noGoals: NoGoalsArt,
   /**
    * Every goal logged for the current period: home's Today tab.
    *
@@ -42,4 +56,4 @@ export const ILLUSTRATIONS = {
    * plain tag icon — the diary is not empty there, the filter is.
    */
   emptyDiary,
-} as const;
+} as const satisfies Record<string, Illustration>;

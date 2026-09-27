@@ -1,9 +1,10 @@
 import { useWindowDimensions } from 'react-native';
-import type { ImageSourcePropType } from 'react-native';
 import { Image } from 'expo-image';
 import type { Check } from '@tamagui/lucide-icons-2';
 
 import { ILLUSTRATION_SIZE } from '@/constants/layout';
+
+import type { Illustration } from './illustrations';
 
 type IconComponent = typeof Check;
 
@@ -12,7 +13,7 @@ export function EmptyArt({
   illustration,
 }: {
   Icon: IconComponent;
-  illustration?: ImageSourcePropType;
+  illustration?: Illustration;
 }) {
   const { width, height } = useWindowDimensions();
 
@@ -23,6 +24,11 @@ export function EmptyArt({
     height * ILLUSTRATION_SIZE.heightRatio,
     ILLUSTRATION_SIZE.max,
   );
+
+  if (typeof illustration === 'function') {
+    const Art = illustration;
+    return <Art size={size} />;
+  }
 
   return (
     <Image

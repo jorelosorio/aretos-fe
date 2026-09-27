@@ -20,7 +20,7 @@ import {
   type Segment,
 } from '@/components/common/segmented-control';
 import { EmptyLog } from '@/components/logs/empty-log';
-import { ILLUSTRATIONS } from '@/constants/illustrations';
+import { ILLUSTRATIONS } from '@/components/common/illustrations';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
 import {
   useAnalysis,

@@ -15,7 +15,7 @@ import {
   type Segment,
 } from '@/components/common/segmented-control';
 import { EmptyLog } from '@/components/logs/empty-log';
-import { ILLUSTRATIONS } from '@/constants/illustrations';
+import { ILLUSTRATIONS } from '@/components/common/illustrations';
 import { SPACING, TEXT } from '@/constants/layout';
 import { useGoalErrorMessage, useGoals, type Goal } from '@/features/goals';
 import { useAllowance } from '@/features/limits';

@@ -1,8 +1,8 @@
-import type { ImageSourcePropType } from 'react-native';
 import type { Check } from '@tamagui/lucide-icons-2';
 import { Button, Paragraph, SizableText, YStack } from 'tamagui';
 
 import { EmptyArt } from '@/components/common/empty-art';
+import type { Illustration } from '@/components/common/illustrations';
 import { BUTTON, SPACING, TEXT } from '@/constants/layout';
 
 type IconComponent = typeof Check;
@@ -17,7 +17,7 @@ export function EmptyLog({
   onAction,
 }: {
   Icon: IconComponent;
-  illustration?: ImageSourcePropType;
+  illustration?: Illustration;
   title: string;
   body: string;
   action?: string;

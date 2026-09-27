@@ -1,12 +1,12 @@
 import { useState, useCallback } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
-import type { ImageSourcePropType } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
 import { Archive, Plus, Target } from '@tamagui/lucide-icons-2';
 import { Button, Paragraph, SizableText, YStack } from 'tamagui';
 
 import { EmptyArt } from '@/components/common/empty-art';
+import type { Illustration } from '@/components/common/illustrations';
 import { ErrorNotice } from '@/components/common/error-notice';
 import { useTabBarInset } from '@/components/common/floating-tab-bar';
 import { ScreenLoader } from '@/components/common/screen-loader';
@@ -14,7 +14,7 @@ import {
   SegmentedControl,
   type Segment,
 } from '@/components/common/segmented-control';
-import { ILLUSTRATIONS } from '@/constants/illustrations';
+import { ILLUSTRATIONS } from '@/components/common/illustrations';
 import { BUTTON, SPACING, TEXT } from '@/constants/layout';
 import { useGoalErrorMessage, useGoals, type Goal } from '@/features/goals';
 import { useAllowance } from '@/features/limits';
@@ -134,7 +134,7 @@ function EmptyGoals({
   onCreate,
 }: {
   Icon: typeof Target;
-  illustration?: ImageSourcePropType;
+  illustration?: Illustration;
   title: string;
   body: string;
   onCreate?: () => void;
