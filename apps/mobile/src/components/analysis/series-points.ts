@@ -9,7 +9,7 @@
  * with it.
  */
 
-import type { Series, SeriesPoint } from '@/features/analysis';
+import type { Series, SeriesPoint } from '@/features/analysis/types';
 import type { AppLocale } from '@/lib/i18n';
 
 import { shortDateLabel } from '@/components/common/date-label';

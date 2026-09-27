@@ -1,7 +1,7 @@
-import { api } from '@/lib/api';
+import { api } from '@/lib/api/client';
 import { deviceTimezone } from '@/lib/timezone';
 
-import { todayKey } from '@/features/logs';
+import { todayKey } from '@/features/logs/period';
 
 import type {
   AnalysisGoal,

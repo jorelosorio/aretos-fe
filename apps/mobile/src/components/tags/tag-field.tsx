@@ -1,5 +1,5 @@
 import { FormSection } from '@/components/common/form-section';
-import { TAGS_MAX } from '@/features/tags';
+import { TAGS_MAX } from '@/features/tags/rules';
 import { useTranslations } from '@/lib/i18n';
 
 import type { TagDraft } from './tag-draft';

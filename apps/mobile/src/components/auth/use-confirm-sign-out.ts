@@ -1,6 +1,6 @@
 import { Alert } from 'react-native';
 
-import { useSignOut } from '@/features/auth';
+import { useSignOut } from '@/features/auth/hooks';
 import { useTranslations } from '@/lib/i18n';
 
 /**

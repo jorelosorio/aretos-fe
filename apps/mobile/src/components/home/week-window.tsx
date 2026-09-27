@@ -1,10 +1,10 @@
-import { CalendarRange } from '@tamagui/lucide-icons-2';
+import { CalendarRange } from '@tamagui/lucide-icons-2/icons/CalendarRange';
 import { SizableText, XStack } from 'tamagui';
 
 import { shortDateLabel } from '@/components/common/date-label';
 import { PeriodMood } from '@/components/logs/period-mood';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
-import type { MoodScore } from '@/features/logs';
+import type { MoodScore } from '@/features/logs/types';
 import { useTranslations } from '@/lib/i18n';
 
 const MOOD_SIZE = 18;

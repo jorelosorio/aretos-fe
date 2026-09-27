@@ -1,4 +1,4 @@
-import { Check } from '@tamagui/lucide-icons-2';
+import { Check } from '@tamagui/lucide-icons-2/icons/Check';
 import { SizableText, Spinner, XStack, YStack } from 'tamagui';
 
 import { ICON, SPACING, TEXT } from '@/constants/layout';

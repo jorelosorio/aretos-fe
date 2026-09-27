@@ -10,7 +10,7 @@
  * one of them to drift.
  */
 
-import type { TrackingMode } from '@/features/habits';
+import type { TrackingMode } from '@/features/habits/types';
 import type { TranslationKey } from '@/lib/i18n';
 
 export const UNIT_LABELS: Record<TrackingMode, TranslationKey | null> = {

@@ -1,5 +1,5 @@
 import * as WebBrowser from 'expo-web-browser';
-import { ExternalLink } from '@tamagui/lucide-icons-2';
+import { ExternalLink } from '@tamagui/lucide-icons-2/icons/ExternalLink';
 
 import { useTranslations } from '@/lib/i18n';
 

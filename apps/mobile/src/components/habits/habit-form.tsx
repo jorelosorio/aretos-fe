@@ -19,12 +19,14 @@ import { DEFAULT_TARGET, HabitTarget } from './habit-target';
 import { MODE_ICONS } from './mode-icons';
 import {
   hasThreshold,
+  type HabitDraft,
+  type TrackingMode,
+} from '@/features/habits/types';
+import {
   useCreateHabit,
   useHabitErrorMessage,
   useUpdateHabit,
-  type HabitDraft,
-  type TrackingMode,
-} from '@/features/habits';
+} from '@/features/habits/hooks';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
 
 const NAME_MAX = 200;

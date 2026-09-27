@@ -29,7 +29,7 @@
 
 import type { ColorTokens } from 'tamagui';
 
-import type { HeatCell } from '@/features/analysis';
+import type { HeatCell } from '@/features/analysis/types';
 
 /** Levels 1..4, in order. Index 0 is level 1. */
 const RAMP = ['$seq2', '$seq3', '$seq4', '$seq5'] as const;

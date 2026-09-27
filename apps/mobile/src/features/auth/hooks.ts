@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-query';
 
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
-import { ApiError } from '@/lib/api';
+import { ApiError } from '@/lib/api/errors';
 
 import { authKeys, revokeRefreshToken, signIn, type SignInResult } from './api';
 import { ensureFreshSession } from './refresh';

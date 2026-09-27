@@ -1,6 +1,8 @@
 import { useRef } from 'react';
 import { Alert, Platform } from 'react-native';
-import { ArrowLeft, ChevronLeft, Trash2 } from '@tamagui/lucide-icons-2';
+import { ArrowLeft } from '@tamagui/lucide-icons-2/icons/ArrowLeft';
+import { ChevronLeft } from '@tamagui/lucide-icons-2/icons/ChevronLeft';
+import { Trash2 } from '@tamagui/lucide-icons-2/icons/Trash2';
 
 import { FullScreenSheet } from '@/components/common/full-screen-sheet';
 import { runExclusive } from '@/lib/exclusive';

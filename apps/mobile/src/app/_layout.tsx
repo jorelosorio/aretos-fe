@@ -12,7 +12,7 @@ import { config } from '../../tamagui.config';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { useStackHeaderOptions } from '@/components/common/stack-header';
 import { useTranslations } from '@/lib/i18n';
-import { useSession, useSessionAutoRefresh } from '@/features/auth';
+import { useSession, useSessionAutoRefresh } from '@/features/auth/hooks';
 import { usePreferences } from '@/lib/preferences';
 import { NavigationThemeProvider } from '@/providers/navigation-theme-provider';
 import { QueryProvider } from '@/providers/query-provider';

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Alert, Platform } from 'react-native';
 import { Stack, useNavigation, useRouter } from 'expo-router';
-import { ArrowLeft, ChevronLeft } from '@tamagui/lucide-icons-2';
+import { ArrowLeft } from '@tamagui/lucide-icons-2/icons/ArrowLeft';
+import { ChevronLeft } from '@tamagui/lucide-icons-2/icons/ChevronLeft';
 
 import { ErrorNotice } from '@/components/common/error-notice';
 import {
@@ -13,9 +14,9 @@ import {
   useNote,
   useNoteErrorMessage,
   useWriteNote,
-  type DiaryNote,
-} from '@/features/diary';
-import { todayKey } from '@/features/logs';
+} from '@/features/diary/hooks';
+import type { DiaryNote } from '@/features/diary/types';
+import { todayKey } from '@/features/logs/period';
 import { runExclusive } from '@/lib/exclusive';
 import { useTranslations } from '@/lib/i18n';
 

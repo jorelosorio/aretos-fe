@@ -1,13 +1,15 @@
 import { Alert } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Archive, ArchiveRestore, Trash2 } from '@tamagui/lucide-icons-2';
+import { Archive } from '@tamagui/lucide-icons-2/icons/Archive';
+import { ArchiveRestore } from '@tamagui/lucide-icons-2/icons/ArchiveRestore';
+import { Trash2 } from '@tamagui/lucide-icons-2/icons/Trash2';
 
 import { ActionsMenu } from '@/components/common/actions-menu';
 import {
   useDeleteHabit,
   useHabitErrorMessage,
   useUpdateHabit,
-} from '@/features/habits';
+} from '@/features/habits/hooks';
 import { useTranslations } from '@/lib/i18n';
 
 export function HabitActionsMenu({

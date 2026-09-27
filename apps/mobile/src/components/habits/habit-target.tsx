@@ -5,7 +5,7 @@ import {
 } from '@/components/common/segmented-control';
 import { SliderCard } from '@/components/common/slider-card';
 import { Stepper } from '@/components/common/stepper';
-import type { TrackingMode } from '@/features/habits';
+import type { TrackingMode } from '@/features/habits/types';
 import { useTranslations } from '@/lib/i18n';
 
 const COUNT_MIN = 1;

@@ -1,4 +1,5 @@
-import { Minus, Plus } from '@tamagui/lucide-icons-2';
+import { Minus } from '@tamagui/lucide-icons-2/icons/Minus';
+import { Plus } from '@tamagui/lucide-icons-2/icons/Plus';
 import { Button, SizableText } from 'tamagui';
 
 import { BUTTON, ICON, TEXT } from '@/constants/layout';

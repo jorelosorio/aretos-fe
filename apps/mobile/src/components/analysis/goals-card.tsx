@@ -1,9 +1,7 @@
-import {
-  ArrowRight,
-  Flame,
-  TrendingDown,
-  TrendingUp,
-} from '@tamagui/lucide-icons-2';
+import { ArrowRight } from '@tamagui/lucide-icons-2/icons/ArrowRight';
+import { Flame } from '@tamagui/lucide-icons-2/icons/Flame';
+import { TrendingDown } from '@tamagui/lucide-icons-2/icons/TrendingDown';
+import { TrendingUp } from '@tamagui/lucide-icons-2/icons/TrendingUp';
 import { Separator, SizableText, XStack, YStack } from 'tamagui';
 
 import { shortDateLabel } from '@/components/common/date-label';
@@ -12,7 +10,7 @@ import { ChartCard } from '@/components/viz/chart-card';
 import { formatRate } from '@/components/viz/format';
 import { Heatmap } from '@/components/viz/heatmap';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
-import type { AnalysisGoal, TrendDirection } from '@/features/analysis';
+import type { AnalysisGoal, TrendDirection } from '@/features/analysis/types';
 import { useTranslations } from '@/lib/i18n';
 
 const TREND_ICON = {

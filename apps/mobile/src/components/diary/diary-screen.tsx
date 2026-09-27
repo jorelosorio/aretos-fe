@@ -3,27 +3,26 @@ import { RefreshControl, ScrollView } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
-import { NotebookPen, Plus, Tag } from '@tamagui/lucide-icons-2';
+import { NotebookPen } from '@tamagui/lucide-icons-2/icons/NotebookPen';
+import { Plus } from '@tamagui/lucide-icons-2/icons/Plus';
+import { Tag } from '@tamagui/lucide-icons-2/icons/Tag';
 import { Spinner, XStack, YStack } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
 import { useTabBarInset } from '@/components/common/floating-tab-bar';
+import { monthLabel } from '@/components/common/date-label';
 import { HeaderIconButton } from '@/components/common/header-actions';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
 import { EmptyState } from '@/components/common/empty-state';
 import { ILLUSTRATIONS } from '@/components/common/illustrations';
 import { SPACING } from '@/constants/layout';
-import {
-  useDiary,
-  useDiaryErrorMessage,
-  type DiaryNote,
-} from '@/features/diary';
-import { useAllowance } from '@/features/limits';
+import { useDiary, useDiaryErrorMessage } from '@/features/diary/hooks';
+import type { DiaryNote } from '@/features/diary/types';
+import { useAllowance } from '@/features/limits/hooks';
 import { useTranslations } from '@/lib/i18n';
 import { capitalize } from '@/utils/text';
 
-import { monthLabel } from './diary-date';
 import { DiaryEntryCard } from './diary-entry-card';
 import { toRows, type DiaryRow } from './diary-rows';
 import { HistoryCutoffNotice } from './history-cutoff-notice';

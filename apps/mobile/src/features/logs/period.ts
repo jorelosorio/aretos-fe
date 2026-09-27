@@ -11,7 +11,7 @@
  * these functions are its counterpart and have to agree with it exactly.
  */
 
-import type { TrackingFrequency } from '@/features/goals';
+import type { TrackingFrequency } from '@/features/goals/types';
 import { fromDateKey } from '@/utils/date-key';
 
 /** A `YYYY-MM-DD` day, which is how every date crosses the wire. */

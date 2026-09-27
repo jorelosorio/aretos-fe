@@ -1,8 +1,8 @@
-import { api } from '@/lib/api';
+import { api } from '@/lib/api/client';
 import { deviceTimezone } from '@/lib/timezone';
 
-import type { Habit, WireHabit } from '@/features/habits';
-import type { MoodScore } from '@/features/logs';
+import type { Habit, WireHabit } from '@/features/habits/types';
+import type { MoodScore } from '@/features/logs/types';
 
 import type {
   Goal,

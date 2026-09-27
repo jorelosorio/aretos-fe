@@ -1,12 +1,10 @@
 import { Tabs } from 'expo-router';
 import { useTheme } from '@tamagui/core';
-import {
-  ChartNoAxesColumn,
-  House,
-  NotebookPen,
-  Settings,
-  Target,
-} from '@tamagui/lucide-icons-2';
+import { ChartNoAxesColumn } from '@tamagui/lucide-icons-2/icons/ChartNoAxesColumn';
+import { House } from '@tamagui/lucide-icons-2/icons/House';
+import { NotebookPen } from '@tamagui/lucide-icons-2/icons/NotebookPen';
+import { Settings } from '@tamagui/lucide-icons-2/icons/Settings';
+import { Target } from '@tamagui/lucide-icons-2/icons/Target';
 
 import { FloatingTabBar } from '@/components/common/floating-tab-bar';
 import { NewGoalButton } from '@/components/goals/new-goal-button';

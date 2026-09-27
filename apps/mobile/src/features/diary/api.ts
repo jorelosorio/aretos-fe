@@ -1,7 +1,7 @@
-import { api } from '@/lib/api';
+import { api } from '@/lib/api/client';
 import { deviceTimezone } from '@/lib/timezone';
 
-import type { MoodScore } from '@/features/logs';
+import type { MoodScore } from '@/features/logs/types';
 
 import type {
   CheckInNote,

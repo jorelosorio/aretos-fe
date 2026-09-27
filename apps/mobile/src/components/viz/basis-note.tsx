@@ -1,7 +1,7 @@
 import { SizableText } from 'tamagui';
 
 import { TEXT } from '@/constants/layout';
-import type { Basis } from '@/features/analysis';
+import type { Basis } from '@/features/analysis/types';
 import { useTranslations } from '@/lib/i18n';
 
 export function BasisNote({ basis }: { basis: Basis }) {

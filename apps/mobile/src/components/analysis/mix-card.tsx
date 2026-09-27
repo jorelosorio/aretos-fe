@@ -4,8 +4,8 @@ import { ChartCard } from '@/components/viz/chart-card';
 import { DonutChart, type DonutSlice } from '@/components/viz/donut-chart';
 import { formatRate } from '@/components/viz/format';
 import { TEXT } from '@/constants/layout';
-import type { OutcomeMix } from '@/features/analysis';
-import { OUTCOME_COLORS } from '@/features/logs';
+import type { OutcomeMix } from '@/features/analysis/types';
+import { OUTCOME_COLORS } from '@/features/logs/outcome';
 import { useTranslations } from '@/lib/i18n';
 
 export function MixCard({ mix }: { mix: OutcomeMix }) {

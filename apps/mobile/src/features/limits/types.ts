@@ -1,4 +1,4 @@
-import type { Tier } from '@/features/auth';
+import type { Tier } from '@/features/auth/types';
 
 /**
  * What the user's plan allows, mirroring `GET /v1/limits`

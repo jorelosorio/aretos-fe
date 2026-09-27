@@ -1,5 +1,8 @@
 import { memo } from 'react';
-import { Flame, Plus, SquarePen, Trophy } from '@tamagui/lucide-icons-2';
+import { Flame } from '@tamagui/lucide-icons-2/icons/Flame';
+import { Plus } from '@tamagui/lucide-icons-2/icons/Plus';
+import { SquarePen } from '@tamagui/lucide-icons-2/icons/SquarePen';
+import { Trophy } from '@tamagui/lucide-icons-2/icons/Trophy';
 import { Circle, SizableText, XStack, YStack } from 'tamagui';
 
 import { Card } from '@/components/common/card';
@@ -9,7 +12,7 @@ import { GoalName } from '@/components/goals/goal-name';
 import { PERIOD_STATUS_LABELS } from '@/components/goals/period-status';
 import { MOOD_LABELS } from '@/components/logs/mood-labels';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
-import type { Goal, GoalProgress } from '@/features/goals';
+import type { Goal, GoalProgress } from '@/features/goals/types';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
 
 import { WeekStrip } from './week-strip';

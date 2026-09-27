@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Stack, useRouter } from 'expo-router';
-import { Check, Plus } from '@tamagui/lucide-icons-2';
+import { Check } from '@tamagui/lucide-icons-2/icons/Check';
+import { Plus } from '@tamagui/lucide-icons-2/icons/Plus';
 import { SizableText, XStack, YStack } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
@@ -10,14 +11,12 @@ import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
 import { GoalHeaderTitle } from '@/components/goals/goal-header-title';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
-import {
-  useGoalCheckIn,
-  useGoalErrorMessage,
-  type Goal,
-  type GoalPeriod,
-} from '@/features/goals';
-import type { Habit } from '@/features/habits';
-import { useLogDraft, useLogErrorMessage, type DateKey } from '@/features/logs';
+import { useGoalCheckIn, useGoalErrorMessage } from '@/features/goals/hooks';
+import type { Goal, GoalPeriod } from '@/features/goals/types';
+import type { Habit } from '@/features/habits/types';
+import { useLogDraft } from '@/features/logs/draft';
+import { useLogErrorMessage } from '@/features/logs/hooks';
+import type { DateKey } from '@/features/logs/period';
 import { useTranslations } from '@/lib/i18n';
 
 import { CheckInNotes } from './check-in-notes';

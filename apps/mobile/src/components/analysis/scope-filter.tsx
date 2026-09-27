@@ -1,6 +1,6 @@
 import { ChipFilter } from '@/components/common/chip-filter';
 import { slotColor } from '@/components/goals/slot-color';
-import type { Goal } from '@/features/goals';
+import type { Goal } from '@/features/goals/types';
 import { useTranslations } from '@/lib/i18n';
 
 export function ScopeFilter({

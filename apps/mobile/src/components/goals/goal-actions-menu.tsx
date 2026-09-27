@@ -1,18 +1,16 @@
 import { Alert } from 'react-native';
 import { useRouter } from 'expo-router';
-import {
-  Archive,
-  ArchiveRestore,
-  Pencil,
-  Trash2,
-} from '@tamagui/lucide-icons-2';
+import { Archive } from '@tamagui/lucide-icons-2/icons/Archive';
+import { ArchiveRestore } from '@tamagui/lucide-icons-2/icons/ArchiveRestore';
+import { Pencil } from '@tamagui/lucide-icons-2/icons/Pencil';
+import { Trash2 } from '@tamagui/lucide-icons-2/icons/Trash2';
 
 import { ActionsMenu, type MenuAction } from '@/components/common/actions-menu';
 import {
   useDeleteGoal,
   useGoalErrorMessage,
   useUpdateGoal,
-} from '@/features/goals';
+} from '@/features/goals/hooks';
 import { useTranslations } from '@/lib/i18n';
 
 export function GoalActionsMenu({

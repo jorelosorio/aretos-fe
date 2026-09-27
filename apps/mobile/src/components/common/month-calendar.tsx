@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons-2';
+import { ChevronLeft } from '@tamagui/lucide-icons-2/icons/ChevronLeft';
+import { ChevronRight } from '@tamagui/lucide-icons-2/icons/ChevronRight';
 import { Circle, SizableText, XStack, YStack } from 'tamagui';
 
 import {

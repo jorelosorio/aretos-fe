@@ -3,7 +3,7 @@ import { SizableText, XStack, YStack } from 'tamagui';
 
 import { FormSection } from '@/components/common/form-section';
 import { SPACING, TEXT } from '@/constants/layout';
-import { MOOD_SCORES, type MoodScore } from '@/features/logs';
+import { MOOD_SCORES, type MoodScore } from '@/features/logs/types';
 import { useTranslations } from '@/lib/i18n';
 
 import { MoodFace } from './mood-face';

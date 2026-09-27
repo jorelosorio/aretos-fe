@@ -20,7 +20,7 @@ import Animated, {
 import { scheduleOnRN } from 'react-native-worklets';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme, useThemeName } from '@tamagui/core';
-import { X } from '@tamagui/lucide-icons-2';
+import { X } from '@tamagui/lucide-icons-2/icons/X';
 import { ScrollView, SizableText, XStack, YStack } from 'tamagui';
 
 import { HeaderIconButton } from '@/components/common/header-actions';

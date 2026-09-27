@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { addTag } from '@/features/tags';
+import { addTag } from '@/features/tags/rules';
 
 /**
  * A form's tags, as `TagField` edits them: the chips already added, plus

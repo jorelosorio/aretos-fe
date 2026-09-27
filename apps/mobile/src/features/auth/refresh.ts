@@ -1,4 +1,5 @@
-import { connectAuth, toApiError } from '@/lib/api';
+import { connectAuth } from '@/lib/api/client';
+import { toApiError } from '@/lib/api/errors';
 
 import { rotateRefreshToken } from './api';
 import { isExpiring, sessionStore } from './session';

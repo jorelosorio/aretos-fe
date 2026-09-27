@@ -6,9 +6,9 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { limitKeys } from '@/features/limits';
-import { tagKeys } from '@/features/tags';
-import { ApiError } from '@/lib/api';
+import { limitKeys } from '@/features/limits/api';
+import { tagKeys } from '@/features/tags/api';
+import { ApiError } from '@/lib/api/errors';
 import { seedFromLists } from '@/lib/query-cache';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
 

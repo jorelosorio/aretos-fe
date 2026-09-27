@@ -1,9 +1,10 @@
-import { Minus, Plus } from '@tamagui/lucide-icons-2';
+import { Minus } from '@tamagui/lucide-icons-2/icons/Minus';
+import { Plus } from '@tamagui/lucide-icons-2/icons/Plus';
 import { Button, Circle, SizableText, XStack } from 'tamagui';
 
 import { UNIT_LABELS } from '@/components/habits/unit-labels';
-import type { Habit } from '@/features/habits';
-import type { LogEntry } from '@/features/logs';
+import type { Habit } from '@/features/habits/types';
+import type { LogEntry } from '@/features/logs/types';
 import { useTranslations } from '@/lib/i18n';
 
 import { stepFor } from './entry-actions';

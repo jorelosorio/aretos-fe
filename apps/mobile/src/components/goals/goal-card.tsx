@@ -3,7 +3,7 @@ import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
 import { Card } from '@/components/common/card';
 import { SPACING, TEXT } from '@/constants/layout';
-import type { Goal } from '@/features/goals';
+import type { Goal } from '@/features/goals/types';
 import { useTranslations } from '@/lib/i18n';
 
 import { FREQUENCY_LABELS } from './frequency-labels';

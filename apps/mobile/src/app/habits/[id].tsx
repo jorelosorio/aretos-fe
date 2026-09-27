@@ -3,7 +3,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { ErrorNotice } from '@/components/common/error-notice';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { HabitForm } from '@/components/habits/habit-form';
-import { useHabit, useHabitErrorMessage } from '@/features/habits';
+import { useHabit, useHabitErrorMessage } from '@/features/habits/hooks';
 
 export default function EditHabit() {
   const { id } = useLocalSearchParams<{ id: string }>();

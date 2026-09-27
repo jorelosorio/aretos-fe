@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
-import { ApiError } from '@/lib/api';
+import { ApiError } from '@/lib/api/errors';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
 
 import { analysisKeys, getAnalysis } from './api';

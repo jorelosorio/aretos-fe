@@ -8,7 +8,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 
-import { ApiError } from '@/lib/api';
+import { ApiError } from '@/lib/api/errors';
 import { refreshTimezone } from '@/lib/timezone';
 
 // Side effect: hands the axios client its session bridge before any component

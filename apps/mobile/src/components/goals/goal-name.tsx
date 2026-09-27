@@ -1,4 +1,4 @@
-import { Archive } from '@tamagui/lucide-icons-2';
+import { Archive } from '@tamagui/lucide-icons-2/icons/Archive';
 import { SizableText, XStack } from 'tamagui';
 
 import { ICON, TEXT } from '@/constants/layout';

@@ -3,7 +3,9 @@ import { FlatList, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@tamagui/core';
-import { Archive, ListChecks, Plus } from '@tamagui/lucide-icons-2';
+import { Archive } from '@tamagui/lucide-icons-2/icons/Archive';
+import { ListChecks } from '@tamagui/lucide-icons-2/icons/ListChecks';
+import { Plus } from '@tamagui/lucide-icons-2/icons/Plus';
 import { Paragraph, Separator, SizableText, XStack, YStack } from 'tamagui';
 
 import { Card } from '@/components/common/card';
@@ -18,9 +20,10 @@ import { SPACING, TEXT } from '@/constants/layout';
 
 import { FREQUENCY_LABELS } from './frequency-labels';
 import { GoalName } from './goal-name';
-import type { Goal } from '@/features/goals';
-import { useHabitErrorMessage, useHabits, type Habit } from '@/features/habits';
-import { useAllowance } from '@/features/limits';
+import type { Goal } from '@/features/goals/types';
+import { useHabitErrorMessage, useHabits } from '@/features/habits/hooks';
+import type { Habit } from '@/features/habits/types';
+import { useAllowance } from '@/features/limits/hooks';
 import { useTranslations } from '@/lib/i18n';
 
 const FOOTER_SPACE = 16;

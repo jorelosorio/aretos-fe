@@ -2,7 +2,7 @@ import { useTheme } from '@tamagui/core';
 
 import { resolveColor } from '@/components/common/theme-color';
 import { MoodBlank, MoodFace } from './mood-face';
-import type { MoodScore } from '@/features/logs';
+import type { MoodScore } from '@/features/logs/types';
 
 export function PeriodMood({
   mood,

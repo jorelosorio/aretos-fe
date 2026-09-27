@@ -7,7 +7,7 @@ import type {
   AnalysisThresholds,
   Correlation,
   MoodDirection,
-} from '@/features/analysis';
+} from '@/features/analysis/types';
 import { useTranslations } from '@/lib/i18n';
 
 function reading(correlation: Correlation) {

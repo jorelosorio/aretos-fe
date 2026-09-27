@@ -25,8 +25,8 @@ import type {
   PeriodStatus,
   StreakRule,
   TrackingFrequency,
-} from '@/features/goals';
-import type { MoodScore } from '@/features/logs';
+} from '@/features/goals/types';
+import type { MoodScore } from '@/features/logs/types';
 
 /** `validate:"max=2000"` on every body the API accepts. */
 export const NOTE_BODY_MAX = 2000;

@@ -7,7 +7,7 @@ import { formatMood, formatRate } from '@/components/viz/format';
 import { HEAT_LEGEND } from '@/components/viz/heat-level';
 import { Heatmap } from '@/components/viz/heatmap';
 import { SPACING, TEXT } from '@/constants/layout';
-import type { CalendarTally, HeatCell } from '@/features/analysis';
+import type { CalendarTally, HeatCell } from '@/features/analysis/types';
 import { useTranslations } from '@/lib/i18n';
 
 function DayDetail({ cell }: { cell: HeatCell }) {

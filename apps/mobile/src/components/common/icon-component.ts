@@ -1,4 +1,4 @@
-import type { Check } from '@tamagui/lucide-icons-2';
+import type { Check } from '@tamagui/lucide-icons-2/icons/Check';
 
 /**
  * Any lucide icon, as the component itself rather than an element.

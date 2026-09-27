@@ -2,7 +2,8 @@ import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
 
 import { env } from '@/lib/env';
-import { ApiError, publicApi } from '@/lib/api';
+import { ApiError } from '@/lib/api/errors';
+import { publicApi } from '@/lib/api/client';
 
 import { toSession } from './session';
 import {

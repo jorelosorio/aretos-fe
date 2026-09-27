@@ -19,7 +19,7 @@ import type {
   Highlight,
   HighlightKind,
   HighlightTone,
-} from '@/features/analysis';
+} from '@/features/analysis/types';
 import type { TranslateFn } from '@/lib/i18n';
 
 import { formatRate, outOfTen } from '@/components/viz/format';

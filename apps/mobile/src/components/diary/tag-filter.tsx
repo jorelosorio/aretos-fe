@@ -1,9 +1,9 @@
-import { Tag } from '@tamagui/lucide-icons-2';
+import { Tag } from '@tamagui/lucide-icons-2/icons/Tag';
 import { YStack } from 'tamagui';
 
 import { ChipFilter } from '@/components/common/chip-filter';
 import { SPACING } from '@/constants/layout';
-import { useTags } from '@/features/tags';
+import { useTags } from '@/features/tags/hooks';
 import { useTranslations } from '@/lib/i18n';
 import { capitalize } from '@/utils/text';
 

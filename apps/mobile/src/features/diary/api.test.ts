@@ -1,4 +1,4 @@
-import { api } from '@/lib/api';
+import { api } from '@/lib/api/client';
 
 import {
   addCheckInNote,
@@ -9,7 +9,7 @@ import {
   updateNote,
 } from './api';
 
-jest.mock('@/lib/api', () => ({
+jest.mock('@/lib/api/client', () => ({
   api: { get: jest.fn(), post: jest.fn(), patch: jest.fn(), delete: jest.fn() },
 }));
 jest.mock('@/lib/timezone', () => ({ deviceTimezone: () => 'America/Bogota' }));

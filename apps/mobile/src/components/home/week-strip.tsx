@@ -1,6 +1,7 @@
 import Svg, { Circle as SvgCircle } from 'react-native-svg';
 import { useTheme } from '@tamagui/core';
-import { Check, Minus } from '@tamagui/lucide-icons-2';
+import { Check } from '@tamagui/lucide-icons-2/icons/Check';
+import { Minus } from '@tamagui/lucide-icons-2/icons/Minus';
 import { Circle, SizableText, XStack, YStack } from 'tamagui';
 
 import { dayNumber, weekdayInitial } from '@/components/common/date-label';
@@ -11,7 +12,7 @@ import type {
   GoalPeriod,
   PeriodStatus,
   TrackingFrequency,
-} from '@/features/goals';
+} from '@/features/goals/types';
 import { useTranslations } from '@/lib/i18n';
 
 const MARK = 20;

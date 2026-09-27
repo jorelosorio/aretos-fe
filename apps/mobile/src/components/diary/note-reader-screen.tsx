@@ -1,6 +1,6 @@
 import { Stack, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Archive } from '@tamagui/lucide-icons-2';
+import { Archive } from '@tamagui/lucide-icons-2/icons/Archive';
 import { Paragraph, ScrollView, SizableText, XStack, YStack } from 'tamagui';
 
 import { Card } from '@/components/common/card';
@@ -13,12 +13,8 @@ import { GoalDot } from '@/components/goals/goal-dot';
 import { MOOD_LABELS } from '@/components/logs/mood-labels';
 import { PeriodMood } from '@/components/logs/period-mood';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
-import {
-  useNote,
-  useNoteErrorMessage,
-  type DiaryCheckIn,
-  type DiaryNote,
-} from '@/features/diary';
+import { useNote, useNoteErrorMessage } from '@/features/diary/hooks';
+import type { DiaryCheckIn, DiaryNote } from '@/features/diary/types';
 import { useTranslations, type AppLocale } from '@/lib/i18n';
 import { dateFormat } from '@/utils/date-format';
 

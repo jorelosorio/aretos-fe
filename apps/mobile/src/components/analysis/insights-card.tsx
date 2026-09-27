@@ -1,12 +1,10 @@
-import {
-  Award,
-  CalendarDays,
-  Flame,
-  Lightbulb,
-  Smile,
-  Sprout,
-  TrendingUp,
-} from '@tamagui/lucide-icons-2';
+import { Award } from '@tamagui/lucide-icons-2/icons/Award';
+import { CalendarDays } from '@tamagui/lucide-icons-2/icons/CalendarDays';
+import { Flame } from '@tamagui/lucide-icons-2/icons/Flame';
+import { Lightbulb } from '@tamagui/lucide-icons-2/icons/Lightbulb';
+import { Smile } from '@tamagui/lucide-icons-2/icons/Smile';
+import { Sprout } from '@tamagui/lucide-icons-2/icons/Sprout';
+import { TrendingUp } from '@tamagui/lucide-icons-2/icons/TrendingUp';
 import { SizableText, XStack, YStack } from 'tamagui';
 
 import { Card } from '@/components/common/card';
@@ -16,7 +14,7 @@ import type {
   AnalysisReport,
   HighlightKind,
   HighlightTone,
-} from '@/features/analysis';
+} from '@/features/analysis/types';
 import { useTranslations } from '@/lib/i18n';
 
 import { wordHighlights } from './insights';

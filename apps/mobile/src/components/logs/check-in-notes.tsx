@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Plus } from '@tamagui/lucide-icons-2';
+import { Plus } from '@tamagui/lucide-icons-2/icons/Plus';
 import { Paragraph } from 'tamagui';
 
 import { Card } from '@/components/common/card';
@@ -14,10 +14,11 @@ import {
   useDeleteCheckInNote,
   useNoteErrorMessage,
   useUpdateCheckInNote,
-  type CheckInNote,
-} from '@/features/diary';
-import { useAllowance } from '@/features/limits';
-import { useLog, type NoteBody, type PendingNote } from '@/features/logs';
+} from '@/features/diary/hooks';
+import type { CheckInNote } from '@/features/diary/types';
+import { useAllowance } from '@/features/limits/hooks';
+import { useLog } from '@/features/logs/hooks';
+import type { NoteBody, PendingNote } from '@/features/logs/pending-notes';
 import { useTranslations, type AppLocale } from '@/lib/i18n';
 import { dateFormat } from '@/utils/date-format';
 

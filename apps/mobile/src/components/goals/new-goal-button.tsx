@@ -1,8 +1,8 @@
 import { useRouter } from 'expo-router';
-import { Plus } from '@tamagui/lucide-icons-2';
+import { Plus } from '@tamagui/lucide-icons-2/icons/Plus';
 
 import { HeaderIconButton } from '@/components/common/header-actions';
-import { useAllowance } from '@/features/limits';
+import { useAllowance } from '@/features/limits/hooks';
 import { useTranslations } from '@/lib/i18n';
 
 export function NewGoalButton() {

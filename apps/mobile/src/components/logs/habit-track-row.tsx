@@ -1,12 +1,10 @@
 import { useState } from 'react';
-import {
-  Check,
-  CircleDashed,
-  Lightbulb,
-  Minus,
-  RotateCcw,
-  X,
-} from '@tamagui/lucide-icons-2';
+import { Check } from '@tamagui/lucide-icons-2/icons/Check';
+import { CircleDashed } from '@tamagui/lucide-icons-2/icons/CircleDashed';
+import { Lightbulb } from '@tamagui/lucide-icons-2/icons/Lightbulb';
+import { Minus } from '@tamagui/lucide-icons-2/icons/Minus';
+import { RotateCcw } from '@tamagui/lucide-icons-2/icons/RotateCcw';
+import { X } from '@tamagui/lucide-icons-2/icons/X';
 import {
   Button,
   Circle,
@@ -19,8 +17,9 @@ import {
 import { Card } from '@/components/common/card';
 import { UNIT_LABELS } from '@/components/habits/unit-labels';
 import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';
-import type { Habit } from '@/features/habits';
-import { OUTCOME_COLORS, outcomeOf, type LogEntry } from '@/features/logs';
+import type { Habit } from '@/features/habits/types';
+import { OUTCOME_COLORS, outcomeOf } from '@/features/logs/outcome';
+import type { LogEntry } from '@/features/logs/types';
 import { useTranslations } from '@/lib/i18n';
 
 import { completionAmount, stepFor } from './entry-actions';

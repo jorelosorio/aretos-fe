@@ -1,4 +1,4 @@
-import { sameTags } from '@/features/tags';
+import { sameTags } from '@/features/tags/rules';
 
 import type { GoalDraft, GoalPatch } from './types';
 

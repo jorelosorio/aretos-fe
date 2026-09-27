@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import { Stack, useRouter } from 'expo-router';
-import {
-  CalendarDays,
-  CalendarRange,
-  CircleCheck,
-  Gauge,
-  Shuffle,
-} from '@tamagui/lucide-icons-2';
+import { CalendarDays } from '@tamagui/lucide-icons-2/icons/CalendarDays';
+import { CalendarRange } from '@tamagui/lucide-icons-2/icons/CalendarRange';
+import { CircleCheck } from '@tamagui/lucide-icons-2/icons/CircleCheck';
+import { Gauge } from '@tamagui/lucide-icons-2/icons/Gauge';
+import { Shuffle } from '@tamagui/lucide-icons-2/icons/Shuffle';
 
 import { ErrorNotice } from '@/components/common/error-notice';
 import { FormInput, FormTextArea } from '@/components/common/form-field';
@@ -22,11 +20,13 @@ import {
   useCreateGoal,
   useGoalErrorMessage,
   useUpdateGoal,
-  toGoalPatch,
-  type GoalDraft,
-  type StreakRule,
-  type TrackingFrequency,
-} from '@/features/goals';
+} from '@/features/goals/hooks';
+import { toGoalPatch } from '@/features/goals/patch';
+import type {
+  GoalDraft,
+  StreakRule,
+  TrackingFrequency,
+} from '@/features/goals/types';
 import { useTranslations } from '@/lib/i18n';
 
 const NAME_MAX = 120;

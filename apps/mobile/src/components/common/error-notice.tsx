@@ -1,4 +1,4 @@
-import { TriangleAlert } from '@tamagui/lucide-icons-2';
+import { TriangleAlert } from '@tamagui/lucide-icons-2/icons/TriangleAlert';
 import { Paragraph, XStack } from 'tamagui';
 
 import { ICON, TEXT } from '@/constants/layout';

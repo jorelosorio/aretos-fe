@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2';
+import { ChevronDown } from '@tamagui/lucide-icons-2/icons/ChevronDown';
+import { ChevronUp } from '@tamagui/lucide-icons-2/icons/ChevronUp';
 import { SizableText, XStack, type ColorTokens } from 'tamagui';
 
 import { ICON, TEXT } from '@/constants/layout';

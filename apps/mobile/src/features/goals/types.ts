@@ -1,5 +1,5 @@
-import type { Habit, WireHabit } from '@/features/habits';
-import type { MoodScore } from '@/features/logs';
+import type { Habit, WireHabit } from '@/features/habits/types';
+import type { MoodScore } from '@/features/logs/types';
 
 /**
  * A goal is a life area the user tracks ("Health"); the habits inside it are

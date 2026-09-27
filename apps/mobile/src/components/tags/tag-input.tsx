@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Plus } from '@tamagui/lucide-icons-2';
+import { Plus } from '@tamagui/lucide-icons-2/icons/Plus';
 import {
   Input,
   SizableText,
@@ -15,8 +15,8 @@ import {
   TAG_MAX_LENGTH,
   addTag,
   removeTag,
-  useTags,
-} from '@/features/tags';
+} from '@/features/tags/rules';
+import { useTags } from '@/features/tags/hooks';
 import { useTranslations } from '@/lib/i18n';
 import { capitalize } from '@/utils/text';
 

@@ -23,8 +23,8 @@
  * percent is produced.
  */
 
-import type { StreakRule, TrackingFrequency } from '@/features/goals';
-import type { TrackingMode } from '@/features/habits';
+import type { StreakRule, TrackingFrequency } from '@/features/goals/types';
+import type { TrackingMode } from '@/features/habits/types';
 
 /** What one observation is. The units are not interchangeable. */
 export type AnalysisUnit =

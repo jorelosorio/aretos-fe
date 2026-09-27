@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { CalendarDays, ChevronDown } from '@tamagui/lucide-icons-2';
+import { CalendarDays } from '@tamagui/lucide-icons-2/icons/CalendarDays';
+import { ChevronDown } from '@tamagui/lucide-icons-2/icons/ChevronDown';
 import { SizableText, XStack, YStack } from 'tamagui';
 
 import { BottomSheet } from '@/components/common/bottom-sheet';

@@ -66,18 +66,22 @@ src/features/goals/
   types.ts        wire types + domain types
   api.ts          query keys and request functions — plain async, no React
   hooks.ts        useQuery / useMutation wrapping api.ts
-  index.ts        public surface — nothing outside imports deeper than this
 ```
 
 Its screens go in `src/components/goals/`, its routes in `src/app/`. Split a
 flat file into a folder (`hooks/use-goals.ts`) only once it earns it.
 
-- **Import features through `index.ts`,** never a deep path.
-- **Use `api` from `@/lib/api`** for anything authenticated. It attaches the
-  token, refreshes ahead of expiry, and replays once on 401. `publicApi` exists
-  only for endpoints that mint credentials.
-- **Errors are `ApiError`.** Branch on `error.code` — the backend's contract in
-  `internal/api/errors/codes.go` — never on the message.
+- **Import from the file that declares the name** — `@/features/goals/hooks`,
+  `@/features/goals/types`. There are no `index.ts` barrels anywhere: a
+  re-export makes importing one name evaluate the whole folder, and the old
+  feature barrels were how `goals`, `habits`, `logs` and `diary` came to import
+  each other in circles. ESLint rejects `export … from` and import cycles.
+- **Use `api` from `@/lib/api/client`** for anything authenticated. It attaches
+  the token, refreshes ahead of expiry, and replays once on 401. `publicApi`
+  exists only for endpoints that mint credentials.
+- **Errors are `ApiError`** from `@/lib/api/errors`. Branch on `error.code` —
+  the backend's contract in `internal/api/errors/codes.go` — never on the
+  message.
 
 `features/auth` is the reference implementation. It carries two files beyond
 the template (`session.ts`, `refresh.ts`) because it is the one feature that
@@ -99,11 +103,47 @@ field and never suggests what to write in it.
   quietly narrows what feels allowed. A fill-in pattern like `Si… entonces…`
   does the same.
 - **Hints explain; they do not model an answer.** A hint may say what the field
-  is for or why it helps ("deciding when and where beforehand raises the
-  odds"). It does not show a sample entry.
+  is for or why it helps ("deciding it beforehand makes it easier to follow
+  through"). It does not show a sample entry, and it never names a study, a
+  technique or how the analysis is computed — that stays internal.
 - **The label carries the meaning.** A placeholder disappears on the first
   keystroke, so nothing the person needs in order to understand the field may
   live only there.
 
 A title above a set of fixed options — a choice, not a text field — may be a
 question, because the options are its answers: `¿Cómo lo registras?`.
+
+## Performance
+
+Follow the `react-native-best-practices` skill (`.agents/skills/react-native-best-practices`)
+for any change that touches rendering, lists, animation, startup or
+dependencies. Its workflow is the rule here: **measure, optimize, re-measure,
+validate**, and put the before/after numbers in the change. A fix that does not
+move the number is reverted.
+
+What is already settled, so it is not re-litigated per change:
+
+- **React Compiler is on** (`experiments.reactCompiler` in `app.json`) and its
+  lint rules are errors. Do not add `useMemo`, `useCallback` or `memo` by
+  default; add one only when a profile shows the wasted render it removes. A
+  component that breaks the compiler rules is silently left unoptimized, so
+  lint must stay clean.
+- **Unbounded data goes in a virtualized list** — `FlashList` (v2: no
+  `estimatedItemSize`) or `FlatList`. `ScrollView` is for content with a fixed,
+  small shape: a form, a settings page, a screen of sections.
+- **Import icons one by one**: `@tamagui/lucide-icons-2/icons/Plus`. The
+  package root pulls every icon in; importing from it cost 1.3 MB of the
+  Android bundle (7.1 MB → 5.8 MB once removed). ESLint rejects the root import.
+- **No barrels, no cycles** — see "Adding a feature". Both are ESLint errors.
+- **Check the bundle before adding a dependency.** Export with source maps and
+  compare the module count and size by package:
+
+  ```
+  npx expo export --platform android --output-dir <dir> --source-maps
+  ```
+
+  A dependency that adds more than it replaces needs a reason in the change.
+
+- **Animation runs on the UI thread** through Reanimated worklets and shared
+  values, never through React state per frame. Sheets follow the skill's
+  bottom-sheet guidance.

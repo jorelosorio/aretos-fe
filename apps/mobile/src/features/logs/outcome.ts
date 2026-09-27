@@ -14,7 +14,7 @@
  * unmet, but only one of them is a thing the person actually said.
  */
 
-import type { Habit } from '@/features/habits';
+import type { Habit } from '@/features/habits/types';
 
 import { isAnswered, type LogEntry } from './types';
 

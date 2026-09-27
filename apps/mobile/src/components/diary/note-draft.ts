@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 import { useTagDraft } from '@/components/tags/tag-draft';
-import type { DateKey } from '@/features/logs';
-import { sameTags } from '@/features/tags';
+import type { DateKey } from '@/features/logs/period';
+import { sameTags } from '@/features/tags/rules';
 
 /**
  * What the note form edits. `entryDate` is null for a check-in's note: its

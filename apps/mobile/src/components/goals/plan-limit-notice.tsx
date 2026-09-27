@@ -1,9 +1,10 @@
-import { Info, Layers } from '@tamagui/lucide-icons-2';
+import { Info } from '@tamagui/lucide-icons-2/icons/Info';
+import { Layers } from '@tamagui/lucide-icons-2/icons/Layers';
 import { Paragraph, XStack } from 'tamagui';
 
 import { Notice } from '@/components/common/notice';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
-import type { Allowance } from '@/features/limits';
+import type { Allowance } from '@/features/limits/types';
 import { useTranslations } from '@/lib/i18n';
 
 export function PlanLimitNotice({ allowance }: { allowance: Allowance }) {

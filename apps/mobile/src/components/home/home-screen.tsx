@@ -2,12 +2,10 @@ import { useCallback, useState } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
-import {
-  CalendarDays,
-  CircleCheck,
-  Plus,
-  Target,
-} from '@tamagui/lucide-icons-2';
+import { CalendarDays } from '@tamagui/lucide-icons-2/icons/CalendarDays';
+import { CircleCheck } from '@tamagui/lucide-icons-2/icons/CircleCheck';
+import { Plus } from '@tamagui/lucide-icons-2/icons/Plus';
+import { Target } from '@tamagui/lucide-icons-2/icons/Target';
 import { SizableText, YStack } from 'tamagui';
 
 import { longDateLabel } from '@/components/common/date-label';
@@ -22,8 +20,9 @@ import {
 import { EmptyState } from '@/components/common/empty-state';
 import { ILLUSTRATIONS } from '@/components/common/illustrations';
 import { SPACING, TEXT } from '@/constants/layout';
-import { useGoalErrorMessage, useGoals, type Goal } from '@/features/goals';
-import { useAllowance } from '@/features/limits';
+import { useGoalErrorMessage, useGoals } from '@/features/goals/hooks';
+import type { Goal } from '@/features/goals/types';
+import { useAllowance } from '@/features/limits/hooks';
 import { useTranslations } from '@/lib/i18n';
 
 import { GoalStatusCard } from './goal-status-card';

@@ -10,8 +10,8 @@
  * rather than a handler per square.
  */
 
-import type { HeatCell } from '@/features/analysis';
-import { weekdayIndex } from '@/features/logs';
+import type { HeatCell } from '@/features/analysis/types';
+import { weekdayIndex } from '@/features/logs/period';
 
 export const WEEK_ROWS = 7;
 

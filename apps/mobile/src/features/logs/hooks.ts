@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { diaryKeys } from '@/features/diary';
-import { goalKeys } from '@/features/goals';
-import { limitKeys } from '@/features/limits';
-import { ApiError } from '@/lib/api';
+import { diaryKeys } from '@/features/diary/api';
+import { goalKeys } from '@/features/goals/api';
+import { limitKeys } from '@/features/limits/api';
+import { ApiError } from '@/lib/api/errors';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
 
 import {

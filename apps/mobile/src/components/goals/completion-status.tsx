@@ -1,7 +1,7 @@
 import { SizableText, XStack } from 'tamagui';
 
 import { ICON, TEXT } from '@/constants/layout';
-import type { PeriodStatus } from '@/features/goals';
+import type { PeriodStatus } from '@/features/goals/types';
 import { useTranslations } from '@/lib/i18n';
 
 import {

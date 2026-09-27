@@ -10,7 +10,7 @@ import type {
   AnalysisThresholds,
   Automaticity,
   MoodPerformance,
-} from '@/features/analysis';
+} from '@/features/analysis/types';
 import { useTranslations } from '@/lib/i18n';
 
 const AUTOMATICITY_COLOR = {

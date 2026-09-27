@@ -14,7 +14,7 @@
  * right-hand path of a pair is always the left one reflected.
  */
 
-import type { MoodScore } from '@/features/logs';
+import type { MoodScore } from '@/features/logs/types';
 
 type Pupil = { cx: number; cy: number; r: number };
 

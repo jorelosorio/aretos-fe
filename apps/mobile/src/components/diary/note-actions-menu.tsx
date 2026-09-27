@@ -1,13 +1,11 @@
 import { Alert } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Pencil, Trash2 } from '@tamagui/lucide-icons-2';
+import { Pencil } from '@tamagui/lucide-icons-2/icons/Pencil';
+import { Trash2 } from '@tamagui/lucide-icons-2/icons/Trash2';
 
 import { ActionsMenu, type MenuAction } from '@/components/common/actions-menu';
-import {
-  useNoteErrorMessage,
-  useRemoveNote,
-  type DiaryNote,
-} from '@/features/diary';
+import { useNoteErrorMessage, useRemoveNote } from '@/features/diary/hooks';
+import type { DiaryNote } from '@/features/diary/types';
 import { useTranslations } from '@/lib/i18n';
 
 export function NoteActionsMenu({

@@ -2,7 +2,9 @@ import { useState, useCallback } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
-import { Archive, Plus, Target } from '@tamagui/lucide-icons-2';
+import { Archive } from '@tamagui/lucide-icons-2/icons/Archive';
+import { Plus } from '@tamagui/lucide-icons-2/icons/Plus';
+import { Target } from '@tamagui/lucide-icons-2/icons/Target';
 import { YStack } from 'tamagui';
 
 import { EmptyState } from '@/components/common/empty-state';
@@ -15,8 +17,9 @@ import {
 } from '@/components/common/segmented-control';
 import { ILLUSTRATIONS } from '@/components/common/illustrations';
 import { SPACING } from '@/constants/layout';
-import { useGoalErrorMessage, useGoals, type Goal } from '@/features/goals';
-import { useAllowance } from '@/features/limits';
+import { useGoalErrorMessage, useGoals } from '@/features/goals/hooks';
+import type { Goal } from '@/features/goals/types';
+import { useAllowance } from '@/features/limits/hooks';
 import { useTranslations } from '@/lib/i18n';
 
 import { GoalCard } from './goal-card';

@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from 'react';
-import { Info, X } from '@tamagui/lucide-icons-2';
+import { Info } from '@tamagui/lucide-icons-2/icons/Info';
+import { X } from '@tamagui/lucide-icons-2/icons/X';
 import { Button, SizableText, XStack, YStack } from 'tamagui';
 
 import { Card } from '@/components/common/card';

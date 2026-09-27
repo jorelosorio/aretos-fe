@@ -1,4 +1,4 @@
-import { api } from '@/lib/api';
+import { api } from '@/lib/api/client';
 
 import type { Profile, ProfilePatch, WireMe } from './types';
 

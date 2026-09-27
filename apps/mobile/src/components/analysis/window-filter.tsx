@@ -2,7 +2,10 @@ import {
   SegmentedControl,
   type Segment,
 } from '@/components/common/segmented-control';
-import { ANALYSIS_WINDOWS, type AnalysisWindow } from '@/features/analysis';
+import {
+  ANALYSIS_WINDOWS,
+  type AnalysisWindow,
+} from '@/features/analysis/types';
 import { useTranslations } from '@/lib/i18n';
 
 export function WindowFilter({

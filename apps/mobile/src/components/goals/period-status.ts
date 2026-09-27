@@ -20,15 +20,13 @@
  * token literals and annotating these widens them to `string`.
  */
 
-import {
-  Check,
-  CircleDashed,
-  CircleDot,
-  Minus,
-  X,
-} from '@tamagui/lucide-icons-2';
+import { Check } from '@tamagui/lucide-icons-2/icons/Check';
+import { CircleDashed } from '@tamagui/lucide-icons-2/icons/CircleDashed';
+import { CircleDot } from '@tamagui/lucide-icons-2/icons/CircleDot';
+import { Minus } from '@tamagui/lucide-icons-2/icons/Minus';
+import { X } from '@tamagui/lucide-icons-2/icons/X';
 
-import type { PeriodStatus } from '@/features/goals';
+import type { PeriodStatus } from '@/features/goals/types';
 import type { TranslationKey } from '@/lib/i18n';
 
 /** `empty` is transparent: a period nobody has reached yet marks nothing. */

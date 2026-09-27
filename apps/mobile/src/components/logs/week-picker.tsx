@@ -6,7 +6,8 @@ import {
 } from 'react-native';
 import Svg, { Circle as SvgCircle } from 'react-native-svg';
 import { useTheme } from '@tamagui/core';
-import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons-2';
+import { ChevronLeft } from '@tamagui/lucide-icons-2/icons/ChevronLeft';
+import { ChevronRight } from '@tamagui/lucide-icons-2/icons/ChevronRight';
 import { Button, Circle, SizableText, XStack, YStack } from 'tamagui';
 
 import { resolveColor } from '@/components/common/theme-color';
@@ -15,14 +16,14 @@ import type {
   GoalPeriod,
   PeriodStatus,
   TrackingFrequency,
-} from '@/features/goals';
+} from '@/features/goals/types';
 import {
   periodKey,
   shiftPeriod,
   weekDays,
   weekdayIndex,
   type DateKey,
-} from '@/features/logs';
+} from '@/features/logs/period';
 import { useTranslations, type AppLocale } from '@/lib/i18n';
 
 import {

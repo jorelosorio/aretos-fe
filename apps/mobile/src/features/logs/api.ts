@@ -1,4 +1,4 @@
-import { api } from '@/lib/api';
+import { api } from '@/lib/api/client';
 
 import {
   isAnswered,
@@ -13,7 +13,7 @@ import {
   type WireLogs,
 } from './types';
 
-import type { CheckInNote, WireCheckInNote } from '@/features/diary';
+import type { CheckInNote, WireCheckInNote } from '@/features/diary/types';
 
 const paths = {
   logs: '/v1/habit-logs',

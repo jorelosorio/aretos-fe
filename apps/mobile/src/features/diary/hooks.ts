@@ -7,10 +7,10 @@ import {
   type InfiniteData,
 } from '@tanstack/react-query';
 
-import { goalKeys } from '@/features/goals';
-import { limitKeys } from '@/features/limits';
-import { tagKeys } from '@/features/tags';
-import { ApiError } from '@/lib/api';
+import { goalKeys } from '@/features/goals/api';
+import { limitKeys } from '@/features/limits/api';
+import { tagKeys } from '@/features/tags/api';
+import { ApiError } from '@/lib/api/errors';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
 
 import {

@@ -2,7 +2,7 @@ import { Button, H1, Paragraph, Spinner, YStack } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
 import { BUTTON, TEXT } from '@/constants/layout';
-import { useAuthErrorMessage, useSignIn } from '@/features/auth';
+import { useAuthErrorMessage, useSignIn } from '@/features/auth/hooks';
 import { useTranslations } from '@/lib/i18n';
 
 import { GoogleMark } from './google-mark';

@@ -1,6 +1,6 @@
 import { Circle, G, Path, Svg } from 'react-native-svg';
 
-import type { MoodScore } from '@/features/logs';
+import type { MoodScore } from '@/features/logs/types';
 
 import {
   FACE_BLANK_DASH,

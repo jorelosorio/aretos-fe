@@ -1,4 +1,4 @@
-import type { DiaryNote } from '@/features/diary';
+import type { DiaryNote } from '@/features/diary/types';
 
 import { toRows } from './diary-rows';
 

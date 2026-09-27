@@ -1,7 +1,7 @@
 import { Circle, Image, SizableText, XStack, YStack } from 'tamagui';
 
 import { SPACING, TEXT } from '@/constants/layout';
-import { useProfile } from '@/features/user';
+import { useProfile } from '@/features/user/hooks';
 import { useTranslations } from '@/lib/i18n';
 
 import { partOfDay } from './part-of-day';

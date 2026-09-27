@@ -1,12 +1,10 @@
 import { useRouter } from 'expo-router';
-import {
-  ChevronRight,
-  Languages,
-  LogOut,
-  Moon,
-  Smartphone,
-  Sun,
-} from '@tamagui/lucide-icons-2';
+import { ChevronRight } from '@tamagui/lucide-icons-2/icons/ChevronRight';
+import { Languages } from '@tamagui/lucide-icons-2/icons/Languages';
+import { LogOut } from '@tamagui/lucide-icons-2/icons/LogOut';
+import { Moon } from '@tamagui/lucide-icons-2/icons/Moon';
+import { Smartphone } from '@tamagui/lucide-icons-2/icons/Smartphone';
+import { Sun } from '@tamagui/lucide-icons-2/icons/Sun';
 import { ScrollView, YStack } from 'tamagui';
 
 import { useConfirmSignOut } from '@/components/auth/use-confirm-sign-out';

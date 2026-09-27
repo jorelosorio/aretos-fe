@@ -1,4 +1,4 @@
-import { Tag } from '@tamagui/lucide-icons-2';
+import { Tag } from '@tamagui/lucide-icons-2/icons/Tag';
 
 import { Chip, type ChipProps } from '@/components/common/chip';
 import { capitalize } from '@/utils/text';

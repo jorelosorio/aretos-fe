@@ -6,7 +6,7 @@ import { SizableText, XStack, YStack } from 'tamagui';
 
 import { resolveColor } from '@/components/common/theme-color';
 import { TEXT } from '@/constants/layout';
-import type { HeatCell } from '@/features/analysis';
+import type { HeatCell } from '@/features/analysis/types';
 import { useTranslations } from '@/lib/i18n';
 
 import { useChartWidth } from './chart-width';

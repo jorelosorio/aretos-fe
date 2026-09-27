@@ -8,8 +8,8 @@ import { ChartCard } from '@/components/viz/chart-card';
 import { formatMood, formatRate } from '@/components/viz/format';
 import { LineChart } from '@/components/viz/line-chart';
 import { SPACING, TEXT } from '@/constants/layout';
-import type { MoodDistribution, Series } from '@/features/analysis';
-import { MOOD_SCORES, type MoodScore } from '@/features/logs';
+import type { MoodDistribution, Series } from '@/features/analysis/types';
+import { MOOD_SCORES, type MoodScore } from '@/features/logs/types';
 import { useTranslations } from '@/lib/i18n';
 
 import { seriesPoints } from './series-points';

@@ -22,8 +22,8 @@
 
 import { useCallback, useMemo, useRef, useState } from 'react';
 
-import { useAddCheckInNote } from '@/features/diary';
-import type { Habit } from '@/features/habits';
+import { useAddCheckInNote } from '@/features/diary/hooks';
+import type { Habit } from '@/features/habits/types';
 import { runExclusive } from '@/lib/exclusive';
 
 import { useSaveLog } from './hooks';

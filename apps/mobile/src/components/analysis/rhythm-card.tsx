@@ -11,7 +11,7 @@ import type {
   RegularityBand,
   WeekdayCell,
   WeekdayExtremes,
-} from '@/features/analysis';
+} from '@/features/analysis/types';
 import { useTranslations } from '@/lib/i18n';
 
 import { WEEKDAY_KEYS } from './insights';

@@ -10,7 +10,7 @@ import type {
   AnalysisHabit,
   AnalysisThresholds,
   FormationStage,
-} from '@/features/analysis';
+} from '@/features/analysis/types';
 import { useTranslations } from '@/lib/i18n';
 
 const TRACK_HEIGHT = 8;

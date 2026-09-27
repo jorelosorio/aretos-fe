@@ -1,9 +1,9 @@
-import { CircleCheck } from '@tamagui/lucide-icons-2';
+import { CircleCheck } from '@tamagui/lucide-icons-2/icons/CircleCheck';
 import { Separator, SizableText, XStack, YStack } from 'tamagui';
 
 import { ChartCard } from '@/components/viz/chart-card';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
-import type { Coverage, Setup } from '@/features/analysis';
+import type { Coverage, Setup } from '@/features/analysis/types';
 import { useTranslations } from '@/lib/i18n';
 
 const TRACK_HEIGHT = 6;

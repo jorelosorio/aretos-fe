@@ -8,7 +8,7 @@
  * the mood invisible rather than merely unlabelled.
  */
 
-import type { MoodScore } from '@/features/logs';
+import type { MoodScore } from '@/features/logs/types';
 import type { TranslationKey } from '@/lib/i18n';
 
 export const MOOD_LABELS: Record<MoodScore, TranslationKey> = {

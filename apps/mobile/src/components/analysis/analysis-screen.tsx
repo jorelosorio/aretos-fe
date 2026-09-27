@@ -1,15 +1,13 @@
 import { useState } from 'react';
 import { RefreshControl } from 'react-native';
 import { useTheme } from '@tamagui/core';
-import {
-  CalendarDays,
-  Info,
-  Gauge,
-  ListChecks,
-  Smile,
-  ChartNoAxesColumn,
-  Target,
-} from '@tamagui/lucide-icons-2';
+import { CalendarDays } from '@tamagui/lucide-icons-2/icons/CalendarDays';
+import { Info } from '@tamagui/lucide-icons-2/icons/Info';
+import { Gauge } from '@tamagui/lucide-icons-2/icons/Gauge';
+import { ListChecks } from '@tamagui/lucide-icons-2/icons/ListChecks';
+import { Smile } from '@tamagui/lucide-icons-2/icons/Smile';
+import { ChartNoAxesColumn } from '@tamagui/lucide-icons-2/icons/ChartNoAxesColumn';
+import { Target } from '@tamagui/lucide-icons-2/icons/Target';
 import { ScrollView, SizableText, XStack, YStack } from 'tamagui';
 
 import { shortDateLabel } from '@/components/common/date-label';
@@ -26,10 +24,9 @@ import { ICON, SPACING, TEXT } from '@/constants/layout';
 import {
   useAnalysis,
   useAnalysisErrorMessage,
-  type AnalysisReport,
-  type AnalysisWindow,
-} from '@/features/analysis';
-import { useGoals } from '@/features/goals';
+} from '@/features/analysis/hooks';
+import type { AnalysisReport, AnalysisWindow } from '@/features/analysis/types';
+import { useGoals } from '@/features/goals/hooks';
 import { useTranslations } from '@/lib/i18n';
 
 import { CadenceCard } from './cadence-card';

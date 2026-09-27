@@ -1,7 +1,7 @@
 import { useLocalSearchParams } from 'expo-router';
 
 import { HabitForm } from '@/components/habits/habit-form';
-import { EMPTY_DRAFT } from '@/features/habits';
+import { EMPTY_DRAFT } from '@/features/habits/types';
 
 export default function NewHabit() {
   const { id } = useLocalSearchParams<{ id: string }>();

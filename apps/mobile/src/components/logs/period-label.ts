@@ -10,8 +10,8 @@
  * knows its locale and both of the ones it ships have different word orders.
  */
 
-import type { TrackingFrequency } from '@/features/goals';
-import type { DateKey } from '@/features/logs';
+import type { TrackingFrequency } from '@/features/goals/types';
+import type { DateKey } from '@/features/logs/period';
 import { dateFormat } from '@/utils/date-format';
 import { fromDateKey } from '@/utils/date-key';
 import { capitalize } from '@/utils/text';

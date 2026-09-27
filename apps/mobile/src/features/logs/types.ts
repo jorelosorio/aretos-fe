@@ -11,8 +11,8 @@
  * is already about habits and the longer name only repeats it.
  */
 
-import type { CheckInNote, WireCheckInNote } from '@/features/diary';
-import type { TrackingMode } from '@/features/habits';
+import type { CheckInNote, WireCheckInNote } from '@/features/diary/types';
+import type { TrackingMode } from '@/features/habits/types';
 
 /** The scale `mood` is validated against: `min=1,max=5`, and optional. */
 export type MoodScore = 1 | 2 | 3 | 4 | 5;

@@ -1,4 +1,4 @@
-import { X } from '@tamagui/lucide-icons-2';
+import { X } from '@tamagui/lucide-icons-2/icons/X';
 import { SizableText, XStack, YStack, type ColorTokens } from 'tamagui';
 
 import { HIT_SLOP, ICON, TEXT } from '@/constants/layout';

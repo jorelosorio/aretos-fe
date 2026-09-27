@@ -1,11 +1,13 @@
 import { memo } from 'react';
-import { Lightbulb, Target, Weight } from '@tamagui/lucide-icons-2';
+import { Lightbulb } from '@tamagui/lucide-icons-2/icons/Lightbulb';
+import { Target } from '@tamagui/lucide-icons-2/icons/Target';
+import { Weight } from '@tamagui/lucide-icons-2/icons/Weight';
 import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
 import { Card } from '@/components/common/card';
 import { Chip } from '@/components/common/chip';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
-import type { Habit } from '@/features/habits';
+import type { Habit } from '@/features/habits/types';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
 
 import { MODE_ICONS } from './mode-icons';

@@ -7,7 +7,7 @@
  * return. Who the user *is* comes from here.
  */
 
-import type { Tier } from '@/features/auth';
+import type { Tier } from '@/features/auth/types';
 
 export type WireMe = {
   id: string;

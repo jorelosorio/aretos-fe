@@ -6,7 +6,7 @@ import { ScreenLoader } from '@/components/common/screen-loader';
 import { GoalActionsMenu } from '@/components/goals/goal-actions-menu';
 import { GoalDetail } from '@/components/goals/goal-detail';
 import { NewHabitButton } from '@/components/habits/new-habit-button';
-import { useGoal, useGoalErrorMessage } from '@/features/goals';
+import { useGoal, useGoalErrorMessage } from '@/features/goals/hooks';
 
 export default function GoalScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();

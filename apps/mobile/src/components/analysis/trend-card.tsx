@@ -1,4 +1,6 @@
-import { ArrowRight, TrendingDown, TrendingUp } from '@tamagui/lucide-icons-2';
+import { ArrowRight } from '@tamagui/lucide-icons-2/icons/ArrowRight';
+import { TrendingDown } from '@tamagui/lucide-icons-2/icons/TrendingDown';
+import { TrendingUp } from '@tamagui/lucide-icons-2/icons/TrendingUp';
 import { SizableText, XStack, YStack } from 'tamagui';
 
 import { shortDateLabel } from '@/components/common/date-label';
@@ -14,7 +16,7 @@ import type {
   Trend,
   TrendDirection,
   TrendHalf,
-} from '@/features/analysis';
+} from '@/features/analysis/types';
 import { useTranslations } from '@/lib/i18n';
 
 import { seriesPoints } from './series-points';

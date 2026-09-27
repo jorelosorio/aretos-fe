@@ -1,7 +1,7 @@
 import { Redirect } from 'expo-router';
 
 import { ScreenLoader } from '@/components/common/screen-loader';
-import { useSession, useSignInStatus } from '@/features/auth';
+import { useSession, useSignInStatus } from '@/features/auth/hooks';
 
 export default function AuthCallbackScreen() {
   const { isAuthenticated } = useSession();

@@ -1,4 +1,4 @@
-import { History } from '@tamagui/lucide-icons-2';
+import { History } from '@tamagui/lucide-icons-2/icons/History';
 
 import { Notice } from '@/components/common/notice';
 import { useTranslations } from '@/lib/i18n';

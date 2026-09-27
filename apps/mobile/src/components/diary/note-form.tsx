@@ -9,10 +9,10 @@ import { FormScrollView } from '@/components/common/form-scroll-view';
 import { NOTE_TEXT } from '@/components/common/note-text';
 import { TagInput } from '@/components/tags/tag-input';
 import { SPACING, TEXT } from '@/constants/layout';
-import { NOTE_BODY_MAX } from '@/features/diary';
-import { todayKey, type DateKey } from '@/features/logs';
-import { TAGS_MAX } from '@/features/tags';
-import { useProfile } from '@/features/user';
+import { NOTE_BODY_MAX } from '@/features/diary/types';
+import { todayKey, type DateKey } from '@/features/logs/period';
+import { TAGS_MAX } from '@/features/tags/rules';
+import { useProfile } from '@/features/user/hooks';
 import { useTranslations } from '@/lib/i18n';
 
 import type { useNoteDraft } from './note-draft';

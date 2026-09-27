@@ -1,4 +1,5 @@
-import { ApiError, api } from '@/lib/api';
+import { ApiError } from '@/lib/api/errors';
+import { api } from '@/lib/api/client';
 
 import type { Limits, WireLimits, WireResourceLimit } from './types';
 

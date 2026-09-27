@@ -3,7 +3,7 @@ import { Stack, useLocalSearchParams } from 'expo-router';
 import { ErrorNotice } from '@/components/common/error-notice';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { GoalForm } from '@/components/goals/goal-form';
-import { useGoal, useGoalErrorMessage } from '@/features/goals';
+import { useGoal, useGoalErrorMessage } from '@/features/goals/hooks';
 
 export default function EditGoal() {
   const { id } = useLocalSearchParams<{ id: string }>();

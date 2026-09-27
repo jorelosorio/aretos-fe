@@ -7,7 +7,7 @@
  * so the two live here rather than in the components that draw them.
  */
 
-import type { Habit, TrackingMode } from '@/features/habits';
+import type { Habit, TrackingMode } from '@/features/habits/types';
 
 /**
  * How much one press of `+` adds.

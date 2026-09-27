@@ -4,7 +4,7 @@ import { BasisNote } from '@/components/viz/basis-note';
 import { ChartCard } from '@/components/viz/chart-card';
 import { Meter } from '@/components/viz/meter';
 import { TEXT, SPACING } from '@/constants/layout';
-import type { Cadence } from '@/features/analysis';
+import type { Cadence } from '@/features/analysis/types';
 import { useTranslations } from '@/lib/i18n';
 
 const STATUSES = ['complete', 'partial', 'missed', 'skipped', 'empty'] as const;

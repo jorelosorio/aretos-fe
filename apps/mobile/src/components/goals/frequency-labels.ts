@@ -6,7 +6,7 @@
  * map is three chances for "Semanal" to read differently on one of them.
  */
 
-import type { Goal } from '@/features/goals';
+import type { Goal } from '@/features/goals/types';
 import type { TranslationKey } from '@/lib/i18n';
 
 export const FREQUENCY_LABELS: Record<
