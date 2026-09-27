@@ -2,7 +2,12 @@ import { useCallback, useState } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
-import { CircleCheck, Plus, Target } from '@tamagui/lucide-icons-2';
+import {
+  CalendarDays,
+  CircleCheck,
+  Plus,
+  Target,
+} from '@tamagui/lucide-icons-2';
 import { SizableText, YStack } from 'tamagui';
 
 import { longDateLabel } from '@/components/common/date-label';
@@ -85,13 +90,12 @@ export function HomeScreen() {
     );
   } else if (scored.length > 0) {
     empty = (
-      <SizableText
-        px={SPACING.screen}
-        size={TEXT.body}
-        color="$mutedForeground"
-      >
-        {t('home.noneLogged')}
-      </SizableText>
+      <EmptyLog
+        Icon={CalendarDays}
+        illustration={ILLUSTRATIONS.nothingLogged}
+        title={t('home.noneLogged')}
+        body={t('home.noneLoggedBody')}
+      />
     );
   } else if (!goals.error) {
     empty = (

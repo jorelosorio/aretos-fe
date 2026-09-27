@@ -109,7 +109,9 @@ export function GoalsScreen() {
             <YStack flex={1} px={SPACING.screen} pb={SPACING.screen}>
               <EmptyGoals
                 Icon={archived ? Archive : Target}
-                illustration={archived ? undefined : ILLUSTRATIONS.noGoals}
+                illustration={
+                  archived ? ILLUSTRATIONS.noArchived : ILLUSTRATIONS.noGoals
+                }
                 title={t(
                   archived ? 'goals.empty.archivedTitle' : 'goals.empty.title',
                 )}

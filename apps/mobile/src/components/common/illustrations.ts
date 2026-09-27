@@ -2,6 +2,8 @@ import type { ComponentType } from 'react';
 import type { ImageSourcePropType } from 'react-native';
 
 import allLogged from '@/assets/illustrations/all-logged.svg';
+import noArchived from '@/assets/illustrations/no-archived.svg';
+import nothingLogged from '@/assets/illustrations/nothing-logged.svg';
 
 import { EmptyDiaryArt } from './empty-diary-art';
 import { NoDataArt } from './no-data-art';
@@ -46,8 +48,29 @@ export const ILLUSTRATIONS = {
    * Drawn for the app rather than taken from Storyset, in the same flat
    * style and palette as `noGoals` so the two read as one set. Being our
    * own, it adds nothing to `credits.ts`.
+   *
+   * Still rather than animated, like the other two states that are about
+   * the day's progress rather than a blank page: `nothingLogged` and
+   * `noArchived`. A finished or waiting list is not a moment to perform.
    */
   allLogged,
+  /**
+   * Nothing logged yet in the current period: home's Logged tab.
+   *
+   * A desk calendar whose days are all still empty dashed circles, today's
+   * ringed in terracotta, under a sun badge — the day has started and is
+   * waiting, nothing has been missed. Drawn for the app, still, beside the
+   * same plant and mug as `allLogged`, which is the same list once it fills.
+   */
+  nothingLogged,
+  /**
+   * No archived goals: the goals list's Archived filter.
+   *
+   * An open cardboard box, empty inside, with a blank label and an archive
+   * badge: the place goals go when put away, with nothing in it yet. Drawn
+   * for the app, still.
+   */
+  noArchived,
   /**
    * No notes yet: the diary with no tag filter applied.
    *

@@ -36,7 +36,8 @@ export const es = {
     },
     allLogged: 'Todo registrado. ¡Bien hecho!',
     allLoggedBody: 'Disfruta el resto del día.',
-    noneLogged: 'Aún no has registrado nada.',
+    noneLogged: 'Aún no has registrado nada',
+    noneLoggedBody: 'Las metas que registres hoy aparecerán aquí.',
     noHabits: 'Sin hábitos todavía',
     cta: {
       log: 'Registrar hoy',
