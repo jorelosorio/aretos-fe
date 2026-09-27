@@ -19,9 +19,7 @@
  * around, a sparkle twinkles from, or a dot pulses at.
  */
 
-export type ArtLayer = { xml: string; center: readonly [number, number] };
-
-export const VIEWBOX = 500;
+import type { ArtLayer } from './art-layer';
 
 /** Where the fist meets the forearm: the hand and pencil tap by turning here. */
 export const WRIST = [285, 335] as const;

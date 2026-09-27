@@ -19,4 +19,12 @@ export const CREDITS: readonly Credit[] = [
     label: 'Work illustrations by Storyset',
     url: 'https://storyset.com/work',
   },
+  {
+    label: 'Data illustrations by Storyset',
+    url: 'https://storyset.com/data',
+  },
+  {
+    label: 'Write illustrations by Storyset',
+    url: 'https://storyset.com/write',
+  },
 ];

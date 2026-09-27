@@ -2,8 +2,9 @@ import type { ComponentType } from 'react';
 import type { ImageSourcePropType } from 'react-native';
 
 import allLogged from '@/assets/illustrations/all-logged.svg';
-import emptyDiary from '@/assets/illustrations/empty-diary.svg';
 
+import { EmptyDiaryArt } from './empty-diary-art';
+import { NoDataArt } from './no-data-art';
 import { NoGoalsArt } from './no-goals-art';
 
 /**
@@ -31,7 +32,7 @@ export type Illustration =
  */
 export const ILLUSTRATIONS = {
   /**
-   * No goals yet: home, the goals list and the analysis tab.
+   * No goals yet: home and the goals list.
    *
    * Animated: the girl taps her pencil against her cheek, the three goal
    * ideas float, the sparkles twinkle and the thought dots pulse in turn.
@@ -50,10 +51,28 @@ export const ILLUSTRATIONS = {
   /**
    * No notes yet: the diary with no tag filter applied.
    *
-   * Drawn for the app like `allLogged`: an open journal with blank, ruled
-   * pages and a pencil resting on them, on the same backdrop, floor line and
-   * badge as the other two. A filtered diary that matches nothing keeps its
-   * plain tag icon — the diary is not empty there, the filter is.
+   * Animated: Storyset's left-handed girl writes along a line of her notebook
+   * — the pencil moves in small strokes while the line fills in behind it,
+   * then lifts back to the start — as the pencil badge floats and the
+   * sparkles twinkle. Still under Reduce Motion, on the finished line.
+   * Credited in `credits.ts`, described in `empty-diary-art-layers.ts`.
+   *
+   * A filtered diary that matches nothing keeps its plain tag icon — the
+   * diary is not empty there, the filter is.
    */
-  emptyDiary,
+  emptyDiary: EmptyDiaryArt,
+  /**
+   * The analysis tab with nothing to read: no goals yet, or goals with
+   * nothing logged in the window. The tab keeps one drawing for being empty
+   * rather than borrowing `noGoals`, so an empty chart reads as its own state.
+   *
+   * Animated like `noGoals`, and with a person of its own rather than the
+   * same girl: Storyset's man from "Server status", recoloured to the set,
+   * points up at an empty chart with his arm waving gently from the
+   * shoulder, while the dashed bars rise and settle as if data were on its
+   * way, the hourglass badge floats and the sparkles twinkle. Still under
+   * Reduce Motion. Credited in `credits.ts`, described in
+   * `no-data-art-layers.ts`.
+   */
+  noData: NoDataArt,
 } as const satisfies Record<string, Illustration>;

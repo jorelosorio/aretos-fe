@@ -7,6 +7,7 @@ import {
   Gauge,
   ListChecks,
   Smile,
+  ChartNoAxesColumn,
   Target,
 } from '@tamagui/lucide-icons-2';
 import { ScrollView, SizableText, XStack, YStack } from 'tamagui';
@@ -186,12 +187,12 @@ export function AnalysisScreen() {
           </YStack>
         ) : isPending ? (
           <ScreenLoader />
-        ) : report.setup.goals === 0 ? (
+        ) : report.setup.goals === 0 || report.calendar.logged === 0 ? (
           <EmptyLog
-            Icon={Target}
-            illustration={ILLUSTRATIONS.noGoals}
-            title={t('goals.empty.title')}
-            body={t('goals.empty.body')}
+            Icon={ChartNoAxesColumn}
+            illustration={ILLUSTRATIONS.noData}
+            title={t('analysis.noData.title')}
+            body={t('analysis.noData.body')}
           />
         ) : (
           <>

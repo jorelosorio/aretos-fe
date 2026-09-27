@@ -154,6 +154,10 @@ export const es = {
     basis: {
       thin: '%{sample} · provisional',
     },
+    noData: {
+      title: 'Aún no hay datos',
+      body: 'Tu análisis se construye con lo que registras. Cuando tus hábitos tengan unos días de registros, aquí verás tus patrones y tu progreso.',
+    },
     notEnough: {
       title: 'Aún no hay suficiente',
       body: 'Necesitamos %{need} para decir algo con fundamento.',
