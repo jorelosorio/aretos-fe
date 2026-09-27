@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { Plus } from '@tamagui/lucide-icons-2';
-import { Button, Paragraph, SizableText, YStack } from 'tamagui';
+import { Button, Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
 import { SectionTitle } from '@/components/common/section-title';
 import { NoteEditor } from '@/components/diary/note-editor';
@@ -21,6 +21,7 @@ import { useTranslations, type AppLocale } from '@/lib/i18n';
 import { dateFormat } from '@/utils/date-format';
 
 const PREVIEW_LINES = 3;
+const HIT_SLOP = 8;
 
 type Target =
   | { kind: 'new' }
@@ -210,7 +211,24 @@ export function CheckInNotes({
 
   return (
     <YStack gap={SPACING.group}>
-      <SectionTitle>{t('logs.notes.title')}</SectionTitle>
+      <XStack items="center" justify="space-between" gap={SPACING.items}>
+        <SectionTitle>{t('logs.notes.title')}</SectionTitle>
+
+        <Button
+          size={BUTTON.compact}
+          chromeless
+          px={0}
+          hitSlop={HIT_SLOP}
+          disabled={!canCreate || busy}
+          opacity={canCreate && !busy ? 1 : 0.4}
+          onPress={() => edit({ kind: 'new' })}
+          icon={<Plus size={ICON.row} color="$primary" />}
+        >
+          <SizableText size={TEXT.body} fontWeight="700" color="$primary">
+            {t('logs.notes.add')}
+          </SizableText>
+        </Button>
+      </XStack>
 
       {notes.map((note) => (
         <NoteRow
@@ -239,20 +257,6 @@ export function CheckInNotes({
           onPress={() => edit({ kind: 'pending', note })}
         />
       ))}
-
-      <Button
-        self="flex-start"
-        size={BUTTON.compact}
-        chromeless
-        disabled={!canCreate || busy}
-        opacity={canCreate && !busy ? 1 : 0.4}
-        onPress={() => edit({ kind: 'new' })}
-        icon={<Plus size={ICON.row} color="$primary" />}
-      >
-        <SizableText size={TEXT.body} fontWeight="700" color="$primary">
-          {t('logs.notes.add')}
-        </SizableText>
-      </Button>
 
       {editing !== null && (
         <CheckInNoteComposer

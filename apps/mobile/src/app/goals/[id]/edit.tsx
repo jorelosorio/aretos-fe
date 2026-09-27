@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from 'expo-router';
+import { Stack, useLocalSearchParams } from 'expo-router';
 
 import { ErrorNotice } from '@/components/common/error-notice';
 import { ScreenLoader } from '@/components/common/screen-loader';
@@ -14,17 +14,21 @@ export default function EditGoal() {
   if (!goal) return <ScreenLoader />;
 
   return (
-    <GoalForm
-      goalId={goal.id}
-      initial={{
-        name: goal.name,
-        description: goal.description,
-        trackingFrequency: goal.trackingFrequency,
-        streakRule: goal.streakRule,
-        streakThreshold: goal.streakThreshold,
-        colorSlot: goal.colorSlot,
-        tags: goal.tags,
-      }}
-    />
+    <>
+      <Stack.Screen options={{ title: goal.name }} />
+
+      <GoalForm
+        goalId={goal.id}
+        initial={{
+          name: goal.name,
+          description: goal.description,
+          trackingFrequency: goal.trackingFrequency,
+          streakRule: goal.streakRule,
+          streakThreshold: goal.streakThreshold,
+          colorSlot: goal.colorSlot,
+          tags: goal.tags,
+        }}
+      />
+    </>
   );
 }

@@ -77,9 +77,9 @@ const accentDark = {
  * - A pastel cannot serve both: it is itself light, so it contrasts only
  *   with a near-black surface and all but disappears on cream.
  * - So these are mid-tones, each the lightness that maximises its *worst*
- *   contrast across every surface it lands on in either scheme: card, page
- *   and field in light; card, page and muted in dark. Each holds 3.5–4.3:1
- *   on all of them. That clears 3:1 for marks, bars and bold labels.
+ *   contrast across every surface it lands on in either scheme: card and
+ *   page in light; card, page and muted in dark. Each holds 3.5–4.3:1 on all
+ *   of them. That clears 3:1 for marks, bars and bold labels.
  *   It is short of 4.5:1 for small body text, and no single colour can
  *   reach that on both cream and near-black: the ceiling is about 3.7:1.
  *
@@ -141,15 +141,15 @@ const lightRoles = {
   // them vanish under the finger. Darker than `muted` in light, lighter than
   // `card` in dark, so it reads apart from both.
   cardPress: '#e4d6bd',
-  // A text field's well. Its own role, not `card`: at the card's near-white
-  // on the cream screen a field reads as a white box rather than as a place
-  // to write. It sits a step *below* the screen, tinted toward the
-  // terracotta, so a form reads as wells to fill between the raised cards of
-  // its choices. `fieldChip` is what a tag chip sits as inside one — `muted`
-  // is too close to the well to separate from it.
-  field: '#f2e1cf',
-  fieldBorder: '#dfc6ac',
-  fieldChip: '#fffaf1',
+  // A text field. Its own role, though in both schemes it is the card: a form
+  // reads as one set of surfaces, fields and choices alike, rather than as
+  // tinted wells between raised cards. Unlike a card it keeps a hairline of
+  // `border`, the one cue that it takes typing rather than a tap.
+  // `fieldChip` is what a tag chip sits as inside one: `muted`, as on any
+  // other card.
+  field: '#fffaf1',
+  fieldBorder: '#ded3c0',
+  fieldChip: '#efe3ce',
   popover: '#fffaf1',
   popoverForeground: '#2a211b',
 
