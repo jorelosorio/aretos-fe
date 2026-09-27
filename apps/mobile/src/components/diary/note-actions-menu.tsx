@@ -1,5 +1,4 @@
 import { Alert } from 'react-native';
-import { useRouter } from 'expo-router';
 import { Pencil } from '@tamagui/lucide-icons-2/icons/Pencil';
 import { Trash2 } from '@tamagui/lucide-icons-2/icons/Trash2';
 
@@ -11,12 +10,15 @@ import { useTranslations } from '@/lib/i18n';
 export function NoteActionsMenu({
   note,
   onEdit,
+  onDeleted,
+  disabled = false,
 }: {
   note: DiaryNote;
-  onEdit: () => void;
+  onEdit?: () => void;
+  onDeleted: () => void;
+  disabled?: boolean;
 }) {
   const { t } = useTranslations();
-  const router = useRouter();
   const toMessage = useNoteErrorMessage();
   const { removeNote, isRemoving } = useRemoveNote();
 
@@ -28,7 +30,7 @@ export function NoteActionsMenu({
         style: 'destructive',
         onPress: () =>
           void removeNote(note)
-            .then(() => router.back())
+            .then(onDeleted)
             .catch((failure: unknown) =>
               Alert.alert(t('diary.errors.title'), toMessage(failure) ?? ''),
             ),
@@ -36,12 +38,16 @@ export function NoteActionsMenu({
     ]);
 
   const actions: MenuAction[] = [
-    {
-      key: 'edit',
-      label: t('diary.viewer.edit'),
-      Icon: Pencil,
-      onPress: onEdit,
-    },
+    ...(onEdit === undefined
+      ? []
+      : [
+          {
+            key: 'edit',
+            label: t('diary.viewer.edit'),
+            Icon: Pencil,
+            onPress: onEdit,
+          },
+        ]),
     {
       key: 'delete',
       label: t('diary.viewer.delete'),
@@ -55,7 +61,7 @@ export function NoteActionsMenu({
     <ActionsMenu
       label={t('diary.viewer.actions')}
       actions={actions}
-      disabled={isRemoving}
+      disabled={disabled || isRemoving}
     />
   );
 }

@@ -85,7 +85,7 @@ export const en = {
       editTitle: 'Edit note',
       placeholder: 'Your note',
       save: 'Save',
-      delete: 'Delete note',
+      update: 'Update',
       back: 'Back',
       body: 'Note',
       discardTitle: 'Discard your changes?',

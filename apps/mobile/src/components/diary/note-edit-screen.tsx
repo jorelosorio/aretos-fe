@@ -6,6 +6,7 @@ import { ChevronLeft } from '@tamagui/lucide-icons-2/icons/ChevronLeft';
 
 import { ErrorNotice } from '@/components/common/error-notice';
 import {
+  HeaderActions,
   HeaderIconButton,
   HeaderTextButton,
 } from '@/components/common/header-actions';
@@ -21,6 +22,7 @@ import { runExclusive } from '@/lib/exclusive';
 import { useTranslations } from '@/lib/i18n';
 
 import { periodLabel } from './diary-date';
+import { NoteActionsMenu } from './note-actions-menu';
 import { useNoteDraft, type NoteValue } from './note-draft';
 import { NoteForm } from './note-form';
 
@@ -71,6 +73,16 @@ function NoteEditForm({ note }: { note: DiaryNote | null }) {
     });
   }, [guarded, navigation, t]);
 
+  const deleted = () => {
+    leaving.current = true;
+    const state = navigation.getState();
+    const fromReader =
+      state !== undefined &&
+      state.routes[state.index - 1]?.name === 'diary/[id]/index';
+    if (fromReader) router.dismiss(2);
+    else router.back();
+  };
+
   const save = () => {
     const { body, tags, entryDate } = draft.value;
 
@@ -109,12 +121,23 @@ function NoteEditForm({ note }: { note: DiaryNote | null }) {
             />
           ),
           headerRight: () => (
-            <HeaderTextButton
-              label={t('diary.editor.save')}
-              onPress={save}
-              disabled={!canSave}
-              busy={isWriting}
-            />
+            <HeaderActions>
+              <HeaderTextButton
+                label={t(
+                  note === null ? 'diary.editor.save' : 'diary.editor.update',
+                )}
+                onPress={save}
+                disabled={!canSave}
+                busy={isWriting}
+              />
+              {note !== null && (
+                <NoteActionsMenu
+                  note={note}
+                  onDeleted={deleted}
+                  disabled={isWriting}
+                />
+              )}
+            </HeaderActions>
           ),
         }}
       />

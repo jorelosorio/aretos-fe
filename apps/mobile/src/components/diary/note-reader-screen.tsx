@@ -145,7 +145,13 @@ export function NoteReaderScreen({ id }: { id: string }) {
           headerTitle: () => <ContextPill checkIn={checkIn} />,
           headerRight: readOnly
             ? undefined
-            : () => <NoteActionsMenu note={note} onEdit={edit} />,
+            : () => (
+                <NoteActionsMenu
+                  note={note}
+                  onEdit={edit}
+                  onDeleted={() => router.back()}
+                />
+              ),
         }}
       />
 

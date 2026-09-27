@@ -13,7 +13,7 @@ import type { IconComponent } from '@/components/common/icon-component';
 import {
   HeaderButtons,
   type HeaderAction,
-} from '@/components/common/header-actions';
+} from '@/components/common/header-buttons';
 import { SectionTitle } from '@/components/common/section-title';
 import { SHEET_ENTER, SHEET_EXIT } from '@/components/common/sheet-motion';
 import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';

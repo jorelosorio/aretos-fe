@@ -86,7 +86,7 @@ export const es = {
       editTitle: 'Editar nota',
       placeholder: 'Tu nota',
       save: 'Guardar',
-      delete: 'Eliminar nota',
+      update: 'Actualizar',
       back: 'Volver',
       body: 'Nota',
       discardTitle: '¿Descartar los cambios?',

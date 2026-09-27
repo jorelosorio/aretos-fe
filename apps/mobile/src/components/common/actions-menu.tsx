@@ -1,5 +1,5 @@
 import { Fragment, useRef, useState } from 'react';
-import { Modal, Platform, Pressable, StyleSheet } from 'react-native';
+import { Modal, Platform, Pressable, StyleSheet, View } from 'react-native';
 import { Ellipsis } from '@tamagui/lucide-icons-2/icons/Ellipsis';
 import { EllipsisVertical } from '@tamagui/lucide-icons-2/icons/EllipsisVertical';
 import { Separator, SizableText, XStack, YStack } from 'tamagui';
@@ -64,7 +64,21 @@ export function ActionsMenu({
 }) {
   const header = useHeaderMetrics();
   const [open, setOpen] = useState(false);
+  const [top, setTop] = useState(header.height);
+  const anchor = useRef<View>(null);
   const chosen = useRef<MenuAction | null>(null);
+
+  const show = () => {
+    const trigger = anchor.current;
+    if (trigger === null) {
+      setOpen(true);
+      return;
+    }
+    trigger.measureInWindow((_x, y, _width, height) => {
+      if (height > 0) setTop(y + height);
+      setOpen(true);
+    });
+  };
 
   const run = () => {
     const action = chosen.current;
@@ -86,16 +100,19 @@ export function ActionsMenu({
 
   return (
     <>
-      <HeaderIconButton
-        Icon={OverflowIcon}
-        label={label}
-        onPress={() => setOpen(true)}
-        disabled={disabled}
-      />
+      <View ref={anchor} collapsable={false}>
+        <HeaderIconButton
+          Icon={OverflowIcon}
+          label={label}
+          onPress={show}
+          disabled={disabled}
+        />
+      </View>
 
       <Modal
         visible={open}
         transparent
+        statusBarTranslucent
         animationType="fade"
         onRequestClose={() => setOpen(false)}
         onDismiss={run}
@@ -108,7 +125,7 @@ export function ActionsMenu({
 
         <YStack
           position="absolute"
-          t={header.height}
+          t={top}
           r={MENU_INSET}
           width={MENU_WIDTH}
           bg="$card"

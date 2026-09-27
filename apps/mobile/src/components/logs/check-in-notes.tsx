@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { useRouter } from 'expo-router';
 import { Plus } from '@tamagui/lucide-icons-2/icons/Plus';
 import { Paragraph } from 'tamagui';
 
@@ -9,13 +10,7 @@ import type { NoteValue } from '@/components/diary/note-draft';
 import { notePreview } from '@/components/diary/note-preview';
 import { NoteMeta } from '@/components/diary/note-meta';
 import { SPACING, TEXT } from '@/constants/layout';
-import {
-  useAddCheckInNote,
-  useDeleteCheckInNote,
-  useNoteErrorMessage,
-  useUpdateCheckInNote,
-} from '@/features/diary/hooks';
-import type { CheckInNote } from '@/features/diary/types';
+import { useAddCheckInNote, useNoteErrorMessage } from '@/features/diary/hooks';
 import { useAllowance } from '@/features/limits/hooks';
 import { useLog } from '@/features/logs/hooks';
 import type { NoteBody, PendingNote } from '@/features/logs/pending-notes';
@@ -24,10 +19,7 @@ import { dateFormat } from '@/utils/date-format';
 
 const PREVIEW_LINES = 3;
 
-type Target =
-  | { kind: 'new' }
-  | { kind: 'saved'; note: CheckInNote }
-  | { kind: 'pending'; note: PendingNote };
+type Target = { kind: 'new' } | { kind: 'pending'; note: PendingNote };
 
 type Editing = { session: number; target: Target; open: boolean };
 
@@ -106,16 +98,6 @@ function CheckInNoteComposer({
 }) {
   const toMessage = useNoteErrorMessage();
   const { addCheckInNote, isAdding, error: addError } = useAddCheckInNote();
-  const {
-    updateCheckInNote,
-    isUpdating,
-    error: updateError,
-  } = useUpdateCheckInNote();
-  const {
-    deleteCheckInNote,
-    isDeleting,
-    error: deleteError,
-  } = useDeleteCheckInNote();
 
   const save = ({ body, tags }: NoteValue) => {
     if (target.kind === 'pending') {
@@ -129,29 +111,15 @@ function CheckInNoteComposer({
       return;
     }
 
-    const request =
-      target.kind === 'saved'
-        ? updateCheckInNote({
-            logId,
-            noteId: target.note.id,
-            patch: { body, tags },
-          })
-        : addCheckInNote({ logId, note: { body, tags } });
-
-    return request.then(onClose).catch(() => undefined);
+    return addCheckInNote({ logId, note: { body, tags } })
+      .then(onClose)
+      .catch(() => undefined);
   };
 
   const remove = () => {
-    if (target.kind === 'pending') {
-      onRemovePending(target.note.key);
-      onClose();
-      return;
-    }
-    if (target.kind !== 'saved' || logId === null) return;
-
-    void deleteCheckInNote({ logId, noteId: target.note.id })
-      .then(onClose)
-      .catch(() => undefined);
+    if (target.kind !== 'pending') return;
+    onRemovePending(target.note.key);
+    onClose();
   };
 
   return (
@@ -164,8 +132,9 @@ function CheckInNoteComposer({
         tags: target.kind === 'new' ? [] : target.note.tags,
         entryDate: null,
       }}
-      busy={isAdding || isUpdating || isDeleting}
-      error={toMessage(addError ?? updateError ?? deleteError)}
+      existing={target.kind !== 'new'}
+      busy={isAdding}
+      error={toMessage(addError)}
       onSave={save}
       onDelete={target.kind === 'new' ? undefined : remove}
       onDismiss={onClose}
@@ -194,6 +163,7 @@ export function CheckInNotes({
 }) {
   const { t, locale } = useTranslations();
   const toMessage = useNoteErrorMessage();
+  const router = useRouter();
   const { canCreate } = useAllowance('diary_note');
   const { data: log } = useLog(logId);
 
@@ -225,7 +195,12 @@ export function CheckInNotes({
           caption={writtenAt(note.createdAt, locale)}
           captionColor="$mutedForeground"
           disabled={busy}
-          onPress={() => edit({ kind: 'saved', note })}
+          onPress={() =>
+            router.push({
+              pathname: '/diary/[id]/edit',
+              params: { id: note.id },
+            })
+          }
         />
       ))}
 

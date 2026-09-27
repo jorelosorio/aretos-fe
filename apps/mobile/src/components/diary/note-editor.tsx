@@ -18,6 +18,7 @@ export function NoteEditor({
   title,
   period,
   initial,
+  existing,
   busy,
   error,
   onSave,
@@ -28,6 +29,7 @@ export function NoteEditor({
   title: string;
   period?: string;
   initial: NoteValue;
+  existing: boolean;
   busy: boolean;
   error: string | null;
   onSave: (value: NoteValue) => Promise<unknown> | void;
@@ -84,24 +86,31 @@ export function NoteEditor({
       iconLabel={t('diary.editor.back')}
       onDismiss={dismiss}
       actions={[
-        ...(onDelete === undefined
-          ? []
-          : [
-              {
-                kind: 'icon' as const,
-                Icon: Trash2,
-                label: t('diary.editor.delete'),
-                onPress: confirmDelete,
-                disabled: busy,
-              },
-            ]),
         {
           kind: 'text',
-          label: t('diary.editor.save'),
+          label: t(existing ? 'diary.editor.update' : 'diary.editor.save'),
           onPress: submit,
           disabled: !canSave,
           busy,
         },
+        ...(onDelete === undefined
+          ? []
+          : [
+              {
+                kind: 'menu' as const,
+                label: t('diary.viewer.actions'),
+                disabled: busy,
+                actions: [
+                  {
+                    key: 'delete',
+                    label: t('diary.viewer.delete'),
+                    Icon: Trash2,
+                    destructive: true,
+                    onPress: confirmDelete,
+                  },
+                ],
+              },
+            ]),
       ]}
     >
       <NoteForm
