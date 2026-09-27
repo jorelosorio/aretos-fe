@@ -24,10 +24,9 @@
  * The colours are not here, and cannot be: they have to be read off the live
  * theme. `createV5Theme` generates an `Input` component theme, so `$background`
  * and `$color` written *inside* a `TextArea` resolve against that sub-theme
- * and come out as Tamagui's raised input surface — which is why the editor
- * used to sit on a lighter panel than the viewer while their two headers,
- * outside the input, matched. The editor passes values resolved from
- * `useTheme()` instead, so both sit on the screen's own background.
+ * and come out as Tamagui's raised input surface, a lighter panel than the
+ * viewer's. The editor passes values resolved from `useTheme()` instead, so
+ * both sit on the screen's own background.
  */
 
 import { SPACING } from '@/constants/layout';

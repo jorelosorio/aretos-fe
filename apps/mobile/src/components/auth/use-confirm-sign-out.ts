@@ -12,9 +12,8 @@ import { useTranslations } from '@/lib/i18n';
  * alarm colour on a routine way out.
  *
  * A hook rather than a button because Settings shows it as a row in its own
- * section, like every other setting. It used to be a standalone button
- * floating below the last group, the one control on the screen that did not
- * sit in a section.
+ * section, like every other setting, and any other screen that offers
+ * sign-out gets the same confirmation from here.
  */
 export function useConfirmSignOut() {
   const { t } = useTranslations();

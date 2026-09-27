@@ -67,20 +67,15 @@ const accentDark = {
  * moss goal slot `chart8` — reads from `done`, and every role that means
  * "missed" or "watch this" — `warning`, `outcomeMissed`, and the ochre goal
  * slot `chart3` — reads from `missed`. `destructive` and `critical` read from
- * `danger`. They used to be separate literals that had drifted a few shades
- * apart, so the analysis tab showed three greens on one screen: the donut's,
- * the best-day bar's, and the verdict text's. A role here may alias one of
- * these; it never gets its own value for the same meaning again.
+ * `danger`. A role may alias one of these but never gets its own value for
+ * the same meaning, so one screen never shows two greens for "done".
  *
- * Light and dark used to carry their own set too — a deep moss in light, a
- * lifted sage in dark — so a check mark changed colour with the theme and the
- * same "done" read as two different things. One set now serves both, and
- * that constrains how light or dark it can be:
+ * The same set serves both schemes, so a check mark is one colour in light
+ * and dark and "done" reads as one thing. That constrains how light or dark
+ * the set can be:
  *
- * - The dark theme's pastels were tried first. They sat at 1.8–2.7:1 on the
- *   cream, and "Complete" in sage on a home card could barely be read. No
- *   cream can fix that — a pastel is itself light, and only a near-black
- *   surface contrasts with it.
+ * - A pastel cannot serve both: it is itself light, so it contrasts only
+ *   with a near-black surface and all but disappears on cream.
  * - So these are mid-tones, each the lightness that maximises its *worst*
  *   contrast across every surface it lands on in either scheme: card, page
  *   and field in light; card, page and muted in dark. Each holds 3.5–4.3:1
@@ -115,13 +110,12 @@ const darkNeutral: typeof lightNeutral = {
 
 /**
  * Every colour here belongs to one earthy family: cream, clay, terracotta,
- * moss, ochre. The status and chart roles used to be borrowed from a generic
- * UI kit — a grass green, a traffic-light yellow, a pure red, and a chart
- * palette of teal, royal blue and violet — and they were the loudest thing on
- * any screen they appeared on, louder than the terracotta that is meant to
- * lead.
+ * moss, ochre. Generic UI-kit colours — a grass green, a traffic-light
+ * yellow, a pure red, a chart palette of teal, royal blue and violet — would
+ * be the loudest thing on any screen, louder than the terracotta that is
+ * meant to lead.
  *
- * So each semantic role is now the earthy cousin of what it means:
+ * So each semantic role is the earthy cousin of what it means:
  *
  * - `good` is moss — the very value `outcomeDone` is — so "this is going
  *   well" and "this habit was done" are one colour, not two close ones.
@@ -147,12 +141,12 @@ const lightRoles = {
   // them vanish under the finger. Darker than `muted` in light, lighter than
   // `card` in dark, so it reads apart from both.
   cardPress: '#e4d6bd',
-  // A text field's well. Its own role, not `card`: a field used to be a card
-  // with a caret in it, and at `#fffaf1` on the cream screen it read as a
-  // white box rather than as a place to write. It now sits a step *below* the
-  // screen, tinted toward the terracotta, so a form reads as wells to fill
-  // between the raised cards of its choices. `fieldChip` is what a tag chip
-  // sits as inside one — `muted` is too close to the well to separate from it.
+  // A text field's well. Its own role, not `card`: at the card's near-white
+  // on the cream screen a field reads as a white box rather than as a place
+  // to write. It sits a step *below* the screen, tinted toward the
+  // terracotta, so a form reads as wells to fill between the raised cards of
+  // its choices. `fieldChip` is what a tag chip sits as inside one — `muted`
+  // is too close to the well to separate from it.
   field: '#f2e1cf',
   fieldBorder: '#dfc6ac',
   fieldChip: '#fffaf1',

@@ -15,12 +15,10 @@
  * - **Names in the content.** A goal's or a habit's name anywhere below the
  *   header — the home cards, the Goals tab, a goal's habits, the check-in's
  *   rows, the analysis cards, and the goal's own card on its detail screen —
- *   is `$body` at weight 700. They once took the display face too, and a
- *   check-in of three habits read as three titles stacked under the screen's
- *   own, each two lines of heavy slab type in a card too narrow for it; the
- *   detail screen set its goal's name in it twice, once in the header and
- *   again in the card beneath. Bold body keeps a name the first thing in its
- *   card without competing with the title above it.
+ *   is `$body` at weight 700. In the display face, a list of names reads as
+ *   a stack of titles competing with the screen's own, and a name repeated
+ *   below the header that already shows it reads twice. Bold body keeps a
+ *   name the first thing in its card without competing with the title above.
  * - **The home greeting.** Home draws no header, but the greeting is content
  *   about the person rather than the screen's title, so it is `$body` at
  *   weight 700 like any other line of content.
@@ -38,19 +36,15 @@
  * - **Numbers and measured values.** A stat is data, not a name, and setting
  *   one in the display face puts it in direct competition with the heading
  *   beside it. These are `$body` at weight 700.
- * - **Button labels.** An action rather than a subject. The web sets its
- *   buttons in the display face, and the mobile app used to follow it through
- *   `Button`'s default props — which put Caprasimo on "Guardar registro" and
- *   "Cerrar sesión" a few points from the goal name they sat under. The
- *   default is now `$body` at weight 700, the same weight a header action
- *   such as "Guardar" is set in.
+ * - **Button labels.** An action rather than a subject. `Button`'s default
+ *   face is `$body` at weight 700, the same weight a header action such as
+ *   "Guardar" is set in, so a button never reads as a name. The web sets its
+ *   buttons in the display face; the app does not follow it there.
  *
- * A home screen used to stack the greeting, the section heading, a goal's
- * name and an empty-state title all in Caprasimo, within a step of each
- * other, and a reader had no way to tell which one was the point. Caprasimo
- * also used to appear at seven sizes, `$1` to `$8`, on unit labels and
- * stepper values — which is how a face meant to single something out came to
- * single out nothing.
+ * The rule exists because the face only works while it is rare: several
+ * lines in Caprasimo within a step of each other leave a reader no way to
+ * tell which one is the point, and one face at many sizes singles out
+ * nothing.
  *
  * The sizes themselves belong to `TEXT` in `src/constants/layout.ts`, and no
  * component writes a raw one. Reach for `fontWeight` before `fontFamily`.

@@ -39,14 +39,10 @@ export const SPACING = {
  * Same argument as `SPACING`: the font scale is the unit, these are the
  * decision about which unit belongs where.
  *
- * This used to hold two roles and insist that two was enough — "a third tier
- * is how the drift starts again". The drift happened anyway, in the other
- * direction: screens reached past the tokens for a raw `size="$5"` and the app
- * ended up running nine sizes, fifty-seven of them written as literals. Two
- * roles did not prevent a third, it only meant the third was never named.
- *
- * So every step a screen legitimately needs is here, and the rule is the one
- * that was missing: **a component never writes a raw `size="$n"` for text.**
+ * A scale too small to cover every job does not stop a screen needing one
+ * more step; it only means the step gets written as a raw literal nobody
+ * named. So every step a screen legitimately needs is here, and the rule is:
+ * **a component never writes a raw `size="$n"` for text.**
  * If a new job does not fit one of these, the scale gains a role rather than
  * the screen gaining a literal.
  *
@@ -94,17 +90,17 @@ export const TEXT = {
   heading: '$5',
   /**
    * A card's subject: a goal's or a habit's name, wherever it sits in the
-   * content. One size everywhere, a goal's own detail screen included — it
-   * once set the name at `title` there, a step louder than the same name on
-   * every other card, when the native header above already names the goal.
+   * content. One size everywhere, a goal's own detail screen included: the
+   * native header above already names the goal, so the name in its card has
+   * no reason to be louder than on any other card.
    */
   subheading: '$4',
   /**
    * Running prose: whatever is read as sentences, however short. Also a
    * row's label in a grouped list — Settings, a form's choices — one step
-   * below the `SectionTitle` above it. Those rows once sat at `subheading`,
-   * the title's own size, so "Appearance" and "Light" differed only by
-   * weight and the heading read as one more row.
+   * below the `SectionTitle` above it. At the title's own size a heading
+   * and its rows would differ only by weight, and the heading would read as
+   * one more row.
    */
   body: '$3',
   /**
@@ -157,8 +153,8 @@ export const TEXT = {
  *   "Guardar" is too close for "Eliminar".
  * - **A card that opens something carries no chevron.** The whole card is
  *   the button, and its edge and its press state already say so; a `›` at
- *   the end took a column from every card and read as a second, smaller
- *   target. A card whose tap does something more specific than "open" may
+ *   the end would take a column from every card and read as a second,
+ *   smaller target. A card whose tap does something more specific than "open" may
  *   show it as a small icon in its top-right corner — home's goal card shows
  *   a pencil because a tap logs or edits the entry. A **list row**, like the
  *   ones in Settings, keeps its chevron: that is the platform's own mark for
@@ -172,12 +168,11 @@ export const TEXT = {
  *   behind any opaque `Modal`, so both are transparent ones that slide
  *   themselves in. A `BottomSheet` leaves the screen above it in view, and a
  *   tap there closes it the way a tap outside a menu does.
- * - **No exceptions for long flows.** The check-in once kept its save in a
- *   sticky footer on the argument that it is worked through top to bottom
- *   daily; it read as a second convention for the same job. Its confirm is
- *   in the header like every other modal's, and the "2 of 3" it used to sit
- *   beside moved up to the period title, where it describes what is being
- *   saved rather than the button.
+ * - **No exceptions for long flows.** The check-in is worked through top to
+ *   bottom daily, but its confirm is still in the header like every other
+ *   modal's — a sticky footer save would be a second convention for the same
+ *   job. Its "2 of 3" sits with the period title, where it describes what is
+ *   being saved rather than the button.
  */
 export const BUTTON = {
   /**
@@ -257,13 +252,12 @@ export const HEADER_INSET = 8;
  *
  * Content passing behind is why the pill carries a wide, soft shadow: it is
  * a `$card` over lists of `$card`, and without an edge a goal card scrolling
- * underneath merged into it. The halo now runs round every side, so it is
- * the edge on its own — a border drawn inside it only doubled the outline.
- * Two things were tried and dropped. A scrim fading content out behind the
- * pill hid everything below it — an opaque bottom bar with extra steps, so
- * the bar stopped floating. A lighter "elevated" surface colour for the pill
- * read as a different component rather than as the same card raised. The
- * pill stays `$card`; the shadow halo is what lifts it.
+ * underneath would merge into it. The halo runs round every side, so it is
+ * the edge on its own; a border inside it would only double the outline.
+ * The pill stays `$card` rather than taking a lighter "elevated" surface,
+ * which would read as a different component rather than the same card
+ * raised, and nothing fades the content behind it, which would hide
+ * everything below and stop the bar floating.
  */
 export const TAB_BAR = {
   height: 56,
@@ -272,13 +266,12 @@ export const TAB_BAR = {
   /**
    * The width of one tab's touch target; the pill is these laid side by side.
    *
-   * The bar hugs its tabs, centred, rather than spanning the screen. It
-   * spanned it while it carried six slots — five tabs and a Log action —
-   * because six comfortable slots passed 370pt and overflowed a 360pt phone.
-   * Logging moved onto Home, and five slots of this width come to under
-   * 300pt, so the pill can be only as wide as what is in it and cover less
-   * of the list scrolling behind it. 56 is the height too: each tab's target
-   * is a square, comfortably over the 44/48pt minimum on both platforms.
+   * The bar hugs its tabs, centred, rather than spanning the screen: five
+   * slots of this width come to under 300pt, so the pill is only as wide as
+   * what is in it and covers less of the list scrolling behind it. A sixth
+   * slot would pass 360pt and overflow a small phone. 56 is the height
+   * too: each tab's target is a square, comfortably over the 44/48pt minimum
+   * on both platforms.
    */
   slot: 56,
   /**
@@ -292,10 +285,9 @@ export const TAB_BAR = {
   /**
    * The halo that lifts the pill, as a `boxShadow`: a wide blur with only a
    * slight drop, so it reads as a drop shadow yet still spreads round every
-   * edge. It used to be `elevation` plus an iOS shadow offset downwards,
-   * which put it under the bar only: Android lights `elevation` from above,
-   * so the sides and top got almost nothing, and the pill read as resting on
-   * the content rather than floating over it.
+   * edge. A `boxShadow` rather than `elevation`, which Android lights from
+   * above: it falls under the bar only, leaves the sides and top bare, and
+   * the pill reads as resting on the content rather than floating over it.
    *
    * The pill has no border, so this blur is its edge on its own. Wide and
    * soft rather than tight, because a tight halo round a borderless shape
@@ -354,8 +346,8 @@ export const ICON = {
  * - `shadow` is cast upward, the only direction a sheet has an edge to show.
  *   It is a `boxShadow` rather than `elevation`, which on Android lights from
  *   above and draws almost nothing over a view's top edge. In dark it is
- *   deliberately faint: a dense one was tried, and on a near-black screen it
- *   read as a black band behind the list rather than as depth. What outlines
+ *   deliberately faint: a dense one on a near-black screen reads as a black
+ *   band behind the list rather than as depth. What outlines
  *   the sheet there is its surface instead — `$popover`, a step lighter than
  *   the screen, the way Material lifts an elevated surface in dark — and a
  *   hairline of `$border` around the rounded edge.

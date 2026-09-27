@@ -28,8 +28,8 @@ export type Illustration =
  * for the collection the drawing came from, so a swap across collections means
  * `credits.ts` moves with it.
  *
- * This lives in `components/` rather than `constants/` since `noGoals` became
- * animated: an entry can now be a component, and `constants/` sits below the
+ * This lives in `components/` rather than `constants/` because an entry can
+ * be a component — the animated ones — and `constants/` sits below the
  * components in the import order.
  */
 export const ILLUSTRATIONS = {

@@ -3,8 +3,8 @@
  *
  * Storyset's "Left hander" (Write collection), recoloured to the set: her
  * yellow in the set's peach, on the set's backdrop and sparkles, with a pencil
- * badge drawn for the app. Their grey room and floor shadow are left out —
- * the shadow read as a pale blob on the dark theme. Credited in
+ * badge drawn for the app. Their grey room and floor shadow are not included:
+ * a grey shadow reads as a pale blob on the dark theme. Credited in
  * `components/settings/credits.ts`.
  *
  * Layers stack in this order: `BACKDROP`, `SPARKLES`, `BADGE`, `SCENE`
@@ -16,8 +16,9 @@
  * length and slope — while `INK` fills in from `INK_START`, where the tip
  * rests in the drawing. The arm stretches rather than slides: it is pinned at
  * `ARM_ANCHOR`, where it disappears under her shirt, and its wrist, `REACH`
- * units further along, follows the hand. Sliding the whole arm showed it past
- * her sleeve; moving the hand alone opened a seam at the wrist.
+ * units further along, follows the hand. That keeps both joints closed:
+ * sliding the whole arm would show it past her sleeve, and moving the hand
+ * alone would open a seam at the wrist.
  */
 
 import type { ArtBounds, ArtLayer } from './art-layer';
