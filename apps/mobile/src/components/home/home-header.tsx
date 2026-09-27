@@ -1,4 +1,4 @@
-import { Image, SizableText, Square, XStack, YStack } from 'tamagui';
+import { Circle, Image, SizableText, XStack, YStack } from 'tamagui';
 
 import { SPACING, TEXT } from '@/constants/layout';
 import { useProfile } from '@/features/user';
@@ -10,9 +10,8 @@ const AVATAR_SIZE = '$5';
 
 function Avatar({ name, url }: { name: string; url: string }) {
   return (
-    <Square
+    <Circle
       size={AVATAR_SIZE}
-      rounded="$xl2"
       items="center"
       justify="center"
       bg="$accentSurface"
@@ -34,7 +33,7 @@ function Avatar({ name, url }: { name: string; url: string }) {
           accessibilityIgnoresInvertColors
         />
       )}
-    </Square>
+    </Circle>
   );
 }
 
