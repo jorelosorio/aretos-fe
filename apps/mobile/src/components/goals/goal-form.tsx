@@ -27,8 +27,7 @@ import {
   useGoalErrorMessage,
   useUpdateGoal,
 } from '@/features/goals/hooks';
-import { toGoalPatch } from '@/features/goals/patch';
-import type {
+import { toGoalPatch } from '@/features/goals/patch';import type {
   GoalDraft,
   StreakRule,
   TrackingFrequency,
@@ -124,12 +123,17 @@ export function GoalForm({
       tags: tags.value,
     };
 
-    await (
-      goalId
-        ? updateGoal({ id: goalId, patch: toGoalPatch(value, initial) })
-        : createGoal(value)
-    )
-      .then(() => router.back())
+    if (goalId) {
+      await updateGoal({ id: goalId, patch: toGoalPatch(value, initial) })
+        .then(() => router.back())
+        .catch(() => undefined);
+      return;
+    }
+
+    await createGoal(value)
+      .then((goal) =>
+        router.replace({ pathname: '/goals/[id]', params: { id: goal.id } }),
+      )
       .catch(() => undefined);
   }
 
