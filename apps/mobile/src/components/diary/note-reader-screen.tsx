@@ -6,7 +6,8 @@ import { Paragraph, ScrollView, SizableText, XStack, YStack } from 'tamagui';
 import { Card } from '@/components/common/card';
 import { longDateLabel } from '@/components/common/date-label';
 import { ErrorNotice } from '@/components/common/error-notice';
-import { NOTE_TEXT } from '@/components/common/note-text';
+import { HeaderActions } from '@/components/common/header-actions';
+import { useNoteText } from '@/components/common/note-text';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { CompletionStatus } from '@/components/goals/completion-status';
 import { GoalDot } from '@/components/goals/goal-dot';
@@ -20,6 +21,7 @@ import { dateFormat } from '@/utils/date-format';
 
 import { periodLabel, writtenOnEntryDay } from './diary-date';
 import { NoteActionsMenu } from './note-actions-menu';
+import { NoteTextSizeControl } from './note-text-size';
 import { NoteMeta } from './note-meta';
 
 const MOOD_FACE = 36;
@@ -117,6 +119,7 @@ export function NoteReaderScreen({ id }: { id: string }) {
   const insets = useSafeAreaInsets();
   const toMessage = useNoteErrorMessage();
   const { data: note, error } = useNote(id);
+  const noteText = useNoteText();
 
   if (!note && error) return <ErrorNotice message={toMessage(error)} />;
   if (!note) return <ScreenLoader />;
@@ -143,15 +146,18 @@ export function NoteReaderScreen({ id }: { id: string }) {
           title: '',
           headerTitleAlign: 'center',
           headerTitle: () => <ContextPill checkIn={checkIn} />,
-          headerRight: readOnly
-            ? undefined
-            : () => (
+          headerRight: () => (
+            <HeaderActions>
+              <NoteTextSizeControl />
+              {!readOnly && (
                 <NoteActionsMenu
                   note={note}
                   onEdit={edit}
                   onDeleted={() => router.back()}
                 />
-              ),
+              )}
+            </HeaderActions>
+          ),
         }}
       />
 
@@ -169,8 +175,8 @@ export function NoteReaderScreen({ id }: { id: string }) {
             />
 
             <Paragraph
-              size={NOTE_TEXT.size}
-              lineHeight={NOTE_TEXT.lineHeight}
+              size={noteText.size}
+              lineHeight={noteText.lineHeight}
               color="$color"
               selectable
             >

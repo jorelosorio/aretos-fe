@@ -75,6 +75,11 @@ export const es = {
       fromCheckIn: 'De tu registro',
       openCheckIn: 'Abre el registro de ese periodo.',
     },
+    textSize: {
+      label: 'Tamaño del texto',
+      smaller: 'Texto más pequeño',
+      larger: 'Texto más grande',
+    },
     deleteConfirm: {
       title: '¿Eliminar esta nota?',
       body: 'Esta acción no se puede deshacer.',

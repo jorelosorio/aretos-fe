@@ -74,6 +74,11 @@ export const en = {
       fromCheckIn: 'From your check-in',
       openCheckIn: 'Opens the check-in for that period.',
     },
+    textSize: {
+      label: 'Text size',
+      smaller: 'Smaller text',
+      larger: 'Larger text',
+    },
     deleteConfirm: {
       title: 'Delete this note?',
       body: "This can't be undone.",

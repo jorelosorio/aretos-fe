@@ -17,14 +17,22 @@ import type { AppLocale } from './i18n';
 export type ThemePreference = 'light' | 'dark' | 'system';
 export type LocalePreference = AppLocale | 'system';
 
+/** How large a note's text is set in the reader. */
+export type NoteTextSize = 'small' | 'medium' | 'large';
+
 export type Preferences = {
   theme: ThemePreference;
   locale: LocalePreference;
+  noteTextSize: NoteTextSize;
 };
 
 const STORAGE_KEY = 'aretos.preferences';
 
-const DEFAULTS: Preferences = { theme: 'system', locale: 'system' };
+const DEFAULTS: Preferences = {
+  theme: 'system',
+  locale: 'system',
+  noteTextSize: 'medium',
+};
 
 /**
  * Read synchronously at module load, which is what stops the app painting once

@@ -30,6 +30,7 @@
  */
 
 import { SPACING } from '@/constants/layout';
+import { usePreferences, type NoteTextSize } from '@/lib/preferences';
 
 export const NOTE_TEXT = {
   size: '$5',
@@ -37,3 +38,32 @@ export const NOTE_TEXT = {
   /** Uniform, so the first line clears the header by what clears the edges. */
   padding: SPACING.screen,
 } as const;
+
+/**
+ * The three sizes a person can read a note at, smallest first. Only the
+ * reader offers them; the editor stays at `NOTE_TEXT`.
+ *
+ * `medium` is `NOTE_TEXT` itself, the size the page was designed at. The
+ * step down is one font step; the step up is two, because the larger size is
+ * the one someone reaches for to read more comfortably, and a single step up
+ * barely shows.
+ */
+export const NOTE_TEXT_SIZES: Record<
+  NoteTextSize,
+  { size: '$4' | '$5' | '$7'; lineHeight: number }
+> = {
+  small: { size: '$4', lineHeight: 24 },
+  medium: { size: NOTE_TEXT.size, lineHeight: NOTE_TEXT.lineHeight },
+  large: { size: '$7', lineHeight: 34 },
+};
+
+export const NOTE_TEXT_STEPS: readonly NoteTextSize[] = [
+  'small',
+  'medium',
+  'large',
+];
+
+/** The note type at the size the person picked. */
+export function useNoteText() {
+  return NOTE_TEXT_SIZES[usePreferences().noteTextSize];
+}

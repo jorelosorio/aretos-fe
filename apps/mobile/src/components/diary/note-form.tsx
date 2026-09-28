@@ -19,7 +19,6 @@ import { useTranslations } from '@/lib/i18n';
 
 import type { useNoteDraft } from './note-draft';
 
-const HEADROOM = NOTE_TEXT.lineHeight;
 const BODY_COUNT_FROM = NOTE_BODY_MAX - 200;
 const TAG_COUNT_FROM = TAGS_MAX - 5;
 
@@ -111,7 +110,9 @@ export function NoteForm({
           grow={1}
           minH={bodyHeight}
           onContentSizeChange={(event) =>
-            setBodyHeight(event.nativeEvent.contentSize.height + HEADROOM)
+            setBodyHeight(
+              event.nativeEvent.contentSize.height + NOTE_TEXT.lineHeight,
+            )
           }
           size={NOTE_TEXT.size}
           lineHeight={NOTE_TEXT.lineHeight}
