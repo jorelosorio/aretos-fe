@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="100%" height="100%" viewBox="0 0 500 500" version="1.1" xmlns="http://www.w3.org/2000/svg" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-linecap:round;">
+<g id="fit" transform="translate(250 250) scale(1.1384) translate(-251.25 -273.70)">
+<g id="scene">
+<g id="backdrop"><path d="M96,300C96,188 188,118 282,128C384,139 436,222 420,314C404,404 322,446 228,436C136,426 96,382 96,300Z" style="fill:rgb(240,168,121);fill-opacity:0.16;"/>
+<path d="M58,437L442,437" style="fill:none;stroke:rgb(69,90,100);stroke-width:1.5;"/></g>
+<g id="sparkles">
+<path d="M118,196Q118,208 130,208Q118,208 118,220Q118,208 106,208Q118,208 118,196Z" style="fill:rgb(240,168,121);"/><path d="M430,267Q430,276 439,276Q430,276 430,285Q430,276 421,276Q430,276 430,267Z" style="fill:rgb(69,90,100);"/><path d="M226,118Q226,126 234,126Q226,126 226,134Q226,126 218,126Q226,126 226,118Z" style="fill:rgb(240,168,121);"/>
+<circle cx="80" cy="268" r="4" style="fill:#ded3c0;"/><circle cx="444" cy="344" r="4.5" style="fill:rgb(240,168,121);"/><circle cx="170" cy="150" r="3.5" style="fill:rgb(69,90,100);"/>
+</g>
+<g id="plant" transform="translate(-8 0)">
+<path d="M120,374C100,334 104,296 122,268C141,298 143,336 120,374Z" style="fill:rgb(240,168,121);"/>
+<path d="M118,376C88,364 70,338 67,306C95,316 113,340 118,376Z" style="fill:rgb(211,118,106);"/>
+<path d="M123,376C151,366 168,342 172,312C145,322 129,346 123,376Z" style="fill:rgb(69,90,100);"/>
+<path d="M121,370L122,286" style="fill:none;stroke:rgb(38,50,56);stroke-opacity:0.35;stroke-width:1.5;"/>
+<path d="M90,382L152,382L144,434L98,434Z" style="fill:rgb(69,90,100);"/>
+<path d="M144,382L152,382L144,434L136,434Z" style="fill:rgb(38,50,56);fill-opacity:0.35;"/>
+<rect x="85" y="372" width="72" height="13" rx="4" style="fill:rgb(38,50,56);"/>
+</g>
+<g id="clipboard">
+<rect x="198" y="176" width="156" height="258" rx="14" style="fill:rgb(211,118,106);"/>
+<path d="M340,176L340,434L354,434C354,434 354,190 354,190C354,182.3 347.7,176 340,176Z" style="fill:rgb(38,50,56);fill-opacity:0.15;"/>
+<rect x="212" y="200" width="126" height="220" rx="8" style="fill:#f9f0e2;"/>
+<rect x="244" y="164" width="64" height="30" rx="8" style="fill:rgb(38,50,56);"/>
+<circle cx="276" cy="171" r="4.5" style="fill:rgb(211,118,106);"/>
+<rect x="252" y="184" width="48" height="6" rx="3" style="fill:rgb(69,90,100);"/>
+<g id="rows">
+<rect x="228" y="232" width="24" height="24" rx="6" style="fill:none;stroke:rgb(240,168,121);stroke-width:3;stroke-dasharray:5,5;"/>
+<rect x="264" y="236" width="58" height="7" rx="3.5" style="fill:#ded3c0;"/>
+<rect x="264" y="248" width="36" height="6" rx="3" style="fill:#efe3ce;"/>
+<rect x="228" y="290" width="24" height="24" rx="6" style="fill:none;stroke:#ded3c0;stroke-width:3;"/>
+<rect x="264" y="294" width="46" height="7" rx="3.5" style="fill:#ded3c0;"/>
+<rect x="264" y="306" width="30" height="6" rx="3" style="fill:#efe3ce;"/>
+<rect x="228" y="348" width="24" height="24" rx="6" style="fill:none;stroke:#ded3c0;stroke-width:3;"/>
+<rect x="264" y="352" width="54" height="7" rx="3.5" style="fill:#ded3c0;"/>
+<rect x="264" y="364" width="40" height="6" rx="3" style="fill:#efe3ce;"/>
+</g>
+</g>
+<g id="pencil" transform="rotate(-12 382 434)">
+<rect x="373" y="418" width="18" height="16" rx="4" style="fill:rgb(211,118,106);"/>
+<rect x="373" y="412" width="18" height="6" style="fill:rgb(69,90,100);"/>
+<rect x="373" y="314" width="18" height="98" rx="2" style="fill:rgb(240,168,121);"/>
+<rect x="385" y="314" width="6" height="98" style="fill:rgb(211,118,106);fill-opacity:0.45;"/>
+<path d="M373,314L391,314L382,296Z" style="fill:#f9f0e2;"/>
+<path d="M379,302.5L385,302.5L382,296Z" style="fill:rgb(38,50,56);"/>
+</g>
+<path d="M190,236Q190,243 197,243Q190,243 190,250Q190,243 183,243Q190,243 190,236Z" style="fill:rgb(240,168,121);"/><path d="M360,392Q360,397 365,397Q360,397 360,402Q360,397 355,397Q360,397 360,392Z" style="fill:#ded3c0;"/>
+<g id="badge">
+<circle cx="365" cy="173" r="36" style="fill:rgb(211,118,106);"/>
+<circle cx="360" cy="167" r="36" style="fill:rgb(240,168,121);"/>
+<circle cx="360" cy="167" r="27" style="fill:none;stroke:#f9f0e2;stroke-opacity:0.45;stroke-width:2.5;"/>
+<path d="M360,154L360,180" style="fill:none;stroke:#f9f0e2;stroke-width:5;"/>
+<path d="M347,167L373,167" style="fill:none;stroke:#f9f0e2;stroke-width:5;"/>
+</g>
+</g>
+</g>
+</svg>

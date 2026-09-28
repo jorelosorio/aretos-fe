@@ -3,6 +3,7 @@ import type { ImageSourcePropType } from 'react-native';
 
 import allLogged from '@/assets/illustrations/all-logged.svg';
 import noArchived from '@/assets/illustrations/no-archived.svg';
+import noHabits from '@/assets/illustrations/no-habits.svg';
 import nothingLogged from '@/assets/illustrations/nothing-logged.svg';
 
 import { EmptyDiaryArt } from './empty-diary-art';
@@ -71,6 +72,16 @@ export const ILLUSTRATIONS = {
    * for the app, still.
    */
   noArchived,
+  /**
+   * A goal with no habits yet: the goal's own screen.
+   *
+   * A clipboard checklist whose rows are all still blank — empty boxes and
+   * unwritten lines, the first box dashed in terracotta as the one to fill —
+   * with a pencil leaning against it and a plus badge, which is the action
+   * the empty state offers. Drawn for the app, still, beside the same plant
+   * as `noArchived` and `nothingLogged`.
+   */
+  noHabits,
   /**
    * No notes yet: the diary with no tag filter applied.
    *

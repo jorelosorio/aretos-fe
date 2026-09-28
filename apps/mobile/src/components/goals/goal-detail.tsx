@@ -10,6 +10,7 @@ import { Paragraph, Separator, SizableText, XStack, YStack } from 'tamagui';
 
 import { Card } from '@/components/common/card';
 import { EmptyState } from '@/components/common/empty-state';
+import { ILLUSTRATIONS } from '@/components/common/illustrations';
 import { ErrorNotice } from '@/components/common/error-notice';
 import { Notice } from '@/components/common/notice';
 import { ScreenLoader } from '@/components/common/screen-loader';
@@ -165,6 +166,7 @@ export function GoalDetail({ goal }: { goal: Goal }) {
               <EmptyState
                 compact
                 Icon={ListChecks}
+                illustration={ILLUSTRATIONS.noHabits}
                 title={t('habits.empty.title')}
                 body={t('habits.empty.body')}
                 action={
