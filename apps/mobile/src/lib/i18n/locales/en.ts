@@ -97,6 +97,8 @@ export const en = {
       discardBody: "What you wrote won't be saved.",
       discard: 'Discard',
       keepEditing: 'Keep editing',
+      charactersLeftOne: '%{count} character left',
+      charactersLeftMany: '%{count} characters left',
     },
     cutoff: {
       title: 'This is as far as your plan reads',

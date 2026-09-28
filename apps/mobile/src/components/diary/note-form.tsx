@@ -1,9 +1,16 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import type { View } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@tamagui/core';
-import { SizableText, TextArea, YStack, type ColorTokens } from 'tamagui';
+import {
+  SizableText,
+  TextArea,
+  XStack,
+  YStack,
+  type ColorTokens,
+} from 'tamagui';
 
 import { DatePill, DateSheet } from '@/components/common/date-pill';
 import { ErrorNotice } from '@/components/common/error-notice';
@@ -20,8 +27,9 @@ import { useTranslations } from '@/lib/i18n';
 import type { useNoteDraft } from './note-draft';
 import { useRevealCaret } from './use-reveal-caret';
 
-const BODY_COUNT_FROM = NOTE_BODY_MAX - 200;
+const COUNTER_BELOW = 100;
 const TAG_COUNT_FROM = TAGS_MAX - 5;
+const META_ROW = 44;
 
 export function NoteForm({
   draft,
@@ -42,6 +50,8 @@ export function NoteForm({
   const insets = useSafeAreaInsets();
   const [picking, setPicking] = useState(false);
   const [bodyHeight, setBodyHeight] = useState(0);
+  const frameRef = useRef<View>(null);
+  const [frameTop, setFrameTop] = useState(0);
   const { scrollRef, bodyBox, bodyRef, onBodyLayout } = useRevealCaret(
     NOTE_TEXT.lineHeight,
   );
@@ -52,21 +62,25 @@ export function NoteForm({
   const createdOn: DateKey =
     profile?.createdAt.slice(0, 10) ?? entryDate ?? today;
   const tagCount = draft.tags.tags.length;
+  const charactersLeft = NOTE_BODY_MAX - draft.body.length;
 
   return (
     <KeyboardAvoidingView
+      ref={frameRef}
       behavior="padding"
-      automaticOffset
-      style={{
-        flex: 1,
-        backgroundColor: surface,
-        paddingBottom: padBottom ? insets.bottom : 0,
-      }}
+      keyboardVerticalOffset={frameTop}
+      onLayout={() =>
+        frameRef.current?.measureInWindow((_x, y) => setFrameTop(y))
+      }
+      style={{ flex: 1, backgroundColor: surface }}
     >
       <Animated.ScrollView
         ref={scrollRef}
         style={{ flex: 1 }}
-        contentContainerStyle={{ flexGrow: 1 }}
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingBottom: padBottom ? insets.bottom : 0,
+        }}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="interactive"
       >
@@ -118,9 +132,7 @@ export function NoteForm({
             grow={1}
             minH={bodyHeight}
             onContentSizeChange={(event) =>
-              setBodyHeight(
-                event.nativeEvent.contentSize.height + NOTE_TEXT.lineHeight,
-              )
+              setBodyHeight(Math.ceil(event.nativeEvent.contentSize.height))
             }
             size={NOTE_TEXT.size}
             lineHeight={NOTE_TEXT.lineHeight}
@@ -144,10 +156,36 @@ export function NoteForm({
         </Animated.View>
       </Animated.ScrollView>
 
-      {draft.body.length >= BODY_COUNT_FROM && (
-        <YStack px={SPACING.screen}>
-          <FormCounter count={draft.body.length} max={NOTE_BODY_MAX} />
-        </YStack>
+      {charactersLeft < COUNTER_BELOW && (
+        <XStack
+          position="absolute"
+          t={SPACING.group}
+          r={SPACING.screen}
+          height={META_ROW}
+          items="center"
+          pointerEvents="none"
+        >
+          <SizableText
+            px="$3"
+            py="$1"
+            rounded={999}
+            bg="$muted"
+            size={TEXT.caption}
+            color={
+              draft.body.length >= NOTE_BODY_MAX
+                ? '$destructive'
+                : '$mutedForeground'
+            }
+            accessibilityLiveRegion="polite"
+          >
+            {t(
+              charactersLeft === 1
+                ? 'diary.editor.charactersLeftOne'
+                : 'diary.editor.charactersLeftMany',
+              { count: charactersLeft },
+            )}
+          </SizableText>
+        </XStack>
       )}
 
       {entryDate !== null && (

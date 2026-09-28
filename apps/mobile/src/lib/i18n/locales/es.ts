@@ -98,6 +98,8 @@ export const es = {
       discardBody: 'Lo que escribiste no se guardará.',
       discard: 'Descartar',
       keepEditing: 'Seguir editando',
+      charactersLeftOne: 'Queda %{count} carácter',
+      charactersLeftMany: 'Quedan %{count} caracteres',
     },
     cutoff: {
       title: 'Hasta aquí llega tu plan',
