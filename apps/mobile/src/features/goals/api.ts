@@ -189,6 +189,7 @@ const toGoal = (wire: WireGoal): Goal => ({
   trackingFrequency: wire.tracking_frequency,
   streakRule: wire.streak_rule,
   streakThreshold: wire.streak_threshold,
+  streakSkipLimit: wire.streak_skip_limit,
   colorSlot: wire.color_slot,
   archived: wire.archived,
   tags: wire.tags,
@@ -221,6 +222,9 @@ function toBody(patch: GoalPatch): Record<string, unknown> {
   if (patch.streakRule !== undefined) body.streak_rule = patch.streakRule;
   if (patch.streakThreshold !== undefined) {
     body.streak_threshold = patch.streakThreshold;
+  }
+  if (patch.streakSkipLimit !== undefined) {
+    body.streak_skip_limit = patch.streakSkipLimit;
   }
   // null is "let the server choose", which on the wire is the key left out.
   if (patch.colorSlot !== undefined && patch.colorSlot !== null) {

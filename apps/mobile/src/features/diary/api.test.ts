@@ -45,6 +45,7 @@ const wireOnCheckIn = {
       tracking_frequency: 'weekly',
       streak_rule: 'threshold',
       streak_threshold: 60,
+      streak_skip_limit: 2,
     },
     mood: 9,
     answered: 2,

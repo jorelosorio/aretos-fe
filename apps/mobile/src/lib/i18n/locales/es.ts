@@ -536,6 +536,7 @@ export const es = {
       frequency: 'Tu cadencia',
       streakRule: '¿Qué mantiene viva la racha?',
       threshold: 'Mínimo',
+      skipLimit: 'Pausas',
       color: 'Color',
       colorHint: 'Así reconoces esta meta en toda la app.',
       colorAuto:
@@ -570,6 +571,44 @@ export const es = {
       threshold: 'Alcanzar un mínimo',
       thresholdHint:
         'El periodo cuenta solo si llegas al porcentaje que elijas.',
+    },
+    skipLimit: {
+      dailyHint:
+        'Días seguidos que puedes marcar como «No aplica» y tu racha sigue igual.',
+      weeklyHint:
+        'Semanas seguidas que puedes marcar como «No aplica» y tu racha sigue igual.',
+      flexibleHint:
+        'Registros seguidos que puedes marcar como «No aplica» y tu racha sigue igual.',
+      dayOne: 'día',
+      dayMany: 'días',
+      weekOne: 'semana',
+      weekMany: 'semanas',
+      checkInOne: 'registro',
+      checkInMany: 'registros',
+      howItWorks: 'Cómo funciona',
+      infoTitle: 'Cómo funcionan las pausas',
+      whatTitle: 'Qué es una pausa',
+      dailyPause:
+        'Un día en el que marcas todos los hábitos de esta meta como «No aplica»: un viaje, un día de descanso, un día en que no tocaba. Si solo algunos no aplican, el día cuenta con los demás.',
+      weeklyPause:
+        'Una semana en la que marcas todos los hábitos de esta meta como «No aplica»: un viaje, una semana de descanso, una semana en que no tocaba. Si solo algunos no aplican, la semana cuenta con los demás.',
+      flexiblePause:
+        'Un registro en el que marcas todos los hábitos de esta meta como «No aplica». Si solo algunos no aplican, el registro cuenta con los demás.',
+      effectTitle: 'Tu racha queda igual',
+      effectBody:
+        'Una pausa no suma a la racha ni la corta. Cuando vuelves a registrar, sigue desde donde iba.',
+      limitTitle: 'Tú eliges cuántas seguidas',
+      limitBody:
+        'Ahora mismo: %{amount}. Hasta ahí, las pausas seguidas mantienen tu racha; una más y empieza de nuevo.',
+      limitNone:
+        'Ahora está en 0: cualquier pausa hace que la racha empiece de nuevo.',
+      exampleTitle: 'Por ejemplo',
+      exampleKept:
+        'Con %{skips} en pausa, la racha sigue: %{streak}. Las pausas no suman, solo la mantienen.',
+      exampleRestart:
+        'Con %{skips} en pausa, la racha empieza de nuevo: %{streak}.',
+      legendCounts: 'Suma a la racha',
+      legendSkipped: 'Todo en «No aplica»',
     },
     errors: {
       title: 'Algo salió mal',

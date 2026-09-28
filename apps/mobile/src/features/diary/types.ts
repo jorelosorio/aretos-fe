@@ -39,6 +39,7 @@ export type WireDiaryGoal = {
   tracking_frequency: TrackingFrequency;
   streak_rule: StreakRule;
   streak_threshold: number;
+  streak_skip_limit: number;
 };
 
 export type WireDiaryCheckIn = {
@@ -117,6 +118,8 @@ export type DiaryGoal = {
   streakRule: StreakRule;
   /** 0–100, and only meaningful when `streakRule` is `'threshold'`. */
   streakThreshold: number;
+  /** Fully skipped periods in a row the streak carries across. */
+  streakSkipLimit: number;
 };
 
 /** The check-in a note was written on, scored by the server. */

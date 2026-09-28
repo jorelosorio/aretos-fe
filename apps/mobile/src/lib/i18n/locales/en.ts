@@ -535,6 +535,7 @@ export const en = {
       frequency: 'Your cadence',
       streakRule: 'What keeps the streak alive?',
       threshold: 'Minimum',
+      skipLimit: 'Breaks',
       color: 'Color',
       colorHint: 'This is how you spot this goal across the app.',
       colorAuto:
@@ -569,6 +570,43 @@ export const en = {
       threshold: 'Hitting a minimum',
       thresholdHint:
         'The period only counts if you reach the percentage you pick.',
+    },
+    skipLimit: {
+      dailyHint:
+        'Days in a row you can mark as “Doesn’t apply” while your streak stays as it is.',
+      weeklyHint:
+        'Weeks in a row you can mark as “Doesn’t apply” while your streak stays as it is.',
+      flexibleHint:
+        'Check-ins in a row you can mark as “Doesn’t apply” while your streak stays as it is.',
+      dayOne: 'day',
+      dayMany: 'days',
+      weekOne: 'week',
+      weekMany: 'weeks',
+      checkInOne: 'check-in',
+      checkInMany: 'check-ins',
+      howItWorks: 'How it works',
+      infoTitle: 'How breaks work',
+      whatTitle: 'What a break is',
+      dailyPause:
+        'A day where you mark every habit in this goal as “Doesn’t apply”: a trip, a rest day, a day it wasn’t meant to happen. If only some don’t apply, the day counts with the rest.',
+      weeklyPause:
+        'A week where you mark every habit in this goal as “Doesn’t apply”: a trip, a rest week, a week it wasn’t meant to happen. If only some don’t apply, the week counts with the rest.',
+      flexiblePause:
+        'A check-in where you mark every habit in this goal as “Doesn’t apply”. If only some don’t apply, the check-in counts with the rest.',
+      effectTitle: 'Your streak stays as it is',
+      effectBody:
+        'A break doesn’t add to the streak or cut it. When you log again, it carries on from where it was.',
+      limitTitle: 'You choose how many in a row',
+      limitBody:
+        'Right now: %{amount}. Up to that, breaks in a row keep your streak; one more and it starts again.',
+      limitNone: 'Right now it’s 0: any break starts the streak again.',
+      exampleTitle: 'For example',
+      exampleKept:
+        'With %{skips} on a break, the streak carries on: %{streak}. Breaks don’t add to it, they only keep it.',
+      exampleRestart:
+        'With %{skips} on a break, the streak starts again: %{streak}.',
+      legendCounts: 'Adds to the streak',
+      legendSkipped: 'Everything on “Doesn’t apply”',
     },
     errors: {
       title: 'Something went wrong',

@@ -20,6 +20,7 @@ export type WireGoal = {
   tracking_frequency: TrackingFrequency;
   streak_rule: StreakRule;
   streak_threshold: number;
+  streak_skip_limit: number;
   color_slot: number;
   archived: boolean;
   /** Never null: a goal with no tags reads as `[]`. Ordered by name. */
@@ -45,6 +46,12 @@ export type Goal = {
   streakRule: StreakRule;
   /** 0–100, and only meaningful when `streakRule` is `'threshold'`. */
   streakThreshold: number;
+  /**
+   * How many periods in a row can be skipped in full — every habit marked
+   * skipped — while the streak carries across them, 0–365. A skipped period
+   * keeps a streak without lengthening it; the server applies this.
+   */
+  streakSkipLimit: number;
   /** The user's colour for the goal — an index into the goal palette, 0–7. */
   colorSlot: number;
   archived: boolean;
@@ -89,6 +96,7 @@ export type GoalDraft = {
   trackingFrequency: TrackingFrequency;
   streakRule: StreakRule;
   streakThreshold: number;
+  streakSkipLimit: number;
   colorSlot: number | null;
   /**
    * Replaced whole on the server: the list sent is the list the goal ends
@@ -107,6 +115,7 @@ export const EMPTY_DRAFT: GoalDraft = {
   trackingFrequency: 'daily',
   streakRule: 'logged',
   streakThreshold: 60,
+  streakSkipLimit: 2,
   colorSlot: null,
   tags: [],
 };

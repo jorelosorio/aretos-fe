@@ -4,6 +4,7 @@ import { CalendarDays } from '@tamagui/lucide-icons-2/icons/CalendarDays';
 import { CalendarRange } from '@tamagui/lucide-icons-2/icons/CalendarRange';
 import { CircleCheck } from '@tamagui/lucide-icons-2/icons/CircleCheck';
 import { Gauge } from '@tamagui/lucide-icons-2/icons/Gauge';
+import { Info } from '@tamagui/lucide-icons-2/icons/Info';
 import { Shuffle } from '@tamagui/lucide-icons-2/icons/Shuffle';
 
 import { ErrorNotice } from '@/components/common/error-notice';
@@ -13,7 +14,10 @@ import { FormSection } from '@/components/common/form-section';
 import { HeaderTextButton } from '@/components/common/header-actions';
 import { OptionGroup, type Option } from '@/components/common/option-group';
 import { SliderCard } from '@/components/common/slider-card';
+import { Stepper } from '@/components/common/stepper';
 import { GoalColorPicker } from '@/components/goals/goal-color-picker';
+import { SKIP_LIMIT_COPY, skipUnit } from '@/components/goals/skip-limit-copy';
+import { SkipLimitInfo } from '@/components/goals/skip-limit-info';
 import { useTagDraft } from '@/components/tags/tag-draft';
 import { TagField } from '@/components/tags/tag-field';
 import {
@@ -36,6 +40,9 @@ const THRESHOLD_MIN = 5;
 const THRESHOLD_MAX = 100;
 const THRESHOLD_STEP = 5;
 
+const SKIP_LIMIT_MIN = 0;
+const SKIP_LIMIT_MAX = 7;
+
 export function GoalForm({
   goalId,
   initial,
@@ -52,6 +59,7 @@ export function GoalForm({
 
   const [draft, setDraft] = useState(initial);
   const tags = useTagDraft(initial.tags);
+  const [explainingSkips, setExplainingSkips] = useState(false);
 
   const patch = (change: Partial<GoalDraft>) =>
     setDraft((current) => ({ ...current, ...change }));
@@ -194,7 +202,33 @@ export function GoalForm({
             />
           </FormSection>
         )}
+
+        <FormSection
+          title={t('goals.form.skipLimit')}
+          hint={t(SKIP_LIMIT_COPY[draft.trackingFrequency].hint)}
+          action={{
+            label: t('goals.skipLimit.howItWorks'),
+            Icon: Info,
+            onPress: () => setExplainingSkips(true),
+          }}
+        >
+          <Stepper
+            value={draft.streakSkipLimit}
+            min={SKIP_LIMIT_MIN}
+            max={Math.max(SKIP_LIMIT_MAX, initial.streakSkipLimit)}
+            suffix={skipUnit(t, draft.trackingFrequency, draft.streakSkipLimit)}
+            onChange={(value) => patch({ streakSkipLimit: value })}
+            label={t('goals.form.skipLimit')}
+          />
+        </FormSection>
       </FormScreen>
+
+      <SkipLimitInfo
+        open={explainingSkips}
+        limit={draft.streakSkipLimit}
+        frequency={draft.trackingFrequency}
+        onDismiss={() => setExplainingSkips(false)}
+      />
     </>
   );
 }

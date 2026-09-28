@@ -24,6 +24,7 @@ const onCheckIn: DiaryNote = {
       trackingFrequency: 'daily',
       streakRule: 'logged',
       streakThreshold: 60,
+      streakSkipLimit: 2,
     },
     mood: 3,
     answered: 1,

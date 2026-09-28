@@ -301,6 +301,7 @@ const toGoal = (wire: WireAnalysisGoal): AnalysisGoal => ({
   trackingFrequency: wire.tracking_frequency,
   streakRule: wire.streak_rule,
   streakThreshold: wire.streak_threshold,
+  streakSkipLimit: wire.streak_skip_limit,
   activeHabits: wire.active_habits,
   trackedFrom: wire.tracked_from,
   currentStreak: wire.current_streak,

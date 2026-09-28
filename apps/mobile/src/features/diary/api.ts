@@ -90,6 +90,7 @@ const toGoal = (wire: WireDiaryGoal): DiaryGoal => ({
   trackingFrequency: wire.tracking_frequency,
   streakRule: wire.streak_rule,
   streakThreshold: wire.streak_threshold,
+  streakSkipLimit: wire.streak_skip_limit,
 });
 
 const toCheckIn = (wire: WireDiaryCheckIn): DiaryCheckIn => ({

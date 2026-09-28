@@ -25,6 +25,7 @@ export default function EditGoal() {
           trackingFrequency: goal.trackingFrequency,
           streakRule: goal.streakRule,
           streakThreshold: goal.streakThreshold,
+          streakSkipLimit: goal.streakSkipLimit,
           colorSlot: goal.colorSlot,
           tags: goal.tags,
         }}

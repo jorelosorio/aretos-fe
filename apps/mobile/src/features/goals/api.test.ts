@@ -20,6 +20,7 @@ const wireGoal = {
   tracking_frequency: 'daily',
   streak_rule: 'logged',
   streak_threshold: 60,
+  streak_skip_limit: 2,
   color_slot: 2,
   archived: false,
   tags: ['Body'],
@@ -78,6 +79,17 @@ describe('goals api', () => {
       '/v1/goals',
       expect.objectContaining({ name: 'Health', tags: ['Body'] }),
     );
+  });
+
+  it('maps streak_skip_limit and sends it back', async () => {
+    mocked.get.mockResolvedValueOnce({ data: { goals: [wireGoal] } });
+    mocked.patch.mockResolvedValueOnce({ data: wireGoal });
+
+    const [goal] = await listGoals();
+    await updateGoal('g1', { streakSkipLimit: 0 });
+
+    expect(goal.streakSkipLimit).toBe(2);
+    expect(mocked.patch.mock.calls[0][1]).toEqual({ streak_skip_limit: 0 });
   });
 
   it('leaves tags off a patch that does not carry them', async () => {

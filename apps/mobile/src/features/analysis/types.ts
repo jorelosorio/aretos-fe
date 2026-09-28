@@ -250,6 +250,7 @@ export type WireAnalysisGoal = {
   tracking_frequency: TrackingFrequency;
   streak_rule: StreakRule;
   streak_threshold: number;
+  streak_skip_limit: number;
   active_habits: number;
   tracked_from: string;
   current_streak: number;
@@ -512,6 +513,7 @@ export type AnalysisGoal = {
   trackingFrequency: TrackingFrequency;
   streakRule: StreakRule;
   streakThreshold: number;
+  streakSkipLimit: number;
   activeHabits: number;
   trackedFrom: string;
   currentStreak: number;
