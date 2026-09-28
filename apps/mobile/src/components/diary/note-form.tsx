@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ScrollView } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@tamagui/core';
@@ -18,6 +19,7 @@ import { useTranslations } from '@/lib/i18n';
 
 import type { useNoteDraft } from './note-draft';
 
+const HEADROOM = NOTE_TEXT.lineHeight;
 const BODY_COUNT_FROM = NOTE_BODY_MAX - 200;
 const TAG_COUNT_FROM = TAGS_MAX - 5;
 
@@ -37,8 +39,9 @@ export function NoteForm({
   const { t } = useTranslations();
   const theme = useTheme();
   const { data: profile } = useProfile();
-  const [picking, setPicking] = useState(false);
   const insets = useSafeAreaInsets();
+  const [picking, setPicking] = useState(false);
+  const [bodyHeight, setBodyHeight] = useState(0);
 
   const surface = theme.background.val as ColorTokens;
   const today = todayKey();
@@ -51,9 +54,18 @@ export function NoteForm({
     <KeyboardAvoidingView
       behavior="padding"
       automaticOffset
-      style={{ flex: 1, backgroundColor: surface }}
+      style={{
+        flex: 1,
+        backgroundColor: surface,
+        paddingBottom: padBottom ? insets.bottom : 0,
+      }}
     >
-      <YStack flex={1} pb={padBottom ? insets.bottom : 0}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="interactive"
+      >
         {error !== null && (
           <YStack px={SPACING.screen} pt={SPACING.screen}>
             <ErrorNotice message={error} />
@@ -96,7 +108,11 @@ export function NoteForm({
         <TextArea
           unstyled
           fontFamily="$body"
-          flex={1}
+          grow={1}
+          minH={bodyHeight}
+          onContentSizeChange={(event) =>
+            setBodyHeight(event.nativeEvent.contentSize.height + HEADROOM)
+          }
           size={NOTE_TEXT.size}
           lineHeight={NOTE_TEXT.lineHeight}
           color={theme.color.val as ColorTokens}
@@ -107,6 +123,7 @@ export function NoteForm({
           accessibilityLabel={t('diary.editor.body')}
           maxLength={NOTE_BODY_MAX}
           multiline
+          scrollEnabled={false}
           autoFocusNative={autoFocus}
           verticalAlign="top"
           p={NOTE_TEXT.padding}
@@ -115,13 +132,13 @@ export function NoteForm({
           rounded={0}
           focusStyle={{ borderWidth: 0, bg: surface }}
         />
+      </ScrollView>
 
-        {draft.body.length >= BODY_COUNT_FROM && (
-          <YStack px={SPACING.screen}>
-            <FormCounter count={draft.body.length} max={NOTE_BODY_MAX} />
-          </YStack>
-        )}
-      </YStack>
+      {draft.body.length >= BODY_COUNT_FROM && (
+        <YStack px={SPACING.screen}>
+          <FormCounter count={draft.body.length} max={NOTE_BODY_MAX} />
+        </YStack>
+      )}
 
       {entryDate !== null && (
         <DateSheet

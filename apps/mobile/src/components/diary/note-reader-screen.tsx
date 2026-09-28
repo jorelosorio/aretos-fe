@@ -161,7 +161,13 @@ export function NoteReaderScreen({ id }: { id: string }) {
         contentContainerStyle={{ pb: insets.bottom }}
       >
         <YStack p={SPACING.screen} gap={SPACING.section}>
-          <YStack gap={SPACING.group}>
+          <YStack gap={SPACING.items}>
+            <NoteMeta
+              caption={whenLabel(note, locale)}
+              tags={note.tags}
+              onTagPress={filterBy}
+            />
+
             <Paragraph
               size={NOTE_TEXT.size}
               lineHeight={NOTE_TEXT.lineHeight}
@@ -170,12 +176,6 @@ export function NoteReaderScreen({ id }: { id: string }) {
             >
               {note.body}
             </Paragraph>
-
-            <NoteMeta
-              caption={whenLabel(note, locale)}
-              tags={note.tags}
-              onTagPress={filterBy}
-            />
           </YStack>
 
           {checkIn !== null && (
