@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Stack, useRouter } from 'expo-router';
+import { XStack, type TamaguiElement } from 'tamagui';
 import { CalendarDays } from '@tamagui/lucide-icons-2/icons/CalendarDays';
 import { CalendarRange } from '@tamagui/lucide-icons-2/icons/CalendarRange';
 import { CircleCheck } from '@tamagui/lucide-icons-2/icons/CircleCheck';
@@ -7,6 +8,7 @@ import { Gauge } from '@tamagui/lucide-icons-2/icons/Gauge';
 import { Info } from '@tamagui/lucide-icons-2/icons/Info';
 import { Shuffle } from '@tamagui/lucide-icons-2/icons/Shuffle';
 
+import { AddFieldButton } from '@/components/common/add-field-button';
 import { ErrorNotice } from '@/components/common/error-notice';
 import { FormInput, FormTextArea } from '@/components/common/form-field';
 import { FormScreen } from '@/components/common/form-screen';
@@ -60,6 +62,16 @@ export function GoalForm({
   const [draft, setDraft] = useState(initial);
   const tags = useTagDraft(initial.tags);
   const [explainingSkips, setExplainingSkips] = useState(false);
+  const [showDescription, setShowDescription] = useState(
+    initial.description !== '',
+  );
+  const [showTags, setShowTags] = useState(initial.tags.length > 0);
+  const [revealed, setRevealed] = useState<'description' | 'tags' | null>(null);
+  const descriptionRef = useRef<TamaguiElement>(null);
+
+  useEffect(() => {
+    if (revealed === 'description') descriptionRef.current?.focus();
+  }, [revealed]);
 
   const patch = (change: Partial<GoalDraft>) =>
     setDraft((current) => ({ ...current, ...change }));
@@ -139,10 +151,7 @@ export function GoalForm({
       <FormScreen>
         <ErrorNotice message={toMessage(createError ?? updateError)} />
 
-        <FormSection
-          title={t('goals.form.name')}
-          hint={t('goals.form.nameHint')}
-        >
+        <FormSection title={t('goals.form.name')}>
           <FormInput
             accessibilityLabel={t('goals.form.name')}
             value={draft.name}
@@ -153,23 +162,56 @@ export function GoalForm({
           />
         </FormSection>
 
-        <FormSection title={t('goals.form.description')}>
-          <FormTextArea
-            accessibilityLabel={t('goals.form.description')}
-            value={draft.description}
-            onChangeText={(value) => patch({ description: value })}
-            placeholder={t('goals.form.descriptionPlaceholder')}
-            maxLength={DESCRIPTION_MAX}
-          />
-        </FormSection>
-
-        <TagField draft={tags} label={t('goals.form.tags')} />
-
         <GoalColorPicker
           value={draft.colorSlot}
           onChange={(slot) => patch({ colorSlot: slot })}
-          hint={t('goals.form.colorHint')}
         />
+
+        {showDescription && (
+          <FormSection title={t('goals.form.description')}>
+            <FormTextArea
+              accessibilityLabel={t('goals.form.description')}
+              value={draft.description}
+              onChangeText={(value) => patch({ description: value })}
+              placeholder={t('goals.form.descriptionPlaceholder')}
+              maxLength={DESCRIPTION_MAX}
+              ref={descriptionRef}
+            />
+          </FormSection>
+        )}
+
+        {showTags && (
+          <TagField
+            draft={tags}
+            label={t('goals.form.tags')}
+            autoFocus={revealed === 'tags'}
+          />
+        )}
+
+        {(!showDescription || !showTags) && (
+          <XStack gap="$2" flexWrap="wrap">
+            {!showDescription && (
+              <AddFieldButton
+                label={t('goals.form.addDescription')}
+                accessibilityLabel={t('goals.form.addDescriptionLabel')}
+                onPress={() => {
+                  setShowDescription(true);
+                  setRevealed('description');
+                }}
+              />
+            )}
+            {!showTags && (
+              <AddFieldButton
+                label={t('goals.form.addTags')}
+                accessibilityLabel={t('goals.form.addTagsLabel')}
+                onPress={() => {
+                  setShowTags(true);
+                  setRevealed('tags');
+                }}
+              />
+            )}
+          </XStack>
+        )}
 
         <OptionGroup
           title={t('goals.form.frequency')}

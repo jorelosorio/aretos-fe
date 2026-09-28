@@ -16,16 +16,14 @@ const COLUMN = '25%';
 export function GoalColorPicker({
   value,
   onChange,
-  hint,
 }: {
   value: number;
   onChange: (slot: number) => void;
-  hint: string;
 }) {
   const { t } = useTranslations();
 
   return (
-    <FormSection title={t('goals.form.color')} hint={hint}>
+    <FormSection title={t('goals.form.color')}>
       <Card>
         <XStack
           flexWrap="wrap"

@@ -8,9 +8,11 @@ import { TagInput } from './tag-input';
 export function TagField({
   draft,
   label,
+  autoFocus = false,
 }: {
   draft: TagDraft;
   label?: string;
+  autoFocus?: boolean;
 }) {
   const { t } = useTranslations();
   const count = draft.tags.length;
@@ -29,6 +31,7 @@ export function TagField({
         onChange={draft.setTags}
         text={draft.text}
         onTextChange={draft.setText}
+        autoFocus={autoFocus}
       />
     </FormSection>
   );

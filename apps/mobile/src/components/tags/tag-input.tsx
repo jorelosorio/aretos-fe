@@ -74,14 +74,20 @@ export function TagInput({
   onChange,
   text,
   onTextChange: setText,
+  autoFocus = false,
 }: {
   value: readonly string[];
   onChange: (tags: string[]) => void;
   text: string;
   onTextChange: (text: string) => void;
+  autoFocus?: boolean;
 }) {
   const { t } = useTranslations();
   const inputRef = useRef<TamaguiElement>(null);
+
+  useEffect(() => {
+    if (autoFocus) inputRef.current?.focus();
+  }, [autoFocus]);
   const [focused, setFocused] = useState(false);
   const [armed, setArmed] = useState(false);
 
