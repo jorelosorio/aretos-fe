@@ -24,7 +24,7 @@ import {
 const DOT_STAGGER = 220;
 
 export function NoGoalsArt({ size }: { size: number }) {
-  const motion = useArtMotion(size);
+  const motion = useArtMotion();
 
   return (
     <ArtFrame size={size} bounds={BOUNDS}>

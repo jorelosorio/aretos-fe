@@ -21,7 +21,7 @@ import {
 } from './no-data-art-layers';
 
 export function NoDataArt({ size }: { size: number }) {
-  const motion = useArtMotion(size);
+  const motion = useArtMotion();
 
   return (
     <ArtFrame size={size} bounds={BOUNDS}>

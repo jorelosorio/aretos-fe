@@ -19,6 +19,18 @@ export const VIEWBOX = 500;
 export type ArtBounds = readonly [number, number, number, number];
 
 /**
+ * A layer that fades as well as moves — a sparkle, a thought dot, the line
+ * of ink — with its shapes' own extent in `VIEWBOX` units, measured once
+ * from the rendered layer.
+ *
+ * Fading a layer draws it into an offscreen buffer first, so the layer's
+ * overlapping shapes fade as one. That buffer is kept to `bounds` rather
+ * than the whole drawing, so a sparkle a few units wide costs a few units of
+ * buffer on every frame, not the full frame.
+ */
+export type FadingLayer = ArtLayer & { bounds: ArtBounds };
+
+/**
  * How large every illustration's visible content is drawn: its longer side
  * spans this many units, centred in the frame.
  *

@@ -14,7 +14,6 @@ import {
   BADGE,
   HAND,
   INK,
-  INK_START,
   REACH,
   SCENE,
   SCENE_TOP,
@@ -23,7 +22,7 @@ import {
 } from './empty-diary-art-layers';
 
 export function EmptyDiaryArt({ size }: { size: number }) {
-  const motion = useArtMotion(size);
+  const motion = useArtMotion();
 
   return (
     <ArtFrame size={size} bounds={BOUNDS}>
@@ -42,7 +41,6 @@ export function EmptyDiaryArt({ size }: { size: number }) {
         anchor={ARM_ANCHOR}
         reach={REACH}
         ink={INK}
-        inkStart={INK_START}
         stroke={STROKE}
         {...motion}
       />

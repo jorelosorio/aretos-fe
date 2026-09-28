@@ -1,10 +1,17 @@
-import { useEffect, type ComponentProps, type ReactNode } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { useEffect, useMemo, type ReactNode } from 'react';
+import {
+  Canvas,
+  Group,
+  Paint,
+  Picture,
+  rect,
+  vec,
+  type Transforms3d,
+} from '@shopify/react-native-skia';
 import { useIsFocused } from 'expo-router';
-import Animated, {
+import {
   cancelAnimation,
   Easing,
-  useAnimatedStyle,
   useDerivedValue,
   useReducedMotion,
   useSharedValue,
@@ -12,15 +19,17 @@ import Animated, {
   withRepeat,
   withSequence,
   withTiming,
+  type SharedValue,
 } from 'react-native-reanimated';
-import { SvgXml } from 'react-native-svg';
 
 import {
   ART_EXTENT,
   VIEWBOX,
   type ArtBounds,
   type ArtLayer,
+  type FadingLayer,
 } from './art-layer';
+import { artPicture } from './art-picture';
 
 const TAP_ANGLE = 4;
 const TAP_OUT = 150;
@@ -53,18 +62,18 @@ const WRITE_WIGGLE = 1.4;
 const WRITE_LIFT = 3;
 
 const EASE = Easing.inOut(Easing.sin);
+const DEGREE = Math.PI / 180;
+const CLIP_MARGIN = 2;
 
-type Motion = { unit: number; still: boolean };
+type Point = readonly [number, number];
+type Motion = { still: boolean };
+type Transform = SharedValue<Transforms3d>;
 
-function offset([x, y]: readonly [number, number], unit: number) {
-  return { dx: (x - VIEWBOX / 2) * unit, dy: (y - VIEWBOX / 2) * unit };
-}
-
-export function useArtMotion(size: number): Motion {
+export function useArtMotion(): Motion {
   const reduced = useReducedMotion();
   const focused = useIsFocused();
 
-  return { unit: size / VIEWBOX, still: reduced || !focused };
+  return { still: reduced || !focused };
 }
 
 export function ArtFrame({
@@ -77,49 +86,76 @@ export function ArtFrame({
   children: ReactNode;
 }) {
   const [left, top, right, bottom] = bounds;
-  const unit = size / VIEWBOX;
-  const scale = ART_EXTENT / Math.max(right - left, bottom - top);
-  const shiftX = (VIEWBOX / 2 - (left + right) / 2) * scale * unit;
-  const shiftY = (VIEWBOX / 2 - (top + bottom) / 2) * scale * unit;
+  const fit =
+    (size / VIEWBOX) * (ART_EXTENT / Math.max(right - left, bottom - top));
+  const transform: Transforms3d = [
+    { translateX: size / 2 },
+    { translateY: size / 2 },
+    { scale: fit },
+    { translateX: -(left + right) / 2 },
+    { translateY: -(top + bottom) / 2 },
+  ];
 
   return (
-    <View
+    <Canvas
       style={{ width: size, height: size }}
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
     >
-      <View
-        style={[
-          StyleSheet.absoluteFill,
-          {
-            transform: [
-              { translateX: shiftX },
-              { translateY: shiftY },
-              { scale },
-            ],
-          },
-        ]}
-      >
-        {children}
-      </View>
-    </View>
+      <Group transform={transform}>{children}</Group>
+    </Canvas>
   );
 }
 
-export function Layer({
+export function Layer({ xml }: { xml: string }) {
+  const picture = useMemo(() => artPicture(xml), [xml]);
+
+  return <Picture picture={picture} />;
+}
+
+function Moved({
   xml,
-  style,
+  origin,
+  transform,
 }: {
   xml: string;
-  style?: ComponentProps<typeof Animated.View>['style'];
+  origin?: Point;
+  transform: Transform;
 }) {
   return (
-    <Animated.View
-      pointerEvents="none"
-      style={[StyleSheet.absoluteFill, style]}
+    <Group origin={origin && vec(origin[0], origin[1])} transform={transform}>
+      <Layer xml={xml} />
+    </Group>
+  );
+}
+
+function Faded({
+  layer,
+  opacity,
+  transform,
+}: {
+  layer: FadingLayer;
+  opacity: SharedValue<number>;
+  transform?: Transform;
+}) {
+  const [left, top, right, bottom] = layer.bounds;
+  const clip = rect(
+    left - CLIP_MARGIN,
+    top - CLIP_MARGIN,
+    right - left + CLIP_MARGIN * 2,
+    bottom - top + CLIP_MARGIN * 2,
+  );
+
+  return (
+    <Group
+      origin={vec(layer.center[0], layer.center[1])}
+      transform={transform}
+      clip={clip}
     >
-      <SvgXml xml={xml} width="100%" height="100%" />
-    </Animated.View>
+      <Group layer={<Paint opacity={opacity} />}>
+        <Layer xml={layer.xml} />
+      </Group>
+    </Group>
   );
 }
 
@@ -128,16 +164,14 @@ export function TappingHand({
   forearm,
   hand,
   wrist,
-  unit,
   still,
 }: Motion & {
   pencil: string;
   forearm: string;
   hand: string;
-  wrist: readonly [number, number];
+  wrist: Point;
 }) {
   const angle = useSharedValue(0);
-  const { dx, dy } = offset(wrist, unit);
 
   useEffect(() => {
     if (still) return;
@@ -157,24 +191,21 @@ export function TappingHand({
       ),
     );
 
-    return () => cancelAnimation(angle);
+    return () => {
+      cancelAnimation(angle);
+      angle.set(0);
+    };
   }, [angle, still]);
 
-  const turn = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: dx },
-      { translateY: dy },
-      { rotate: `${angle.get()}deg` },
-      { translateX: -dx },
-      { translateY: -dy },
-    ],
-  }));
+  const turn = useDerivedValue<Transforms3d>(() => [
+    { rotate: angle.get() * DEGREE },
+  ]);
 
   return (
     <>
-      <Layer xml={pencil} style={turn} />
+      <Moved xml={pencil} origin={wrist} transform={turn} />
       <Layer xml={forearm} />
-      <Layer xml={hand} style={turn} />
+      <Moved xml={hand} origin={wrist} transform={turn} />
     </>
   );
 }
@@ -182,11 +213,9 @@ export function TappingHand({
 export function Sweep({
   xml,
   pivot,
-  unit,
   still,
-}: Motion & { xml: string; pivot: readonly [number, number] }) {
+}: Motion & { xml: string; pivot: Point }) {
   const angle = useSharedValue(0);
-  const { dx, dy } = offset(pivot, unit);
 
   useEffect(() => {
     if (still) return;
@@ -202,20 +231,17 @@ export function Sweep({
       ),
     );
 
-    return () => cancelAnimation(angle);
+    return () => {
+      cancelAnimation(angle);
+      angle.set(0);
+    };
   }, [angle, still]);
 
-  const turn = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: dx },
-      { translateY: dy },
-      { rotate: `${angle.get()}deg` },
-      { translateX: -dx },
-      { translateY: -dy },
-    ],
-  }));
+  const turn = useDerivedValue<Transforms3d>(() => [
+    { rotate: angle.get() * DEGREE },
+  ]);
 
-  return <Layer xml={xml} style={turn} />;
+  return <Moved xml={xml} origin={pivot} transform={turn} />;
 }
 
 export function Writing({
@@ -224,22 +250,17 @@ export function Writing({
   ink,
   anchor,
   reach,
-  inkStart,
   stroke,
-  unit,
   still,
 }: Motion & {
   arm: string;
   hand: string;
-  ink: string;
-  anchor: readonly [number, number];
+  ink: FadingLayer;
+  anchor: Point;
   reach: number;
-  inkStart: readonly [number, number];
-  stroke: readonly [number, number];
+  stroke: Point;
 }) {
   const progress = useSharedValue(1);
-  const { dx, dy } = offset(inkStart, unit);
-  const shoulder = offset(anchor, unit);
   const [runX, runY] = stroke;
 
   useEffect(() => {
@@ -262,7 +283,10 @@ export function Writing({
       ),
     );
 
-    return () => cancelAnimation(progress);
+    return () => {
+      cancelAnimation(progress);
+      progress.set(1);
+    };
   }, [progress, still]);
 
   const pen = useDerivedValue(() => {
@@ -275,44 +299,39 @@ export function Writing({
     return { x: along * runX, y: along * runY + wiggle - lift };
   });
 
-  const write = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: pen.get().x * unit },
-      { translateY: pen.get().y * unit },
-    ],
-  }));
+  const write = useDerivedValue<Transforms3d>(() => [
+    { translateX: pen.get().x },
+    { translateY: pen.get().y },
+  ]);
 
-  const stretch = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: shoulder.dx },
-      { translateY: shoulder.dy },
-      { scaleX: 1 + pen.get().x / reach },
-      { skewY: `${(Math.atan(pen.get().y / reach) * 180) / Math.PI}deg` },
-      { translateX: -shoulder.dx },
-      { translateY: -shoulder.dy },
-    ],
-  }));
+  const stretch = useDerivedValue<Transforms3d>(() => {
+    const widen = 1 + pen.get().x / reach;
+    const shear = pen.get().y / reach;
 
-  const fill = useAnimatedStyle(() => {
+    return [
+      {
+        matrix: [widen, 0, 0, 0, shear, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+      },
+    ];
+  });
+
+  const fill = useDerivedValue<Transforms3d>(() => {
     const p = progress.get();
 
-    return {
-      opacity: p <= 1 ? 1 : Math.max(0, 1 - (p - 1) * 1.6),
-      transform: [
-        { translateX: dx },
-        { translateY: dy },
-        { scaleX: p <= 1 ? Math.max(p, 0.001) : 1 },
-        { translateX: -dx },
-        { translateY: -dy },
-      ],
-    };
+    return [{ scaleX: p <= 1 ? Math.max(p, 0.001) : 1 }];
+  });
+
+  const inked = useDerivedValue(() => {
+    const p = progress.get();
+
+    return p <= 1 ? 1 : Math.max(0, 1 - (p - 1) * 1.6);
   });
 
   return (
     <>
-      <Layer xml={ink} style={fill} />
-      <Layer xml={arm} style={stretch} />
-      <Layer xml={hand} style={write} />
+      <Faded layer={ink} opacity={inked} transform={fill} />
+      <Moved xml={arm} origin={anchor} transform={stretch} />
+      <Moved xml={hand} transform={write} />
     </>
   );
 }
@@ -320,11 +339,9 @@ export function Writing({
 export function Float({
   layer,
   index,
-  unit,
   still,
 }: Motion & { layer: ArtLayer; index: number }) {
   const phase = useSharedValue(0.5);
-  const { dx, dy } = offset(layer.center, unit);
 
   useEffect(() => {
     if (still) return;
@@ -337,35 +354,28 @@ export function Float({
       ),
     );
 
-    return () => cancelAnimation(phase);
+    return () => {
+      cancelAnimation(phase);
+      phase.set(0.5);
+    };
   }, [index, phase, still]);
 
-  const float = useAnimatedStyle(() => {
+  const float = useDerivedValue<Transforms3d>(() => {
     const swing = phase.get() * 2 - 1;
+    const tilt = swing * FLOAT_TILT * (index % 2 === 0 ? 1 : -1);
 
-    return {
-      transform: [
-        { translateY: swing * FLOAT_RANGE * unit },
-        { translateX: dx },
-        { translateY: dy },
-        { rotate: `${swing * FLOAT_TILT * (index % 2 === 0 ? 1 : -1)}deg` },
-        { translateX: -dx },
-        { translateY: -dy },
-      ],
-    };
+    return [{ translateY: swing * FLOAT_RANGE }, { rotate: tilt * DEGREE }];
   });
 
-  return <Layer xml={layer.xml} style={float} />;
+  return <Moved xml={layer.xml} origin={layer.center} transform={float} />;
 }
 
 export function Twinkle({
   layer,
   index,
-  unit,
   still,
-}: Motion & { layer: ArtLayer; index: number }) {
+}: Motion & { layer: FadingLayer; index: number }) {
   const glow = useSharedValue(1);
-  const { dx, dy } = offset(layer.center, unit);
 
   useEffect(() => {
     if (still) return;
@@ -378,36 +388,27 @@ export function Twinkle({
       ),
     );
 
-    return () => cancelAnimation(glow);
+    return () => {
+      cancelAnimation(glow);
+      glow.set(1);
+    };
   }, [glow, index, still]);
 
-  const shine = useAnimatedStyle(() => {
-    const level = glow.get();
+  const shine = useDerivedValue(
+    () => TWINKLE_OPACITY + (1 - TWINKLE_OPACITY) * glow.get(),
+  );
+  const shrink = useDerivedValue<Transforms3d>(() => [
+    { scale: TWINKLE_SCALE + (1 - TWINKLE_SCALE) * glow.get() },
+  ]);
 
-    return {
-      opacity: TWINKLE_OPACITY + (1 - TWINKLE_OPACITY) * level,
-      transform: [
-        { translateX: dx },
-        { translateY: dy },
-        { scale: TWINKLE_SCALE + (1 - TWINKLE_SCALE) * level },
-        { translateX: -dx },
-        { translateY: -dy },
-      ],
-    };
-  });
-
-  return <Layer xml={layer.xml} style={shine} />;
+  return <Faded layer={layer} opacity={shine} transform={shrink} />;
 }
 
 export function Pulse({
   layer,
   delay,
   still,
-}: {
-  layer: ArtLayer;
-  delay: number;
-  still: boolean;
-}) {
+}: Motion & { layer: FadingLayer; delay: number }) {
   const level = useSharedValue(1);
 
   useEffect(() => {
@@ -424,22 +425,21 @@ export function Pulse({
       ),
     );
 
-    return () => cancelAnimation(level);
+    return () => {
+      cancelAnimation(level);
+      level.set(1);
+    };
   }, [delay, level, still]);
 
-  const pulse = useAnimatedStyle(() => ({ opacity: level.get() }));
-
-  return <Layer xml={layer.xml} style={pulse} />;
+  return <Faded layer={layer} opacity={level} />;
 }
 
 export function Grow({
   layer,
   index,
-  unit,
   still,
 }: Motion & { layer: ArtLayer; index: number }) {
   const height = useSharedValue(1);
-  const { dx, dy } = offset(layer.center, unit);
 
   useEffect(() => {
     if (still) return;
@@ -455,18 +455,13 @@ export function Grow({
       ),
     );
 
-    return () => cancelAnimation(height);
+    return () => {
+      cancelAnimation(height);
+      height.set(1);
+    };
   }, [height, index, still]);
 
-  const grow = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: dx },
-      { translateY: dy },
-      { scaleY: height.get() },
-      { translateX: -dx },
-      { translateY: -dy },
-    ],
-  }));
+  const grow = useDerivedValue<Transforms3d>(() => [{ scaleY: height.get() }]);
 
-  return <Layer xml={layer.xml} style={grow} />;
+  return <Moved xml={layer.xml} origin={layer.center} transform={grow} />;
 }
