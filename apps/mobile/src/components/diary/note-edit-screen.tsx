@@ -1,13 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { Alert, Platform } from 'react-native';
+import { Alert } from 'react-native';
 import { Stack, useNavigation, useRouter } from 'expo-router';
-import { ArrowLeft } from '@tamagui/lucide-icons-2/icons/ArrowLeft';
-import { ChevronLeft } from '@tamagui/lucide-icons-2/icons/ChevronLeft';
 
 import { ErrorNotice } from '@/components/common/error-notice';
 import {
   HeaderActions,
-  HeaderIconButton,
   HeaderTextButton,
 } from '@/components/common/header-actions';
 import { ScreenLoader } from '@/components/common/screen-loader';
@@ -25,8 +22,6 @@ import { periodLabel } from './diary-date';
 import { NoteActionsMenu } from './note-actions-menu';
 import { useNoteDraft, type NoteValue } from './note-draft';
 import { NoteForm } from './note-form';
-
-const BackIcon = Platform.OS === 'ios' ? ChevronLeft : ArrowLeft;
 
 function NoteEditForm({ note }: { note: DiaryNote | null }) {
   const { t, locale } = useTranslations();
@@ -49,11 +44,12 @@ function NoteEditForm({ note }: { note: DiaryNote | null }) {
   const canSave = draft.dirty && draft.filled && !isWriting;
 
   useEffect(() => {
-    if (!guarded) return;
+    if (!guarded && !isWriting) return;
 
     return navigation.addListener('beforeRemove', (event) => {
       if (leaving.current) return;
       event.preventDefault();
+      if (isWriting) return;
 
       Alert.alert(
         t('diary.editor.discardTitle'),
@@ -71,7 +67,7 @@ function NoteEditForm({ note }: { note: DiaryNote | null }) {
         ],
       );
     });
-  }, [guarded, navigation, t]);
+  }, [guarded, isWriting, navigation, t]);
 
   const deleted = () => {
     leaving.current = true;
@@ -110,16 +106,7 @@ function NoteEditForm({ note }: { note: DiaryNote | null }) {
               : checkIn === null
                 ? t('diary.editor.editTitle')
                 : checkIn.goal.name,
-          gestureEnabled: !guarded,
-          headerBackVisible: false,
-          headerLeft: () => (
-            <HeaderIconButton
-              Icon={BackIcon}
-              label={t('diary.editor.back')}
-              onPress={() => router.back()}
-              disabled={isWriting}
-            />
-          ),
+          gestureEnabled: !guarded && !isWriting,
           headerRight: () => (
             <HeaderActions>
               <HeaderTextButton
