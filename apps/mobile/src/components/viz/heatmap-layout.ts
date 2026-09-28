@@ -76,8 +76,8 @@ export function squaresPath(
 
 /**
  * The cell under a touch, or `null` for a slot with no cell. A touch in the
- * gap after a square counts as that square, which is the slack the per-cell
- * `hitSlop` used to give.
+ * gap after a square counts as that square, which gives each cell a touch
+ * target wider than the square drawn.
  */
 export function cellAt(
   layout: HeatmapLayout,

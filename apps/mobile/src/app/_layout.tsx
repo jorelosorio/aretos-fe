@@ -1,16 +1,22 @@
 import { useEffect } from 'react';
-import { useColorScheme } from 'react-native';
+import { Platform, useColorScheme } from 'react-native';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import * as WebBrowser from 'expo-web-browser';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
+import {
+  useSafeAreaFrame,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 
 import { TamaguiProvider } from '@tamagui/core';
 import { config } from '../../tamagui.config';
 
-import { ScreenLoader } from '@/components/common/screen-loader';
+import { BrandSplash } from '@/components/brand/brand-splash';
+import { fullSheetDetent } from '@/components/common/sheet-detents';
 import { useStackHeaderOptions } from '@/components/common/stack-header';
+import { SHEET } from '@/constants/layout';
 import { useTranslations } from '@/lib/i18n';
 import { useSession, useSessionAutoRefresh } from '@/features/auth/hooks';
 import { usePreferences } from '@/lib/preferences';
@@ -24,10 +30,20 @@ WebBrowser.maybeCompleteAuthSession();
 // flashes in front of an already-signed-in user.
 void SplashScreen.preventAutoHideAsync();
 
+const AUTH_SHEET = {
+  presentation: 'formSheet',
+  sheetGrabberVisible: true,
+  sheetCornerRadius: SHEET.radius,
+} as const;
+
 function RootNavigator() {
   const headerOptions = useStackHeaderOptions();
   const { t } = useTranslations();
   const { isAuthenticated, isRestoring } = useSession();
+  const insets = useSafeAreaInsets();
+  const frame = useSafeAreaFrame();
+  const full =
+    Platform.OS === 'android' ? fullSheetDetent(insets.top, frame.height) : 1;
 
   // Above the guard, so the timer survives navigation between groups.
   useSessionAutoRefresh();
@@ -36,7 +52,7 @@ function RootNavigator() {
     if (!isRestoring) void SplashScreen.hideAsync();
   }, [isRestoring]);
 
-  if (isRestoring) return <ScreenLoader />;
+  if (isRestoring) return <BrandSplash />;
 
   return (
     <Stack screenOptions={{ ...headerOptions, headerShown: false }}>
@@ -94,7 +110,19 @@ function RootNavigator() {
       </Stack.Protected>
 
       <Stack.Protected guard={!isAuthenticated}>
-        <Stack.Screen name="login" />
+        <Stack.Screen name="welcome" />
+        <Stack.Screen
+          name="login"
+          options={{ ...AUTH_SHEET, sheetAllowedDetents: [full] }}
+        />
+        <Stack.Screen
+          name="signup"
+          options={{ ...AUTH_SHEET, sheetAllowedDetents: [full] }}
+        />
+        <Stack.Screen
+          name="forgot-password"
+          options={{ ...AUTH_SHEET, sheetAllowedDetents: [0.6, full] }}
+        />
       </Stack.Protected>
     </Stack>
   );

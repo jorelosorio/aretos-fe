@@ -31,6 +31,12 @@ export const SPACING = {
    * true; a card the user reads one of still wants `card`.
    */
   cardTight: '$3',
+  /**
+   * `section` in points, for the one place that has to add it to other
+   * numbers — the splash places its caption a fixed distance below a mark
+   * centred on the screen, so it needs arithmetic a token cannot do.
+   */
+  sectionPx: 24,
 } as const;
 
 /**
@@ -56,6 +62,25 @@ export const SPACING = {
  * is argued where it is taken, not granted here.
  */
 export const TEXT = {
+  /**
+   * The product name beside the mark on the welcome screen. It is half of the
+   * logo lockup rather than a step in the reading order, so it is sized to sit
+   * with the mark at `MARK_SIZE.md`, while staying below `hero` so the
+   * headline remains the point of the screen. Used there and nowhere else.
+   */
+  brand: '$7',
+  /**
+   * The welcome screen's headline — the one screen with no native header
+   * above it, so the "smaller than the header" ceiling on `title` does not
+   * apply. Used there and nowhere else.
+   */
+  hero: '$8',
+  /**
+   * The paragraph under the welcome headline that says what the headline
+   * means: read once, in the body face and a muted colour, so it sits a step
+   * below `hero` without competing with it. Used there and nowhere else.
+   */
+  lede: '$5',
   /**
    * A measured value read as a figure rather than as prose: a target, a
    * percentage, a stepper's count. The only step that exists to be looked at

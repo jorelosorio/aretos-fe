@@ -1,13 +1,24 @@
-import { Redirect } from 'expo-router';
+import { useEffect } from 'react';
+import { useRouter } from 'expo-router';
 
-import { ScreenLoader } from '@/components/common/screen-loader';
+import { callbackRoutes } from '@/components/auth/callback-routes';
+import { BrandSplash } from '@/components/brand/brand-splash';
 import { useSession, useSignInStatus } from '@/features/auth/hooks';
 
 export default function AuthCallbackScreen() {
+  const router = useRouter();
   const { isAuthenticated } = useSession();
-  const { isSigningIn } = useSignInStatus();
+  const { isSigningIn, error } = useSignInStatus();
+  const failed = error !== null;
 
-  if (isSigningIn) return <ScreenLoader />;
+  useEffect(() => {
+    if (isSigningIn) return;
+    for (const step of callbackRoutes({ isAuthenticated, failed })) {
+      if (step.kind === 'replace') router.replace(step.href);
+      else if (step.kind === 'dismissTo') router.dismissTo(step.href);
+      else router.push(step.href);
+    }
+  }, [isSigningIn, isAuthenticated, failed, router]);
 
-  return <Redirect href={isAuthenticated ? '/' : '/login'} />;
+  return <BrandSplash />;
 }

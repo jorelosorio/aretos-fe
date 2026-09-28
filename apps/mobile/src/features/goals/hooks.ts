@@ -69,9 +69,8 @@ export function useGoal(id: string) {
 /**
  * Everything one week of check-ins needs, in one request.
  *
- * The goal, its active habits and the saved answers used to be three:
- * `/v1/goals/:id`, `/v1/habits?goal_id=` and a `/v1/habit-logs` window.
- * `?include=habits,progress` answers all three at once.
+ * `?include=habits,progress` returns the goal, its active habits and the
+ * saved answers together, so the screen waits on one round trip.
  *
  * The window is a week rather than the one day being edited, because the
  * check-in's strip shows how the whole week went and moving between its days

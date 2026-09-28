@@ -12,3 +12,11 @@ declare module '*.svg' {
   const source: ImageSourcePropType;
   export default source;
 }
+
+/** PNG files imported as bundled assets, the same way. */
+declare module '*.png' {
+  import type { ImageSourcePropType } from 'react-native';
+
+  const source: ImageSourcePropType;
+  export default source;
+}

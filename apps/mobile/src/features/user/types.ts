@@ -36,8 +36,8 @@ export type Profile = {
  * is the identity the provider vouched for, and nobody upgrades their own
  * plan.
  *
- * The timezone used to be here and is gone with the column behind it. Where a
- * person is is a property of the request rather than of the account — it
+ * There is no timezone field. Where a person is is a property of the request
+ * rather than of the account — it
  * changes when they travel, and a stored copy is a second answer able to
  * disagree with the device in their hand — so it travels as the `X-Timezone`
  * header and is never written down.

@@ -2,10 +2,9 @@
  * Turning the report's numbers into strings, in one place.
  *
  * Every rate the server sends is `0..1`. The scaling to a percent happens here
- * and nowhere else, which is the point: the web app scales some rates in its
- * API layer and then compares `score >= 70` against `spread >= 20` in a single
- * component, two scales in one file. Keeping the domain at `0..1` and the
- * formatting at the edge makes that impossible.
+ * and nowhere else, so every comparison anywhere else in the app is between
+ * two values on the same `0..1` scale; a threshold of 70 can never meet a
+ * rate of 0.7.
  *
  * Every function takes the caller's own "no data" string rather than owning
  * one, because the copy is translated and `lib/i18n` sits below `components/`
@@ -23,8 +22,8 @@ export function formatRate(rate: number | null, empty: string): string {
  * A rate as "how many out of ten", for a comparison a person reads at a
  * glance.
  *
- * The report used to state differences as "23 pts" — percentage points,
- * which is the correct unit and one nobody outside a statistics class reads.
+ * Percentage points are the correct unit for a difference and one few people
+ * read.
  * "8 of every 10 on Thursdays, 6 on Mondays" says the same thing in a form
  * that needs no legend. Rounding to tenths loses precision a phone screen was
  * never going to convey, and the exact percent always travels beside it.

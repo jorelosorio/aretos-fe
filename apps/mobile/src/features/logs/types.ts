@@ -53,9 +53,9 @@ export type WireLogs = { habit_logs: WireLog[] };
  * minutes, `rating` on its own 1-5 scale. The other is simply not read.
  *
  * Both `null` with `skipped` false is an entry that records the habit as
- * *unanswered*, which is a third state next to done and not done. The web app
- * stored a binary blank as `false` and had to carry an `answered` flag beside
- * every result to tell the two apart; keeping the null is what removes that.
+ * *unanswered*, which is a third state next to done and not done. Keeping the
+ * null is what tells a blank from `false` without an `answered` flag beside
+ * every result.
  */
 export type LogEntry = {
   habitId: string;

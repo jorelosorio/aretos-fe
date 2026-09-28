@@ -25,6 +25,7 @@ import { ScrollView, SizableText, XStack, YStack } from 'tamagui';
 
 import { HeaderIconButton } from '@/components/common/header-actions';
 import { SectionTitle } from '@/components/common/section-title';
+import { SheetHandle } from '@/components/common/sheet-handle';
 import { SHEET, SPACING, TEXT } from '@/constants/layout';
 import { useTranslations } from '@/lib/i18n';
 
@@ -200,24 +201,10 @@ export function BottomSheet({
             >
               <GestureDetector gesture={drag()}>
                 <View>
-                  <YStack items="center" pt={SPACING.group} pb={SPACING.items}>
-                    <YStack
-                      width={SHEET.handle.width}
-                      height={SHEET.handle.height}
-                      rounded={SHEET.handle.height}
-                      bg="$mutedForeground"
-                      opacity={0.35}
-                      accessible={allowExpand}
-                      accessibilityRole="button"
-                      accessibilityLabel={
-                        expanded ? t('sheet.collapse') : t('sheet.expand')
-                      }
-                      accessibilityActions={
-                        allowExpand ? [{ name: 'activate' }] : undefined
-                      }
-                      onAccessibilityAction={allowExpand ? toggle : undefined}
-                    />
-                  </YStack>
+                  <SheetHandle
+                    label={expanded ? t('sheet.collapse') : t('sheet.expand')}
+                    onActivate={allowExpand ? toggle : undefined}
+                  />
                 </View>
               </GestureDetector>
 

@@ -39,11 +39,10 @@ export type FaceBox = { viewBox: string; aspect: number };
 /**
  * The head and everything inside it, and nothing below.
  *
- * The faces used to carry a chin arc under the head, which made the drawing
- * portrait and the box a tall sliver: the head then rendered at well under
- * half the footprint the caller paid for. Cropping to the head alone makes
- * the box square, so a face takes the width it looks like it takes and the
- * head fills the size it was given.
+ * Cropping to the head alone makes the box square, so a face takes the width
+ * it looks like it takes and the head fills the size it was given; anything
+ * drawn below the head would make the box portrait and shrink the head inside
+ * the footprint the caller sized.
  *
  * Bounds are the head circle (cx 80, cy 72, r 36) plus half the stroke.
  */

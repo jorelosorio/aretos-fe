@@ -5,3 +5,4 @@
  */
 process.env.EXPO_PUBLIC_API_URL ??= 'http://api.test';
 process.env.EXPO_PUBLIC_AUTH_REDIRECT_URI ??= 'aretos://auth/callback';
+process.env.EXPO_PUBLIC_WEB_URL ??= 'http://web.test';

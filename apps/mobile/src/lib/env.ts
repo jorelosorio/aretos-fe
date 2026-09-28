@@ -31,4 +31,14 @@ export const env = {
     'EXPO_PUBLIC_AUTH_REDIRECT_URI',
     process.env.EXPO_PUBLIC_AUTH_REDIRECT_URI,
   ),
+
+  /**
+   * The public website, without a trailing slash. The app links to its
+   * legal pages (`/terms`, `/privacy`) rather than shipping its own copies,
+   * so the text people agree to is the one the web publishes.
+   */
+  webUrl: required(
+    'EXPO_PUBLIC_WEB_URL',
+    process.env.EXPO_PUBLIC_WEB_URL,
+  ).replace(/\/+$/, ''),
 } as const;

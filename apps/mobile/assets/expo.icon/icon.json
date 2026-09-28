@@ -1,35 +1,36 @@
 {
-  "fill": {
-    "automatic-gradient": "extended-srgb:0.00000,0.47843,1.00000,1.00000"
-  },
-  "groups": [
+  "fill-specializations": [
     {
-      "layers": [
-        {
-          "image-name": "expo-symbol 2.svg",
-          "name": "expo-symbol 2",
-          "position": {
-            "scale": 1,
-            "translation-in-points": [1.1008400065293245e-5, -16.046875]
-          }
-        },
-        {
-          "image-name": "grid.png",
-          "name": "grid"
+      "value": {
+        "linear-gradient": [
+          "srgb:1.00000,0.98039,0.94510,1.00000",
+          "srgb:0.93725,0.89020,0.80784,1.00000"
+        ],
+        "orientation": {
+          "start": { "x": 0, "y": 0 },
+          "stop": { "x": 1, "y": 1 }
         }
-      ],
-      "shadow": {
-        "kind": "neutral",
-        "opacity": 0.5
-      },
-      "translucency": {
-        "enabled": true,
-        "value": 0.5
+      }
+    },
+    {
+      "appearance": "dark",
+      "value": {
+        "linear-gradient": [
+          "srgb:0.16471,0.13333,0.10980,1.00000",
+          "srgb:0.09020,0.07451,0.06275,1.00000"
+        ],
+        "orientation": {
+          "start": { "x": 0, "y": 0 },
+          "stop": { "x": 1, "y": 1 }
+        }
       }
     }
   ],
-  "supported-platforms": {
-    "circles": ["watchOS"],
-    "squares": "shared"
-  }
+  "groups": [
+    {
+      "layers": [{ "image-name": "mark.png", "name": "mark" }],
+      "shadow": { "kind": "neutral", "opacity": 0.3 }
+    }
+  ],
+  "supported-platforms": { "squares": "shared" }
 }

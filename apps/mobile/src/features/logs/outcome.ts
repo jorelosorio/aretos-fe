@@ -6,9 +6,8 @@
  * answer is still being typed, before there is anything saved to judge. So
  * the server sends each habit's bar as data — `achievedWhen`, which is
  * `progress.CriterionOf`, the same value `progress.Achieved` applies — and
- * this only compares the typed answer against it. It used to keep its own
- * copy of the rule, and the copy had drifted: it counted a 0 as done for a
- * measured habit with no threshold, which the server never has.
+ * this only compares the typed answer against it. Holding no copy of the rule
+ * is what keeps the live verdict identical to the saved one.
  *
  * `missed` and `pending` are deliberately different: both leave the habit
  * unmet, but only one of them is a thing the person actually said.

@@ -67,6 +67,7 @@ export function FormSection({
   note,
   action,
   hint,
+  error,
   counter,
   children,
 }: {
@@ -74,6 +75,7 @@ export function FormSection({
   note?: string;
   action?: SectionAction;
   hint?: string;
+  error?: string;
   counter?: SectionCounter;
   children: ReactNode;
 }) {
@@ -99,6 +101,7 @@ export function FormSection({
       {children}
 
       {hint !== undefined && <FormHint>{hint}</FormHint>}
+      {error !== undefined && <FormHint color="$destructive">{error}</FormHint>}
       {counter !== undefined && <FormCounter {...counter} />}
     </YStack>
   );

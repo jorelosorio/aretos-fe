@@ -4,8 +4,8 @@
  * Collapsed, the row shows the first `limit` in the order it was given and
  * counts the rest behind a "+N" chip, so twenty tags or goals are not a wall
  * to read before the content under them. The one exception is the active
- * item: what you are filtering by never hides behind "+N", or the row would
- * no longer show what the content below it is showing. It is added after the
+ * item: what you are filtering by never hides behind "+N", so the row always
+ * shows what the content below it is filtered by. It is added after the
  * first `limit` rather than moved to the front, so choosing a chip does not
  * reshuffle the row under your finger.
  *

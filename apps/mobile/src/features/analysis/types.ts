@@ -17,10 +17,9 @@
  * travel in `thresholds` rather than being compiled in. A card reading "at
  * least 12 days are needed" starts lying the moment a floor moves.
  *
- * All rates are `0..1`, never `0..100`. The web app scales some of them in its
- * API layer and ends up comparing `score >= 70` and `spread >= 20` in one
- * file; nothing here does that. `components/viz/format.ts` is the only place a
- * percent is produced.
+ * All rates are `0..1`, never `0..100`, so any two rates or thresholds
+ * compared anywhere are on the same scale. `components/viz/format.ts` is the
+ * only place a percent is produced.
  */
 
 import type { StreakRule, TrackingFrequency } from '@/features/goals/types';
