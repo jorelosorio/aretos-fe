@@ -26,6 +26,7 @@ const SUGGESTIONS = 8;
 const DEBOUNCE_MS = 250;
 const INPUT_MIN_WIDTH = 120;
 const INPUT_HEIGHT = 32;
+const BARE_ROW_HEIGHT = 44;
 
 function useDebounced(value: string, delay: number) {
   const [debounced, setDebounced] = useState(value);
@@ -75,12 +76,14 @@ export function TagInput({
   text,
   onTextChange: setText,
   autoFocus = false,
+  bare = false,
 }: {
   value: readonly string[];
   onChange: (tags: string[]) => void;
   text: string;
   onTextChange: (text: string) => void;
   autoFocus?: boolean;
+  bare?: boolean;
 }) {
   const { t } = useTranslations();
   const inputRef = useRef<TamaguiElement>(null);
@@ -157,21 +160,25 @@ export function TagInput({
         flexWrap="wrap"
         items="center"
         gap="$1.5"
-        px="$3"
-        py="$2"
-        minH={INPUT_HEIGHT + 20}
-        {...FIELD}
-        borderWidth={1}
-        borderColor={focused ? '$primary' : '$fieldBorder'}
+        {...(bare
+          ? { minH: BARE_ROW_HEIGHT }
+          : {
+              px: '$3',
+              py: '$2',
+              minH: INPUT_HEIGHT + 20,
+              ...FIELD,
+              borderWidth: 1,
+              borderColor: focused ? '$primary' : '$fieldBorder',
+            })}
         onPress={() => inputRef.current?.focus()}
       >
         {value.map((tag, index) => (
           <TagChip
             key={tag}
             label={tag}
-            size="regular"
+            size={bare ? 'small' : 'regular'}
             lines={2}
-            inField
+            inField={!bare}
             highlighted={armed && index === value.length - 1}
             removeLabel={t('tags.remove', { name: capitalize(tag) })}
             onRemove={() => {
@@ -181,14 +188,24 @@ export function TagInput({
           />
         ))}
 
+        {!full && bare && (
+          <Plus
+            size={ICON.inline}
+            color={focused ? '$primary' : '$mutedForeground'}
+          />
+        )}
+
         {!full && (
           <Input
             ref={inputRef}
             unstyled
             flex={1}
             minW={INPUT_MIN_WIDTH}
-            height={INPUT_HEIGHT}
-            size="$5"
+            height={bare ? BARE_ROW_HEIGHT : INPUT_HEIGHT}
+            size={bare ? '$3' : '$5'}
+            px={bare ? 0 : undefined}
+            py={bare ? 0 : undefined}
+            verticalAlign={bare ? 'middle' : undefined}
             color="$color"
             value={text}
             onChangeText={changeText}

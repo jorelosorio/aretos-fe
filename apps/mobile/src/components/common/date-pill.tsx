@@ -5,10 +5,12 @@ import { SizableText, XStack, YStack } from 'tamagui';
 
 import { BottomSheet } from '@/components/common/bottom-sheet';
 import { longDateLabel, mediumDateLabel } from '@/components/common/date-label';
-import { ICON, SPACING, TEXT } from '@/constants/layout';
+import { HIT_SLOP, ICON, SPACING, TEXT } from '@/constants/layout';
 import { useTranslations } from '@/lib/i18n';
 
 import { MonthCalendar } from './month-calendar';
+
+const TOUCH_MIN = 44;
 
 export function DatePill({
   value,
@@ -23,6 +25,7 @@ export function DatePill({
 }) {
   const { t, locale } = useTranslations();
   const isToday = value === today;
+  const tone = active ? '$primary' : '$mutedForeground';
 
   const label = isToday
     ? `${t('logs.period.today')} · ${mediumDateLabel(value, locale)}`
@@ -35,24 +38,26 @@ export function DatePill({
     <XStack
       self="flex-start"
       items="center"
-      gap="$2"
-      px="$3"
-      py="$2"
-      rounded={999}
-      borderWidth={1}
-      borderColor={active ? '$primary' : '$border'}
+      gap="$1.5"
+      minH={TOUCH_MIN}
+      hitSlop={HIT_SLOP}
       onPress={onPress}
-      pressStyle={{ bg: '$cardPress' }}
+      pressStyle={{ opacity: 0.6 }}
       accessibilityRole="button"
       accessibilityLabel={spoken}
       accessibilityHint={t('calendar.choose')}
       accessibilityState={{ expanded: active }}
     >
-      <CalendarDays size={ICON.row} color="$mutedForeground" />
-      <SizableText shrink={1} size={TEXT.body} color="$color" numberOfLines={1}>
+      <CalendarDays size={ICON.inline} color={tone} />
+      <SizableText
+        shrink={1}
+        size={TEXT.caption}
+        color={tone}
+        numberOfLines={1}
+      >
         {label}
       </SizableText>
-      <ChevronDown size={ICON.row} color="$mutedForeground" />
+      <ChevronDown size={ICON.inline} color={tone} />
     </XStack>
   );
 }

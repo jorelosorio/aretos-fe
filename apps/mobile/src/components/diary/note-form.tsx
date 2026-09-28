@@ -1,11 +1,12 @@
 import { useState } from 'react';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@tamagui/core';
 import { SizableText, TextArea, YStack, type ColorTokens } from 'tamagui';
 
 import { DatePill, DateSheet } from '@/components/common/date-pill';
 import { ErrorNotice } from '@/components/common/error-notice';
 import { FormCounter } from '@/components/common/form-section';
-import { FormScrollView } from '@/components/common/form-scroll-view';
 import { NOTE_TEXT } from '@/components/common/note-text';
 import { TagInput } from '@/components/tags/tag-input';
 import { SPACING, TEXT } from '@/constants/layout';
@@ -17,7 +18,6 @@ import { useTranslations } from '@/lib/i18n';
 
 import type { useNoteDraft } from './note-draft';
 
-const BODY_MIN_HEIGHT = 240;
 const BODY_COUNT_FROM = NOTE_BODY_MAX - 200;
 const TAG_COUNT_FROM = TAGS_MAX - 5;
 
@@ -38,6 +38,7 @@ export function NoteForm({
   const theme = useTheme();
   const { data: profile } = useProfile();
   const [picking, setPicking] = useState(false);
+  const insets = useSafeAreaInsets();
 
   const surface = theme.background.val as ColorTokens;
   const today = todayKey();
@@ -47,11 +48,19 @@ export function NoteForm({
   const tagCount = draft.tags.tags.length;
 
   return (
-    <FormScrollView padBottom={padBottom}>
-      <YStack flex={1}>
-        <YStack px={SPACING.screen} pt={SPACING.screen} gap={SPACING.items}>
-          <ErrorNotice message={error} />
+    <KeyboardAvoidingView
+      behavior="padding"
+      automaticOffset
+      style={{ flex: 1, backgroundColor: surface }}
+    >
+      <YStack flex={1} pb={padBottom ? insets.bottom : 0}>
+        {error !== null && (
+          <YStack px={SPACING.screen} pt={SPACING.screen}>
+            <ErrorNotice message={error} />
+          </YStack>
+        )}
 
+        <YStack px={SPACING.screen} pt={SPACING.group} gap={SPACING.text}>
           {entryDate !== null ? (
             <DatePill
               value={entryDate}
@@ -61,13 +70,14 @@ export function NoteForm({
             />
           ) : (
             period !== undefined && (
-              <SizableText size={TEXT.body} color="$mutedForeground">
+              <SizableText size={TEXT.caption} color="$mutedForeground">
                 {period}
               </SizableText>
             )
           )}
 
           <TagInput
+            bare
             value={draft.tags.tags}
             onChange={draft.tags.setTags}
             text={draft.tags.text}
@@ -84,8 +94,9 @@ export function NoteForm({
         </YStack>
 
         <TextArea
+          unstyled
+          fontFamily="$body"
           flex={1}
-          minH={BODY_MIN_HEIGHT}
           size={NOTE_TEXT.size}
           lineHeight={NOTE_TEXT.lineHeight}
           color={theme.color.val as ColorTokens}
@@ -96,8 +107,7 @@ export function NoteForm({
           accessibilityLabel={t('diary.editor.body')}
           maxLength={NOTE_BODY_MAX}
           multiline
-          scrollEnabled={false}
-          autoFocus={autoFocus}
+          autoFocusNative={autoFocus}
           verticalAlign="top"
           p={NOTE_TEXT.padding}
           bg={surface}
@@ -107,7 +117,7 @@ export function NoteForm({
         />
 
         {draft.body.length >= BODY_COUNT_FROM && (
-          <YStack px={SPACING.screen} pb={SPACING.group}>
+          <YStack px={SPACING.screen}>
             <FormCounter count={draft.body.length} max={NOTE_BODY_MAX} />
           </YStack>
         )}
@@ -127,6 +137,6 @@ export function NoteForm({
           onDismiss={() => setPicking(false)}
         />
       )}
-    </FormScrollView>
+    </KeyboardAvoidingView>
   );
 }

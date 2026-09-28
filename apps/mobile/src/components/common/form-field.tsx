@@ -19,6 +19,7 @@ export const FIELD = {
 export function FormInput(props: InputProps) {
   return (
     <Input
+      autoFocusNative={props.autoFocus}
       size="$5"
       placeholderTextColor="$fieldPlaceholder"
       {...FIELD}
@@ -32,6 +33,7 @@ export function FormTextArea(
 ) {
   return (
     <TextArea
+      autoFocusNative={props.autoFocus}
       size="$5"
       placeholderTextColor="$fieldPlaceholder"
       multiline
