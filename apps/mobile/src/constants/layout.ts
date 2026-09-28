@@ -316,16 +316,16 @@ export const TAB_BAR = {
    *
    * The pill has no border, so this blur is its edge on its own. Wide and
    * soft rather than tight, because a tight halo round a borderless shape
-   * reads as a drawn outline. Softer in dark for the reason `SHEET.shadow`
-   * is: a dense black halo on a near-black screen reads as a band. Dark is
-   * two wide, faint layers for the same reason: stacked, their blur falls off
-   * gradually, where a single dense one concentrates at the rim and reads
-   * as a ring rather than a shadow. Neither is tight: a small blur draws a
-   * crisp dark edge against the pill, which reads as an outline.
+   * reads as a drawn outline.
+   *
+   * Dark mode has none. A shadow on a near-black page has almost no room
+   * to darken it, so it reads as a flat patch of another colour rather than
+   * depth; the pill's `$card` fill, a step lighter than the page, is what
+   * lifts it there.
    */
   shadow: {
     light: '0px 4px 32px rgba(0, 0, 0, 0.16)',
-    dark: '0px 6px 24px rgba(0, 0, 0, 0.18), 0px 16px 64px rgba(0, 0, 0, 0.32)',
+    dark: null,
   },
 } as const;
 

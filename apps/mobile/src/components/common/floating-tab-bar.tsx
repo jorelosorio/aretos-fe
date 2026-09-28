@@ -80,7 +80,7 @@ export function FloatingTabBar({
         px="$2"
         bg="$card"
         rounded={TAB_BAR.height / 2}
-        style={{ boxShadow: shadow }}
+        style={shadow === null ? undefined : { boxShadow: shadow }}
       >
         {tabs}
       </XStack>

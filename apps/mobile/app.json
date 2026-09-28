@@ -61,6 +61,7 @@
         }
       ],
       "expo-secure-store",
+      "./plugins/with-scrollbar-thumb",
       [
         "expo-build-properties",
         {
