@@ -61,7 +61,7 @@
         }
       ],
       "expo-secure-store",
-      "./plugins/with-scrollbar-thumb",
+      "./plugins/with-android-theme",
       [
         "expo-build-properties",
         {

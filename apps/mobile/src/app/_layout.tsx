@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Platform, useColorScheme } from 'react-native';
+import { Appearance, Platform, useColorScheme } from 'react-native';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
@@ -135,6 +135,10 @@ export default function RootLayout() {
   // The stored preference is read synchronously at module load, so this is
   // already the right theme on the first paint — no flash of the device's.
   const resolved = theme === 'system' ? (scheme ?? 'light') : theme;
+
+  useEffect(() => {
+    Appearance.setColorScheme(theme === 'system' ? 'unspecified' : theme);
+  }, [theme]);
 
   return (
     <TamaguiProvider config={config} defaultTheme={resolved}>
