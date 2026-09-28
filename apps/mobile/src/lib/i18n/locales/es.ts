@@ -539,8 +539,6 @@ export const es = {
       skipLimit: 'Pausas',
       color: 'Color',
       colorHint: 'Así reconoces esta meta en toda la app.',
-      colorAuto:
-        'Si no eliges uno, te damos un color que no use ninguna de tus otras metas.',
       save: 'Guardar',
       update: 'Actualizar',
       tags: 'Etiquetas (opcional)',

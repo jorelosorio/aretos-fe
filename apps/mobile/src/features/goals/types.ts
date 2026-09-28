@@ -85,10 +85,8 @@ export type Goal = {
 /**
  * Everything the form decides, colour included; not identity.
  *
- * `colorSlot: null` leaves the colour to the server, which gives a new goal
- * one no active goal is wearing. Picking the free one here would mean
- * working out from a possibly stale list what the server already knows, so
- * a create the user did not colour sends nothing and lets it choose.
+ * A goal always has a colour, so the draft always carries one: a new goal
+ * starts on the palette's first slot and is sent with it.
  */
 export type GoalDraft = {
   name: string;
@@ -97,7 +95,7 @@ export type GoalDraft = {
   streakRule: StreakRule;
   streakThreshold: number;
   streakSkipLimit: number;
-  colorSlot: number | null;
+  colorSlot: number;
   /**
    * Replaced whole on the server: the list sent is the list the goal ends
    * up with. `toGoalPatch` leaves it out of an edit that did not change it.
@@ -108,7 +106,10 @@ export type GoalDraft = {
 /** A patch sends only what changed; archiving is just `{ archived: true }`. */
 export type GoalPatch = Partial<GoalDraft> & { archived?: boolean };
 
-/** What a goal starts as, matching the column defaults the server applies. */
+/**
+ * What a goal starts as: the column defaults the server applies, except the
+ * colour, which starts on the first slot rather than one the server picks.
+ */
 export const EMPTY_DRAFT: GoalDraft = {
   name: '',
   description: '',
@@ -116,7 +117,7 @@ export const EMPTY_DRAFT: GoalDraft = {
   streakRule: 'logged',
   streakThreshold: 60,
   streakSkipLimit: 2,
-  colorSlot: null,
+  colorSlot: 0,
   tags: [],
 };
 

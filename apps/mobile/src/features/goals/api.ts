@@ -226,10 +226,7 @@ function toBody(patch: GoalPatch): Record<string, unknown> {
   if (patch.streakSkipLimit !== undefined) {
     body.streak_skip_limit = patch.streakSkipLimit;
   }
-  // null is "let the server choose", which on the wire is the key left out.
-  if (patch.colorSlot !== undefined && patch.colorSlot !== null) {
-    body.color_slot = patch.colorSlot;
-  }
+  if (patch.colorSlot !== undefined) body.color_slot = patch.colorSlot;
   // Sent as-is: the server trims, drops repeats ignoring case and keeps the
   // spelling a tag was first saved with, so the response is what to show.
   if (patch.tags !== undefined) body.tags = patch.tags;

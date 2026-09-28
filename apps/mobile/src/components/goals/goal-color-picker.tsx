@@ -18,7 +18,7 @@ export function GoalColorPicker({
   onChange,
   hint,
 }: {
-  value: number | null;
+  value: number;
   onChange: (slot: number) => void;
   hint: string;
 }) {

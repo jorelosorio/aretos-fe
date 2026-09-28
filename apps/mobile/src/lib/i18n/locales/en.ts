@@ -538,8 +538,6 @@ export const en = {
       skipLimit: 'Breaks',
       color: 'Color',
       colorHint: 'This is how you spot this goal across the app.',
-      colorAuto:
-        "If you don't pick one, you get a color none of your other goals uses.",
       save: 'Save',
       update: 'Update',
       tags: 'Tags (optional)',

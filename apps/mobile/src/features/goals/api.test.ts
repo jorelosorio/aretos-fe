@@ -70,14 +70,18 @@ describe('goals api', () => {
     expect(goal.progress?.currentPeriod).not.toHaveProperty('note');
   });
 
-  it('sends tags on create', async () => {
+  it('sends tags and the first colour on create', async () => {
     mocked.post.mockResolvedValueOnce({ data: wireGoal });
 
     await createGoal({ ...EMPTY_DRAFT, name: 'Health', tags: ['Body'] });
 
     expect(mocked.post).toHaveBeenCalledWith(
       '/v1/goals',
-      expect.objectContaining({ name: 'Health', tags: ['Body'] }),
+      expect.objectContaining({
+        name: 'Health',
+        tags: ['Body'],
+        color_slot: 0,
+      }),
     );
   });
 

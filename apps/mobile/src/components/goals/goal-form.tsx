@@ -168,11 +168,7 @@ export function GoalForm({
         <GoalColorPicker
           value={draft.colorSlot}
           onChange={(slot) => patch({ colorSlot: slot })}
-          hint={t(
-            draft.colorSlot === null
-              ? 'goals.form.colorAuto'
-              : 'goals.form.colorHint',
-          )}
+          hint={t('goals.form.colorHint')}
         />
 
         <OptionGroup
