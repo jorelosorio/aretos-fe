@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { ScrollView } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@tamagui/core';
 import { SizableText, TextArea, YStack, type ColorTokens } from 'tamagui';
@@ -18,6 +18,7 @@ import { useProfile } from '@/features/user/hooks';
 import { useTranslations } from '@/lib/i18n';
 
 import type { useNoteDraft } from './note-draft';
+import { useRevealCaret } from './use-reveal-caret';
 
 const BODY_COUNT_FROM = NOTE_BODY_MAX - 200;
 const TAG_COUNT_FROM = TAGS_MAX - 5;
@@ -41,6 +42,9 @@ export function NoteForm({
   const insets = useSafeAreaInsets();
   const [picking, setPicking] = useState(false);
   const [bodyHeight, setBodyHeight] = useState(0);
+  const { scrollRef, bodyBox, bodyRef, onBodyLayout } = useRevealCaret(
+    NOTE_TEXT.lineHeight,
+  );
 
   const surface = theme.background.val as ColorTokens;
   const today = todayKey();
@@ -59,7 +63,8 @@ export function NoteForm({
         paddingBottom: padBottom ? insets.bottom : 0,
       }}
     >
-      <ScrollView
+      <Animated.ScrollView
+        ref={scrollRef}
         style={{ flex: 1 }}
         contentContainerStyle={{ flexGrow: 1 }}
         keyboardShouldPersistTaps="handled"
@@ -104,36 +109,40 @@ export function NoteForm({
           )}
         </YStack>
 
-        <TextArea
-          unstyled
-          fontFamily="$body"
-          grow={1}
-          minH={bodyHeight}
-          onContentSizeChange={(event) =>
-            setBodyHeight(
-              event.nativeEvent.contentSize.height + NOTE_TEXT.lineHeight,
-            )
-          }
-          size={NOTE_TEXT.size}
-          lineHeight={NOTE_TEXT.lineHeight}
-          color={theme.color.val as ColorTokens}
-          value={draft.body}
-          onChangeText={draft.setBody}
-          placeholder={t('diary.editor.placeholder')}
-          placeholderTextColor={theme.fieldPlaceholder.val as ColorTokens}
-          accessibilityLabel={t('diary.editor.body')}
-          maxLength={NOTE_BODY_MAX}
-          multiline
-          scrollEnabled={false}
-          autoFocusNative={autoFocus}
-          verticalAlign="top"
-          p={NOTE_TEXT.padding}
-          bg={surface}
-          borderWidth={0}
-          rounded={0}
-          focusStyle={{ borderWidth: 0, bg: surface }}
-        />
-      </ScrollView>
+        <Animated.View ref={bodyBox} style={{ flexGrow: 1 }}>
+          <TextArea
+            ref={bodyRef}
+            onLayout={onBodyLayout}
+            unstyled
+            fontFamily="$body"
+            grow={1}
+            minH={bodyHeight}
+            onContentSizeChange={(event) =>
+              setBodyHeight(
+                event.nativeEvent.contentSize.height + NOTE_TEXT.lineHeight,
+              )
+            }
+            size={NOTE_TEXT.size}
+            lineHeight={NOTE_TEXT.lineHeight}
+            color={theme.color.val as ColorTokens}
+            value={draft.body}
+            onChangeText={draft.setBody}
+            placeholder={t('diary.editor.placeholder')}
+            placeholderTextColor={theme.fieldPlaceholder.val as ColorTokens}
+            accessibilityLabel={t('diary.editor.body')}
+            maxLength={NOTE_BODY_MAX}
+            multiline
+            scrollEnabled={false}
+            autoFocusNative={autoFocus}
+            verticalAlign="top"
+            p={NOTE_TEXT.padding}
+            bg={surface}
+            borderWidth={0}
+            rounded={0}
+            focusStyle={{ borderWidth: 0, bg: surface }}
+          />
+        </Animated.View>
+      </Animated.ScrollView>
 
       {draft.body.length >= BODY_COUNT_FROM && (
         <YStack px={SPACING.screen}>
