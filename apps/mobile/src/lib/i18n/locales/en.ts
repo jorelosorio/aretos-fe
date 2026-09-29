@@ -695,6 +695,73 @@ export const en = {
       generic: 'Something went wrong. Please try again.',
     },
   },
+  guide: {
+    start: 'Get started',
+    progress: 'Step %{current} of %{total}',
+    header: {
+      goal: 'Goal',
+      habits: 'Habits',
+      today: 'Today',
+    },
+    steps: {
+      goal: 'Set a goal',
+      habits: 'What you want to track',
+      today: 'Track today',
+    },
+    next: 'Next',
+    goal: {
+      body: 'A goal is something you want to see more of in your life. It can sound abstract: habits make it concrete.',
+      suggestions: 'Suggestions',
+      namePlaceholder: 'Goal name',
+    },
+    habits: {
+      body: 'A habit is something concrete you do and mark as done or not each day. Pick up to three; you can add more later.',
+      suggestions: 'Suggestions',
+      suggestionLabel: 'Add %{name}',
+      addLabel: 'Add a habit',
+      namePlaceholder: 'Habit name',
+      remove: 'Remove %{name}',
+      full: 'You can add more habits later, from your goal.',
+    },
+    today: {
+      body: 'Tap the habits you already did today. The rest can wait.',
+      done: 'Done',
+      pending: 'Not marked',
+    },
+    saving: {
+      title: 'Setting up your goal…',
+      retry: 'Try again',
+      leave: 'Leave',
+    },
+    done: {
+      title: 'Congratulations!',
+      goal: 'Your goal and its habits are in My Goals.',
+      edit: 'You can add more habits or edit them whenever you like.',
+      daily: 'Come back each day to track how it went.',
+      finish: 'Finish',
+      seeGoal: 'See my goal',
+    },
+    examples: {
+      excellence: {
+        name: 'Work with excellence',
+        onTime: 'Be on time',
+        promises: 'Keep your promises',
+        noGossip: 'Don’t speak ill of anyone',
+      },
+      relationships: {
+        name: 'Look after your relationships',
+        listen: 'Listen without interrupting',
+        thanks: 'Thank someone for something specific',
+        apologize: 'Be the first to apologise',
+      },
+      calm: {
+        name: 'Stay calm',
+        pause: 'Pause before you reply',
+        peace: 'Keep the peace when everyone loses their head',
+        noTextFights: 'Don’t argue by text',
+      },
+    },
+  },
   auth: {
     title: 'Aretos',
     tagline: 'Track your goals and watch your progress.',

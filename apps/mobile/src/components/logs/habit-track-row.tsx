@@ -1,32 +1,22 @@
 import { useState } from 'react';
-import { Check } from '@tamagui/lucide-icons-2/icons/Check';
 import { CircleDashed } from '@tamagui/lucide-icons-2/icons/CircleDashed';
 import { Lightbulb } from '@tamagui/lucide-icons-2/icons/Lightbulb';
-import { Minus } from '@tamagui/lucide-icons-2/icons/Minus';
 import { RotateCcw } from '@tamagui/lucide-icons-2/icons/RotateCcw';
-import { X } from '@tamagui/lucide-icons-2/icons/X';
-import {
-  Button,
-  Circle,
-  Paragraph,
-  SizableText,
-  XStack,
-  YStack,
-} from 'tamagui';
+import { Button, Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
 import { Card } from '@/components/common/card';
 import { UNIT_LABELS } from '@/components/habits/unit-labels';
 import { BUTTON, ICON, SPACING, TEXT } from '@/constants/layout';
 import type { Habit } from '@/features/habits/types';
-import { OUTCOME_COLORS, outcomeOf } from '@/features/logs/outcome';
+import { outcomeOf } from '@/features/logs/outcome';
 import type { LogEntry } from '@/features/logs/types';
 import { useTranslations } from '@/lib/i18n';
 
 import { completionAmount, stepFor } from './entry-actions';
 import { InlineEntryInput, type EntryPatch } from './entry-value-input';
+import { OUTCOME_MARK_SIZE, OutcomeMark } from './outcome-mark';
 
 const RAIL = 26;
-const MARK = 26;
 
 function Connector({ hidden }: { hidden: boolean }) {
   return (
@@ -37,43 +27,6 @@ function Connector({ hidden }: { hidden: boolean }) {
       borderStyle="dashed"
       borderColor={hidden ? 'transparent' : '$border'}
     />
-  );
-}
-
-function Mark({
-  outcome,
-  onPress,
-  label,
-}: {
-  outcome: ReturnType<typeof outcomeOf>;
-  onPress: () => void;
-  label: string;
-}) {
-  const color = OUTCOME_COLORS[outcome];
-  const done = outcome === 'done';
-
-  return (
-    <Circle
-      size={MARK}
-      bg={done ? color : '$background'}
-      borderWidth={done ? 0 : 2}
-      borderColor={color}
-      pressStyle={{ opacity: 0.6 }}
-      onPress={onPress}
-      accessibilityRole="button"
-      accessibilityState={{ checked: done }}
-      accessibilityLabel={label}
-    >
-      {done && (
-        <Check size={ICON.inline} color="$statusForeground" strokeWidth={3} />
-      )}
-      {outcome === 'missed' && (
-        <X size={ICON.inline} color={color} strokeWidth={3} />
-      )}
-      {outcome === 'skipped' && (
-        <Minus size={ICON.inline} color={color} strokeWidth={3} />
-      )}
-    </Circle>
   );
 }
 
@@ -144,10 +97,10 @@ export function HabitTrackRow({
 
   return (
     <XStack gap="$2">
-      <YStack width={RAIL} items="center" minH={MARK}>
+      <YStack width={RAIL} items="center" minH={OUTCOME_MARK_SIZE}>
         <Connector hidden={isFirst} />
 
-        <Mark
+        <OutcomeMark
           outcome={outcome}
           onPress={markPress}
           label={`${habit.name}. ${t(`logs.outcome.${outcome}`)}`}

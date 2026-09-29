@@ -66,6 +66,15 @@ function RootNavigator() {
         <Stack.Screen name="(tabs)" />
 
         <Stack.Screen
+          name="guide"
+          options={{
+            headerShown: true,
+            headerTransparent: true,
+            headerStyle: { backgroundColor: 'transparent' },
+          }}
+        />
+
+        <Stack.Screen
           name="goals/new"
           options={{ headerShown: true, title: t('goals.form.newTitle') }}
         />

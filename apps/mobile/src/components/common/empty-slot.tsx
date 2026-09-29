@@ -16,9 +16,11 @@ const DOT_SPACING = 6;
 export function EmptySlot({
   Icon,
   label,
+  onPress,
 }: {
   Icon: IconComponent;
   label: string;
+  onPress?: () => void;
 }) {
   const theme = useTheme();
   const [box, setBox] = useState({ width: 0, height: 0 });
@@ -39,7 +41,9 @@ export function EmptySlot({
             : { width, height },
         );
       }}
-      accessibilityRole="text"
+      onPress={onPress}
+      pressStyle={onPress === undefined ? undefined : { opacity: 0.6 }}
+      accessibilityRole={onPress === undefined ? 'text' : 'button'}
       accessibilityLabel={label}
     >
       {box.width > 0 && (

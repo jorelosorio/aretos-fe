@@ -699,6 +699,73 @@ export const es = {
       generic: 'Algo salió mal. Inténtalo de nuevo.',
     },
   },
+  guide: {
+    start: 'Empezar',
+    progress: 'Paso %{current} de %{total}',
+    header: {
+      goal: 'Meta',
+      habits: 'Hábitos',
+      today: 'Hoy',
+    },
+    steps: {
+      goal: 'Define tu meta',
+      habits: 'Qué quieres registrar',
+      today: 'Registra hoy',
+    },
+    next: 'Siguiente',
+    goal: {
+      body: 'Una meta es algo que quieres ver más en tu vida. Puede sonar abstracta: los hábitos la vuelven concreta.',
+      suggestions: 'Sugerencias',
+      namePlaceholder: 'Nombre de la meta',
+    },
+    habits: {
+      body: 'Un hábito es algo concreto que haces y que cada día marcas como hecho o no. Elige hasta tres; luego puedes añadir más.',
+      suggestions: 'Sugerencias',
+      suggestionLabel: 'Añadir %{name}',
+      addLabel: 'Añadir un hábito',
+      namePlaceholder: 'Nombre del hábito',
+      remove: 'Quitar %{name}',
+      full: 'Puedes añadir más hábitos después, desde tu meta.',
+    },
+    today: {
+      body: 'Toca los hábitos que ya hiciste hoy. Los demás pueden esperar.',
+      done: 'Hecho',
+      pending: 'Sin marcar',
+    },
+    saving: {
+      title: 'Preparando tu meta…',
+      retry: 'Reintentar',
+      leave: 'Salir',
+    },
+    done: {
+      title: '¡Felicidades!',
+      goal: 'Tu meta y sus hábitos están en Mis Metas.',
+      edit: 'Puedes añadir más hábitos o editarlos cuando quieras.',
+      daily: 'Vuelve cada día para registrar cómo te fue.',
+      finish: 'Terminar',
+      seeGoal: 'Ver mi meta',
+    },
+    examples: {
+      excellence: {
+        name: 'Trabaja con excelencia',
+        onTime: 'Llega a tiempo',
+        promises: 'Cumple lo que prometes',
+        noGossip: 'No hables mal de nadie',
+      },
+      relationships: {
+        name: 'Cuida tus relaciones',
+        listen: 'Escucha sin interrumpir',
+        thanks: 'Da las gracias por algo concreto',
+        apologize: 'Sé el primero en pedir perdón',
+      },
+      calm: {
+        name: 'Mantén la calma',
+        pause: 'Haz una pausa antes de responder',
+        peace: 'Mantén la paz cuando todo el mundo pierde la cabeza',
+        noTextFights: 'No discutas por mensaje',
+      },
+    },
+  },
   auth: {
     title: 'Aretos',
     tagline: 'Registra tus metas y sigue tu progreso.',

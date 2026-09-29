@@ -8,16 +8,21 @@ const KEYBOARD_GAP = 112;
 export function FormScrollView({
   children,
   padBottom = true,
+  transparent = false,
 }: {
   children: ReactNode;
   padBottom?: boolean;
+  transparent?: boolean;
 }) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
 
   return (
     <KeyboardAwareScrollView
-      style={{ flex: 1, backgroundColor: theme.background.val }}
+      style={{
+        flex: 1,
+        backgroundColor: transparent ? 'transparent' : theme.background.val,
+      }}
       contentContainerStyle={{
         flexGrow: 1,
         paddingBottom: padBottom ? insets.bottom : 0,
