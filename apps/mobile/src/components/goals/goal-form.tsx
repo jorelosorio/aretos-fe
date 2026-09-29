@@ -27,7 +27,8 @@ import {
   useGoalErrorMessage,
   useUpdateGoal,
 } from '@/features/goals/hooks';
-import { toGoalPatch } from '@/features/goals/patch';import type {
+import { toGoalPatch } from '@/features/goals/patch';
+import type {
   GoalDraft,
   StreakRule,
   TrackingFrequency,
