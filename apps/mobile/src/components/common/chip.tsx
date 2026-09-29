@@ -14,6 +14,7 @@ export type ChipProps = {
   size?: 'small' | 'regular';
   lines?: 1 | 2;
   inField?: boolean;
+  raised?: boolean;
   Icon?: IconComponent;
   dot?: ColorTokens;
   selected?: boolean;
@@ -29,6 +30,7 @@ export function Chip({
   size = 'small',
   lines = 1,
   inField = false,
+  raised = false,
   Icon,
   dot,
   selected,
@@ -52,7 +54,17 @@ export function Chip({
       py="$1"
       maxW="100%"
       rounded={lines === 1 ? 999 : WRAPPING_RADIUS}
-      bg={active ? '$primary' : inField ? '$fieldChip' : '$muted'}
+      bg={
+        active
+          ? '$primary'
+          : inField
+            ? '$fieldChip'
+            : raised
+              ? '$card'
+              : '$muted'
+      }
+      borderWidth={raised && !active ? 1 : 0}
+      borderColor="$border"
       onPress={onPress}
       pressStyle={onPress === undefined ? undefined : { opacity: 0.7 }}
       accessibilityRole={onPress === undefined ? 'text' : 'button'}

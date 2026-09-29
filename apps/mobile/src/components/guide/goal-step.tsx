@@ -43,6 +43,7 @@ export function GoalStep({
             <Chip
               key={example.name}
               size="regular"
+              raised
               label={t(example.name)}
               dot={slotColor(example.colorSlot)}
               selected={example === selected}

@@ -185,10 +185,9 @@ export function GuideScreen() {
           >
             <Button
               size={BUTTON.primary}
-              theme="accent"
+              theme={ready ? 'accent' : undefined}
               shrink={1}
               disabled={!ready}
-              opacity={ready ? 1 : 0.4}
               onPress={advance}
               accessibilityState={{ disabled: !ready }}
             >

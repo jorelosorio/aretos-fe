@@ -75,25 +75,43 @@ describe('amplify', () => {
 });
 
 describe('auroraPalette', () => {
-  it('boosts tints more on a light ground than a dark one', () => {
+  /** How far a palette tint sits from the ground, as a share of the source. */
+  const share = (palette: number[], channel: number, source: string) => {
+    const ground = palette[channel % 3];
+    const target =
+      parseInt(source.slice(1 + (channel % 3) * 2, 3 + (channel % 3) * 2), 16) /
+      255;
+    return (palette[channel] - ground) / (target - ground);
+  };
+
+  it('on a light ground, takes only part of the way to each vivid tint', () => {
     const light = auroraPalette({
       ground: '#f7efe2',
-      ember: '#ffdcc7',
-      moss: '#e1edc9',
-      honey: '#fbe7bb',
+      ember: '#f89a5c',
+      moss: '#8fbf5a',
+      honey: '#f0b23c',
     });
+    expect(light).toHaveLength(12);
+    expect(luminance([light![0], light![1], light![2]])).toBeGreaterThan(0.5);
+    for (const [channel, source] of [
+      [4, '#f89a5c'],
+      [6, '#8fbf5a'],
+      [11, '#f0b23c'],
+    ] as const) {
+      expect(share(light!, channel, source)).toBeGreaterThan(0.15);
+      expect(share(light!, channel, source)).toBeLessThan(0.5);
+    }
+  });
+
+  it('on a dark ground, pushes each tint further from the ground', () => {
     const dark = auroraPalette({
       ground: '#1d1712',
       ember: '#472a1e',
       moss: '#2e3d24',
       honey: '#4a3616',
     });
-    expect(light).toHaveLength(12);
     expect(dark).toHaveLength(12);
-    expect(luminance([light![0], light![1], light![2]])).toBeGreaterThan(0.5);
-    const lightShift = Math.abs(light![5] - 199 / 255);
-    const darkShift = Math.abs(dark![5] - 0x1e / 255);
-    expect(lightShift).toBeGreaterThan(darkShift);
+    expect(share(dark!, 3, '#472a1e')).toBeGreaterThan(1);
   });
 
   it('returns null when any colour is unreadable', () => {

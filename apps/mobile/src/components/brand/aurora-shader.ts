@@ -93,15 +93,21 @@ export function amplify(tint: Rgb, ground: Rgb, factor: number): Rgb {
 }
 
 /**
- * How far each mode's tints are pushed from the ground before the shader sees
- * them. The deco tints are a whisper off their ground — right for a small
- * surface, nearly invisible spread across a whole screen — so both modes are
- * amplified, light a little more than dark since cream is the further
- * whisper. Light is held at the point where the tints drift over the cream
- * rather than covering it: the sky fills the whole screen, so a stronger push
- * turns the page from cream to peach.
+ * How far each mode's tints sit from the ground, as a share of the colour the
+ * aurora is given for them.
+ *
+ * Dark is given the deco tints, a whisper off its near-black ground, and
+ * pushes them further out: the clouds are lighter than the page, so the eye
+ * follows them easily.
+ *
+ * Light is given the vivid tints instead and takes two fifths of the way
+ * to them. Pushing the pastel deco tints out, as dark does, left every cloud
+ * as light as the cream it drifts over: the page read as tinted peach and
+ * green, while the motion — carried by lightness, not hue — disappeared. A
+ * share of the vivid colours gives clouds a step deeper than the cream and
+ * clearly apart from one another, with the cream still showing between them.
  */
-const LIGHT_BOOST = 1.8;
+const LIGHT_SHARE = 0.9;
 const DARK_BOOST = 1.7;
 
 /**
@@ -120,7 +126,7 @@ export function auroraPalette(colors: {
   const honey = parseColor(colors.honey);
   if (!ground || !ember || !moss || !honey) return null;
 
-  const boost = luminance(ground) > 0.5 ? LIGHT_BOOST : DARK_BOOST;
+  const boost = luminance(ground) > 0.5 ? LIGHT_SHARE : DARK_BOOST;
   return [
     ...ground,
     ...amplify(ember, ground, boost),

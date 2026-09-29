@@ -14,21 +14,7 @@ import { useTranslations } from '@/lib/i18n';
 
 import { completionAmount, stepFor } from './entry-actions';
 import { InlineEntryInput, type EntryPatch } from './entry-value-input';
-import { OUTCOME_MARK_SIZE, OutcomeMark } from './outcome-mark';
-
-const RAIL = 26;
-
-function Connector({ hidden }: { hidden: boolean }) {
-  return (
-    <YStack
-      flex={1}
-      width={0}
-      borderLeftWidth={1}
-      borderStyle="dashed"
-      borderColor={hidden ? 'transparent' : '$border'}
-    />
-  );
-}
+import { OutcomeRail } from './outcome-rail';
 
 export function HabitTrackRow({
   habit,
@@ -97,17 +83,13 @@ export function HabitTrackRow({
 
   return (
     <XStack gap="$2">
-      <YStack width={RAIL} items="center" minH={OUTCOME_MARK_SIZE}>
-        <Connector hidden={isFirst} />
-
-        <OutcomeMark
-          outcome={outcome}
-          onPress={markPress}
-          label={`${habit.name}. ${t(`logs.outcome.${outcome}`)}`}
-        />
-
-        <Connector hidden={isLast} />
-      </YStack>
+      <OutcomeRail
+        outcome={outcome}
+        label={`${habit.name}. ${t(`logs.outcome.${outcome}`)}`}
+        isFirst={isFirst}
+        isLast={isLast}
+        onPress={markPress}
+      />
 
       <Card
         flex={1}

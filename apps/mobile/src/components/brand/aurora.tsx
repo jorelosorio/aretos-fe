@@ -7,7 +7,7 @@ import {
   useReducedMotion,
   useSharedValue,
 } from 'react-native-reanimated';
-import { useTheme } from '@tamagui/core';
+import { useTheme, useThemeName } from '@tamagui/core';
 
 import { resolveColor } from '@/components/common/theme-color';
 
@@ -30,9 +30,10 @@ export function Aurora({ idle = false }: { idle?: boolean }) {
   const [size, setSize] = useState({ width: 0, height: 0 });
 
   const ground = resolveColor(theme, '$background');
-  const ember = resolveColor(theme, '$deco1');
-  const moss = resolveColor(theme, '$deco2');
-  const honey = resolveColor(theme, '$deco3');
+  const dark = useThemeName().startsWith('dark');
+  const ember = resolveColor(theme, dark ? '$deco1' : '$deco1Vivid');
+  const moss = resolveColor(theme, dark ? '$deco2' : '$deco2Vivid');
+  const honey = resolveColor(theme, dark ? '$deco3' : '$deco3Vivid');
   const target = useMemo(
     () => auroraPalette({ ground, ember, moss, honey }),
     [ground, ember, moss, honey],

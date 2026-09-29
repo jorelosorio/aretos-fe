@@ -100,6 +100,7 @@ export function HabitsStep({
               <Chip
                 key={suggestion}
                 size="regular"
+                raised
                 label={suggestion}
                 Icon={Plus}
                 accessibilityLabel={t('guide.habits.suggestionLabel', {
