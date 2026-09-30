@@ -723,17 +723,16 @@ export const en = {
       addLabel: 'Add a habit',
       namePlaceholder: 'Habit name',
       remove: 'Remove %{name}',
-      full: 'You can add more habits later, from your goal.',
       need: 'Fill in your habits · %{filled} of %{total}',
     },
     today: {
-      body: 'Tap a habit to mark how today went. The button on its right skips it for today.',
+      body: 'Tap a habit to mark how today went; the button on the right skips it.',
       needDone: 'Mark at least one habit as done',
       needSkip: 'Skip at least one habit',
     },
     requirement: {
       title: 'To continue',
-      met: 'Done',
+      met: 'Met',
       missing: 'Missing',
     },
     saving: {
@@ -760,7 +759,7 @@ export const en = {
         name: 'Look after your relationships',
         listen: 'Listen without interrupting',
         thanks: 'Thank someone for something specific',
-        apologize: 'Be the first to apologise',
+        apologize: 'Be the first to apologize',
       },
       calm: {
         name: 'Stay calm',

@@ -6,7 +6,7 @@ import { XStack, YStack } from 'tamagui';
 import { Chip } from '@/components/common/chip';
 import { EmptySlot } from '@/components/common/empty-slot';
 import { FormInput } from '@/components/common/form-field';
-import { FormHint, FormSection } from '@/components/common/form-section';
+import { FormSection } from '@/components/common/form-section';
 import { HeaderIconButton } from '@/components/common/header-actions';
 import { SPACING } from '@/constants/layout';
 import {
@@ -122,8 +122,6 @@ export function HabitsStep({
           met={total > 0 && filled === total}
         />
       </Requirements>
-
-      {!free && <FormHint>{t('guide.habits.full')}</FormHint>}
     </YStack>
   );
 }

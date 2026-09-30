@@ -727,17 +727,16 @@ export const es = {
       addLabel: 'Añadir un hábito',
       namePlaceholder: 'Nombre del hábito',
       remove: 'Quitar %{name}',
-      full: 'Puedes añadir más hábitos después, desde tu meta.',
       need: 'Completa tus hábitos · %{filled} de %{total}',
     },
     today: {
-      body: 'Toca un hábito para marcar cómo te fue hoy. El botón de su derecha lo omite por hoy.',
+      body: 'Toca un hábito para marcar cómo te fue hoy; con el botón de la derecha lo omites.',
       needDone: 'Marca al menos un hábito como hecho',
       needSkip: 'Omite al menos un hábito',
     },
     requirement: {
       title: 'Para continuar',
-      met: 'Listo',
+      met: 'Cumplido',
       missing: 'Pendiente',
     },
     saving: {
@@ -764,7 +763,7 @@ export const es = {
         name: 'Cuida tus relaciones',
         listen: 'Escucha sin interrumpir',
         thanks: 'Da las gracias por algo concreto',
-        apologize: 'Sé el primero en pedir perdón',
+        apologize: 'Pide perdón primero',
       },
       calm: {
         name: 'Mantén la calma',

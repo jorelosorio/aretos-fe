@@ -36,6 +36,8 @@ export function DoneStep({
           fontWeight="700"
           color="$color"
           text="center"
+          textBreakStrategy="balanced"
+          lineBreakStrategyIOS="push-out"
           accessibilityRole="header"
         >
           {t('guide.done.title')}
@@ -46,6 +48,8 @@ export function DoneStep({
             size={TEXT.body}
             color="$mutedForeground"
             text="center"
+            textBreakStrategy="balanced"
+            lineBreakStrategyIOS="push-out"
           >
             {line}
           </Paragraph>
