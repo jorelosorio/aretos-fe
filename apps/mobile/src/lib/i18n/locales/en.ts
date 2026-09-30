@@ -711,6 +711,14 @@ export const en = {
       today: 'Track today',
     },
     next: 'Next',
+    welcome: {
+      title: 'Welcome',
+      thanks:
+        'Thank you for taking this time to think about yourself. Your journey starts here.',
+      plan: 'We will set up your first goal and track how it goes, with no pressure.',
+      next: 'The next steps show you how it works.',
+      start: 'Let’s begin',
+    },
     goal: {
       body: 'A goal is something you want to see more of in your life. It can sound abstract: habits make it concrete.',
       suggestions: 'Suggestions',

@@ -38,6 +38,7 @@ import { GuideProgress } from './guide-progress';
 import { HabitsStep } from './habits-step';
 import { SavingStep } from './saving-step';
 import { TodayStep } from './today-step';
+import { WelcomeStep } from './welcome-step';
 
 const SLIDE_MS = 220;
 const MIN_SAVING_MS = 900;
@@ -55,7 +56,7 @@ export function GuideScreen() {
   const { remaining } = useAllowance('habit');
   const { completeGuide, isCompleting, error } = useCompleteGuide();
 
-  const [step, setStep] = useState<GuideStep>('goal');
+  const [step, setStep] = useState<GuideStep>('welcome');
   const [forward, setForward] = useState(true);
   const [draft, setDraft] = useState(EMPTY_GUIDE);
   const progress = useRef(freshProgress());
@@ -67,9 +68,11 @@ export function GuideScreen() {
   const back = previousStep(step);
   const inputStep =
     step === 'goal' || step === 'habits' || step === 'today' ? step : null;
+  const welcome = step === 'welcome';
+  const walking = welcome || inputStep !== null;
   const ready = canContinue(step, draft);
 
-  usePreventRemove(step !== 'goal', ({ data }) => {
+  usePreventRemove(!welcome, ({ data }) => {
     if (leaving.current) {
       navigation.dispatch(data.action);
       return;
@@ -118,8 +121,8 @@ export function GuideScreen() {
       <Stack.Screen
         options={{
           title: inputStep === null ? '' : t(`guide.header.${inputStep}`),
-          headerBackVisible: inputStep !== null,
-          gestureEnabled: step === 'goal',
+          headerBackVisible: walking,
+          gestureEnabled: welcome,
         }}
       />
 
@@ -138,6 +141,7 @@ export function GuideScreen() {
         )}
 
         <Animated.View key={step} entering={entering} style={{ flex: 1 }}>
+          {welcome && <WelcomeStep />}
           {step === 'saving' && (
             <SavingStep
               error={isCompleting ? null : toMessage(error)}
@@ -174,7 +178,7 @@ export function GuideScreen() {
           )}
         </Animated.View>
 
-        {inputStep !== null && (
+        {walking && (
           <XStack
             items="center"
             justify="space-between"
@@ -195,7 +199,7 @@ export function GuideScreen() {
               onPress={advance}
               accessibilityState={{ disabled: !ready }}
             >
-              {t('guide.next')}
+              {t(welcome ? 'guide.welcome.start' : 'guide.next')}
             </Button>
           </XStack>
         )}

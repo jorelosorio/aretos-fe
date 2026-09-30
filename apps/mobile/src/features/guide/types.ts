@@ -5,7 +5,8 @@ import type { LogEntry } from '@/features/logs/types';
  * held in memory until the guide's last input step writes them together.
  */
 
-export type GuideStep = 'goal' | 'habits' | 'today' | 'saving' | 'done';
+export type GuideStep =
+  'welcome' | 'goal' | 'habits' | 'today' | 'saving' | 'done';
 
 /**
  * Everything chosen so far. Habits are identified by their name, because

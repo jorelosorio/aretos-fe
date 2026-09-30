@@ -715,6 +715,14 @@ export const es = {
       today: 'Registra hoy',
     },
     next: 'Siguiente',
+    welcome: {
+      title: 'Te damos la bienvenida',
+      thanks:
+        'Gracias por darte este tiempo para pensar en ti. Aquí empieza tu camino.',
+      plan: 'Vamos a crear tu primera meta y a registrar cómo te va, sin presión.',
+      next: 'En los siguientes pasos verás cómo funciona.',
+      start: 'Empecemos',
+    },
     goal: {
       body: 'Una meta es algo que quieres ver más en tu vida. Puede sonar abstracta: los hábitos la vuelven concreta.',
       suggestions: 'Sugerencias',

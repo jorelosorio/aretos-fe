@@ -37,6 +37,7 @@ const SUGGESTIONS = [
 
 describe('step order', () => {
   it('moves forward through every step and stays on done', () => {
+    expect(nextStep('welcome')).toBe('goal');
     expect(nextStep('goal')).toBe('habits');
     expect(nextStep('habits')).toBe('today');
     expect(nextStep('today')).toBe('saving');
@@ -44,8 +45,9 @@ describe('step order', () => {
     expect(nextStep('done')).toBe('done');
   });
 
-  it('goes back only between input steps', () => {
-    expect(previousStep('goal')).toBeNull();
+  it('goes back only between input steps, and from the goal to the welcome', () => {
+    expect(previousStep('welcome')).toBeNull();
+    expect(previousStep('goal')).toBe('welcome');
     expect(previousStep('habits')).toBe('goal');
     expect(previousStep('today')).toBe('habits');
     expect(previousStep('saving')).toBeNull();
@@ -54,6 +56,10 @@ describe('step order', () => {
 });
 
 describe('canContinue', () => {
+  it('always moves on from the welcome', () => {
+    expect(canContinue('welcome', draft())).toBe(true);
+  });
+
   it('needs a goal name that is not only spaces', () => {
     expect(canContinue('goal', draft())).toBe(false);
     expect(canContinue('goal', draft({ goalName: '   ' }))).toBe(false);

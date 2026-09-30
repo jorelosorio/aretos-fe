@@ -10,6 +10,7 @@ import type { GuideDraft, GuideStep } from './types';
  */
 
 export const GUIDE_STEPS = [
+  'welcome',
   'goal',
   'habits',
   'today',
@@ -43,16 +44,20 @@ export function nextStep(step: GuideStep): GuideStep {
 
 /**
  * The step behind this one, or `null` where there is none to go back to:
- * the first step, and every step from the save on — by then the goal may
+ * the welcome, and every step from the save on — by then the goal may
  * already exist, so the draft that described it can no longer change.
  */
 export function previousStep(step: GuideStep): GuideStep | null {
-  if (step === 'goal' || step === 'saving' || step === 'done') return null;
+  if (step === 'welcome' || step === 'saving' || step === 'done') {
+    return null;
+  }
   return GUIDE_STEPS[GUIDE_STEPS.indexOf(step) - 1];
 }
 
 export function canContinue(step: GuideStep, draft: GuideDraft): boolean {
   switch (step) {
+    case 'welcome':
+      return true;
     case 'goal':
       return draft.goalName.trim() !== '';
     case 'habits':
