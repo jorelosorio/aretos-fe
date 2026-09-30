@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
 import { CalendarDays } from '@tamagui/lucide-icons-2/icons/CalendarDays';
 import { CircleCheck } from '@tamagui/lucide-icons-2/icons/CircleCheck';
+import { BookOpen } from '@tamagui/lucide-icons-2/icons/BookOpen';
 import { Target } from '@tamagui/lucide-icons-2/icons/Target';
 import { SizableText, YStack } from 'tamagui';
 
@@ -106,7 +107,7 @@ export function HomeScreen() {
           canCreate
             ? {
                 label: t('guide.start'),
-                Icon: Target,
+                Icon: BookOpen,
                 onPress: () => router.push('/guide'),
               }
             : undefined

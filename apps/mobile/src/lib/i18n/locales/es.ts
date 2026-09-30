@@ -519,9 +519,9 @@ export const es = {
     },
     limit: {
       usage: '%{used} de %{limit} metas de tu plan',
-      title: 'Sigue varias metas a la vez',
+      title: 'Llegaste al límite de metas',
       reached:
-        'Estás usando %{used} de %{limit}. Puedes añadir todos los hábitos que quieras a las metas que ya tienes; con Premium sigues varias metas a la vez y ves cuál avanza y cuál se queda atrás.',
+        'Tu plan incluye %{limit}. Con Premium sigues todas las metas que quieras, en cada parte de tu vida.',
       blockedTitle: 'Empieza por tu primera meta',
       blocked:
         'Tu plan todavía no incluye metas. Actualízalo para empezar a seguir lo que te importa.',
@@ -701,7 +701,7 @@ export const es = {
     },
   },
   guide: {
-    start: 'Empezar',
+    start: 'Empieza paso a paso',
     cancel: 'Cancelar',
     progress: 'Paso %{current} de %{total}',
     header: {

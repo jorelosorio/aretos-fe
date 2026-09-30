@@ -518,9 +518,9 @@ export const en = {
     },
     limit: {
       usage: '%{used} of %{limit} goals on your plan',
-      title: 'Track several goals at once',
+      title: 'You have reached your goal limit',
       reached:
-        'You are using %{used} of %{limit}. You can add as many habits as you like to the goals you have; with Premium you follow several goals at once and see which is moving and which is stalling.',
+        'Your plan includes %{limit}. With Premium you track as many goals as you want, in every part of your life.',
       blockedTitle: 'Start with your first goal',
       blocked:
         'Your plan does not include goals yet. Upgrade it to start tracking what matters to you.',
@@ -697,7 +697,7 @@ export const en = {
     },
   },
   guide: {
-    start: 'Get started',
+    start: 'Start step by step',
     cancel: 'Cancel',
     progress: 'Step %{current} of %{total}',
     header: {
