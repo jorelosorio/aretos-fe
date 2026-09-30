@@ -38,6 +38,7 @@ import { GuideProgress } from './guide-progress';
 import { HabitsStep } from './habits-step';
 import { SavingStep } from './saving-step';
 import { TodayStep } from './today-step';
+import { useMarkGuideSeen } from './use-guide-flag';
 import { WelcomeStep } from './welcome-step';
 
 const SLIDE_MS = 220;
@@ -55,6 +56,7 @@ export function GuideScreen() {
   const toMessage = useGuideErrorMessage();
   const { remaining } = useAllowance('habit');
   const { completeGuide, isCompleting, error } = useCompleteGuide();
+  useMarkGuideSeen();
 
   const [step, setStep] = useState<GuideStep>('welcome');
   const [forward, setForward] = useState(true);

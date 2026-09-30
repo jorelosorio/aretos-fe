@@ -1,5 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
 
+import { setFlagOwner } from '@/lib/flags';
+
 import type { Session, TokenResponse } from './types';
 
 const STORAGE_KEY = 'aretos.session';
@@ -124,6 +126,9 @@ class SessionStore {
   }
 
   private emit() {
+    // Before the listeners, so the screens a sign-in mounts already read the
+    // new account's flags rather than the signed-out defaults.
+    setFlagOwner(this.session?.userId || null);
     for (const listener of this.listeners) listener();
   }
 }

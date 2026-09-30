@@ -19,6 +19,7 @@ import {
 } from '@/components/common/segmented-control';
 import { EmptyState } from '@/components/common/empty-state';
 import { ILLUSTRATIONS } from '@/components/common/illustrations';
+import { useGuideAutoOpen } from '@/components/guide/use-guide-flag';
 import { SPACING, TEXT } from '@/constants/layout';
 import { useGoalErrorMessage, useGoals } from '@/features/goals/hooks';
 import type { Goal } from '@/features/goals/types';
@@ -43,6 +44,7 @@ export function HomeScreen() {
   const router = useRouter();
   const { canCreate } = useAllowance('goal');
   const [picked, setPicked] = useState<HomeTab | null>(null);
+  useGuideAutoOpen();
 
   const goals = useGoals({ include: ['progress'] });
 

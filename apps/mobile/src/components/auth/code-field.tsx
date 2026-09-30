@@ -189,11 +189,7 @@ function Caret() {
 
   return (
     <Animated.View
-      style={[
-        styles.caret,
-        { backgroundColor: theme.primary.val },
-        blink,
-      ]}
+      style={[styles.caret, { backgroundColor: theme.primary.val }, blink]}
     />
   );
 }
