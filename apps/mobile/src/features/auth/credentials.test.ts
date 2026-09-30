@@ -1,4 +1,10 @@
-import { credentialError, PASSWORD_MIN } from './credentials';
+import {
+  CODE_LENGTH,
+  codeError,
+  credentialError,
+  PASSWORD_MIN,
+  toCode,
+} from './credentials';
 
 describe('credentialError', () => {
   it('requires every field', () => {
@@ -28,5 +34,28 @@ describe('credentialError', () => {
 
   it('counts spaces as characters in a password', () => {
     expect(credentialError('newPassword', ' '.repeat(PASSWORD_MIN))).toBeNull();
+  });
+});
+
+describe('toCode', () => {
+  it('keeps only digits from a pasted code', () => {
+    expect(toCode('123 456')).toBe('123456');
+    expect(toCode('123-456')).toBe('123456');
+    expect(toCode(' 12a34b56 ')).toBe('123456');
+  });
+
+  it('stops at the code length', () => {
+    expect(toCode('12345678')).toBe('123456');
+  });
+});
+
+describe('codeError', () => {
+  it('requires a code', () => {
+    expect(codeError('')).toBe('required');
+  });
+
+  it('wants every digit', () => {
+    expect(codeError('1'.repeat(CODE_LENGTH - 1))).toBe('codeLength');
+    expect(codeError('1'.repeat(CODE_LENGTH))).toBeNull();
   });
 });

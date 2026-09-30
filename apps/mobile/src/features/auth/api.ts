@@ -9,6 +9,7 @@ import { toSession } from './session';
 import {
   AuthErrorCode,
   type AuthProvider,
+  type CodeSentResponse,
   type Session,
   type TokenResponse,
 } from './types';
@@ -26,6 +27,11 @@ const paths = {
   token: '/v1/auth/token',
   refresh: '/v1/auth/refresh',
   logout: '/v1/auth/logout',
+  emailRegister: '/v1/auth/email/register',
+  emailLogin: '/v1/auth/email/login',
+  emailVerify: '/v1/auth/email/verify',
+  passwordForgot: '/v1/auth/email/password/forgot',
+  passwordReset: '/v1/auth/email/password/reset',
 };
 
 /** Keys for this feature, as a factory so they cannot drift apart. */
@@ -93,4 +99,87 @@ export async function signIn(provider: AuthProvider): Promise<SignInResult> {
   }
 
   return { status: 'signed-in', session: await exchangeAuthCode(code) };
+}
+
+/*
+ * Email sign-in. Addresses are trimmed here because the server's email check
+ * refuses the trailing space a keyboard's autocomplete leaves; passwords are
+ * sent as typed, since a space is a real character in one.
+ */
+
+export type RegisterInput = { email: string; password: string; name: string };
+
+/** Creates the account and emails the code that confirms it. */
+export async function registerWithEmail({
+  email,
+  password,
+  name,
+}: RegisterInput): Promise<CodeSentResponse> {
+  const { data } = await publicApi.post<CodeSentResponse>(paths.emailRegister, {
+    email: email.trim(),
+    password,
+    display_name: name.trim(),
+  });
+  return data;
+}
+
+export type LoginInput = { email: string; password: string };
+
+/**
+ * Throws `AUTH_EMAIL_NOT_VERIFIED` for the right password on an account whose
+ * address was never confirmed; the server has emailed a code by then.
+ */
+export async function logInWithEmail({
+  email,
+  password,
+}: LoginInput): Promise<Session> {
+  const { data } = await publicApi.post<TokenResponse>(paths.emailLogin, {
+    email: email.trim(),
+    password,
+  });
+  return toSession(data);
+}
+
+export type VerifyInput = { email: string; code: string };
+
+/** Spends a sign-in code, confirming the address if it was not already. */
+export async function verifyEmailCode({
+  email,
+  code,
+}: VerifyInput): Promise<Session> {
+  const { data } = await publicApi.post<TokenResponse>(paths.emailVerify, {
+    email: email.trim(),
+    code,
+  });
+  return toSession(data);
+}
+
+/** Emails a reset code. Answers the same whether or not the address exists. */
+export async function requestPasswordReset(
+  email: string,
+): Promise<CodeSentResponse> {
+  const { data } = await publicApi.post<CodeSentResponse>(
+    paths.passwordForgot,
+    { email: email.trim() },
+  );
+  return data;
+}
+
+export type ResetInput = { email: string; code: string; password: string };
+
+/**
+ * Sets the new password and starts a session here. Every other device the
+ * account was signed in on is signed out by the server.
+ */
+export async function resetPassword({
+  email,
+  code,
+  password,
+}: ResetInput): Promise<Session> {
+  const { data } = await publicApi.post<TokenResponse>(paths.passwordReset, {
+    email: email.trim(),
+    code,
+    password,
+  });
+  return toSession(data);
 }

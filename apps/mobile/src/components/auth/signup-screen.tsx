@@ -1,13 +1,19 @@
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
 
+import { ErrorNotice } from '@/components/common/error-notice';
+import { credentialError } from '@/features/auth/credentials';
+import {
+  useAuthErrorMessage,
+  useRegisterWithEmail,
+} from '@/features/auth/hooks';
 import { useTranslations } from '@/lib/i18n';
 
 import { AuthSheet } from './auth-sheet';
-import { ComingSoonSubmit } from './coming-soon-submit';
 import { CredentialField } from './credential-field';
 import { GoogleButton } from './google-button';
 import { OrDivider } from './or-divider';
+import { SubmitButton } from './submit-button';
 import { TextLink } from './text-link';
 
 export function SignupScreen() {
@@ -16,6 +22,25 @@ export function SignupScreen() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const register = useRegisterWithEmail();
+  const toMessage = useAuthErrorMessage();
+
+  const ready =
+    credentialError('name', name) === null &&
+    credentialError('email', email) === null &&
+    credentialError('newPassword', password) === null;
+
+  const submit = () =>
+    register.mutate(
+      { name, email, password },
+      {
+        onSuccess: () =>
+          router.push({
+            pathname: '/verify',
+            params: { email: email.trim() },
+          }),
+      },
+    );
 
   return (
     <AuthSheet title={t('auth.sheet.signUpTitle')}>
@@ -28,7 +53,13 @@ export function SignupScreen() {
         value={password}
         onChange={setPassword}
       />
-      <ComingSoonSubmit label={t('auth.sheet.signUp')} />
+      <ErrorNotice message={toMessage(register.error)} />
+      <SubmitButton
+        label={t('auth.sheet.signUp')}
+        pending={register.isPending}
+        disabled={!ready}
+        onPress={submit}
+      />
       <TextLink
         lead={t('auth.sheet.haveAccount')}
         label={t('auth.sheet.toLogIn')}

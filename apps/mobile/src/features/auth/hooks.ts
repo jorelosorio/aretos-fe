@@ -5,15 +5,45 @@ import {
   useMutationState,
   useQuery,
   useQueryClient,
+  type QueryClient,
 } from '@tanstack/react-query';
 
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
 import { ApiError } from '@/lib/api/errors';
 
-import { authKeys, revokeRefreshToken, signIn, type SignInResult } from './api';
+import {
+  authKeys,
+  logInWithEmail,
+  registerWithEmail,
+  requestPasswordReset,
+  resetPassword,
+  revokeRefreshToken,
+  signIn,
+  verifyEmailCode,
+  type LoginInput,
+  type RegisterInput,
+  type ResetInput,
+  type SignInResult,
+  type VerifyInput,
+} from './api';
 import { ensureFreshSession } from './refresh';
 import { isExpiring, msUntilRefresh, sessionStore } from './session';
-import { AuthErrorCode, type AuthProvider, type Session } from './types';
+import {
+  AuthErrorCode,
+  type AuthProvider,
+  type CodeSentResponse,
+  type Session,
+} from './types';
+
+/**
+ * Makes a new session the current one. Writing the store is what signs the
+ * app in: the navigator's guards read it and swap the auth sheets for the
+ * app on their own, so no caller navigates after this.
+ */
+async function installSession(queryClient: QueryClient, session: Session) {
+  await sessionStore.set(session);
+  queryClient.setQueryData<Session>(authKeys.session(), session);
+}
 
 /**
  * Reads the current session.
@@ -65,14 +95,58 @@ export function useSignIn(provider: AuthProvider = 'google') {
     // unmounts, which on Android it does — see `useSignInStatus`.
     onSuccess: async (result) => {
       if (result.status !== 'signed-in') return;
-      await sessionStore.set(result.session);
-      queryClient.setQueryData<Session>(authKeys.session(), result.session);
+      await installSession(queryClient, result.session);
     },
   });
 
   const status = useSignInStatus();
 
   return { signIn: mutation.mutate, ...status };
+}
+
+/*
+ * Email sign-in. Plain mutations, unlike `useSignIn`: nothing leaves the app
+ * mid-request, so the screen that starts one is still mounted when it ends.
+ * None retries — a code or a password guess spent twice counts twice.
+ */
+
+export function useRegisterWithEmail() {
+  return useMutation<CodeSentResponse, ApiError, RegisterInput>({
+    mutationFn: registerWithEmail,
+  });
+}
+
+export function useLogInWithEmail() {
+  const queryClient = useQueryClient();
+
+  return useMutation<Session, ApiError, LoginInput>({
+    mutationFn: logInWithEmail,
+    onSuccess: (session) => installSession(queryClient, session),
+  });
+}
+
+export function useVerifyEmailCode() {
+  const queryClient = useQueryClient();
+
+  return useMutation<Session, ApiError, VerifyInput>({
+    mutationFn: verifyEmailCode,
+    onSuccess: (session) => installSession(queryClient, session),
+  });
+}
+
+export function useRequestPasswordReset() {
+  return useMutation<CodeSentResponse, ApiError, string>({
+    mutationFn: requestPasswordReset,
+  });
+}
+
+export function useResetPassword() {
+  const queryClient = useQueryClient();
+
+  return useMutation<Session, ApiError, ResetInput>({
+    mutationFn: resetPassword,
+    onSuccess: (session) => installSession(queryClient, session),
+  });
 }
 
 /**
@@ -189,6 +263,9 @@ const MESSAGES: Record<string, TranslationKey> = {
   [AuthErrorCode.InvalidOAuthState]: 'auth.errors.expiredCode',
   [AuthErrorCode.InvalidRefreshToken]: 'auth.errors.sessionExpired',
   [AuthErrorCode.RefreshReuseDetected]: 'auth.errors.sessionExpired',
+  [AuthErrorCode.InvalidCredentials]: 'auth.errors.invalidCredentials',
+  [AuthErrorCode.InvalidEmailCode]: 'auth.errors.invalidEmailCode',
+  [AuthErrorCode.WeakPassword]: 'auth.errors.weakPassword',
 };
 
 export function useAuthErrorMessage() {

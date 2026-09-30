@@ -30,3 +30,22 @@ export function credentialError(
   }
   return null;
 }
+
+/** The server's `emailCodeDigits`. */
+export const CODE_LENGTH = 6;
+
+export type CodeError = 'required' | 'codeLength';
+
+/**
+ * What a code field keeps of what was typed or pasted: digits only, so a code
+ * copied from the email with a space or a dash in it still fits.
+ */
+export function toCode(input: string): string {
+  return input.replace(/\D/g, '').slice(0, CODE_LENGTH);
+}
+
+export function codeError(code: string): CodeError | null {
+  if (code.length === 0) return 'required';
+  if (code.length !== CODE_LENGTH) return 'codeLength';
+  return null;
+}

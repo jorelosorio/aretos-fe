@@ -132,6 +132,14 @@ function RootNavigator() {
           name="forgot-password"
           options={{ ...AUTH_SHEET, sheetAllowedDetents: [0.6, full] }}
         />
+        <Stack.Screen
+          name="verify"
+          options={{ ...AUTH_SHEET, sheetAllowedDetents: [full] }}
+        />
+        <Stack.Screen
+          name="reset-password"
+          options={{ ...AUTH_SHEET, sheetAllowedDetents: [full] }}
+        />
       </Stack.Protected>
     </Stack>
   );

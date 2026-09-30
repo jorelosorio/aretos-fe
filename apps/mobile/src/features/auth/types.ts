@@ -13,6 +13,17 @@ export type TokenResponse = {
   expires_in: number;
 };
 
+/**
+ * The 202 from every route that emails a code, sent whether or not the address
+ * has an account. Nothing else comes back, so the app cannot tell either.
+ */
+export type CodeSentResponse = {
+  /** How long the code works, in seconds. */
+  expires_in: number;
+  /** Seconds before asking again sends anything; earlier requests are no-ops. */
+  resend_after: number;
+};
+
 /** Everything the app knows about the signed-in user. Persisted verbatim. */
 export type Session = {
   accessToken: string;
@@ -35,6 +46,15 @@ export const AuthErrorCode = {
   InvalidOAuthState: 'AUTH_INVALID_OAUTH_STATE',
   InvalidAuthCode: 'AUTH_INVALID_AUTH_CODE',
   ProviderAuthFailed: 'AUTH_PROVIDER_AUTH_FAILED',
+  /**
+   * From Google, an address it never verified. From the email log in, the
+   * right password on an unconfirmed account — a fresh code is on its way.
+   */
   EmailNotVerified: 'AUTH_EMAIL_NOT_VERIFIED',
+  /** Wrong password and unknown address alike, so neither is revealed. */
+  InvalidCredentials: 'AUTH_INVALID_CREDENTIALS',
+  /** Wrong, expired, used up or out of guesses; the server does not say which. */
+  InvalidEmailCode: 'AUTH_INVALID_EMAIL_CODE',
+  WeakPassword: 'AUTH_WEAK_PASSWORD',
   TierNotAllowed: 'AUTHZ_TIER_NOT_ALLOWED',
 } as const;
