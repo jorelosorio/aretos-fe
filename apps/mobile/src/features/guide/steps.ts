@@ -1,3 +1,6 @@
+import type { Habit } from '@/features/habits/types';
+import { emptyEntry, type LogEntry } from '@/features/logs/types';
+
 import type { GuideDraft, GuideStep } from './types';
 
 /**
@@ -53,8 +56,15 @@ export function canContinue(step: GuideStep, draft: GuideDraft): boolean {
     case 'goal':
       return draft.goalName.trim() !== '';
     case 'habits':
-    case 'today':
-      return draft.goalName.trim() !== '' && chosenHabits(draft).length > 0;
+      return (
+        draft.goalName.trim() !== '' &&
+        draft.slots.length > 0 &&
+        chosenHabits(draft).length === draft.slots.length
+      );
+    case 'today': {
+      const { done, skipped } = todayRequirements(draft);
+      return draft.goalName.trim() !== '' && done && skipped !== false;
+    }
     case 'saving':
     case 'done':
       return false;
@@ -89,6 +99,18 @@ export function chosenHabits(draft: GuideDraft): string[] {
   return chosen;
 }
 
+/**
+ * How many slots hold a habit of their own, against how many the step asks
+ * for: every slot it opened — three, or fewer when the plan allows fewer. A
+ * name typed twice fills one.
+ */
+export function habitsFilled(draft: GuideDraft): {
+  filled: number;
+  total: number;
+} {
+  return { filled: chosenHabits(draft).length, total: draft.slots.length };
+}
+
 /** Whether a suggestion still has somewhere to go. */
 export function hasFreeSlot(draft: GuideDraft): boolean {
   return draft.slots.some((slot) => slot.trim() === '');
@@ -114,17 +136,19 @@ export function enterHabits(
   return {
     ...draft,
     slots: [...seeded, ...Array<string>(cap - seeded.length).fill('')],
-    doneToday: [],
+    today: {},
     seededFor: name,
   };
 }
 
-/** Keeps today's marks to the habits the slots still hold. */
+/** Keeps today's answers to the habits the slots still hold. */
 const withChosenMarks = (draft: GuideDraft): GuideDraft => {
   const chosen = chosenHabits(draft);
   return {
     ...draft,
-    doneToday: draft.doneToday.filter((name) => chosen.includes(name)),
+    today: Object.fromEntries(
+      Object.entries(draft.today).filter(([name]) => chosen.includes(name)),
+    ),
   };
 };
 
@@ -151,14 +175,74 @@ export function clearSlot(draft: GuideDraft, index: number): GuideDraft {
   return editSlot(draft, index, '');
 }
 
-export function toggleDone(draft: GuideDraft, name: string): GuideDraft {
-  if (!chosenHabits(draft).includes(name)) return draft;
+/**
+ * A chosen habit as the check-in's list draws it, before it exists: a plain
+ * yes-or-no habit, which is all the guide creates, identified by its name.
+ * `achievedWhen` is what the server sends for every binary habit.
+ */
+export function draftHabit(name: string): Habit {
+  return {
+    id: name,
+    goalId: '',
+    name,
+    trackingMode: 'binary',
+    weight: 1,
+    successThreshold: null,
+    achievedWhen: { compare: 'true', value: null },
+    ifThenPlan: '',
+    archived: false,
+    createdAt: '',
+    updatedAt: '',
+  };
+}
 
+export function entryFor(draft: GuideDraft, name: string): LogEntry {
+  return draft.today[name] ?? emptyEntry(name);
+}
+
+export function setEntry(
+  draft: GuideDraft,
+  name: string,
+  patch: Partial<Omit<LogEntry, 'habitId'>>,
+): GuideDraft {
+  if (!chosenHabits(draft).includes(name)) return draft;
   return {
     ...draft,
-    doneToday: draft.doneToday.includes(name)
-      ? draft.doneToday.filter((habit) => habit !== name)
-      : [...draft.doneToday, name],
+    today: { ...draft.today, [name]: { ...entryFor(draft, name), ...patch } },
+  };
+}
+
+/**
+ * Skipping clears the answer and un-skipping returns the habit to
+ * unanswered, as in the check-in (`features/logs/draft.ts`): an answer the
+ * person set aside is not put back in their mouth.
+ */
+export function toggleSkip(draft: GuideDraft, name: string): GuideDraft {
+  if (!chosenHabits(draft).includes(name)) return draft;
+  return {
+    ...draft,
+    today: {
+      ...draft.today,
+      [name]: { ...emptyEntry(name), skipped: !entryFor(draft, name).skipped },
+    },
+  };
+}
+
+/**
+ * What the Today step asks for before the guide can save: at least one habit
+ * marked done and at least one skipped, so the first check-in tries both of
+ * the answers the real one offers. "Not today" is an answer but not a done
+ * one. With a single habit it cannot be both, so only done is asked and
+ * `skipped` is `null`.
+ */
+export function todayRequirements(draft: GuideDraft): {
+  done: boolean;
+  skipped: boolean | null;
+} {
+  const entries = chosenHabits(draft).map((name) => entryFor(draft, name));
+  return {
+    done: entries.some((entry) => entry.done === true),
+    skipped: entries.length < 2 ? null : entries.some((entry) => entry.skipped),
   };
 }
 

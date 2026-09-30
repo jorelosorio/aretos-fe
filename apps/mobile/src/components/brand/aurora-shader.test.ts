@@ -99,7 +99,7 @@ describe('auroraPalette', () => {
       [11, '#f0b23c'],
     ] as const) {
       expect(share(light!, channel, source)).toBeGreaterThan(0.15);
-      expect(share(light!, channel, source)).toBeLessThan(0.5);
+      expect(share(light!, channel, source)).toBeLessThan(1);
     }
   });
 

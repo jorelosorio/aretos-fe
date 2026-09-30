@@ -21,7 +21,7 @@ import { useTranslations } from '@/lib/i18n';
 
 import { CheckInNotes } from './check-in-notes';
 import { EmptyState } from '@/components/common/empty-state';
-import { HabitTrackRow } from './habit-track-row';
+import { HabitTrackList } from './habit-track-list';
 import { MoodPicker } from './mood-picker';
 import { periodLabel } from './period-label';
 import { WeekPicker } from './week-picker';
@@ -161,19 +161,12 @@ function CheckInForm({
           <ScreenLoader />
         ) : (
           <>
-            <YStack>
-              {habits.map((habit, position) => (
-                <HabitTrackRow
-                  key={habit.id}
-                  habit={habit}
-                  entry={draft.entryFor(habit.id)}
-                  isFirst={position === 0}
-                  isLast={position === habits.length - 1}
-                  onChange={(patch) => draft.setEntry(habit.id, patch)}
-                  onToggleSkip={() => draft.toggleSkip(habit.id)}
-                />
-              ))}
-            </YStack>
+            <HabitTrackList
+              habits={habits}
+              entryFor={draft.entryFor}
+              onChange={draft.setEntry}
+              onToggleSkip={draft.toggleSkip}
+            />
 
             <MoodPicker value={draft.mood} onChange={draft.setMood} />
 

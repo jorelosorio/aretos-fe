@@ -22,7 +22,20 @@ const mockSaveLog = saveLog as jest.Mock;
 const DRAFT: GuideDraft = {
   goalName: '  Trabaja con excelencia ',
   slots: ['Llega a tiempo', '', ' Cumple lo que prometes '],
-  doneToday: ['Llega a tiempo'],
+  today: {
+    'Llega a tiempo': {
+      habitId: 'Llega a tiempo',
+      skipped: false,
+      done: true,
+      amount: null,
+    },
+    'Cumple lo que prometes': {
+      habitId: 'Cumple lo que prometes',
+      skipped: true,
+      done: null,
+      amount: null,
+    },
+  },
   seededFor: 'Trabaja con excelencia',
   colorSlot: 2,
 };
@@ -70,7 +83,7 @@ describe('completeGuide', () => {
         },
         {
           habitId: 'h-Cumple lo que prometes',
-          skipped: false,
+          skipped: true,
           done: null,
           amount: null,
         },
@@ -78,8 +91,44 @@ describe('completeGuide', () => {
     });
   });
 
-  it('saves no check-in when nothing was marked', async () => {
-    await completeGuide({ ...DRAFT, doneToday: [] }, freshProgress());
+  it('saves a check-in whose only answer is not today', async () => {
+    await completeGuide(
+      {
+        ...DRAFT,
+        today: {
+          'Llega a tiempo': {
+            habitId: 'Llega a tiempo',
+            skipped: false,
+            done: false,
+            amount: null,
+          },
+        },
+      },
+      freshProgress(),
+    );
+
+    expect(mockSaveLog).toHaveBeenCalledWith(
+      expect.objectContaining({
+        entries: [
+          {
+            habitId: 'h-Llega a tiempo',
+            skipped: false,
+            done: false,
+            amount: null,
+          },
+          {
+            habitId: 'h-Cumple lo que prometes',
+            skipped: false,
+            done: null,
+            amount: null,
+          },
+        ],
+      }),
+    );
+  });
+
+  it('saves no check-in when nothing was answered', async () => {
+    await completeGuide({ ...DRAFT, today: {} }, freshProgress());
 
     expect(mockGetGoal).not.toHaveBeenCalled();
     expect(mockSaveLog).not.toHaveBeenCalled();

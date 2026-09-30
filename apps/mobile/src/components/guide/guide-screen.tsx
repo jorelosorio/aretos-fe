@@ -58,7 +58,6 @@ export function GuideScreen() {
   const [step, setStep] = useState<GuideStep>('goal');
   const [forward, setForward] = useState(true);
   const [draft, setDraft] = useState(EMPTY_GUIDE);
-  const [goalId, setGoalId] = useState<string | null>(null);
   const progress = useRef(freshProgress());
   const leaving = useRef(false);
 
@@ -86,7 +85,6 @@ export function GuideScreen() {
       wait(MIN_SAVING_MS),
     ]);
     if (id === null) return;
-    setGoalId(id);
     setForward(true);
     setStep('done');
   };
@@ -105,10 +103,10 @@ export function GuideScreen() {
     else router.replace('/');
   };
 
-  const seeGoal = () => {
-    if (goalId === null) return;
+  const seeAnalysis = () => {
     leaving.current = true;
-    router.replace({ pathname: '/goals/[id]', params: { id: goalId } });
+    if (router.canGoBack()) router.dismissTo('/analysis');
+    else router.replace('/analysis');
   };
 
   const entering = (forward ? SlideInRight : SlideInLeft)
@@ -149,9 +147,10 @@ export function GuideScreen() {
           )}
           {step === 'done' && (
             <DoneStep
-              marked={draft.doneToday.length > 0}
-              onFinish={close}
-              onSeeGoal={seeGoal}
+              marked={Object.values(draft.today).some(
+                (entry) => entry.done === true,
+              )}
+              onSeeAnalysis={seeAnalysis}
             />
           )}
           {inputStep !== null && (
@@ -178,11 +177,16 @@ export function GuideScreen() {
         {inputStep !== null && (
           <XStack
             items="center"
-            justify="flex-end"
+            justify="space-between"
+            gap={SPACING.items}
             px={SPACING.screen}
             pt={SPACING.items}
             pb={insets.bottom + SPACING.sectionPx}
           >
+            <Button size={BUTTON.primary} chromeless onPress={close}>
+              {t('guide.cancel')}
+            </Button>
+
             <Button
               size={BUTTON.primary}
               theme={ready ? 'accent' : undefined}

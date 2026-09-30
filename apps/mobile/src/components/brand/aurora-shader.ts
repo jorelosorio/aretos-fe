@@ -100,7 +100,7 @@ export function amplify(tint: Rgb, ground: Rgb, factor: number): Rgb {
  * pushes them further out: the clouds are lighter than the page, so the eye
  * follows them easily.
  *
- * Light is given the vivid tints instead and takes two fifths of the way
+ * Light is given the vivid tints instead and takes most of the way
  * to them. Pushing the pastel deco tints out, as dark does, left every cloud
  * as light as the cream it drifts over: the page read as tinted peach and
  * green, while the motion — carried by lightness, not hue — disappeared. A

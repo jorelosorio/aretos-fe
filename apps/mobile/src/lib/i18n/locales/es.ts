@@ -701,6 +701,7 @@ export const es = {
   },
   guide: {
     start: 'Empezar',
+    cancel: 'Cancelar',
     progress: 'Paso %{current} de %{total}',
     header: {
       goal: 'Meta',
@@ -719,18 +720,24 @@ export const es = {
       namePlaceholder: 'Nombre de la meta',
     },
     habits: {
-      body: 'Un hábito es algo concreto que haces y que cada día marcas como hecho o no. Elige hasta tres; luego puedes añadir más.',
+      body: 'Un hábito es algo concreto que haces y que cada día marcas como hecho o no. Elige tres; luego puedes añadir más.',
       suggestions: 'Sugerencias',
       suggestionLabel: 'Añadir %{name}',
       addLabel: 'Añadir un hábito',
       namePlaceholder: 'Nombre del hábito',
       remove: 'Quitar %{name}',
       full: 'Puedes añadir más hábitos después, desde tu meta.',
+      need: 'Completa tus hábitos · %{filled} de %{total}',
     },
     today: {
-      body: 'Toca los hábitos que ya hiciste hoy. Los demás pueden esperar.',
-      done: 'Hecho',
-      pending: 'Sin marcar',
+      body: 'Toca un hábito para marcar cómo te fue hoy. El botón de su derecha lo omite por hoy.',
+      needDone: 'Marca al menos un hábito como hecho',
+      needSkip: 'Omite al menos un hábito',
+    },
+    requirement: {
+      title: 'Para continuar',
+      met: 'Listo',
+      missing: 'Pendiente',
     },
     saving: {
       title: 'Preparando tu meta…',
@@ -742,8 +749,7 @@ export const es = {
       goal: 'Tu meta y sus hábitos están en Mis Metas.',
       edit: 'Puedes añadir más hábitos o editarlos cuando quieras.',
       daily: 'Vuelve cada día para registrar cómo te fue.',
-      finish: 'Terminar',
-      seeGoal: 'Ver mi meta',
+      analysis: 'Ver mi análisis',
     },
     examples: {
       excellence: {

@@ -8,12 +8,10 @@ import { useTranslations } from '@/lib/i18n';
 
 export function DoneStep({
   marked,
-  onFinish,
-  onSeeGoal,
+  onSeeAnalysis,
 }: {
   marked: boolean;
-  onFinish: () => void;
-  onSeeGoal: () => void;
+  onSeeAnalysis: () => void;
 }) {
   const { t } = useTranslations();
   const lines = [
@@ -58,14 +56,14 @@ export function DoneStep({
         ))}
       </YStack>
 
-      <YStack gap={SPACING.items} self="stretch">
-        <Button size={BUTTON.primary} theme="accent" onPress={onFinish}>
-          {t('guide.done.finish')}
-        </Button>
-        <Button size={BUTTON.primary} chromeless onPress={onSeeGoal}>
-          {t('guide.done.seeGoal')}
-        </Button>
-      </YStack>
+      <Button
+        size={BUTTON.primary}
+        theme="accent"
+        self="stretch"
+        onPress={onSeeAnalysis}
+      >
+        {t('guide.done.analysis')}
+      </Button>
     </YStack>
   );
 }

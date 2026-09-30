@@ -3,14 +3,15 @@ import { EMPTY_DRAFT as EMPTY_GOAL } from '@/features/goals/types';
 import { createHabit } from '@/features/habits/api';
 import { EMPTY_DRAFT as EMPTY_HABIT } from '@/features/habits/types';
 import { saveLog } from '@/features/logs/api';
-import { emptyEntry } from '@/features/logs/types';
+import { isAnswered } from '@/features/logs/types';
 
-import { chosenHabits } from './steps';
+import { chosenHabits, entryFor } from './steps';
 import type { GuideDraft, GuideProgress } from './types';
 
 /**
  * Writes the whole guide: the goal, each habit in the order shown, then
- * today's check-in when at least one habit was marked.
+ * today's check-in when at least one habit was answered — done, not today
+ * or skipped.
  *
  * Nothing is written before this runs, so leaving the guide early leaves
  * no data behind. Each write that succeeds is recorded in `progress`, which
@@ -44,7 +45,8 @@ export async function completeGuide(
     progress.habitIds[name] = habit.id;
   }
 
-  if (!progress.logged && draft.doneToday.length > 0) {
+  const answered = habits.some((name) => isAnswered(entryFor(draft, name)));
+  if (!progress.logged && answered) {
     const goal = await getGoal(goalId, { include: ['progress'] });
     const entryDate = goal.progress?.currentPeriod.entryDate;
     if (entryDate === undefined) {
@@ -56,8 +58,8 @@ export async function completeGuide(
       entryDate,
       mood: null,
       entries: habits.map((name) => ({
-        ...emptyEntry(progress.habitIds[name]),
-        done: draft.doneToday.includes(name) ? true : null,
+        ...entryFor(draft, name),
+        habitId: progress.habitIds[name],
       })),
     });
     progress.logged = true;

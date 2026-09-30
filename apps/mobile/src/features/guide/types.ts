@@ -1,3 +1,5 @@
+import type { LogEntry } from '@/features/logs/types';
+
 /**
  * The first-run guide: a goal, up to three habits and today's check-in,
  * held in memory until the guide's last input step writes them together.
@@ -17,8 +19,13 @@ export type GuideDraft = {
    * amount to — trimmed, without blanks or repeats.
    */
   slots: string[];
-  /** The habits marked done for today; always among the chosen ones. */
-  doneToday: string[];
+  /**
+   * Today's answer for each chosen habit, keyed by its name — done, not
+   * today, skipped — exactly as the check-in records them. A habit with no
+   * entry is unanswered. `habitId` holds the name until the save creates the
+   * habit and swaps in its id.
+   */
+  today: Record<string, LogEntry>;
   /**
    * The trimmed goal name the habit list was last filled in for. Coming
    * back to the habits with the same name keeps the user's edits; a new
@@ -32,7 +39,7 @@ export type GuideDraft = {
 export const EMPTY_GUIDE: GuideDraft = {
   goalName: '',
   slots: [],
-  doneToday: [],
+  today: {},
   seededFor: null,
   colorSlot: 0,
 };

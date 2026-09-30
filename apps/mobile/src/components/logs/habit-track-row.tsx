@@ -94,7 +94,6 @@ export function HabitTrackRow({
       <Card
         flex={1}
         gap={SPACING.text}
-        mb={isLast ? 0 : SPACING.items}
         density="tight"
         opacity={entry.skipped ? 0.65 : 1}
       >

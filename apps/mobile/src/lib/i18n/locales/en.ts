@@ -697,6 +697,7 @@ export const en = {
   },
   guide: {
     start: 'Get started',
+    cancel: 'Cancel',
     progress: 'Step %{current} of %{total}',
     header: {
       goal: 'Goal',
@@ -715,18 +716,24 @@ export const en = {
       namePlaceholder: 'Goal name',
     },
     habits: {
-      body: 'A habit is something concrete you do and mark as done or not each day. Pick up to three; you can add more later.',
+      body: 'A habit is something concrete you do and mark as done or not each day. Pick three; you can add more later.',
       suggestions: 'Suggestions',
       suggestionLabel: 'Add %{name}',
       addLabel: 'Add a habit',
       namePlaceholder: 'Habit name',
       remove: 'Remove %{name}',
       full: 'You can add more habits later, from your goal.',
+      need: 'Fill in your habits · %{filled} of %{total}',
     },
     today: {
-      body: 'Tap the habits you already did today. The rest can wait.',
-      done: 'Done',
-      pending: 'Not marked',
+      body: 'Tap a habit to mark how today went. The button on its right skips it for today.',
+      needDone: 'Mark at least one habit as done',
+      needSkip: 'Skip at least one habit',
+    },
+    requirement: {
+      title: 'To continue',
+      met: 'Done',
+      missing: 'Missing',
     },
     saving: {
       title: 'Setting up your goal…',
@@ -738,8 +745,7 @@ export const en = {
       goal: 'Your goal and its habits are in My Goals.',
       edit: 'You can add more habits or edit them whenever you like.',
       daily: 'Come back each day to track how it went.',
-      finish: 'Finish',
-      seeGoal: 'See my goal',
+      analysis: 'See my analysis',
     },
     examples: {
       excellence: {

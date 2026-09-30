@@ -10,13 +10,23 @@ import {
   missingSuggestions,
   nextStep,
   previousStep,
-  toggleDone,
+  entryFor,
+  setEntry,
+  todayRequirements,
+  toggleSkip,
 } from './steps';
 import { EMPTY_GUIDE, type GuideDraft } from './types';
 
 const draft = (patch: Partial<GuideDraft> = {}): GuideDraft => ({
   ...EMPTY_GUIDE,
   ...patch,
+});
+
+const done = (habitId: string) => ({
+  habitId,
+  skipped: false,
+  done: true,
+  amount: null,
 });
 
 const SUGGESTIONS = [
@@ -50,23 +60,47 @@ describe('canContinue', () => {
     expect(canContinue('goal', draft({ goalName: 'Calma' }))).toBe(true);
   });
 
-  it('needs at least one slot with a habit in it', () => {
-    expect(
-      canContinue('habits', draft({ goalName: 'Calma', slots: ['', ' '] })),
-    ).toBe(false);
-    expect(
-      canContinue(
-        'habits',
-        draft({ goalName: 'Calma', slots: ['', 'Respira'] }),
-      ),
-    ).toBe(true);
+  it('needs every slot to hold a habit of its own', () => {
+    const habits = (slots: string[]) =>
+      canContinue('habits', draft({ goalName: 'Calma', slots }));
+
+    expect(habits(['', ' ', ''])).toBe(false);
+    expect(habits(['Respira', 'Lee', ''])).toBe(false);
+    expect(habits(['Respira', ' respira ', 'Lee'])).toBe(false);
+    expect(habits(['Respira', 'Lee', 'Corre'])).toBe(true);
   });
 
-  it('saves today with a name and a habit, marked or not', () => {
+  it('needs only the slots the plan allows', () => {
     expect(
-      canContinue('today', draft({ goalName: 'Calma', slots: ['Respira'] })),
+      canContinue('habits', draft({ goalName: 'Calma', slots: ['Respira'] })),
     ).toBe(true);
-    expect(canContinue('today', draft({ goalName: 'Calma' }))).toBe(false);
+    expect(canContinue('habits', draft({ goalName: 'Calma', slots: [] }))).toBe(
+      false,
+    );
+  });
+
+  it('saves today once one habit is done and another skipped', () => {
+    const three = draft({ goalName: 'Calma', slots: ['a', 'b', 'c'] });
+    const marked = setEntry(three, 'a', { done: true });
+
+    expect(canContinue('today', three)).toBe(false);
+    expect(canContinue('today', marked)).toBe(false);
+    expect(canContinue('today', toggleSkip(three, 'b'))).toBe(false);
+    expect(canContinue('today', toggleSkip(marked, 'b'))).toBe(true);
+  });
+
+  it('does not count not today as done', () => {
+    const three = draft({ goalName: 'Calma', slots: ['a', 'b'] });
+    const answered = toggleSkip(setEntry(three, 'a', { done: false }), 'b');
+
+    expect(canContinue('today', answered)).toBe(false);
+  });
+
+  it('asks only for a done habit when there is a single one', () => {
+    const one = draft({ goalName: 'Calma', slots: ['a'] });
+
+    expect(todayRequirements(one)).toEqual({ done: false, skipped: null });
+    expect(canContinue('today', setEntry(one, 'a', { done: true }))).toBe(true);
   });
 
   it('never continues from saving or done, which have their own buttons', () => {
@@ -135,7 +169,7 @@ describe('enterHabits', () => {
       draft({
         goalName: 'Otra',
         slots: ['Llega a tiempo', '', ''],
-        doneToday: ['Llega a tiempo'],
+        today: { 'Llega a tiempo': done('Llega a tiempo') },
         seededFor: 'Trabaja',
       }),
       [],
@@ -146,7 +180,7 @@ describe('enterHabits', () => {
       draft({
         goalName: 'Otra',
         slots: ['', '', ''],
-        doneToday: [],
+        today: {},
         seededFor: 'Otra',
       }),
     );
@@ -183,24 +217,27 @@ describe('editSlot', () => {
 
   it('drops the old name from today once it is no longer chosen', () => {
     const next = editSlot(
-      draft({ slots: ['Lee', 'Corre'], doneToday: ['Lee', 'Corre'] }),
+      draft({
+        slots: ['Lee', 'Corre'],
+        today: { Lee: done('Lee'), Corre: done('Corre') },
+      }),
       0,
       'Lee más',
     );
 
-    expect(next.doneToday).toEqual(['Corre']);
+    expect(Object.keys(next.today)).toEqual(['Corre']);
   });
 });
 
 describe('clearSlot', () => {
   it('empties the slot and its mark for today', () => {
     const next = clearSlot(
-      draft({ slots: ['a', 'b'], doneToday: ['a', 'b'] }),
+      draft({ slots: ['a', 'b'], today: { a: done('a'), b: done('b') } }),
       0,
     );
 
     expect(next.slots).toEqual(['', 'b']);
-    expect(next.doneToday).toEqual(['b']);
+    expect(Object.keys(next.today)).toEqual(['b']);
   });
 });
 
@@ -211,16 +248,49 @@ describe('hasFreeSlot', () => {
   });
 });
 
-describe('toggleDone', () => {
-  it('marks and unmarks a chosen habit', () => {
-    const marked = toggleDone(draft({ slots: ['a'] }), 'a');
-    expect(marked.doneToday).toEqual(['a']);
-    expect(toggleDone(marked, 'a').doneToday).toEqual([]);
+describe('todayRequirements', () => {
+  it('reports each requirement as it is met', () => {
+    const three = draft({ slots: ['a', 'b', 'c'] });
+    expect(todayRequirements(three)).toEqual({ done: false, skipped: false });
+    expect(
+      todayRequirements(toggleSkip(setEntry(three, 'a', { done: true }), 'c')),
+    ).toEqual({ done: true, skipped: true });
+  });
+});
+
+describe('answers for today', () => {
+  it('starts every chosen habit unanswered', () => {
+    expect(entryFor(draft({ slots: ['a'] }), 'a')).toEqual({
+      habitId: 'a',
+      skipped: false,
+      done: null,
+      amount: null,
+    });
+  });
+
+  it('records done and not today alike', () => {
+    const marked = setEntry(draft({ slots: ['a', 'b'] }), 'a', { done: true });
+    const both = setEntry(marked, 'b', { done: false });
+
+    expect(entryFor(both, 'a').done).toBe(true);
+    expect(entryFor(both, 'b').done).toBe(false);
+  });
+
+  it('skips by clearing the answer, and un-skips back to unanswered', () => {
+    const answered = setEntry(draft({ slots: ['a'] }), 'a', { done: true });
+    const skipped = toggleSkip(answered, 'a');
+
+    expect(entryFor(skipped, 'a')).toMatchObject({ skipped: true, done: null });
+    expect(entryFor(toggleSkip(skipped, 'a'), 'a')).toMatchObject({
+      skipped: false,
+      done: null,
+    });
   });
 
   it('ignores a name that is not chosen', () => {
     const current = draft({ slots: ['a'] });
-    expect(toggleDone(current, 'b')).toBe(current);
+    expect(setEntry(current, 'b', { done: true })).toBe(current);
+    expect(toggleSkip(current, 'b')).toBe(current);
   });
 });
 

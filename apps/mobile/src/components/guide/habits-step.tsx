@@ -14,12 +14,14 @@ import {
   editSlot,
   fillSlot,
   HABIT_NAME_MAX,
+  habitsFilled,
   hasFreeSlot,
   missingSuggestions,
 } from '@/features/guide/steps';
 import type { GuideDraft } from '@/features/guide/types';
 import { useTranslations } from '@/lib/i18n';
 
+import { Requirement, Requirements } from './requirement';
 import { StepIntro } from './step-intro';
 
 const REMOVE_SPACE = 52;
@@ -38,6 +40,7 @@ export function HabitsStep({
 
   const free = hasFreeSlot(draft);
   const missing = missingSuggestions(draft, suggestions);
+  const { filled, total } = habitsFilled(draft);
 
   const settle = (index: number) => {
     if (draft.slots[index]?.trim() === '') onChange(clearSlot(draft, index));
@@ -112,6 +115,13 @@ export function HabitsStep({
           </XStack>
         </FormSection>
       )}
+
+      <Requirements>
+        <Requirement
+          label={t('guide.habits.need', { filled, total })}
+          met={total > 0 && filled === total}
+        />
+      </Requirements>
 
       {!free && <FormHint>{t('guide.habits.full')}</FormHint>}
     </YStack>
