@@ -14,11 +14,7 @@ export function DoneStep({
   onSeeAnalysis: () => void;
 }) {
   const { t } = useTranslations();
-  const lines = [
-    t('guide.done.goal'),
-    t('guide.done.edit'),
-    t('guide.done.daily'),
-  ];
+  const lines = [t('guide.done.summary'), t('guide.done.encouragement')];
 
   return (
     <YStack
@@ -62,7 +58,7 @@ export function DoneStep({
         self="stretch"
         onPress={onSeeAnalysis}
       >
-        {t('guide.done.analysis')}
+        {t('guide.done.results')}
       </Button>
     </YStack>
   );

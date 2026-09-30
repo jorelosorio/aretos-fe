@@ -453,6 +453,7 @@ export const en = {
     },
     editing: "You're editing a saved entry",
     progress: '%{answered} of %{total}',
+    title: 'Log',
     save: 'Save',
     update: 'Update',
     notes: {
@@ -742,10 +743,11 @@ export const en = {
     },
     done: {
       title: 'Congratulations!',
-      goal: 'Your goal and its habits are in My Goals.',
-      edit: 'You can add more habits or edit them whenever you like.',
-      daily: 'Come back each day to track how it went.',
-      analysis: 'See my analysis',
+      summary:
+        'You created your goal, chose your habits and logged your first day.',
+      encouragement:
+        'You are moving forward on what really matters to you. These are good steps.',
+      results: 'See my results',
     },
     examples: {
       excellence: {

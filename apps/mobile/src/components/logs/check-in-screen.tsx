@@ -9,6 +9,7 @@ import { FormScreen } from '@/components/common/form-screen';
 import { HeaderTextButton } from '@/components/common/header-actions';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
+import { GoalDot } from '@/components/goals/goal-dot';
 import { GoalHeaderTitle } from '@/components/goals/goal-header-title';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
 import { useGoalCheckIn, useGoalErrorMessage } from '@/features/goals/hooks';
@@ -96,14 +97,7 @@ function CheckInForm({
     <>
       <Stack.Screen
         options={{
-          title: goal.name,
-          headerTitle: ({ children, tintColor }) => (
-            <GoalHeaderTitle
-              slot={goal.colorSlot}
-              title={children}
-              color={tintColor}
-            />
-          ),
+          title: t('logs.title'),
           headerRight: () => (
             <HeaderTextButton
               label={t(period?.logged === true ? 'logs.update' : 'logs.save')}
@@ -116,6 +110,20 @@ function CheckInForm({
       />
 
       <FormScreen>
+        <XStack items="center" gap="$2">
+          <GoalDot slot={goal.colorSlot} />
+          <SizableText
+            flex={1}
+            size={TEXT.title}
+            fontWeight="700"
+            color="$color"
+            numberOfLines={2}
+            accessibilityRole="header"
+          >
+            {goal.name}
+          </SizableText>
+        </XStack>
+
         {!locked && (
           <WeekPicker
             frequency={goal.trackingFrequency}

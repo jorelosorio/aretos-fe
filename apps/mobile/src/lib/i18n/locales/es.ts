@@ -453,6 +453,7 @@ export const es = {
     },
     editing: 'Estás editando un registro guardado',
     progress: '%{answered} de %{total}',
+    title: 'Registro',
     save: 'Guardar',
     update: 'Actualizar',
     notes: {
@@ -746,10 +747,11 @@ export const es = {
     },
     done: {
       title: '¡Felicidades!',
-      goal: 'Tu meta y sus hábitos están en Mis Metas.',
-      edit: 'Puedes añadir más hábitos o editarlos cuando quieras.',
-      daily: 'Vuelve cada día para registrar cómo te fue.',
-      analysis: 'Ver mi análisis',
+      summary:
+        'Creaste tu meta, elegiste tus hábitos y registraste tu primer día.',
+      encouragement:
+        'Estás avanzando en lo que de verdad te importa. Son buenos pasos.',
+      results: 'Ver mis resultados',
     },
     examples: {
       excellence: {
