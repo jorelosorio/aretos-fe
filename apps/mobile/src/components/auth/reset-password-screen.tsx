@@ -48,8 +48,19 @@ export function ResetPasswordScreen() {
   const save = () =>
     reset.mutate(
       { email, code, password },
-      { onError: (error) => setStep(resetStepFor(error.code)) },
+      {
+        onError: (error) => {
+          const back = resetStepFor(error.code);
+          if (back === 'code') setCode('');
+          setStep(back);
+        },
+      },
     );
+
+  const editCode = (next: string) => {
+    if (failedOn === 'code') reset.reset();
+    setCode(next);
+  };
 
   if (step === 'password') {
     return (
@@ -84,7 +95,12 @@ export function ResetPasswordScreen() {
       <Paragraph size={TEXT.body} color="$mutedForeground">
         {t('auth.sheet.codeBody', { email })}
       </Paragraph>
-      <CodeField value={code} onChange={setCode} />
+      <CodeField
+        value={code}
+        onChange={editCode}
+        onComplete={() => setStep('password')}
+        invalid={failedOn === 'code'}
+      />
       <ErrorNotice
         message={
           failedOn === 'code' ? toMessage(reset.error) : toMessage(resend.error)
