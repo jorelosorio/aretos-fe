@@ -3,8 +3,6 @@ import { FlatList, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
 import { Archive } from '@tamagui/lucide-icons-2/icons/Archive';
-import { Plus } from '@tamagui/lucide-icons-2/icons/Plus';
-import { Target } from '@tamagui/lucide-icons-2/icons/Target';
 import { YStack } from 'tamagui';
 
 import { EmptyState } from '@/components/common/empty-state';
@@ -23,6 +21,7 @@ import { useAllowance } from '@/features/limits/hooks';
 import { useTranslations } from '@/lib/i18n';
 
 import { GoalCard } from './goal-card';
+import { NoGoalsState } from './no-goals-state';
 import { PlanLimitNotice } from './plan-limit-notice';
 
 type Filter = 'active' | 'archived';
@@ -58,8 +57,6 @@ export function GoalsScreen() {
     { value: 'active', label: t('goals.filter.active') },
     { value: 'archived', label: t('goals.filter.archived') },
   ];
-
-  const create = () => router.push('/goals/new');
 
   return (
     <YStack flex={1} bg="$background">
@@ -107,24 +104,15 @@ export function GoalsScreen() {
         ListEmptyComponent={
           isPending ? (
             <ScreenLoader />
-          ) : (
+          ) : error ? null : archived ? (
             <EmptyState
-              Icon={archived ? Archive : Target}
-              illustration={
-                archived ? ILLUSTRATIONS.noArchived : ILLUSTRATIONS.noGoals
-              }
-              title={t(
-                archived ? 'goals.empty.archivedTitle' : 'goals.empty.title',
-              )}
-              body={t(
-                archived ? 'goals.empty.archivedBody' : 'goals.empty.body',
-              )}
-              action={
-                archived || !canCreate
-                  ? undefined
-                  : { label: t('goals.new'), Icon: Plus, onPress: create }
-              }
+              Icon={Archive}
+              illustration={ILLUSTRATIONS.noArchived}
+              title={t('goals.empty.archivedTitle')}
+              body={t('goals.empty.archivedBody')}
             />
+          ) : (
+            <NoGoalsState canCreate={canCreate} />
           )
         }
       />

@@ -4,8 +4,6 @@ import { useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
 import { CalendarDays } from '@tamagui/lucide-icons-2/icons/CalendarDays';
 import { CircleCheck } from '@tamagui/lucide-icons-2/icons/CircleCheck';
-import { BookOpen } from '@tamagui/lucide-icons-2/icons/BookOpen';
-import { Target } from '@tamagui/lucide-icons-2/icons/Target';
 import { SizableText, YStack } from 'tamagui';
 
 import { longDateLabel } from '@/components/common/date-label';
@@ -19,6 +17,7 @@ import {
 } from '@/components/common/segmented-control';
 import { EmptyState } from '@/components/common/empty-state';
 import { ILLUSTRATIONS } from '@/components/common/illustrations';
+import { NoGoalsState } from '@/components/goals/no-goals-state';
 import { useGuideAutoOpen } from '@/components/guide/use-guide-flag';
 import { SPACING, TEXT } from '@/constants/layout';
 import { useGoalErrorMessage, useGoals } from '@/features/goals/hooks';
@@ -99,23 +98,7 @@ export function HomeScreen() {
       />
     );
   } else if (!goals.error) {
-    empty = (
-      <EmptyState
-        Icon={Target}
-        illustration={ILLUSTRATIONS.noGoals}
-        title={t('goals.empty.title')}
-        body={t('goals.empty.body')}
-        action={
-          canCreate
-            ? {
-                label: t('guide.start'),
-                Icon: BookOpen,
-                onPress: () => router.push('/guide'),
-              }
-            : undefined
-        }
-      />
-    );
+    empty = <NoGoalsState canCreate={canCreate} />;
   }
 
   return (
