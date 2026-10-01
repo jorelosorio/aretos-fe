@@ -41,13 +41,18 @@ import {
 /**
  * The diary as a screen reads it: one list, however many pages it took.
  *
- * `total` and `historyCutoff` are taken from the first page rather than the
- * last. Both describe the whole filtered range, and the first page is the one
- * that cannot go missing.
+ * `total`, `from` and `historyCutoff` are taken from the first page rather
+ * than the last. All three describe the whole filtered range, and the first
+ * page is the one that cannot go missing.
  */
 export type Diary = {
   notes: DiaryNote[];
   total: number;
+  /**
+   * The earliest day the diary shows: the server's default window, already
+   * raised to the plan's cutoff. Null until the first page arrives.
+   */
+  from: string | null;
   timezone: string;
   historyCutoff: string | null;
   hasMoreHistory: boolean;
@@ -56,6 +61,7 @@ export type Diary = {
 const flatten = (pages: readonly DiaryPage[]): Diary => ({
   notes: pages.flatMap((page) => page.notes),
   total: pages[0]?.total ?? 0,
+  from: pages[0]?.from ?? null,
   timezone: pages[0]?.timezone ?? '',
   historyCutoff: pages[0]?.historyCutoff ?? null,
   hasMoreHistory: pages[0]?.hasMoreHistory ?? false,

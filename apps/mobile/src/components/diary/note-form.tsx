@@ -21,10 +21,10 @@ import { FormCounter } from '@/components/common/form-section';
 import { NOTE_TEXT } from '@/components/common/note-text';
 import { TagInput } from '@/components/tags/tag-input';
 import { SPACING, TEXT } from '@/constants/layout';
+import { useDiary } from '@/features/diary/hooks';
 import { NOTE_BODY_MAX } from '@/features/diary/types';
 import { todayKey, type DateKey } from '@/features/logs/period';
 import { TAGS_MAX } from '@/features/tags/rules';
-import { useProfile } from '@/features/user/hooks';
 import { useTranslations } from '@/lib/i18n';
 
 import type { useNoteDraft } from './note-draft';
@@ -49,7 +49,7 @@ export function NoteForm({
 }) {
   const { t } = useTranslations();
   const theme = useTheme();
-  const { data: profile } = useProfile();
+  const { data: diary } = useDiary();
   const insets = useSafeAreaInsets();
   const [picking, setPicking] = useState(false);
   const [bodyHeight, setBodyHeight] = useState(0);
@@ -62,8 +62,13 @@ export function NoteForm({
   const surface = theme.background.val as ColorTokens;
   const today = todayKey();
   const { entryDate } = draft;
-  const createdOn: DateKey =
-    profile?.createdAt.slice(0, 10) ?? entryDate ?? today;
+  const earliest = diary?.from ?? null;
+  const pickFrom: DateKey | undefined =
+    earliest === null || entryDate === null
+      ? undefined
+      : earliest < entryDate
+        ? earliest
+        : entryDate;
   const tagCount = draft.tags.tags.length;
   const charactersLeft = NOTE_BODY_MAX - draft.body.length;
   const counting = charactersLeft < COUNTER_BELOW;
@@ -202,7 +207,7 @@ export function NoteForm({
           open={picking}
           value={entryDate}
           today={today}
-          min={createdOn < entryDate ? createdOn : entryDate}
+          min={pickFrom}
           max={today}
           onPick={(day) => {
             draft.setEntryDate(day);

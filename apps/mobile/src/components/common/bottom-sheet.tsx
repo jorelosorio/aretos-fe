@@ -71,6 +71,7 @@ export function BottomSheet({
         preset(SHEET.detents.half))
       : preset(SHEET.detents[detent]);
   const fits = detent === 'fit';
+  const scrolls = !fits || resting === 0;
 
   const offset = useSharedValue(full);
   const start = useSharedValue(0);
@@ -242,6 +243,8 @@ export function BottomSheet({
 
             <ScrollView
               flex={1}
+              scrollEnabled={scrolls}
+              bounces={scrolls}
               contentContainerStyle={{
                 pb: settled + SHEET.overdrag + insets.bottom,
               }}
