@@ -27,7 +27,7 @@ export function GuideProgress({ step }: { step: InputStep }) {
           width={LINE.width}
           height={LINE.height}
           rounded={LINE.height / 2}
-          bg={index <= current ? '$primary' : '$border'}
+          bg={index <= current ? '$primary' : '$mutedForeground'}
         />
       ))}
     </XStack>

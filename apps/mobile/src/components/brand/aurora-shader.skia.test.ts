@@ -22,6 +22,7 @@ describe('AURORA_SKSL', () => {
       'u_ember',
       'u_moss',
       'u_honey',
+      'u_form',
     ]);
   });
 });

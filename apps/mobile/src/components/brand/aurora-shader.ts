@@ -143,6 +143,16 @@ export function auroraPalette(colors: {
  * banding. Skia's origin is top-left, so `uv.y` is flipped to run bottom to
  * top; the vignette's centre at y 0.62 then sits a little above the middle of
  * the screen.
+ *
+ * `u_form` runs 0 to 1 as the aurora forms when it first appears. At 0 it
+ * draws the bare ground — so the frames Skia spends creating its surface are
+ * indistinguishable from the page already there — and at 1 the aurora is
+ * exactly what it is without the uniform. Between, a tide rises from the
+ * bottom across the whole width, its edge torn by the same noise the clouds
+ * are made of so it reaches ahead where they are dense, and behind it the
+ * clouds condense rather than fade in: each tint's threshold starts raised, so
+ * only the densest cores show first and then thicken out to their full
+ * extent, the way a cloud forms rather than the way a layer is revealed.
  */
 export const AURORA_SKSL = `
 uniform float2 u_res;
@@ -151,6 +161,7 @@ uniform float3 u_bg;
 uniform float3 u_ember;
 uniform float3 u_moss;
 uniform float3 u_honey;
+uniform float u_form;
 
 float hash(float2 p) {
   return fract(sin(dot(p, float2(127.1, 311.7))) * 43758.5453123);
@@ -196,11 +207,19 @@ half4 main(float2 xy) {
   float n = fbm(p * 1.2 + r * 1.8);
   float detail = fbm(p * 6.5 + r * 1.2);
 
+  float front = u_form * 2.05 - 0.2;
+  float edge = uv.x - 0.5;
+  float reach = uv.y + edge * edge * 0.6 + (n - 0.5) * 0.8 + (detail - 0.5) * 0.25;
+  float formed = 1.0 - smoothstep(front - 0.32, front, reach);
+  formed *= smoothstep(0.0, 0.08, u_form);
+  formed = mix(formed, 1.0, step(1.0, u_form));
+  float lift = (1.0 - formed) * 0.3;
+
   float3 col = u_bg;
   float grit = (detail - 0.5) * 0.09;
-  col = mix(col, u_ember, smoothstep(0.32, 0.70, n + grit) * 0.72);
-  col = mix(col, u_moss, smoothstep(0.36, 0.76, q.y + grit) * 0.62);
-  col = mix(col, u_honey, smoothstep(0.40, 0.82, r.x + grit) * 0.50);
+  col = mix(col, u_ember, smoothstep(0.32 + lift, 0.70 + lift, n + grit) * 0.72 * formed);
+  col = mix(col, u_moss, smoothstep(0.36 + lift, 0.76 + lift, q.y + grit) * 0.62 * formed);
+  col = mix(col, u_honey, smoothstep(0.40 + lift, 0.82 + lift, r.x + grit) * 0.50 * formed);
 
   float d = distance(uv, float2(0.5, 0.62));
   col = mix(col, u_bg, smoothstep(0.34, 0.05, d) * 0.42);

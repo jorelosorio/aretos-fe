@@ -2,10 +2,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { AppState, StyleSheet, View } from 'react-native';
 import { Canvas, Fill, Shader, Skia } from '@shopify/react-native-skia';
 import {
+  Easing,
   useDerivedValue,
   useFrameCallback,
   useReducedMotion,
   useSharedValue,
+  withTiming,
 } from 'react-native-reanimated';
 import { useTheme, useThemeName } from '@tamagui/core';
 
@@ -23,11 +25,23 @@ const SCALE = 1 / 3;
 const FPS = 30;
 const IDLE_FPS = 15;
 const EASE = 0.04;
+const FORM_MS = 1800;
 
 export function Aurora({ idle = false }: { idle?: boolean }) {
   const theme = useTheme();
   const still = useReducedMotion();
   const [size, setSize] = useState({ width: 0, height: 0 });
+  const form = useSharedValue(still ? 1 : 0);
+
+  useEffect(() => {
+    if (still) {
+      form.set(1);
+      return;
+    }
+    form.set(
+      withTiming(1, { duration: FORM_MS, easing: Easing.out(Easing.quad) }),
+    );
+  }, [still, form]);
 
   const ground = resolveColor(theme, '$background');
   const dark = useThemeName().startsWith('dark');
@@ -100,6 +114,7 @@ export function Aurora({ idle = false }: { idle?: boolean }) {
       u_ember: [p[3], p[4], p[5]],
       u_moss: [p[6], p[7], p[8]],
       u_honey: [p[9], p[10], p[11]],
+      u_form: form.get(),
     };
   });
 
