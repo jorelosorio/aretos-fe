@@ -809,10 +809,10 @@ export const en = {
       codeBody: 'Enter the code we sent to %{email}.',
       continue: 'Continue',
       noCode: "Didn't get it?",
-      noCodeOrWrongEmail: "Didn't get it, or wrong email?",
+      wrongEmail: 'Wrong email?',
       goBack: 'Go back',
       resend: 'Send again',
-      resendIn: 'Send again in %{seconds} s',
+      resendIn: 'Send again in %{time}',
       codeResent: 'We sent you a new code.',
       newPasswordTitle: 'New password',
       newPasswordBody:
@@ -866,7 +866,54 @@ export const en = {
       invalidEmailCode: "That code didn't work. Check it or ask for a new one.",
       weakPassword:
         'That password is too short or too long. Use at least 8 characters.',
+      emailInUse: 'That email now belongs to another account.',
+      codeStillLive:
+        'We already sent a code to another email. Try again in a few minutes.',
       generic: 'Something went wrong. Please try again.',
+    },
+  },
+  account: {
+    profile: 'Profile',
+    openProfile: 'Opens your profile',
+    details: 'Your details',
+    save: 'Save',
+    plan: {
+      row: 'Plan',
+      label: 'Plan: %{plan}',
+      free: 'Free',
+      plus: 'Plus',
+    },
+    name: {
+      row: 'Name',
+    },
+    email: {
+      row: 'Email',
+      body: "Your email is %{email}. We'll send a code to the new one, and it changes once you enter that code.",
+      new: 'New email',
+      same: "That's already your email.",
+      sendCode: 'Send code',
+      confirm: 'Confirm',
+      differentAddress: 'Use a different email',
+    },
+    password: {
+      changeRow: 'Change password',
+      setRow: 'Set a password',
+      changeBody:
+        "You'll stay signed in here and be signed out on your other devices.",
+      setBody: 'Add a password so you can also sign in with your email.',
+      current: 'Current password',
+      new: 'New password',
+    },
+    delete: {
+      row: 'Delete account',
+      body: "This deletes your account and everything in it: your goals, habits and diary. It can't be undone.",
+      passwordLabel: 'Your password',
+      action: 'Delete account',
+      confirmTitle: 'Delete your account?',
+      confirmBody: 'Everything in it will be gone for good.',
+    },
+    errors: {
+      wrongPassword: "That password isn't right.",
     },
   },
   settings: {

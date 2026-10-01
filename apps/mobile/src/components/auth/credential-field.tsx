@@ -53,30 +53,40 @@ export function CredentialField({
   rule,
   value,
   onChange,
+  label,
+  error,
+  autoFocus = false,
 }: {
   rule: CredentialRule;
   value: string;
   onChange: (value: string) => void;
+  label?: string;
+  error?: string;
+  autoFocus?: boolean;
 }) {
   const { t } = useTranslations();
   const [touched, setTouched] = useState(false);
   const [revealed, setRevealed] = useState(false);
 
   const copy = COPY[rule];
+  const title = label ?? t(copy.label);
   const secret = rule === 'currentPassword' || rule === 'newPassword';
-  const error = touched ? credentialError(rule, value) : null;
+  const ruleError = touched ? credentialError(rule, value) : null;
   const ToggleIcon = revealed ? EyeOff : Eye;
 
   return (
     <FormSection
-      title={t(copy.label)}
+      title={title}
       hint={rule === 'newPassword' ? t('auth.fields.passwordHint') : undefined}
-      error={error === null ? undefined : t(`auth.fieldErrors.${error}`)}
+      error={
+        ruleError === null ? error : t(`auth.fieldErrors.${ruleError}`)
+      }
     >
       <YStack position="relative" justify="center">
         <FormInput
-          accessibilityLabel={t(copy.label)}
+          accessibilityLabel={title}
           value={value}
+          autoFocus={autoFocus}
           onChangeText={onChange}
           onBlur={() => setTouched(true)}
           placeholder={t(copy.placeholder)}

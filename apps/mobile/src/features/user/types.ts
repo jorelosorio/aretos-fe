@@ -15,6 +15,8 @@ export type WireMe = {
   display_name: string;
   avatar_url: string;
   tier: string;
+  has_password: boolean;
+  providers: string[] | null;
   created_at: string;
   updated_at: string;
 };
@@ -27,14 +29,22 @@ export type Profile = {
   /** Empty when the provider sent no picture — never `null` on the wire. */
   avatarUrl: string;
   tier: Tier;
+  /**
+   * Whether email and password sign-in works. False for an account Google
+   * made until it sets one, so the app offers to "set" a password rather
+   * than "change" it, and asks for no current password before a change.
+   */
+  hasPassword: boolean;
+  /** Linked sign-in providers, such as `google`. Sorted, never null. */
+  providers: string[];
   createdAt: string;
   updatedAt: string;
 };
 
 /**
- * What `PATCH /v1/me` amends. Email and tier are absent on purpose: the first
- * is the identity the provider vouched for, and nobody upgrades their own
- * plan.
+ * What `PATCH /v1/me` amends. Email and tier are absent on purpose: the
+ * address only changes once a code sent to the new one comes back (see
+ * `requestEmailChange`), and nobody upgrades their own plan.
  *
  * There is no timezone field. Where a person is is a property of the request
  * rather than of the account — it

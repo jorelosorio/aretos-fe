@@ -1,16 +1,16 @@
 import { useRouter } from 'expo-router';
 import { ChevronRight } from '@tamagui/lucide-icons-2/icons/ChevronRight';
 import { Languages } from '@tamagui/lucide-icons-2/icons/Languages';
-import { LogOut } from '@tamagui/lucide-icons-2/icons/LogOut';
 import { Moon } from '@tamagui/lucide-icons-2/icons/Moon';
 import { Smartphone } from '@tamagui/lucide-icons-2/icons/Smartphone';
 import { Sun } from '@tamagui/lucide-icons-2/icons/Sun';
 import { ScrollView, YStack } from 'tamagui';
 
-import { useConfirmSignOut } from '@/components/auth/use-confirm-sign-out';
 import { useTabBarInset } from '@/components/common/floating-tab-bar';
 import { OptionGroup, type Option } from '@/components/common/option-group';
+import { ProfileSummary } from '@/components/settings/profile-summary';
 import { RowGroup } from '@/components/settings/row-group';
+import { useProfile } from '@/features/user/hooks';
 import { APP_LOCALES, useTranslations } from '@/lib/i18n';
 import { SPACING } from '@/constants/layout';
 import {
@@ -30,7 +30,7 @@ export function SettingsScreen() {
   const { theme, locale } = usePreferences();
   const tabBarInset = useTabBarInset();
   const router = useRouter();
-  const { confirm: confirmSignOut, isSigningOut } = useConfirmSignOut();
+  const { data: profile } = useProfile();
 
   const themeOptions: readonly Option<ThemePreference>[] = [
     { value: 'light', label: t('settings.light'), Icon: Sun },
@@ -54,6 +54,13 @@ export function SettingsScreen() {
       contentContainerStyle={{ grow: 1, pb: tabBarInset }}
     >
       <YStack flex={1} p={SPACING.screen} gap={SPACING.section}>
+        {profile !== undefined && (
+          <ProfileSummary
+            profile={profile}
+            onPress={() => router.push('/settings/profile')}
+          />
+        )}
+
         <OptionGroup
           title={t('settings.appearance')}
           options={themeOptions}
@@ -75,19 +82,6 @@ export function SettingsScreen() {
               label: t('settings.licenses'),
               onPress: () => router.push('/settings/licenses'),
               Icon: ChevronRight,
-            },
-          ]}
-        />
-
-        <RowGroup
-          title={t('settings.account')}
-          rows={[
-            {
-              label: isSigningOut ? t('auth.signingOut') : t('auth.signOut'),
-              onPress: confirmSignOut,
-              disabled: isSigningOut,
-              Icon: LogOut,
-              busy: isSigningOut,
             },
           ]}
         />

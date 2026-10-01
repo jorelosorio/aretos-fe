@@ -814,10 +814,10 @@ export const es = {
       codeBody: 'Escribe el código que enviamos a %{email}.',
       continue: 'Continuar',
       noCode: '¿No te llegó?',
-      noCodeOrWrongEmail: '¿No te llegó o el correo está mal?',
+      wrongEmail: '¿El correo está mal?',
       goBack: 'Volver',
       resend: 'Reenviar',
-      resendIn: 'Reenviar en %{seconds} s',
+      resendIn: 'Reenviar en %{time}',
       codeResent: 'Te enviamos un código nuevo.',
       newPasswordTitle: 'Contraseña nueva',
       newPasswordBody:
@@ -872,7 +872,54 @@ export const es = {
       invalidEmailCode: 'Ese código no funcionó. Revísalo o pide uno nuevo.',
       weakPassword:
         'Esa contraseña es demasiado corta o larga. Usa al menos 8 caracteres.',
+      emailInUse: 'Ese correo ya pertenece a otra cuenta.',
+      codeStillLive:
+        'Ya enviamos un código a otro correo. Inténtalo de nuevo en unos minutos.',
       generic: 'Algo salió mal. Inténtalo de nuevo.',
+    },
+  },
+  account: {
+    profile: 'Perfil',
+    openProfile: 'Abre tu perfil',
+    details: 'Tus datos',
+    save: 'Guardar',
+    plan: {
+      row: 'Plan',
+      label: 'Plan: %{plan}',
+      free: 'Gratis',
+      plus: 'Plus',
+    },
+    name: {
+      row: 'Nombre',
+    },
+    email: {
+      row: 'Correo',
+      body: 'Tu correo es %{email}. Te enviaremos un código al nuevo, y cambiará cuando lo escribas.',
+      new: 'Correo nuevo',
+      same: 'Ese ya es tu correo.',
+      sendCode: 'Enviar código',
+      confirm: 'Confirmar',
+      differentAddress: 'Usar otro correo',
+    },
+    password: {
+      changeRow: 'Cambiar contraseña',
+      setRow: 'Crear una contraseña',
+      changeBody:
+        'Seguirás con la sesión abierta aquí y se cerrará en tus otros dispositivos.',
+      setBody: 'Crea una contraseña para entrar también con tu correo.',
+      current: 'Contraseña actual',
+      new: 'Contraseña nueva',
+    },
+    delete: {
+      row: 'Eliminar cuenta',
+      body: 'Se eliminará tu cuenta y todo lo que contiene: tus metas, hábitos y diario. No se puede deshacer.',
+      passwordLabel: 'Tu contraseña',
+      action: 'Eliminar cuenta',
+      confirmTitle: '¿Eliminar tu cuenta?',
+      confirmBody: 'Todo lo que contiene se perderá para siempre.',
+    },
+    errors: {
+      wrongPassword: 'Esa contraseña no es correcta.',
     },
   },
   settings: {

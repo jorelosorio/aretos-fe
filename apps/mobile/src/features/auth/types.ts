@@ -2,7 +2,7 @@
 export type AuthProvider = 'google';
 
 /** Tiers from `internal/shared`; gates API access via the Casbin policy. */
-export type Tier = 'free' | (string & {});
+export type Tier = 'free' | 'plus' | (string & {});
 
 /** Response body of `/v1/auth/token` and `/v1/auth/refresh`. */
 export type TokenResponse = {
@@ -56,5 +56,9 @@ export const AuthErrorCode = {
   /** Wrong, expired, used up or out of guesses; the server does not say which. */
   InvalidEmailCode: 'AUTH_INVALID_EMAIL_CODE',
   WeakPassword: 'AUTH_WEAK_PASSWORD',
+  /** An email change whose new address was taken before its code came back. */
+  EmailInUse: 'AUTH_EMAIL_IN_USE',
+  /** An email change to a second address while a code to the first is live. */
+  RateLimitExceeded: 'RATE_LIMIT_EXCEEDED',
   TierNotAllowed: 'AUTHZ_TIER_NOT_ALLOWED',
 } as const;

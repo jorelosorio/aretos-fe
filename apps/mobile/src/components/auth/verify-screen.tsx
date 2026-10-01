@@ -58,7 +58,7 @@ export function VerifyScreen() {
         onPress={() => submit(code)}
       />
       <TextLink
-        lead={t('auth.sheet.noCodeOrWrongEmail')}
+        lead={t('auth.sheet.wrongEmail')}
         label={t('auth.sheet.goBack')}
         onPress={() => router.back()}
       />

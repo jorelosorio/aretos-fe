@@ -38,9 +38,13 @@ import {
 /**
  * Makes a new session the current one. Writing the store is what signs the
  * app in: the navigator's guards read it and swap the auth sheets for the
- * app on their own, so no caller navigates after this.
+ * app on their own, so no caller navigates after this. Also how a signed-in
+ * password change swaps in the session the server issued with it.
  */
-async function installSession(queryClient: QueryClient, session: Session) {
+export async function installSession(
+  queryClient: QueryClient,
+  session: Session,
+) {
   await sessionStore.set(session);
   queryClient.setQueryData<Session>(authKeys.session(), session);
 }
@@ -266,6 +270,8 @@ const MESSAGES: Record<string, TranslationKey> = {
   [AuthErrorCode.InvalidCredentials]: 'auth.errors.invalidCredentials',
   [AuthErrorCode.InvalidEmailCode]: 'auth.errors.invalidEmailCode',
   [AuthErrorCode.WeakPassword]: 'auth.errors.weakPassword',
+  [AuthErrorCode.EmailInUse]: 'auth.errors.emailInUse',
+  [AuthErrorCode.RateLimitExceeded]: 'auth.errors.codeStillLive',
 };
 
 export function useAuthErrorMessage() {

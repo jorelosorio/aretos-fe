@@ -65,6 +65,22 @@ const RETRIED = Symbol('retried');
 type RetryableConfig = InternalAxiosRequestConfig & { [RETRIED]?: true };
 
 /**
+ * The 401s that mean the access token was refused, and a refresh can fix.
+ *
+ * Not every 401 does. A signed-in route can also answer 401 about what was
+ * sent — `/v1/me/email/verify` with a wrong code — and replaying that after a
+ * refresh would rotate the session for nothing and spend a second of the
+ * code's five guesses. An HTML 401 from a proxy has no code to judge by, so
+ * it keeps the old behaviour.
+ */
+const SESSION_REFUSED = new Set([
+  'AUTH_MISSING_TOKEN',
+  'AUTH_INVALID_TOKEN',
+  'UNAUTHORIZED',
+  'HTTP_401',
+]);
+
+/**
  * The zone rides on every request rather than being a parameter each caller
  * remembers.
  *
@@ -87,6 +103,7 @@ api.interceptors.response.use(undefined, async (error: unknown) => {
   const canRetry =
     error instanceof ApiError &&
     error.status === 401 &&
+    SESSION_REFUSED.has(error.code) &&
     bridge !== null &&
     config !== undefined &&
     config[RETRIED] !== true;

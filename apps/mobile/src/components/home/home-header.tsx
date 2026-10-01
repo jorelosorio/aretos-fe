@@ -1,41 +1,11 @@
-import { Circle, Image, SizableText, XStack, YStack } from 'tamagui';
+import { SizableText, XStack, YStack } from 'tamagui';
 
+import { Avatar } from '@/components/common/avatar';
 import { SPACING, TEXT } from '@/constants/layout';
 import { useProfile } from '@/features/user/hooks';
 import { useTranslations } from '@/lib/i18n';
 
 import { partOfDay } from './part-of-day';
-
-const AVATAR_SIZE = '$5';
-
-function Avatar({ name, url }: { name: string; url: string }) {
-  return (
-    <Circle
-      size={AVATAR_SIZE}
-      items="center"
-      justify="center"
-      bg="$accentSurface"
-      overflow="hidden"
-    >
-      {url === '' ? (
-        <SizableText
-          size={TEXT.heading}
-          fontWeight="700"
-          color="$accentSurfaceForeground"
-        >
-          {name.slice(0, 1).toUpperCase()}
-        </SizableText>
-      ) : (
-        <Image
-          source={{ uri: url }}
-          width="100%"
-          height="100%"
-          accessibilityIgnoresInvertColors
-        />
-      )}
-    </Circle>
-  );
-}
 
 export function HomeHeader() {
   const { t } = useTranslations();

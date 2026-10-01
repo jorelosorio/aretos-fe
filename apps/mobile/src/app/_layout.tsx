@@ -116,6 +116,26 @@ function RootNavigator() {
           name="settings/licenses"
           options={{ headerShown: true, title: t('settings.licenses') }}
         />
+        <Stack.Screen
+          name="settings/profile"
+          options={{ headerShown: true, title: t('account.profile') }}
+        />
+        <Stack.Screen
+          name="settings/name"
+          options={{ headerShown: true, title: t('account.name.row') }}
+        />
+        <Stack.Screen
+          name="settings/email"
+          options={{ headerShown: true, title: t('account.email.row') }}
+        />
+        <Stack.Screen
+          name="settings/password"
+          options={{ headerShown: true, title: '' }}
+        />
+        <Stack.Screen
+          name="settings/delete-account"
+          options={{ headerShown: true, title: t('account.delete.row') }}
+        />
       </Stack.Protected>
 
       <Stack.Protected guard={!isAuthenticated}>

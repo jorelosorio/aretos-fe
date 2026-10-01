@@ -3,7 +3,6 @@ import { useLocalSearchParams } from 'expo-router';
 import { Paragraph } from 'tamagui';
 
 import { ErrorNotice } from '@/components/common/error-notice';
-import { FormHint } from '@/components/common/form-section';
 import { TEXT } from '@/constants/layout';
 import { codeError, credentialError } from '@/features/auth/credentials';
 import {
@@ -19,7 +18,7 @@ import { CredentialField } from './credential-field';
 import { resetStepFor, type ResetStep } from './reset-steps';
 import { SubmitButton } from './submit-button';
 import { TextLink } from './text-link';
-import { useResendCountdown } from './use-resend-countdown';
+import { formatWait, useResendCountdown } from './use-resend-countdown';
 
 export function ResetPasswordScreen() {
   const { t } = useTranslations();
@@ -111,14 +110,15 @@ export function ResetPasswordScreen() {
         disabled={codeError(code) !== null}
         onPress={() => setStep('password')}
       />
-      {resend.isSuccess && secondsLeft > 0 && (
-        <FormHint text="center">{t('auth.sheet.codeResent')}</FormHint>
-      )}
       <TextLink
-        lead={t('auth.sheet.noCode')}
+        lead={
+          resend.isSuccess && secondsLeft > 0
+            ? t('auth.sheet.codeResent')
+            : t('auth.sheet.noCode')
+        }
         label={
           secondsLeft > 0
-            ? t('auth.sheet.resendIn', { seconds: secondsLeft })
+            ? t('auth.sheet.resendIn', { time: formatWait(secondsLeft) })
             : t('auth.sheet.resend')
         }
         disabled={secondsLeft > 0 || resend.isPending}

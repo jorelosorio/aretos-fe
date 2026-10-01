@@ -13,6 +13,7 @@ export function ListRow({
   selected,
   busy = false,
   disabled = false,
+  destructive = false,
   onPress,
 }: {
   label: string;
@@ -22,6 +23,7 @@ export function ListRow({
   selected?: boolean;
   busy?: boolean;
   disabled?: boolean;
+  destructive?: boolean;
   onPress: () => void;
 }) {
   const choice = selected !== undefined;
@@ -54,7 +56,7 @@ export function ListRow({
         <SizableText
           size={TEXT.body}
           fontWeight={selected ? '600' : '400'}
-          color="$cardForeground"
+          color={destructive ? '$destructive' : '$cardForeground'}
         >
           {label}
         </SizableText>
@@ -73,7 +75,10 @@ export function ListRow({
         </YStack>
       ) : (
         TrailingIcon !== undefined && (
-          <TrailingIcon size={ICON.row} color="$mutedForeground" />
+          <TrailingIcon
+            size={ICON.row}
+            color={destructive ? '$destructive' : '$mutedForeground'}
+          />
         )
       )}
     </XStack>
