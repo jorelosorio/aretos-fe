@@ -17,8 +17,12 @@ import type { Tier } from '@/features/auth/types';
  *
  * `diary_note` counts every note the user owns — written on its own or on a
  * check-in — and gates both routes that create one.
+ *
+ * `template` counts the templates the user has written, exported goals
+ * included. Starting a goal from one counts as a `goal` instead.
  */
-export type LimitedResource = 'goal' | 'habit' | 'habit_log' | 'diary_note';
+export type LimitedResource =
+  'goal' | 'habit' | 'habit_log' | 'diary_note' | 'template';
 
 export type WireResourceLimit = {
   used: number;

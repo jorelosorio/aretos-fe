@@ -1,12 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Stack, useRouter } from 'expo-router';
 import { XStack, type TamaguiElement } from 'tamagui';
-import { CalendarDays } from '@tamagui/lucide-icons-2/icons/CalendarDays';
-import { CalendarRange } from '@tamagui/lucide-icons-2/icons/CalendarRange';
-import { CircleCheck } from '@tamagui/lucide-icons-2/icons/CircleCheck';
-import { Gauge } from '@tamagui/lucide-icons-2/icons/Gauge';
-import { Info } from '@tamagui/lucide-icons-2/icons/Info';
-import { Shuffle } from '@tamagui/lucide-icons-2/icons/Shuffle';
 
 import { AddFieldButton } from '@/components/common/add-field-button';
 import { ErrorNotice } from '@/components/common/error-notice';
@@ -14,12 +8,8 @@ import { FormInput, FormTextArea } from '@/components/common/form-field';
 import { FormScreen } from '@/components/common/form-screen';
 import { FormSection } from '@/components/common/form-section';
 import { HeaderTextButton } from '@/components/common/header-actions';
-import { OptionGroup, type Option } from '@/components/common/option-group';
-import { SliderCard } from '@/components/common/slider-card';
-import { Stepper } from '@/components/common/stepper';
 import { GoalColorPicker } from '@/components/goals/goal-color-picker';
-import { SKIP_LIMIT_COPY, skipUnit } from '@/components/goals/skip-limit-copy';
-import { SkipLimitInfo } from '@/components/goals/skip-limit-info';
+import { GoalSettingsFields } from '@/components/goals/goal-settings-fields';
 import { useTagDraft } from '@/components/tags/tag-draft';
 import { TagField } from '@/components/tags/tag-field';
 import {
@@ -28,22 +18,11 @@ import {
   useUpdateGoal,
 } from '@/features/goals/hooks';
 import { toGoalPatch } from '@/features/goals/patch';
-import type {
-  GoalDraft,
-  StreakRule,
-  TrackingFrequency,
-} from '@/features/goals/types';
+import type { GoalDraft } from '@/features/goals/types';
 import { useTranslations } from '@/lib/i18n';
 
 const NAME_MAX = 120;
 const DESCRIPTION_MAX = 1000;
-
-const THRESHOLD_MIN = 5;
-const THRESHOLD_MAX = 100;
-const THRESHOLD_STEP = 5;
-
-const SKIP_LIMIT_MIN = 0;
-const SKIP_LIMIT_MAX = 7;
 
 export function GoalForm({
   goalId,
@@ -61,7 +40,6 @@ export function GoalForm({
 
   const [draft, setDraft] = useState(initial);
   const tags = useTagDraft(initial.tags);
-  const [explainingSkips, setExplainingSkips] = useState(false);
   const [showDescription, setShowDescription] = useState(
     initial.description !== '',
   );
@@ -78,42 +56,6 @@ export function GoalForm({
 
   const busy = isCreating || isUpdating;
   const name = draft.name.trim();
-
-  const frequencies: readonly Option<TrackingFrequency>[] = [
-    {
-      value: 'daily',
-      label: t('goals.frequency.daily'),
-      hint: t('goals.frequency.dailyHint'),
-      Icon: CalendarDays,
-    },
-    {
-      value: 'weekly',
-      label: t('goals.frequency.weekly'),
-      hint: t('goals.frequency.weeklyHint'),
-      Icon: CalendarRange,
-    },
-    {
-      value: 'flexible',
-      label: t('goals.frequency.flexible'),
-      hint: t('goals.frequency.flexibleHint'),
-      Icon: Shuffle,
-    },
-  ];
-
-  const streakRules: readonly Option<StreakRule>[] = [
-    {
-      value: 'logged',
-      label: t('goals.streak.logged'),
-      hint: t('goals.streak.loggedHint'),
-      Icon: CircleCheck,
-    },
-    {
-      value: 'threshold',
-      label: t('goals.streak.threshold'),
-      hint: t('goals.streak.thresholdHint'),
-      Icon: Gauge,
-    },
-  ];
 
   async function save() {
     if (!name) return;
@@ -218,60 +160,12 @@ export function GoalForm({
           </XStack>
         )}
 
-        <OptionGroup
-          title={t('goals.form.frequency')}
-          options={frequencies}
-          value={draft.trackingFrequency}
-          onChange={(value) => patch({ trackingFrequency: value })}
+        <GoalSettingsFields
+          value={draft}
+          initialSkipLimit={initial.streakSkipLimit}
+          onChange={patch}
         />
-
-        <OptionGroup
-          title={t('goals.form.streakRule')}
-          options={streakRules}
-          value={draft.streakRule}
-          onChange={(value) => patch({ streakRule: value })}
-        />
-
-        {draft.streakRule === 'threshold' && (
-          <FormSection title={t('goals.form.threshold')}>
-            <SliderCard
-              format={(percent) => `${percent}%`}
-              value={draft.streakThreshold}
-              min={THRESHOLD_MIN}
-              max={THRESHOLD_MAX}
-              step={THRESHOLD_STEP}
-              onChange={(value) => patch({ streakThreshold: value })}
-              label={t('goals.form.threshold')}
-            />
-          </FormSection>
-        )}
-
-        <FormSection
-          title={t('goals.form.skipLimit')}
-          hint={t(SKIP_LIMIT_COPY[draft.trackingFrequency].hint)}
-          action={{
-            label: t('goals.skipLimit.howItWorks'),
-            Icon: Info,
-            onPress: () => setExplainingSkips(true),
-          }}
-        >
-          <Stepper
-            value={draft.streakSkipLimit}
-            min={SKIP_LIMIT_MIN}
-            max={Math.max(SKIP_LIMIT_MAX, initial.streakSkipLimit)}
-            suffix={skipUnit(t, draft.trackingFrequency, draft.streakSkipLimit)}
-            onChange={(value) => patch({ streakSkipLimit: value })}
-            label={t('goals.form.skipLimit')}
-          />
-        </FormSection>
       </FormScreen>
-
-      <SkipLimitInfo
-        open={explainingSkips}
-        limit={draft.streakSkipLimit}
-        frequency={draft.trackingFrequency}
-        onDismiss={() => setExplainingSkips(false)}
-      />
     </>
   );
 }

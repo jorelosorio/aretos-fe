@@ -291,14 +291,14 @@ export const TAB_BAR = {
   /**
    * The width of one tab's touch target; the pill is these laid side by side.
    *
-   * The bar hugs its tabs, centred, rather than spanning the screen: five
-   * slots of this width come to under 300pt, so the pill is only as wide as
-   * what is in it and covers less of the list scrolling behind it. A sixth
-   * slot would pass 360pt and overflow a small phone. 56 is the height
-   * too: each tab's target is a square, comfortably over the 44/48pt minimum
-   * on both platforms.
+   * The bar hugs its tabs, centred, rather than spanning the screen, so the
+   * pill is only as wide as what is in it and covers less of the list
+   * scrolling behind it. Six slots of this width and the pill's padding come
+   * to about 330pt, which leaves a margin either side on a 360pt phone; at 56
+   * the six tabs ran edge to edge there. 52 is still comfortably over the
+   * 44/48pt minimum touch target on both platforms.
    */
-  slot: 56,
+  slot: 52,
   /**
    * The tab glyphs, which sit a step above `ICON.feature`.
    *

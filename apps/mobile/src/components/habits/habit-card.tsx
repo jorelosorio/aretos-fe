@@ -19,6 +19,11 @@ const WEIGHT_BADGES: Record<number, TranslationKey> = {
   3: 'habits.weight.tripleBadge',
 };
 
+export type HabitSummary = Pick<
+  Habit,
+  'name' | 'trackingMode' | 'weight' | 'successThreshold' | 'ifThenPlan'
+>;
+
 const MODE_LABELS: Record<Habit['trackingMode'], TranslationKey> = {
   binary: 'habits.mode.binary',
   count: 'habits.mode.count',
@@ -26,12 +31,12 @@ const MODE_LABELS: Record<Habit['trackingMode'], TranslationKey> = {
   rating: 'habits.mode.rating',
 };
 
-export const HabitCard = memo(function HabitCard({
+function HabitCardBase<T extends HabitSummary>({
   habit,
   onOpen,
 }: {
-  habit: Habit;
-  onOpen?: (habit: Habit) => void;
+  habit: T;
+  onOpen?: (habit: T) => void;
 }) {
   const { t } = useTranslations();
   const unit = UNIT_LABELS[habit.trackingMode];
@@ -86,4 +91,6 @@ export const HabitCard = memo(function HabitCard({
       </YStack>
     </Card>
   );
-});
+}
+
+export const HabitCard = memo(HabitCardBase) as typeof HabitCardBase;

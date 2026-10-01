@@ -2,6 +2,7 @@ import { Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Archive } from '@tamagui/lucide-icons-2/icons/Archive';
 import { ArchiveRestore } from '@tamagui/lucide-icons-2/icons/ArchiveRestore';
+import { LayoutTemplate } from '@tamagui/lucide-icons-2/icons/LayoutTemplate';
 import { Pencil } from '@tamagui/lucide-icons-2/icons/Pencil';
 import { Trash2 } from '@tamagui/lucide-icons-2/icons/Trash2';
 
@@ -33,6 +34,9 @@ export function GoalActionsMenu({
   const edit = () =>
     router.push({ pathname: '/goals/[id]/edit', params: { id: goalId } });
 
+  const saveAsTemplate = () =>
+    router.push({ pathname: '/goals/[id]/template', params: { id: goalId } });
+
   const toggleArchived = () =>
     void updateGoal({ id: goalId, patch: { archived: !archived } })
       .then(() => router.back())
@@ -55,6 +59,12 @@ export function GoalActionsMenu({
     ...(archived
       ? []
       : [{ key: 'edit', label: t('goals.edit'), Icon: Pencil, onPress: edit }]),
+    {
+      key: 'template',
+      label: t('goals.saveAsTemplate'),
+      Icon: LayoutTemplate,
+      onPress: saveAsTemplate,
+    },
     {
       key: 'archive',
       label: t(archived ? 'goals.restore' : 'goals.archive'),

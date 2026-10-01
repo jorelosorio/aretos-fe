@@ -10,10 +10,12 @@ export function TagChips({
   tags,
   max,
   onPress,
+  filters = 'notes',
 }: {
   tags: readonly string[];
   max?: number;
   onPress?: (tag: string) => void;
+  filters?: 'notes' | 'templates';
 }) {
   const { t } = useTranslations();
 
@@ -32,7 +34,12 @@ export function TagChips({
           accessibilityLabel={
             onPress === undefined
               ? capitalize(tag)
-              : t('tags.filterBy', { name: capitalize(tag) })
+              : t(
+                  filters === 'notes'
+                    ? 'tags.filterBy'
+                    : 'tags.filterTemplatesBy',
+                  { name: capitalize(tag) },
+                )
           }
         />
       ))}

@@ -95,8 +95,28 @@ function RootNavigator() {
           options={{ headerShown: true, title: t('habits.form.newTitle') }}
         />
         <Stack.Screen
+          name="goals/[id]/template"
+          options={{
+            headerShown: true,
+            title: t('templates.form.fromGoalTitle'),
+          }}
+        />
+        <Stack.Screen
           name="habits/[id]"
           options={{ headerShown: true, title: t('habits.form.editTitle') }}
+        />
+
+        <Stack.Screen
+          name="templates/new"
+          options={{ headerShown: true, title: t('templates.form.newTitle') }}
+        />
+        <Stack.Screen
+          name="templates/[id]/index"
+          options={{ headerShown: true, title: '' }}
+        />
+        <Stack.Screen
+          name="templates/[id]/edit"
+          options={{ headerShown: true, title: t('templates.form.editTitle') }}
         />
 
         <Stack.Screen
