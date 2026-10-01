@@ -78,9 +78,7 @@ export function CredentialField({
     <FormSection
       title={title}
       hint={rule === 'newPassword' ? t('auth.fields.passwordHint') : undefined}
-      error={
-        ruleError === null ? error : t(`auth.fieldErrors.${ruleError}`)
-      }
+      error={ruleError === null ? error : t(`auth.fieldErrors.${ruleError}`)}
     >
       <YStack position="relative" justify="center">
         <FormInput

@@ -18,7 +18,11 @@ import { CredentialField } from './credential-field';
 import { resetStepFor, type ResetStep } from './reset-steps';
 import { SubmitButton } from './submit-button';
 import { TextLink } from './text-link';
-import { fromSentParams, useCodeClock, type SentParams } from './use-code-clock';
+import {
+  fromSentParams,
+  useCodeClock,
+  type SentParams,
+} from './use-code-clock';
 
 export function ResetPasswordScreen() {
   const { t } = useTranslations();

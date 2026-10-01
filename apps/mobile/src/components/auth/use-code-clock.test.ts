@@ -29,6 +29,8 @@ describe('sent params', () => {
   });
 
   it('are ignored when they will not parse', () => {
-    expect(fromSentParams({ expiresIn: 'soon', resendAfter: '900' })).toBeNull();
+    expect(
+      fromSentParams({ expiresIn: 'soon', resendAfter: '900' }),
+    ).toBeNull();
   });
 });

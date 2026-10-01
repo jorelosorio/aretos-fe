@@ -13,7 +13,11 @@ import { AuthSheet } from './auth-sheet';
 import { CodeField } from './code-field';
 import { SubmitButton } from './submit-button';
 import { TextLink } from './text-link';
-import { fromSentParams, useCodeClock, type SentParams } from './use-code-clock';
+import {
+  fromSentParams,
+  useCodeClock,
+  type SentParams,
+} from './use-code-clock';
 
 export function VerifyScreen() {
   const { t } = useTranslations();
