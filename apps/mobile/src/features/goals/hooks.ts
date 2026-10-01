@@ -118,6 +118,11 @@ export function useGoalCheckIn(id: string, date?: string) {
  * what the goals screen reads to decide whether to offer another one; an
  * edit or an archive cannot, because the cap is on rows owned and
  * `resourceCount` in `limits_service.go` counts archived rows too.
+ *
+ * A deleted goal's own reads are left out. Its screen is still mounted until
+ * the delete resolves and navigates away, and refetching it there would get a
+ * 404 and put "that goal no longer exists" on screen for the length of the
+ * round trip, over the goal the user just watched go.
  */
 function useInvalidateGoals({ usageMoved }: { usageMoved: boolean }) {
   const queryClient = useQueryClient();
@@ -125,9 +130,16 @@ function useInvalidateGoals({ usageMoved }: { usageMoved: boolean }) {
   // All at once: the save resolves only after these refetch, and the form
   // closes on that, so awaiting them one by one kept it open for a round
   // trip per key.
-  return async () => {
+  return async (deletedId?: string) => {
     await Promise.all([
-      queryClient.invalidateQueries({ queryKey: goalKeys.all }),
+      queryClient.invalidateQueries({
+        queryKey: goalKeys.all,
+        predicate:
+          deletedId === undefined
+            ? undefined
+            : ({ queryKey }) =>
+                !(queryKey[1] === 'detail' && queryKey[2] === deletedId),
+      }),
       // Saving a name on a goal creates the tag, and its `uses` moves either
       // way, so the suggestions are stale after any write that carried tags.
       queryClient.invalidateQueries({ queryKey: tagKeys.all }),
@@ -143,7 +155,7 @@ export function useCreateGoal() {
 
   const mutation = useMutation<Goal, ApiError, GoalDraft>({
     mutationFn: createGoal,
-    onSuccess: invalidate,
+    onSuccess: () => invalidate(),
   });
 
   return {
@@ -162,7 +174,7 @@ export function useUpdateGoal() {
     { id: string; patch: GoalPatch }
   >({
     mutationFn: ({ id, patch }) => updateGoal(id, patch),
-    onSuccess: invalidate,
+    onSuccess: () => invalidate(),
   });
 
   return {
@@ -177,7 +189,7 @@ export function useDeleteGoal() {
 
   const mutation = useMutation<void, ApiError, string>({
     mutationFn: deleteGoal,
-    onSuccess: invalidate,
+    onSuccess: (_, id) => invalidate(id),
   });
 
   return {

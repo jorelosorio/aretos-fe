@@ -47,13 +47,16 @@ export function HeaderTextButton({
   onPress,
   disabled = false,
   busy = false,
+  destructive = false,
 }: {
   label: string;
   onPress: () => void;
   disabled?: boolean;
   busy?: boolean;
+  destructive?: boolean;
 }) {
   const inactive = disabled || busy;
+  const tone = destructive ? '$destructive' : '$primary';
 
   return (
     <Button
@@ -68,9 +71,9 @@ export function HeaderTextButton({
       accessibilityState={{ disabled: inactive, busy }}
     >
       {busy ? (
-        <Spinner color="$primary" />
+        <Spinner color={tone} />
       ) : (
-        <SizableText size={TEXT.subheading} fontWeight="700" color="$primary">
+        <SizableText size={TEXT.subheading} fontWeight="700" color={tone}>
           {label}
         </SizableText>
       )}

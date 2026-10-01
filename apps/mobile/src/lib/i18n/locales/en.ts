@@ -526,8 +526,8 @@ export const en = {
         'Your plan does not include goals yet. Upgrade it to start tracking what matters to you.',
     },
     empty: {
-      title: 'No goals created yet',
-      body: 'Start with the big one, even if it sounds abstract. You will turn it into habits you can tick without second-guessing.',
+      title: 'No goals yet',
+      body: "Start with the big one. You'll turn it into habits you can tick.",
       archivedTitle: 'No archived goals',
       archivedBody:
         'Goals you archive show up here, with their history intact.',
@@ -911,6 +911,7 @@ export const en = {
       body: "This deletes your account and everything in it: your goals, habits and diary. It can't be undone.",
       passwordLabel: 'Your password',
       action: 'Delete account',
+      headerAction: 'Delete',
       confirmTitle: 'Delete your account?',
       confirmBody: 'Everything in it will be gone for good.',
     },

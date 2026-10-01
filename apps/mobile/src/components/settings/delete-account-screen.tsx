@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Alert } from 'react-native';
+import { Stack } from 'expo-router';
 import { Paragraph } from 'tamagui';
 
 import { CredentialField } from '@/components/auth/credential-field';
-import { SubmitButton } from '@/components/auth/submit-button';
 import { ErrorNotice } from '@/components/common/error-notice';
 import { FormScreen } from '@/components/common/form-screen';
+import { HeaderTextButton } from '@/components/common/header-actions';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { TEXT } from '@/constants/layout';
 import { credentialError } from '@/features/auth/credentials';
@@ -44,26 +45,36 @@ function DeleteAccountForm({ hasPassword }: { hasPassword: boolean }) {
     );
 
   return (
-    <FormScreen>
-      <Paragraph size={TEXT.body} color="$mutedForeground">
-        {t('account.delete.body')}
-      </Paragraph>
-      <ErrorNotice message={toMessage(remove.error)} />
-      {hasPassword && (
-        <CredentialField
-          rule="currentPassword"
-          label={t('account.delete.passwordLabel')}
-          value={password}
-          onChange={setPassword}
-        />
-      )}
-      <SubmitButton
-        label={t('account.delete.action')}
-        destructive
-        pending={remove.isPending}
-        disabled={!ready}
-        onPress={confirm}
+    <>
+      <Stack.Screen
+        options={{
+          headerRight: () => (
+            <HeaderTextButton
+              label={t('account.delete.headerAction')}
+              onPress={confirm}
+              disabled={!ready}
+              busy={remove.isPending}
+              destructive
+            />
+          ),
+        }}
       />
-    </FormScreen>
+
+      <FormScreen>
+        <Paragraph size={TEXT.body} color="$mutedForeground">
+          {t('account.delete.body')}
+        </Paragraph>
+        <ErrorNotice message={toMessage(remove.error)} />
+        {hasPassword && (
+          <CredentialField
+            rule="currentPassword"
+            label={t('account.delete.passwordLabel')}
+            value={password}
+            onChange={setPassword}
+            autoFocus
+          />
+        )}
+      </FormScreen>
+    </>
   );
 }

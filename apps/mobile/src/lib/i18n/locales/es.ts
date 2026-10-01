@@ -527,8 +527,8 @@ export const es = {
         'Tu plan todavía no incluye metas. Actualízalo para empezar a seguir lo que te importa.',
     },
     empty: {
-      title: 'Todavía no has creado ninguna meta',
-      body: 'Empieza por la meta grande, aunque suene abstracta. Después la traduces en hábitos que puedas marcar sin dudar.',
+      title: 'Aún no tienes metas',
+      body: 'Empieza por la meta grande. Luego la conviertes en hábitos que puedas marcar.',
       archivedTitle: 'No hay metas archivadas',
       archivedBody:
         'Las metas que archives aparecen aquí, con su historial intacto.',
@@ -917,6 +917,7 @@ export const es = {
       body: 'Se eliminará tu cuenta y todo lo que contiene: tus metas, hábitos y diario. No se puede deshacer.',
       passwordLabel: 'Tu contraseña',
       action: 'Eliminar cuenta',
+      headerAction: 'Eliminar',
       confirmTitle: '¿Eliminar tu cuenta?',
       confirmBody: 'Todo lo que contiene se perderá para siempre.',
     },
