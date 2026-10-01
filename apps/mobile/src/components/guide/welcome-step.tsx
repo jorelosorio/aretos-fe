@@ -22,7 +22,7 @@ export function WelcomeStep() {
       gap={SPACING.section}
       p={SPACING.section}
     >
-      <EmptyArt Icon={BookOpen} illustration={ILLUSTRATIONS.noGoals} />
+      <EmptyArt Icon={BookOpen} illustration={ILLUSTRATIONS.guideStart} />
 
       <YStack gap={SPACING.group} items="center">
         <SizableText

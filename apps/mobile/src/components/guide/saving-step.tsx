@@ -27,7 +27,7 @@ export function SavingStep({
       p={SPACING.section}
       accessibilityLiveRegion="polite"
     >
-      <EmptyArt Icon={Target} illustration={ILLUSTRATIONS.noGoals} />
+      <EmptyArt Icon={Target} illustration={ILLUSTRATIONS.guideStart} />
 
       <SizableText
         size={TEXT.title}

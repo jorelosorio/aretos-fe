@@ -2,6 +2,7 @@ import type { ComponentType } from 'react';
 import type { ImageSourcePropType } from 'react-native';
 
 import allLogged from '@/assets/illustrations/all-logged.svg';
+import guideStart from '@/assets/illustrations/guide-start.svg';
 import noArchived from '@/assets/illustrations/no-archived.svg';
 import noHabits from '@/assets/illustrations/no-habits.svg';
 import nothingLogged from '@/assets/illustrations/nothing-logged.svg';
@@ -35,7 +36,7 @@ export type Illustration =
  */
 export const ILLUSTRATIONS = {
   /**
-   * No goals yet: home and the goals list.
+   * No goals yet: home and the goals list, which show the same empty state.
    *
    * Animated: the girl taps her pencil against her cheek, the three goal
    * ideas float, the sparkles twinkle and the thought dots pulse in turn.
@@ -43,6 +44,19 @@ export const ILLUSTRATIONS = {
    * `no-goals-art-layers.ts`.
    */
   noGoals: NoGoalsArt,
+  /**
+   * The guide that builds a first goal: its welcome, and the wait while it
+   * saves.
+   *
+   * Its own drawing rather than `noGoals`, which is the screen the guide is
+   * opened from — starting it on the same girl read as a tap that changed
+   * nothing. A trail of stepping stones climbs a hill to a flag: only the
+   * nearest stone is filled in terracotta, the one step being taken now, and
+   * the rest are still pale. Drawn for the app, still, in the set's palette
+   * with its arrow badge for "go"; being our own, it adds nothing to
+   * `credits.ts`.
+   */
+  guideStart,
   /**
    * Every goal logged for the current period: home's Today tab.
    *

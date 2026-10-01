@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="100%" height="100%" viewBox="0 0 500 500" version="1.1" xmlns="http://www.w3.org/2000/svg" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-linecap:round;">
+<g id="fit" transform="translate(250 250) scale(1.1384) translate(-251.25 -273.70)">
+<g id="scene">
+<g id="backdrop"><path d="M96,300C96,188 188,118 282,128C384,139 436,222 420,314C404,404 322,446 228,436C136,426 96,382 96,300Z" style="fill:rgb(240,168,121);fill-opacity:0.16;"/>
+<path d="M58,437L442,437" style="fill:none;stroke:rgb(69,90,100);stroke-width:1.5;"/></g>
+<g id="sparkles">
+<path d="M116,196Q116,208 128,208Q116,208 116,220Q116,208 104,208Q116,208 116,196Z" style="fill:rgb(240,168,121);"/><path d="M432,252Q432,261 441,261Q432,261 432,270Q432,261 423,261Q432,261 432,252Z" style="fill:rgb(69,90,100);"/><path d="M206,120Q206,128 214,128Q206,128 206,136Q206,128 198,128Q206,128 206,120Z" style="fill:rgb(240,168,121);"/>
+<circle cx="78" cy="282" r="4" style="fill:#ded3c0;"/><circle cx="444" cy="300" r="4.5" style="fill:rgb(240,168,121);"/><circle cx="166" cy="152" r="3.5" style="fill:rgb(69,90,100);"/>
+</g>
+<g id="hills">
+<path d="M64,437C84,394 112,372 140,374C162,376 174,402 180,437Z" style="fill:rgb(240,168,121);"/>
+<path d="M296,437C326,362 366,326 396,326C426,326 440,384 442,437Z" style="fill:rgb(211,118,106);"/>
+<path d="M120,437C160,320 214,250 262,246C312,242 362,316 404,437Z" style="fill:rgb(69,90,100);"/>
+<path d="M262,246C312,242 362,316 404,437L352,437C340,350 300,270 262,246Z" style="fill:rgb(38,50,56);fill-opacity:0.35;"/>
+<path d="M160,420L164,409M168,420L167,407M176,420L179,411" style="fill:none;stroke:#f9f0e2;stroke-opacity:0.35;stroke-width:2;"/>
+<path d="M380,412L383,402M388,412L387,399" style="fill:none;stroke:#f9f0e2;stroke-opacity:0.3;stroke-width:2;"/>
+</g>
+<g id="trail">
+<ellipse cx="254" cy="282" rx="10" ry="3.6" style="fill:#f9f0e2;fill-opacity:0.55;"/>
+<ellipse cx="240" cy="306" rx="12.5" ry="4.4" style="fill:#f9f0e2;fill-opacity:0.65;"/>
+<ellipse cx="222" cy="332" rx="15" ry="5.2" style="fill:#f9f0e2;fill-opacity:0.75;"/>
+<ellipse cx="214" cy="360" rx="18" ry="6.2" style="fill:#f9f0e2;fill-opacity:0.85;"/>
+<ellipse cx="238" cy="386" rx="21" ry="7.2" style="fill:#f9f0e2;"/>
+<ellipse cx="284" cy="404" rx="25" ry="8.5" style="fill:#f9f0e2;"/>
+<ellipse cx="342" cy="420" rx="30" ry="10" style="fill:rgb(240,168,121);"/>
+<ellipse cx="342" cy="417" rx="22" ry="5.5" style="fill:#f9f0e2;fill-opacity:0.3;"/>
+</g>
+<g id="flag">
+<ellipse cx="262" cy="250" rx="16" ry="4.5" style="fill:rgb(38,50,56);fill-opacity:0.3;"/>
+<path d="M262,250L262,168" style="fill:none;stroke:rgb(69,90,100);stroke-width:4.5;"/>
+<circle cx="262" cy="165" r="4.5" style="fill:rgb(240,168,121);"/>
+<path d="M264,172L314,186L264,200Z" style="fill:rgb(211,118,106);"/>
+<path d="M264,180L292,186L264,192Z" style="fill:rgb(240,168,121);"/>
+</g>
+<path d="M176,292Q176,299 183,299Q176,299 176,306Q176,299 169,299Q176,299 176,292Z" style="fill:rgb(240,168,121);"/><path d="M300,224Q300,229 305,229Q300,229 300,234Q300,229 295,229Q300,229 300,224Z" style="fill:#ded3c0;"/>
+<g id="badge">
+<circle cx="365" cy="173" r="36" style="fill:rgb(211,118,106);"/>
+<circle cx="360" cy="167" r="36" style="fill:rgb(240,168,121);"/>
+<circle cx="360" cy="167" r="27" style="fill:none;stroke:#f9f0e2;stroke-opacity:0.45;stroke-width:2.5;"/>
+<path d="M346,167L372,167" style="fill:none;stroke:#f9f0e2;stroke-width:5;"/>
+<path d="M362,156L373,167L362,178" style="fill:none;stroke:#f9f0e2;stroke-width:5;"/>
+</g>
+</g>
+</g>
+</svg>
