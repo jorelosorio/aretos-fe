@@ -115,6 +115,11 @@ export const en = {
       network: "We couldn't reach the server. Check your connection.",
       generic: 'Something went wrong. Try again.',
     },
+    sync: {
+      pending: 'Not synced yet',
+      rejected: 'Not saved to your account',
+      rejectedTitle: "This note wasn't saved to your account",
+    },
   },
   calendar: {
     choose: 'Choose a date',
@@ -966,6 +971,10 @@ export const en = {
     signingOut: 'Signing out…',
     signOutConfirmTitle: 'Sign out?',
     signOutConfirmBody: "You'll need to sign in again.",
+    signOutPendingOne:
+      "One note isn't saved to your account yet. If you sign out now, it will be lost.",
+    signOutPendingMany:
+      "%{count} notes aren't saved to your account yet. If you sign out now, they will be lost.",
     cancel: 'Cancel',
     errors: {
       network: "We couldn't reach the server. Check your connection.",

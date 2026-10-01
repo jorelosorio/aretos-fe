@@ -149,10 +149,10 @@ export function NewNoteScreen() {
 
 export function EditNoteScreen({ id }: { id: string }) {
   const toMessage = useNoteErrorMessage();
-  const { data: note, error, isPlaceholderData } = useNote(id);
+  const { data: note, error } = useNote(id);
 
   if (!note && error) return <ErrorNotice message={toMessage(error)} />;
-  if (!note || isPlaceholderData) return <ScreenLoader />;
+  if (!note) return <ScreenLoader />;
 
   return <NoteEditForm note={note} />;
 }

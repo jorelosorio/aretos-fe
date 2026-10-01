@@ -8,8 +8,10 @@ const note = (id: string, entryDate: string): DiaryNote => ({
   body: id,
   tags: [],
   checkIn: null,
-  createdAt: '2026-10-01T10:00:00Z',
-  updatedAt: '2026-10-01T10:00:00Z',
+  listedAt: '2026-10-01T10:00:00.000000Z',
+  createdAt: '2026-10-01T10:00:00.000000Z',
+  updatedAt: '2026-10-01T10:00:00.000000Z',
+  sync: { state: 'synced', errorCode: null },
 });
 
 describe('toRows', () => {

@@ -4,6 +4,7 @@ import { installSession } from '@/features/auth/hooks';
 import { sessionStore } from '@/features/auth/session';
 import type { CodeSentResponse, Session } from '@/features/auth/types';
 import type { ApiError } from '@/lib/api/errors';
+import { deleteUserDatabase } from '@/lib/db/client';
 
 import {
   changePassword,
@@ -91,8 +92,11 @@ export function useDeleteAccount() {
   return useMutation<void, ApiError, string | null>({
     mutationFn: deleteAccount,
     onSuccess: async () => {
+      const userId = sessionStore.get()?.userId;
       await sessionStore.clear();
       queryClient.clear();
+      // Its notes went with the account; the copy on this device goes too.
+      if (userId) await deleteUserDatabase(userId);
     },
   });
 }

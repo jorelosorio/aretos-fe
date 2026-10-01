@@ -69,7 +69,8 @@
             "extraProguardRules": "-keep class com.reactnative.skia.** { *; }"
           }
         }
-      ]
+      ],
+      "expo-sqlite"
     ],
     "experiments": {
       "typedRoutes": true,

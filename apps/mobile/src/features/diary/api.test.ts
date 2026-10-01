@@ -1,12 +1,13 @@
 import { api } from '@/lib/api/client';
+import { ApiError } from '@/lib/api/errors';
 
 import {
   addCheckInNote,
-  createNote,
-  deleteCheckInNote,
-  getNote,
+  getWireNote,
   listNotes,
-  updateNote,
+  sendNewNote,
+  sendNoteDelete,
+  sendNoteEdit,
 } from './api';
 
 jest.mock('@/lib/api/client', () => ({
@@ -26,8 +27,10 @@ const wireStandalone = {
   body: 'Standalone',
   tags: ['Work'],
   check_in: null,
+  listed_at: '2026-09-20T10:00:00Z',
   created_at: '2026-09-20T10:00:00Z',
   updated_at: '2026-09-20T10:00:00Z',
+  version: 1,
 };
 
 const wireOnCheckIn = {
@@ -88,8 +91,10 @@ describe('diary api', () => {
       body: 'Standalone',
       tags: ['Work'],
       checkIn: null,
-      createdAt: '2026-09-20T10:00:00Z',
-      updatedAt: '2026-09-20T10:00:00Z',
+      listedAt: '2026-09-20T10:00:00.000000Z',
+      createdAt: '2026-09-20T10:00:00.000000Z',
+      updatedAt: '2026-09-20T10:00:00.000000Z',
+      sync: { state: 'synced', errorCode: null },
     });
     expect(result.notes[1].checkIn).toMatchObject({
       habitLogId: 'l1',
@@ -100,56 +105,72 @@ describe('diary api', () => {
     });
   });
 
-  it('reads one note by id and maps its check-in', async () => {
+  it('reads one note as the server has it, and null once it is gone', async () => {
     mocked.get.mockResolvedValueOnce({ data: wireOnCheckIn });
-
-    const note = await getNote('n2');
-
+    await expect(getWireNote('n2')).resolves.toEqual(wireOnCheckIn);
     expect(mocked.get).toHaveBeenCalledWith('/v1/diary-notes/n2');
-    expect(note.id).toBe('n2');
-    expect(note.checkIn).toMatchObject({
-      habitLogId: 'l1',
-      endDate: '2026-09-26',
-    });
+
+    mocked.get.mockRejectedValueOnce(new ApiError('NOT_FOUND', 'gone', 404));
+    await expect(getWireNote('n2')).resolves.toBeNull();
+
+    mocked.get.mockRejectedValueOnce(new ApiError('INTERNAL', 'boom', 500));
+    await expect(getWireNote('n2')).rejects.toBeInstanceOf(ApiError);
   });
 
-  it('creates a note with its day, trimmed body and tags', async () => {
+  it('creates a note under the id the device made up', async () => {
     mocked.post.mockResolvedValueOnce({ data: wireStandalone });
 
-    await createNote({
-      entryDate: '2026-09-20',
-      body: '  hi  ',
-      tags: ['Work'],
-    });
-
-    expect(mocked.post).toHaveBeenCalledWith('/v1/diary-notes', {
+    await sendNewNote('n1', {
       entry_date: '2026-09-20',
       body: 'hi',
       tags: ['Work'],
+      written_at: '2026-09-20T10:00:00.000000Z',
+    });
+
+    expect(mocked.post).toHaveBeenCalledWith('/v1/diary-notes', {
+      id: 'n1',
+      entry_date: '2026-09-20',
+      body: 'hi',
+      tags: ['Work'],
+      written_at: '2026-09-20T10:00:00.000000Z',
     });
   });
 
-  it('patches only the keys it is given', async () => {
-    mocked.patch.mockResolvedValueOnce({ data: wireStandalone });
+  it('names the version an edit or delete was made against', async () => {
+    mocked.patch.mockResolvedValue({ data: wireStandalone });
 
-    await updateNote('n1', { tags: [] });
+    await sendNoteEdit('n1', { tags: [] }, 3);
+    await sendNoteEdit('n1', { tags: [] }, null);
+    await sendNoteDelete('n1', 4);
 
-    expect(mocked.patch).toHaveBeenCalledWith('/v1/diary-notes/n1', {
+    expect(mocked.patch).toHaveBeenNthCalledWith(1, '/v1/diary-notes/n1', {
+      tags: [],
+      version: 3,
+    });
+    expect(mocked.patch).toHaveBeenNthCalledWith(2, '/v1/diary-notes/n1', {
       tags: [],
     });
+    expect(mocked.delete).toHaveBeenCalledWith('/v1/diary-notes/n1', {
+      params: { version: 4 },
+    });
   });
 
-  it('adds and deletes check-in notes under their log', async () => {
+  it('adds a check-in note under its log, with what an offline write carries', async () => {
     mocked.post.mockResolvedValueOnce({
       data: { id: 'n3', body: 'x', tags: [], created_at: 'a', updated_at: 'b' },
     });
 
-    const note = await addCheckInNote('l1', { body: 'x', tags: [] });
-    await deleteCheckInNote('l1', 'n3');
+    const note = await addCheckInNote(
+      'l1',
+      { body: '  x  ', tags: [] },
+      { id: 'n3', written_at: 'w' },
+    );
 
     expect(mocked.post).toHaveBeenCalledWith('/v1/habit-logs/l1/notes', {
       body: 'x',
       tags: [],
+      id: 'n3',
+      written_at: 'w',
     });
     expect(note).toEqual({
       id: 'n3',
@@ -158,6 +179,5 @@ describe('diary api', () => {
       createdAt: 'a',
       updatedAt: 'b',
     });
-    expect(mocked.delete).toHaveBeenCalledWith('/v1/habit-logs/l1/notes/n3');
   });
 });

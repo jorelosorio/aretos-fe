@@ -20,3 +20,8 @@ declare module '*.png' {
   const source: ImageSourcePropType;
   export default source;
 }
+
+declare module '*.sql' {
+  const content: string;
+  export default content;
+}

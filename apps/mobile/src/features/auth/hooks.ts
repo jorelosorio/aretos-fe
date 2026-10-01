@@ -10,6 +10,7 @@ import {
 
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
 import { ApiError } from '@/lib/api/errors';
+import { deleteUserDatabase } from '@/lib/db/client';
 
 import {
   authKeys,
@@ -199,9 +200,17 @@ export function useSignOut() {
       }
 
       await sessionStore.clear();
+      return session?.userId ?? null;
     },
-    // After the store is empty, so nothing refetches under the old token.
-    onSettled: () => queryClient.clear(),
+    onSettled: async (userId) => {
+      // After the store is empty, so nothing refetches under the old token.
+      queryClient.clear();
+
+      // Nothing one person wrote stays on a phone they signed out of. What
+      // had not synced is lost with it, which is why sign-out asks first.
+      // Last, so no cached read is left to open the file as it goes.
+      if (userId) await deleteUserDatabase(userId);
+    },
   });
 
   return { signOut: mutation.mutate, isSigningOut: mutation.isPending };

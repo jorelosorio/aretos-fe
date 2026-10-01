@@ -12,6 +12,7 @@ import { useTranslations } from '@/lib/i18n';
 
 import { periodLabel } from './diary-date';
 import { NoteMeta } from './note-meta';
+import { NoteSyncStatus } from './note-sync-status';
 import { notePreview } from './note-preview';
 
 const NOTE_LINES = 4;
@@ -95,6 +96,8 @@ export const DiaryEntryCard = memo(function DiaryEntryCard({
         </Paragraph>
 
         <NoteMeta caption={when} tags={note.tags} collapsed />
+
+        <NoteSyncStatus note={note} />
       </YStack>
     </Card>
   );

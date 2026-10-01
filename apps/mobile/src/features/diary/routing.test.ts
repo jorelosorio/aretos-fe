@@ -7,8 +7,10 @@ const standalone: DiaryNote = {
   body: 'old',
   tags: ['Work'],
   checkIn: null,
-  createdAt: '2026-09-20T10:00:00Z',
-  updatedAt: '2026-09-20T10:00:00Z',
+  listedAt: '2026-09-20T10:00:00.000000Z',
+  createdAt: '2026-09-20T10:00:00.000000Z',
+  updatedAt: '2026-09-20T10:00:00.000000Z',
+  sync: { state: 'synced', errorCode: null },
 };
 
 const onCheckIn: DiaryNote = {
@@ -67,11 +69,10 @@ describe('planNoteWrite', () => {
     });
   });
 
-  it('routes a check-in note through its log and never sends a day', () => {
+  it('never sends a day for a check-in note, which sits on its period', () => {
     expect(planNoteWrite(onCheckIn, value)).toEqual({
-      kind: 'updateCheckIn',
-      logId: 'l1',
-      noteId: 'n2',
+      kind: 'update',
+      id: 'n2',
       patch: { body: 'new', tags: ['Mind'] },
     });
   });

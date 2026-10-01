@@ -1,36 +1,42 @@
+import type { QueryKey } from '@tanstack/react-query';
+
+import { goalKeys } from '@/features/goals/api';
+import { limitKeys } from '@/features/limits/api';
+import type { MoodScore } from '@/features/logs/types';
+import { tagKeys } from '@/features/tags/api';
 import { api } from '@/lib/api/client';
+import { ApiError } from '@/lib/api/errors';
 import { deviceTimezone } from '@/lib/timezone';
 
-import type { MoodScore } from '@/features/logs/types';
+import { toTimestamp } from './timestamps';
 
-import type {
-  CheckInNote,
-  CheckInNoteDraft,
-  CheckInNotePatch,
-  DiaryCheckIn,
-  DiaryFilter,
-  DiaryGoal,
-  DiaryNote,
-  DiaryPage,
-  NoteDraft,
-  NotePatch,
-  WireCheckInNote,
-  WireDiaryCheckIn,
-  WireDiaryGoal,
-  WireDiaryNote,
-  WireDiaryNotes,
+import {
+  DiaryErrorCode,
+  type CheckInNote,
+  type CheckInNoteDraft,
+  type DiaryCheckIn,
+  type DiaryFilter,
+  type DiaryGoal,
+  type DiaryNote,
+  type DiaryPage,
+  type NotePatch,
+  type OfflineFields,
+  type WireCheckInNote,
+  type WireDiaryCheckIn,
+  type WireDiaryGoal,
+  type WireDiaryNote,
+  type WireDiaryNotes,
 } from './types';
 
 /**
- * Requests for the diary feature, mirroring `aretos-be/bruno/DiaryNotes/`
- * and the `notes-*` requests in `aretos-be/bruno/HabitLogs/`.
+ * Every request the diary makes, mirroring `aretos-be/bruno/DiaryNotes/`,
+ * the `notes-*` requests in `aretos-be/bruno/HabitLogs/`, and the writes of
+ * `aretos-be/docs/sync.md`. Nothing else in the feature names a path.
  */
 const paths = {
   notes: '/v1/diary-notes',
   note: (id: string) => `/v1/diary-notes/${id}`,
   checkInNotes: (logId: string) => `/v1/habit-logs/${logId}/notes`,
-  checkInNote: (logId: string, noteId: string) =>
-    `/v1/habit-logs/${logId}/notes/${noteId}`,
 };
 
 /**
@@ -70,6 +76,24 @@ export const diaryKeys = {
 };
 
 /**
+ * Every read a note reaching or leaving the server moves: the diary, the
+ * check-in's log (it carries its notes), the goals' calendars (each period
+ * counts its notes), the tag suggestions and the plan's note usage. Read
+ * again after a sync that changed notes, and after a note added online.
+ *
+ * `['logs']` is `logKeys.all` spelled out: `features/logs` imports this
+ * feature, and importing it back is a require cycle Metro resolves to a
+ * half-built module. The key's first segment is the whole contract.
+ */
+export const noteReadKeys: readonly QueryKey[] = [
+  diaryKeys.all,
+  ['logs'],
+  goalKeys.all,
+  tagKeys.all,
+  limitKeys.all,
+];
+
+/**
  * Anything outside 1-5 reads as no answer, the same rule `features/logs` and
  * `features/goals` each apply to the column this comes from.
  *
@@ -93,7 +117,7 @@ const toGoal = (wire: WireDiaryGoal): DiaryGoal => ({
   streakSkipLimit: wire.streak_skip_limit,
 });
 
-const toCheckIn = (wire: WireDiaryCheckIn): DiaryCheckIn => ({
+export const toCheckIn = (wire: WireDiaryCheckIn): DiaryCheckIn => ({
   habitLogId: wire.habit_log_id,
   goal: toGoal(wire.goal),
   mood: toMood(wire.mood),
@@ -112,8 +136,10 @@ const toNote = (wire: WireDiaryNote): DiaryNote => ({
   body: wire.body,
   tags: wire.tags,
   checkIn: wire.check_in === null ? null : toCheckIn(wire.check_in),
-  createdAt: wire.created_at,
-  updatedAt: wire.updated_at,
+  listedAt: toTimestamp(wire.listed_at),
+  createdAt: toTimestamp(wire.created_at),
+  updatedAt: toTimestamp(wire.updated_at),
+  sync: { state: 'synced', errorCode: null },
 });
 
 const toCheckInNote = (wire: WireCheckInNote): CheckInNote => ({
@@ -178,69 +204,81 @@ export async function listNotes(
 }
 
 /**
- * One note, with its check-in scored the way the list scores it. Not bounded
- * by the plan's history cutoff: naming a note by id reads it back.
+ * One note as the server has it, or `null` when it has none — deleted, or
+ * never the caller's. Not bounded by the plan's history cutoff: naming a note
+ * by id reads it back.
  */
-export async function getNote(id: string): Promise<DiaryNote> {
-  const { data } = await api.get<WireDiaryNote>(paths.note(id));
-  return toNote(data);
-}
-
-/** A note written on its own, into the user's one diary. Capped per plan. */
-export async function createNote(draft: NoteDraft): Promise<DiaryNote> {
-  const { data } = await api.post<WireDiaryNote>(
-    paths.notes,
-    toWriteBody(draft),
-  );
-  return toNote(data);
-}
-
-export async function updateNote(
-  id: string,
-  patch: NotePatch,
-): Promise<DiaryNote> {
-  const { data } = await api.patch<WireDiaryNote>(
-    paths.note(id),
-    toWriteBody(patch),
-  );
-  return toNote(data);
-}
-
-/** A check-in that pointed at it keeps its answers and mood. */
-export async function deleteNote(id: string): Promise<void> {
-  await api.delete(paths.note(id));
+export async function getWireNote(id: string): Promise<WireDiaryNote | null> {
+  try {
+    const { data } = await api.get<WireDiaryNote>(paths.note(id));
+    return data;
+  } catch (error) {
+    if (error instanceof ApiError && error.code === DiaryErrorCode.NotFound) {
+      return null;
+    }
+    throw error;
+  }
 }
 
 /**
  * Adds a note to a saved check-in. Never replaces one: a check-in carries any
  * number. Capped by the same plan limit as a note written on its own.
+ *
+ * `offline` is what a device that wrote the note offline sends with it — its
+ * own id and when it wrote it (`aretos-be/docs/sync.md`).
  */
 export async function addCheckInNote(
   logId: string,
   draft: CheckInNoteDraft,
+  offline: OfflineFields = {},
 ): Promise<CheckInNote> {
-  const { data } = await api.post<WireCheckInNote>(
-    paths.checkInNotes(logId),
-    toWriteBody(draft),
-  );
+  const { data } = await api.post<WireCheckInNote>(paths.checkInNotes(logId), {
+    ...toWriteBody(draft),
+    ...offline,
+  });
   return toCheckInNote(data);
 }
 
-export async function updateCheckInNote(
-  logId: string,
-  noteId: string,
-  patch: CheckInNotePatch,
-): Promise<CheckInNote> {
-  const { data } = await api.patch<WireCheckInNote>(
-    paths.checkInNote(logId, noteId),
-    toWriteBody(patch),
-  );
-  return toCheckInNote(data);
+/**
+ * The writes the device's queue sends (`sync.ts`). Each takes the queued
+ * change's fields as they are stored — already trimmed, already in the
+ * routes' own names — and answers with the server's copy of the note.
+ */
+
+/** A note written on its own, under the device's own id. Capped per plan. */
+export async function sendNewNote(
+  id: string,
+  fields: Record<string, unknown>,
+): Promise<WireDiaryNote> {
+  const { data } = await api.post<WireDiaryNote>(paths.notes, {
+    ...fields,
+    id,
+  });
+  return data;
 }
 
-export async function deleteCheckInNote(
-  logId: string,
-  noteId: string,
+/**
+ * An edit. `version` is the one the device edited; the server refuses the
+ * edit when the note has moved past it.
+ */
+export async function sendNoteEdit(
+  id: string,
+  fields: Record<string, unknown>,
+  version: number | null,
+): Promise<WireDiaryNote> {
+  const { data } = await api.patch<WireDiaryNote>(paths.note(id), {
+    ...fields,
+    ...(version === null ? {} : { version }),
+  });
+  return data;
+}
+
+/** A delete, refused the same way when the note has moved past `version`. */
+export async function sendNoteDelete(
+  id: string,
+  version: number | null,
 ): Promise<void> {
-  await api.delete(paths.checkInNote(logId, noteId));
+  await api.delete(paths.note(id), {
+    params: version === null ? {} : { version },
+  });
 }

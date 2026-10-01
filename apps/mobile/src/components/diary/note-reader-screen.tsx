@@ -23,6 +23,7 @@ import { periodLabel, writtenOnEntryDay } from './diary-date';
 import { NoteActionsMenu } from './note-actions-menu';
 import { NoteTextSizeControl } from './note-text-size';
 import { NoteMeta } from './note-meta';
+import { NoteSyncStatus } from './note-sync-status';
 
 const MOOD_FACE = 36;
 
@@ -167,6 +168,8 @@ export function NoteReaderScreen({ id }: { id: string }) {
         contentContainerStyle={{ pb: insets.bottom }}
       >
         <YStack p={SPACING.screen} gap={SPACING.section}>
+          <NoteSyncStatus note={note} explain />
+
           <YStack gap={SPACING.items}>
             <NoteMeta
               caption={whenLabel(note, locale)}

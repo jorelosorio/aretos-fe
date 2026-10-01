@@ -7,3 +7,6 @@ ios
 android
 backend
 .devcontainer/.env
+
+# Written by drizzle-kit
+apps/mobile/src/lib/db/migrations

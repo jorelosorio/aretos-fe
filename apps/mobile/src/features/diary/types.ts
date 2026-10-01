@@ -74,8 +74,12 @@ export type WireDiaryNote = {
   tags: string[];
   /** `null` for a note written on its own. */
   check_in: WireDiaryCheckIn | null;
+  /** The diary is ordered by this, then by `created_at`, then by `id`. */
+  listed_at: string;
   created_at: string;
   updated_at: string;
+  /** Counts the note's edits from 1: what a sync edit is sent against. */
+  version: number;
 };
 
 export type WireDiaryNotes = {
@@ -151,9 +155,23 @@ export type DiaryNote = {
   body: string;
   tags: string[];
   checkIn: DiaryCheckIn | null;
-  /** ISO 8601, as the server sent it. */
+  /** UTC, microseconds, fixed width — see `features/diary/timestamps.ts`. */
+  listedAt: string;
   createdAt: string;
   updatedAt: string;
+  /** Where the note stands with the server. */
+  sync: NoteSync;
+};
+
+/**
+ * Where a note stands with the server. A note is written to the device first
+ * and sent when there is a connection, so `pending` is normal and usually
+ * brief. `rejected` means the server refused the last change, and
+ * `errorCode` is its reason, in `DiaryErrorCode`'s terms.
+ */
+export type NoteSync = {
+  state: 'synced' | 'pending' | 'rejected';
+  errorCode: string | null;
 };
 
 /** A check-in's note, as the check-in reads it back. */
@@ -175,9 +193,12 @@ export type DiaryPage = {
   total: number;
   /** What to send as the next `cursor`, or `null` on the last page. */
   nextCursor: string | null;
-  /** The window and zone the notes were read in, all three defaulted. */
-  from: string;
-  to: string;
+  /**
+   * The window and zone the notes were read in. Read from the device, `from`
+   * is the plan's floor and `to` the filter's, either `null` when unbounded.
+   */
+  from: string | null;
+  to: string | null;
   timezone: string;
   /**
    * The earliest date this plan reads, or `null` when it reads everything.
@@ -232,7 +253,12 @@ export type CheckInNoteDraft = {
   tags: string[];
 };
 
-export type CheckInNotePatch = Partial<CheckInNoteDraft>;
+/**
+ * What a create carries from a device that wrote the note offline: its own
+ * id for the note, and when it wrote it (`aretos-be/docs/sync.md`). In the
+ * routes' own names, since they go into the body as they are.
+ */
+export type OfflineFields = { id?: string; written_at?: string };
 
 /** The subset of `internal/api/errors/codes.go` this feature reacts to. */
 export const DiaryErrorCode = {

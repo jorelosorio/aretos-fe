@@ -118,6 +118,11 @@ export const es = {
       network: 'No pudimos conectar con el servidor. Revisa tu conexión.',
       generic: 'Algo salió mal. Inténtalo de nuevo.',
     },
+    sync: {
+      pending: 'Sin sincronizar',
+      rejected: 'Sin guardar en tu cuenta',
+      rejectedTitle: 'Esta nota no se guardó en tu cuenta',
+    },
   },
   calendar: {
     choose: 'Elegir fecha',
@@ -973,6 +978,10 @@ export const es = {
     signingOut: 'Cerrando sesión…',
     signOutConfirmTitle: '¿Cerrar sesión?',
     signOutConfirmBody: 'Tendrás que volver a iniciar sesión.',
+    signOutPendingOne:
+      'Una nota aún no está guardada en tu cuenta. Si cierras sesión ahora, se pierde.',
+    signOutPendingMany:
+      '%{count} notas aún no están guardadas en tu cuenta. Si cierras sesión ahora, se pierden.',
     cancel: 'Cancelar',
     errors: {
       network: 'No pudimos conectar con el servidor. Revisa tu conexión.',
