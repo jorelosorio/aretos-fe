@@ -18,29 +18,29 @@ import { CredentialField } from './credential-field';
 import { resetStepFor, type ResetStep } from './reset-steps';
 import { SubmitButton } from './submit-button';
 import { TextLink } from './text-link';
-import { formatWait, useResendCountdown } from './use-resend-countdown';
+import { fromSentParams, useCodeClock, type SentParams } from './use-code-clock';
 
 export function ResetPasswordScreen() {
   const { t } = useTranslations();
-  const { email, resendAfter } = useLocalSearchParams<{
-    email: string;
-    resendAfter: string;
-  }>();
+  const { email, ...sent } = useLocalSearchParams<
+    { email: string } & SentParams
+  >();
   const [step, setStep] = useState<ResetStep>('code');
   const [code, setCode] = useState('');
   const [password, setPassword] = useState('');
   const reset = useResetPassword();
   const resend = useRequestPasswordReset();
-  const { secondsLeft, restart } = useResendCountdown(Number(resendAfter));
+  const { expiresIn, resendIn, restart } = useCodeClock(fromSentParams(sent));
   const toMessage = useAuthErrorMessage();
 
   const failedOn = reset.error ? resetStepFor(reset.error.code) : null;
 
   const sendAgain = () =>
     resend.mutate(email, {
-      onSuccess: (sent) => {
+      onSuccess: (next) => {
         reset.reset();
-        restart(sent.resend_after);
+        setCode('');
+        restart(next);
       },
     });
 
@@ -99,6 +99,7 @@ export function ResetPasswordScreen() {
         onChange={editCode}
         onComplete={() => setStep('password')}
         invalid={failedOn === 'code'}
+        expiresIn={expiresIn}
       />
       <ErrorNotice
         message={
@@ -107,21 +108,17 @@ export function ResetPasswordScreen() {
       />
       <SubmitButton
         label={t('auth.sheet.continue')}
-        disabled={codeError(code) !== null}
+        disabled={codeError(code) !== null || expiresIn === 0}
         onPress={() => setStep('password')}
       />
       <TextLink
         lead={
-          resend.isSuccess && secondsLeft > 0
+          resend.isSuccess && resendIn > 0
             ? t('auth.sheet.codeResent')
             : t('auth.sheet.noCode')
         }
-        label={
-          secondsLeft > 0
-            ? t('auth.sheet.resendIn', { time: formatWait(secondsLeft) })
-            : t('auth.sheet.resend')
-        }
-        disabled={secondsLeft > 0 || resend.isPending}
+        label={t('auth.sheet.resend')}
+        disabled={resendIn > 0 || resend.isPending}
         onPress={sendAgain}
       />
     </AuthSheet>

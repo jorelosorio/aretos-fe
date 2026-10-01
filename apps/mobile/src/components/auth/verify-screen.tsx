@@ -13,14 +13,18 @@ import { AuthSheet } from './auth-sheet';
 import { CodeField } from './code-field';
 import { SubmitButton } from './submit-button';
 import { TextLink } from './text-link';
+import { fromSentParams, useCodeClock, type SentParams } from './use-code-clock';
 
 export function VerifyScreen() {
   const { t } = useTranslations();
   const router = useRouter();
-  const { email } = useLocalSearchParams<{ email: string }>();
+  const { email, ...sent } = useLocalSearchParams<
+    { email: string } & SentParams
+  >();
   const [code, setCode] = useState('');
   const verify = useVerifyEmailCode();
   const toMessage = useAuthErrorMessage();
+  const { expiresIn } = useCodeClock(fromSentParams(sent));
 
   const submit = (full: string) => {
     if (verify.isPending) return;
@@ -49,16 +53,21 @@ export function VerifyScreen() {
         onChange={edit}
         onComplete={submit}
         invalid={verify.error?.code === AuthErrorCode.InvalidEmailCode}
+        expiresIn={expiresIn}
       />
       <ErrorNotice message={toMessage(verify.error)} />
       <SubmitButton
         label={t('auth.sheet.continue')}
         pending={verify.isPending}
-        disabled={codeError(code) !== null}
+        disabled={codeError(code) !== null || expiresIn === 0}
         onPress={() => submit(code)}
       />
       <TextLink
-        lead={t('auth.sheet.wrongEmail')}
+        lead={
+          expiresIn === 0
+            ? t('auth.sheet.needNewCode')
+            : t('auth.sheet.wrongEmail')
+        }
         label={t('auth.sheet.goBack')}
         onPress={() => router.back()}
       />

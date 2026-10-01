@@ -812,7 +812,9 @@ export const en = {
       wrongEmail: 'Wrong email?',
       goBack: 'Go back',
       resend: 'Send again',
-      resendIn: 'Send again in %{time}',
+      codeExpiresIn: 'The code expires in %{time}.',
+      codeExpired: 'This code has expired.',
+      needNewCode: 'Need a new code?',
       codeResent: 'We sent you a new code.',
       newPasswordTitle: 'New password',
       newPasswordBody:

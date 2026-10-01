@@ -17,6 +17,8 @@ import { SPACING, TEXT } from '@/constants/layout';
 import { CODE_LENGTH, codeError, toCode } from '@/features/auth/credentials';
 import { useTranslations } from '@/lib/i18n';
 
+import { formatWait } from './use-code-clock';
+
 const SLOT_HEIGHT = 56;
 const SLOT_BORDER = 1;
 const SLOT_BORDER_ACTIVE = 2;
@@ -36,11 +38,13 @@ export function CodeField({
   onChange,
   onComplete,
   invalid = false,
+  expiresIn = null,
 }: {
   value: string;
   onChange: (code: string) => void;
   onComplete?: (code: string) => void;
   invalid?: boolean;
+  expiresIn?: number | null;
 }) {
   const { t } = useTranslations();
   const [focused, setFocused] = useState(false);
@@ -49,7 +53,8 @@ export function CodeField({
   const shake = useSharedValue(0);
 
   const error = touched && !focused ? codeError(value) : null;
-  const showInvalid = invalid || error !== null;
+  const expired = expiresIn === 0;
+  const showInvalid = invalid || error !== null || expired;
   const activeIndex = focused ? Math.min(value.length, CODE_LENGTH - 1) : -1;
 
   useEffect(() => {
@@ -98,7 +103,18 @@ export function CodeField({
   return (
     <FormSection
       title={t('auth.fields.code')}
-      error={error === null ? undefined : t(`auth.fieldErrors.${error}`)}
+      hint={
+        expiresIn !== null && !expired
+          ? t('auth.sheet.codeExpiresIn', { time: formatWait(expiresIn) })
+          : undefined
+      }
+      error={
+        error !== null
+          ? t(`auth.fieldErrors.${error}`)
+          : expired
+            ? t('auth.sheet.codeExpired')
+            : undefined
+      }
     >
       <Animated.View style={shakeStyle}>
         <XStack

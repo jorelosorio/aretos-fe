@@ -15,6 +15,7 @@ import { GoogleButton } from './google-button';
 import { OrDivider } from './or-divider';
 import { SubmitButton } from './submit-button';
 import { TextLink } from './text-link';
+import { toSentParams } from './use-code-clock';
 
 export function SignupScreen() {
   const { t } = useTranslations();
@@ -34,10 +35,10 @@ export function SignupScreen() {
     register.mutate(
       { name, email, password },
       {
-        onSuccess: () =>
+        onSuccess: (sent) =>
           router.push({
             pathname: '/verify',
-            params: { email: email.trim() },
+            params: { email: email.trim(), ...toSentParams(sent) },
           }),
       },
     );

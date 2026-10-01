@@ -817,7 +817,9 @@ export const es = {
       wrongEmail: '¿El correo está mal?',
       goBack: 'Volver',
       resend: 'Reenviar',
-      resendIn: 'Reenviar en %{time}',
+      codeExpiresIn: 'El código caduca en %{time}.',
+      codeExpired: 'Este código caducó.',
+      needNewCode: '¿Necesitas un código nuevo?',
       codeResent: 'Te enviamos un código nuevo.',
       newPasswordTitle: 'Contraseña nueva',
       newPasswordBody:

@@ -15,6 +15,7 @@ import { AuthSheet } from './auth-sheet';
 import { CredentialField } from './credential-field';
 import { SubmitButton } from './submit-button';
 import { TextLink } from './text-link';
+import { toSentParams } from './use-code-clock';
 
 export function ForgotPasswordScreen() {
   const { t } = useTranslations();
@@ -28,10 +29,7 @@ export function ForgotPasswordScreen() {
       onSuccess: (sent) =>
         router.push({
           pathname: '/reset-password',
-          params: {
-            email: email.trim(),
-            resendAfter: String(sent.resend_after),
-          },
+          params: { email: email.trim(), ...toSentParams(sent) },
         }),
     });
 

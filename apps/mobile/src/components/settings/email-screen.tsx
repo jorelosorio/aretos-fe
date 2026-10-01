@@ -5,10 +5,7 @@ import { Paragraph } from 'tamagui';
 import { CodeField } from '@/components/auth/code-field';
 import { CredentialField } from '@/components/auth/credential-field';
 import { TextLink } from '@/components/auth/text-link';
-import {
-  formatWait,
-  useResendCountdown,
-} from '@/components/auth/use-resend-countdown';
+import { useCodeClock } from '@/components/auth/use-code-clock';
 import { ErrorNotice } from '@/components/common/error-notice';
 import { FormScreen } from '@/components/common/form-screen';
 import { HeaderTextButton } from '@/components/common/header-actions';
@@ -38,11 +35,12 @@ function EmailForm({ profile }: { profile: Profile }) {
   const request = useRequestEmailChange();
   const confirm = useConfirmEmailChange();
   const toMessage = useAccountErrorMessage();
-  const { secondsLeft, restart } = useResendCountdown(0);
+  const { expiresIn, resendIn, restart } = useCodeClock(null);
   const [step, setStep] = useState<'email' | 'code'>('email');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [code, setCode] = useState('');
+  const [resent, setResent] = useState(false);
 
   const same = email.trim().toLowerCase() === profile.email.toLowerCase();
   const ready =
@@ -56,9 +54,10 @@ function EmailForm({ profile }: { profile: Profile }) {
       { email, password: profile.hasPassword ? password : null },
       {
         onSuccess: (sent) => {
-          restart(sent.resend_after);
+          restart(sent);
           confirm.reset();
           setCode('');
+          setResent(step === 'code');
           setStep('code');
         },
       },
@@ -88,7 +87,7 @@ function EmailForm({ profile }: { profile: Profile }) {
               <HeaderTextButton
                 label={t('account.email.confirm')}
                 onPress={() => submit(code)}
-                disabled={codeError(code) !== null}
+                disabled={codeError(code) !== null || expiresIn === 0}
                 busy={confirm.isPending}
               />
             ),
@@ -104,18 +103,19 @@ function EmailForm({ profile }: { profile: Profile }) {
             onChange={editCode}
             onComplete={submit}
             invalid={confirm.error?.code === AuthErrorCode.InvalidEmailCode}
+            expiresIn={expiresIn}
           />
           <ErrorNotice
             message={toMessage(confirm.error) ?? toMessage(request.error)}
           />
           <TextLink
-            lead={t('auth.sheet.noCode')}
-            label={
-              secondsLeft > 0
-                ? t('auth.sheet.resendIn', { time: formatWait(secondsLeft) })
-                : t('auth.sheet.resend')
+            lead={
+              resent && resendIn > 0
+                ? t('auth.sheet.codeResent')
+                : t('auth.sheet.noCode')
             }
-            disabled={secondsLeft > 0 || request.isPending}
+            label={t('auth.sheet.resend')}
+            disabled={resendIn > 0 || request.isPending}
             onPress={send}
           />
           <TextLink
