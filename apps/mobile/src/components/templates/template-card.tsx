@@ -1,27 +1,30 @@
 import { memo } from 'react';
+import { CircleCheck } from '@tamagui/lucide-icons-2/icons/CircleCheck';
+import { Languages } from '@tamagui/lucide-icons-2/icons/Languages';
 import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
 import { Card } from '@/components/common/card';
 import { Chip } from '@/components/common/chip';
 import { FREQUENCY_LABELS } from '@/components/goals/frequency-labels';
-import { TagChips } from '@/components/tags/tag-chips';
 import { SPACING, TEXT } from '@/constants/layout';
 import type { Template } from '@/features/templates/types';
 import { useTranslations } from '@/lib/i18n';
 
-import { STATUS_LABELS, templateStatus } from './template-labels';
+import {
+  LANGUAGE_NAMES,
+  STATUS_LABELS,
+  templateStatus,
+} from './template-labels';
 import { TemplatePublisher } from './template-publisher';
-
-const CARD_TAGS = 3;
 
 export const TemplateCard = memo(function TemplateCard({
   template,
+  inUse,
   onOpen,
-  onTag,
 }: {
   template: Template;
+  inUse: boolean;
   onOpen: (template: Template) => void;
-  onTag: (tag: string) => void;
 }) {
   const { t } = useTranslations();
   const status = templateStatus(template);
@@ -37,22 +40,28 @@ export const TemplateCard = memo(function TemplateCard({
       gap={SPACING.group}
       onPress={() => onOpen(template)}
       accessibilityRole="button"
-      accessibilityLabel={`${template.name}. ${template.publisher.name}. ${habits}`}
+      accessibilityLabel={[
+        template.name,
+        template.publisher.name,
+        habits,
+        ...(inUse ? [t('templates.inUse')] : []),
+      ].join('. ')}
     >
-      <XStack items="center" justify="space-between" gap={SPACING.items}>
-        <TemplatePublisher publisher={template.publisher} />
-        {status !== null && <Chip label={t(STATUS_LABELS[status])} />}
-      </XStack>
-
       <YStack gap={SPACING.text}>
-        <SizableText
-          size={TEXT.heading}
-          fontWeight="700"
-          color="$cardForeground"
-          numberOfLines={2}
-        >
-          {template.name}
-        </SizableText>
+        <XStack items="flex-start" gap={SPACING.items}>
+          <SizableText
+            flex={1}
+            size={TEXT.heading}
+            fontWeight="700"
+            color="$cardForeground"
+            numberOfLines={2}
+          >
+            {template.name}
+          </SizableText>
+          <XStack maxW="40%" pt="$1" justify="flex-end">
+            <TemplatePublisher publisher={template.publisher} />
+          </XStack>
+        </XStack>
 
         {template.description !== '' && (
           <Paragraph
@@ -66,6 +75,11 @@ export const TemplateCard = memo(function TemplateCard({
       </YStack>
 
       <XStack items="center" gap="$2" flexWrap="wrap">
+        <Chip label={LANGUAGE_NAMES[template.language]} Icon={Languages} />
+        {inUse && (
+          <Chip label={t('templates.inUse')} Icon={CircleCheck} highlighted />
+        )}
+        {status !== null && <Chip label={t(STATUS_LABELS[status])} />}
         <SizableText size={TEXT.caption} color="$primary" fontWeight="600">
           {habits}
         </SizableText>
@@ -75,29 +89,7 @@ export const TemplateCard = memo(function TemplateCard({
         <SizableText size={TEXT.caption} color="$mutedForeground">
           {t(FREQUENCY_LABELS[template.trackingFrequency])}
         </SizableText>
-        {template.uses > 0 && (
-          <>
-            <SizableText size={TEXT.caption} color="$mutedForeground">
-              ·
-            </SizableText>
-            <SizableText size={TEXT.caption} color="$mutedForeground">
-              {t(
-                template.uses === 1
-                  ? 'templates.usesOne'
-                  : 'templates.usesMany',
-                { count: template.uses },
-              )}
-            </SizableText>
-          </>
-        )}
       </XStack>
-
-      <TagChips
-        tags={template.tags}
-        max={CARD_TAGS}
-        onPress={onTag}
-        filters="templates"
-      />
     </Card>
   );
 });

@@ -7,9 +7,12 @@ import {
 import type { HabitDraft, TrackingMode } from '@/features/habits/types';
 
 /**
- * A template is a goal as something to start from: a goal's settings, its
- * habits in order and its tags. Starting a goal from one copies it, so
- * nothing the author does afterwards reaches a goal already being tracked.
+ * A template is a goal as something to start from: a goal's settings and its
+ * habits in order. Starting a goal from one copies it, so nothing the author
+ * does afterwards reaches a goal already being tracked.
+ *
+ * A template has no tags: tags are a person's own words for their own
+ * things, so a goal started from a template starts with none.
  *
  * The wire types mirror `internal/api/v1/template_service.go` field for
  * field, snake_case included. The rules — who sees what, review, the
@@ -56,7 +59,6 @@ export type WireTemplate = {
   streak_threshold: number;
   streak_skip_limit: number;
   active: boolean;
-  tags: string[];
   habits: WireTemplateHabit[];
   publisher: { name: string; official: boolean };
   owned: boolean;
@@ -105,7 +107,6 @@ export type Template = {
   streakSkipLimit: number;
   /** The author's switch: whether they want it shared. */
   active: boolean;
-  tags: string[];
   habits: TemplateHabit[];
   publisher: {
     name: string;
@@ -137,7 +138,6 @@ export type TemplatePage = {
  */
 export type TemplateSearch = {
   q?: string;
-  tag?: string;
   scope?: TemplateScope;
   language?: TemplateLanguage;
 };
@@ -145,9 +145,10 @@ export type TemplateSearch = {
 /**
  * Everything the template form decides: a goal's settings, minus the colour
  * — a goal started from a template takes one of the user's free colours —
- * plus what only a template has.
+ * and the tags, which a template does not carry; plus what only a template
+ * has.
  */
-export type TemplateDraft = Omit<GoalDraft, 'colorSlot'> & {
+export type TemplateDraft = Omit<GoalDraft, 'colorSlot' | 'tags'> & {
   language: TemplateLanguage;
   habits: TemplateHabit[];
 };
@@ -165,15 +166,14 @@ export function emptyTemplateDraft(language: TemplateLanguage): TemplateDraft {
     streakRule: EMPTY_GOAL.streakRule,
     streakThreshold: EMPTY_GOAL.streakThreshold,
     streakSkipLimit: EMPTY_GOAL.streakSkipLimit,
-    tags: EMPTY_GOAL.tags,
     language,
     habits: [],
   };
 }
 
 /**
- * A patch sends only what changed. Sending `habits` or `tags` replaces the
- * whole list, and any key but `active` sends the template back to review.
+ * A patch sends only what changed. Sending `habits` replaces the whole
+ * list, and any key but `active` sends the template back to review.
  */
 export type TemplatePatch = Partial<TemplateDraft> & { active?: boolean };
 

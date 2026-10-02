@@ -1,5 +1,3 @@
-import { sameTags } from '@/features/tags/rules';
-
 import type { TemplateDraft, TemplateHabit, TemplatePatch } from './types';
 
 const sameHabit = (a: TemplateHabit, b: TemplateHabit) =>
@@ -45,7 +43,6 @@ export function toTemplatePatch(
   if (value.streakSkipLimit !== initial.streakSkipLimit) {
     patch.streakSkipLimit = value.streakSkipLimit;
   }
-  if (!sameTags(value.tags, initial.tags)) patch.tags = value.tags;
   if (!sameHabits(value.habits, initial.habits)) patch.habits = value.habits;
 
   return patch;

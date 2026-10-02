@@ -30,7 +30,6 @@ const wireTemplate = {
   streak_threshold: 60,
   streak_skip_limit: 2,
   active: false,
-  tags: ['Salud'],
   habits: [
     {
       position: 1,
@@ -70,7 +69,6 @@ const draft: TemplateDraft = {
   streakRule: 'logged',
   streakThreshold: 60,
   streakSkipLimit: 2,
-  tags: ['Salud'],
   habits: [
     {
       name: 'Agua',
@@ -116,10 +114,10 @@ describe('listTemplates', () => {
       data: { templates: [], next_offset: null },
     });
 
-    await listTemplates({ tag: 'Salud' }, 40);
+    await listTemplates({ scope: 'mine' }, 40);
 
     expect(mocked.get).toHaveBeenCalledWith('/v1/templates', {
-      params: { tag: 'Salud', limit: 20, offset: 40 },
+      params: { scope: 'mine', limit: 20, offset: 40 },
     });
   });
 
@@ -144,7 +142,6 @@ describe('writes', () => {
       streak_rule: 'logged',
       streak_threshold: 60,
       streak_skip_limit: 2,
-      tags: ['Salud'],
       habits: [
         { name: 'Agua', tracking_mode: 'binary', weight: 1, if_then_plan: '' },
       ],
@@ -181,7 +178,9 @@ describe('writes', () => {
 
 describe('toTemplatePatch', () => {
   it('sends nothing for an unchanged draft', () => {
-    expect(toTemplatePatch({ ...draft, tags: ['salud'] }, draft)).toEqual({});
+    expect(
+      toTemplatePatch({ ...draft, name: 'Cuida tu cuerpo' }, draft),
+    ).toEqual({});
   });
 
   it('sends only what changed, habits whole', () => {

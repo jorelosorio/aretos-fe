@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useTheme } from '@tamagui/core';
 import { LayoutTemplate } from '@tamagui/lucide-icons-2/icons/LayoutTemplate';
 import { Plus } from '@tamagui/lucide-icons-2/icons/Plus';
@@ -17,6 +17,7 @@ import { useAllowance } from '@/features/limits/hooks';
 import {
   useTemplateErrorMessage,
   useTemplates,
+  useTemplatesInUse,
 } from '@/features/templates/hooks';
 import type {
   Template,
@@ -46,16 +47,15 @@ export function TemplatesScreen() {
   const { t, locale } = useTranslations();
   const theme = useTheme();
   const router = useRouter();
-  const params = useLocalSearchParams<{ tag?: string }>();
   const toMessage = useTemplateErrorMessage();
   const tabBarInset = useTabBarInset();
   const allowance = useAllowance('template');
+  const inUse = useTemplatesInUse();
 
   const [query, setQuery] = useState('');
   const [scope, setScope] = useState<TemplateScope>('all');
   const [language, setLanguage] = useState<TemplateLanguage | null>(locale);
   const q = useDebounced(query);
-  const tag = params.tag === undefined || params.tag === '' ? null : params.tag;
 
   const {
     data: templates,
@@ -69,14 +69,8 @@ export function TemplatesScreen() {
   } = useTemplates({
     q,
     scope,
-    ...(language === null ? {} : { language }),
-    ...(tag === null ? {} : { tag }),
+    ...(language === null || scope === 'mine' ? {} : { language }),
   });
-
-  const selectTag = useCallback(
-    (next: string | null) => router.setParams({ tag: next ?? undefined }),
-    [router],
-  );
 
   const open = useCallback(
     (template: Template) =>
@@ -88,11 +82,10 @@ export function TemplatesScreen() {
     setQuery('');
     setScope('all');
     setLanguage(locale);
-    selectTag(null);
   };
 
-  const searching = q.trim() !== '' || tag !== null;
-  const filtered = searching || scope === 'official' || scope === 'community';
+  const filtered =
+    q.trim() !== '' || scope === 'official' || scope === 'community';
 
   const empty = isPending ? (
     <ScreenLoader />
@@ -138,10 +131,9 @@ export function TemplatesScreen() {
         <TemplateFilters
           scope={scope}
           language={language}
-          tag={tag}
+          showLanguages={scope !== 'mine'}
           onScope={setScope}
           onLanguage={setLanguage}
-          onTag={selectTag}
         />
       </YStack>
 
@@ -149,6 +141,7 @@ export function TemplatesScreen() {
         style={{ flex: 1 }}
         contentContainerStyle={{ flexGrow: 1, paddingBottom: tabBarInset }}
         data={templates ?? []}
+        extraData={inUse}
         keyExtractor={(template) => template.id}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
@@ -178,7 +171,11 @@ export function TemplatesScreen() {
         }
         renderItem={({ item }) => (
           <YStack px={SPACING.screen} pb={SPACING.items}>
-            <TemplateCard template={item} onOpen={open} onTag={selectTag} />
+            <TemplateCard
+              template={item}
+              inUse={inUse.has(item.id)}
+              onOpen={open}
+            />
           </YStack>
         )}
         ListEmptyComponent={empty}

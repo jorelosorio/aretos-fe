@@ -193,6 +193,7 @@ const toGoal = (wire: WireGoal): Goal => ({
   colorSlot: wire.color_slot,
   archived: wire.archived,
   tags: wire.tags,
+  templateId: wire.template_id,
   createdAt: wire.created_at,
   updatedAt: wire.updated_at,
   habitCount: wire.habit_count,

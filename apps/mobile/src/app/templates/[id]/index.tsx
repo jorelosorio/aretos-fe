@@ -1,9 +1,12 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
 
 import { ErrorNotice } from '@/components/common/error-notice';
+import { HeaderActions } from '@/components/common/header-actions';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { TemplateActionsMenu } from '@/components/templates/template-actions-menu';
 import { TemplateDetail } from '@/components/templates/template-detail';
+import { StartFromTemplateButton } from '@/components/templates/start-from-template-button';
+import { TemplateOwnerPill } from '@/components/templates/template-owner-pill';
 import {
   useTemplate,
   useTemplateErrorMessage,
@@ -21,14 +24,19 @@ export default function TemplateScreen() {
     <>
       <Stack.Screen
         options={{
-          headerRight: template.owned
-            ? () => (
+          headerTitleAlign: 'center',
+          headerTitle: () => <TemplateOwnerPill template={template} />,
+          headerRight: () => (
+            <HeaderActions>
+              <StartFromTemplateButton templateId={template.id} />
+              {template.owned && (
                 <TemplateActionsMenu
                   templateId={template.id}
                   active={template.active}
                 />
-              )
-            : undefined,
+              )}
+            </HeaderActions>
+          ),
         }}
       />
 

@@ -6,9 +6,8 @@ import { useTheme } from '@tamagui/core';
 import { Archive } from '@tamagui/lucide-icons-2/icons/Archive';
 import { ListChecks } from '@tamagui/lucide-icons-2/icons/ListChecks';
 import { Plus } from '@tamagui/lucide-icons-2/icons/Plus';
-import { Paragraph, Separator, SizableText, XStack, YStack } from 'tamagui';
+import { YStack } from 'tamagui';
 
-import { Card } from '@/components/common/card';
 import { EmptyState } from '@/components/common/empty-state';
 import { ILLUSTRATIONS } from '@/components/common/illustrations';
 import { ErrorNotice } from '@/components/common/error-notice';
@@ -16,11 +15,10 @@ import { Notice } from '@/components/common/notice';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { SectionTitle } from '@/components/common/section-title';
 import { HabitCard } from '@/components/habits/habit-card';
-import { TagChips } from '@/components/tags/tag-chips';
-import { SPACING, TEXT } from '@/constants/layout';
+import { GoalTemplateLink } from '@/components/templates/goal-template-link';
+import { SPACING } from '@/constants/layout';
 
-import { FREQUENCY_LABELS } from './frequency-labels';
-import { GoalName } from './goal-name';
+import { GoalSummary } from './goal-summary';
 import type { Goal } from '@/features/goals/types';
 import { useHabitErrorMessage, useHabits } from '@/features/habits/hooks';
 import type { Habit } from '@/features/habits/types';
@@ -28,55 +26,6 @@ import { useAllowance } from '@/features/limits/hooks';
 import { useTranslations } from '@/lib/i18n';
 
 const FOOTER_SPACE = 16;
-
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <YStack flex={1} gap={SPACING.text}>
-      <SizableText size={TEXT.caption} color="$mutedForeground">
-        {label}
-      </SizableText>
-      <SizableText size={TEXT.body} fontWeight="700" color="$cardForeground">
-        {value}
-      </SizableText>
-    </YStack>
-  );
-}
-
-function GoalSummary({ goal, habitCount }: { goal: Goal; habitCount: number }) {
-  const { t } = useTranslations();
-
-  const streak =
-    goal.streakRule === 'threshold'
-      ? `${goal.streakThreshold}%`
-      : t('goals.streak.loggedShort');
-
-  return (
-    <Card>
-      <YStack gap={SPACING.text}>
-        <GoalName slot={goal.colorSlot} name={goal.name} />
-
-        {goal.description !== '' && (
-          <Paragraph size={TEXT.body} color="$mutedForeground">
-            {goal.description}
-          </Paragraph>
-        )}
-      </YStack>
-
-      <TagChips tags={goal.tags} />
-
-      <Separator borderColor="$border" />
-
-      <XStack gap={SPACING.items}>
-        <Stat label={t('goals.stats.habits')} value={String(habitCount)} />
-        <Stat
-          label={t('goals.stats.frequency')}
-          value={t(FREQUENCY_LABELS[goal.trackingFrequency])}
-        />
-        <Stat label={t('goals.stats.streak')} value={streak} />
-      </XStack>
-    </Card>
-  );
-}
 
 export function GoalDetail({ goal }: { goal: Goal }) {
   const { t } = useTranslations();
@@ -135,7 +84,20 @@ export function GoalDetail({ goal }: { goal: Goal }) {
             pt={SPACING.screen}
             pb={SPACING.group}
           >
-            <GoalSummary goal={goal} habitCount={habits?.length ?? 0} />
+            <GoalSummary
+              name={goal.name}
+              slot={goal.colorSlot}
+              description={goal.description}
+              tags={goal.tags}
+              habitCount={habits?.length ?? 0}
+              trackingFrequency={goal.trackingFrequency}
+              streakRule={goal.streakRule}
+              streakThreshold={goal.streakThreshold}
+            />
+
+            {goal.templateId !== null && (
+              <GoalTemplateLink templateId={goal.templateId} />
+            )}
 
             {goal.archived && (
               <Notice

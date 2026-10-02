@@ -20,8 +20,6 @@ import {
 import { GoalSettingsFields } from '@/components/goals/goal-settings-fields';
 import { PlanLimitNotice } from '@/components/goals/plan-limit-notice';
 import { HabitCard } from '@/components/habits/habit-card';
-import { useTagDraft } from '@/components/tags/tag-draft';
-import { TagField } from '@/components/tags/tag-field';
 import { SPACING } from '@/constants/layout';
 import { useAllowance } from '@/features/limits/hooks';
 import {
@@ -73,7 +71,6 @@ export function TemplateForm({
   } = useUpdateTemplate();
 
   const [draft, setDraft] = useState(initial);
-  const tags = useTagDraft(initial.tags);
   const [editing, setEditing] = useState<Editing>({
     session: 0,
     index: null,
@@ -82,12 +79,11 @@ export function TemplateForm({
   const [showDescription, setShowDescription] = useState(
     initial.description !== '',
   );
-  const [showTags, setShowTags] = useState(initial.tags.length > 0);
-  const [revealed, setRevealed] = useState<'description' | 'tags' | null>(null);
+  const [revealed, setRevealed] = useState(false);
   const descriptionRef = useRef<TamaguiElement>(null);
 
   useEffect(() => {
-    if (revealed === 'description') descriptionRef.current?.focus();
+    if (revealed) descriptionRef.current?.focus();
   }, [revealed]);
 
   const patch = (change: Partial<TemplateDraft>) =>
@@ -148,7 +144,7 @@ export function TemplateForm({
   async function save() {
     if (!name || blocked) return;
 
-    const value: TemplateDraft = { ...draft, name, tags: tags.value };
+    const value: TemplateDraft = { ...draft, name };
 
     if (templateId !== undefined) {
       const changes = toTemplatePatch(value, initial);
@@ -242,36 +238,16 @@ export function TemplateForm({
           </FormSection>
         )}
 
-        {showTags && (
-          <TagField
-            draft={tags}
-            label={t('templates.form.tags')}
-            autoFocus={revealed === 'tags'}
-          />
-        )}
-
-        {(!showDescription || !showTags) && (
-          <XStack gap="$2" flexWrap="wrap">
-            {!showDescription && (
-              <AddFieldButton
-                label={t('goals.form.addDescription')}
-                accessibilityLabel={t('goals.form.addDescriptionLabel')}
-                onPress={() => {
-                  setShowDescription(true);
-                  setRevealed('description');
-                }}
-              />
-            )}
-            {!showTags && (
-              <AddFieldButton
-                label={t('goals.form.addTags')}
-                accessibilityLabel={t('goals.form.addTagsLabel')}
-                onPress={() => {
-                  setShowTags(true);
-                  setRevealed('tags');
-                }}
-              />
-            )}
+        {!showDescription && (
+          <XStack>
+            <AddFieldButton
+              label={t('goals.form.addDescription')}
+              accessibilityLabel={t('goals.form.addDescriptionLabel')}
+              onPress={() => {
+                setShowDescription(true);
+                setRevealed(true);
+              }}
+            />
           </XStack>
         )}
 

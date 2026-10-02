@@ -38,7 +38,6 @@ export default function EditTemplate() {
           streakRule: template.streakRule,
           streakThreshold: template.streakThreshold,
           streakSkipLimit: template.streakSkipLimit,
-          tags: template.tags,
           habits: template.habits,
         }}
       />

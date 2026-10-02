@@ -25,6 +25,8 @@ export type WireGoal = {
   archived: boolean;
   /** Never null: a goal with no tags reads as `[]`. Ordered by name. */
   tags: string[];
+  /** The template it was started from; null once that template is deleted. */
+  template_id: string | null;
   created_at: string;
   updated_at: string;
   /** Active habits only — what the goal offers to open, not what it owns. */
@@ -57,6 +59,12 @@ export type Goal = {
   archived: boolean;
   /** The user's shared tags — the same vocabulary their notes use. */
   tags: string[];
+  /**
+   * The template the goal was started from, as provenance only: the goal
+   * owns copies of everything it was given. Null for a goal written from
+   * scratch, and once its template is deleted.
+   */
+  templateId: string | null;
   /** ISO 8601, as the server sent it. */
   createdAt: string;
   updatedAt: string;

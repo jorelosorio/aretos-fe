@@ -9,9 +9,9 @@ import {
 } from '@tanstack/react-query';
 
 import { goalKeys } from '@/features/goals/api';
+import { useGoals } from '@/features/goals/hooks';
 import { habitKeys } from '@/features/habits/api';
 import { limitKeys } from '@/features/limits/api';
-import { tagKeys } from '@/features/tags/api';
 import { ApiError } from '@/lib/api/errors';
 import { useTranslations, type TranslationKey } from '@/lib/i18n';
 
@@ -36,6 +36,15 @@ import {
 } from './types';
 
 /**
+ * Whether a template belongs in a search of this scope. The server answers
+ * `all` with everything the caller may see, their own unshared templates
+ * included; the app keeps those — private, in review, refused — to `mine`,
+ * so "all" is what others can find too.
+ */
+const belongsIn = (scope: TemplateSearch['scope'], template: Template) =>
+  scope === 'mine' || template.review === null || template.review.shared;
+
+/**
  * One search, paged as it is scrolled.
  *
  * `keepPreviousData` keeps the last results on screen while a new query
@@ -47,7 +56,10 @@ export function useTemplates(search: TemplateSearch) {
     queryFn: ({ pageParam }) => listTemplates(search, pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.nextOffset ?? undefined,
-    select: (data) => data.pages.flatMap((page) => page.templates),
+    select: (data) =>
+      data.pages
+        .flatMap((page) => page.templates)
+        .filter((template) => belongsIn(search.scope, template)),
     placeholderData: keepPreviousData,
   });
 }
@@ -81,6 +93,23 @@ function seedFromSearches(
   return best;
 }
 
+/**
+ * The templates the user has an active goal started from — what marks a
+ * template "in use". Read off the goals list every screen already caches:
+ * each goal names the template it came from (`templateId`), so this matches
+ * ids and decides nothing the server has not said.
+ *
+ * An archived goal does not count: the template is not in use any more.
+ */
+export function useTemplatesInUse(): ReadonlySet<string> {
+  const { data: goals } = useGoals();
+  return new Set(
+    (goals ?? []).flatMap((goal) =>
+      goal.templateId === null ? [] : [goal.templateId],
+    ),
+  );
+}
+
 /** One template, opened from a search already on screen. */
 export function useTemplate(id: string) {
   const queryClient = useQueryClient();
@@ -96,7 +125,7 @@ export function useTemplate(id: string) {
 
 /**
  * Every write invalidates the feature whole: a template's place in a search
- * depends on its scope, language, tags and uses, so which cached searches an
+ * depends on its scope, language, name and uses, so which cached searches an
  * edit touches is not knowable from the response.
  *
  * A deleted template's own read is left out, for the reason
@@ -157,12 +186,22 @@ export function useUpdateTemplate() {
   };
 }
 
+/**
+ * Deleting a template clears `template_id` on every goal started from it, on
+ * the server — so the goals are read again too, or a goal's link to the
+ * template it came from would outlive the template.
+ */
 export function useDeleteTemplate() {
+  const queryClient = useQueryClient();
   const invalidate = useInvalidateTemplates({ usageMoved: true });
 
   const mutation = useMutation<void, ApiError, string>({
     mutationFn: deleteTemplate,
-    onSuccess: (_, id) => invalidate(id),
+    onSuccess: (_, id) =>
+      Promise.all([
+        invalidate(id),
+        queryClient.invalidateQueries({ queryKey: goalKeys.all }),
+      ]),
   });
 
   return {
@@ -173,8 +212,8 @@ export function useDeleteTemplate() {
 }
 
 /**
- * Starts a goal from a template. The goal arrives with habits and tags, and
- * the plan's goal and habit counts both move, so everything a new goal
+ * Starts a goal from a template. The goal arrives with its habits, and the
+ * plan's goal and habit counts both move, so everything a new goal
  * touches is refreshed — and the template's own `uses` with it.
  */
 export function useStartFromTemplate() {
@@ -186,7 +225,6 @@ export function useStartFromTemplate() {
       Promise.all([
         queryClient.invalidateQueries({ queryKey: goalKeys.all }),
         queryClient.invalidateQueries({ queryKey: habitKeys.all }),
-        queryClient.invalidateQueries({ queryKey: tagKeys.all }),
         queryClient.invalidateQueries({ queryKey: limitKeys.all }),
         queryClient.invalidateQueries({ queryKey: templateKeys.all }),
       ]),

@@ -39,7 +39,6 @@ export function searchParams(search: TemplateSearch) {
 
   return {
     q: q === '' ? null : q,
-    tag: search.tag ?? null,
     scope: search.scope ?? null,
     language: search.language ?? null,
     limit: TEMPLATE_PAGE_SIZE,
@@ -79,7 +78,6 @@ export const toTemplate = (wire: WireTemplate): Template => ({
   streakThreshold: wire.streak_threshold,
   streakSkipLimit: wire.streak_skip_limit,
   active: wire.active,
-  tags: wire.tags,
   // Sorted rather than trusted: `position` is the order, and the response
   // happening to be in it today is not a promise.
   habits: [...wire.habits].sort((a, b) => a.position - b.position).map(toHabit),
@@ -142,7 +140,6 @@ export function toBody(patch: TemplatePatch): Record<string, unknown> {
   if (patch.streakSkipLimit !== undefined) {
     body.streak_skip_limit = patch.streakSkipLimit;
   }
-  if (patch.tags !== undefined) body.tags = patch.tags;
   if (patch.habits !== undefined) body.habits = patch.habits.map(toHabitBody);
   if (patch.active !== undefined) body.active = patch.active;
 
@@ -202,8 +199,8 @@ export async function deleteTemplate(id: string): Promise<void> {
 }
 
 /**
- * Starts a goal of the caller's from the template, its habits and tags
- * included. Answers with the new goal's id, which is all a caller needs to
+ * Starts a goal of the caller's from the template, its habits included and
+ * no tags. Answers with the new goal's id, which is all a caller needs to
  * open it: the goals feature reads it back itself.
  */
 export async function startFromTemplate(id: string): Promise<string> {
@@ -213,8 +210,8 @@ export async function startFromTemplate(id: string): Promise<string> {
 
 /**
  * Turns one of the caller's goals into a template of theirs: its settings,
- * its active habits in order and its tags. A goal has no language of its own,
- * so it is said here.
+ * its active habits in order — not its tags, which are the owner's own. A
+ * goal has no language of its own, so it is said here.
  */
 export async function templateFromGoal(
   goalId: string,

@@ -7,10 +7,11 @@ import { Card } from '@/components/common/card';
 import { longDateLabel } from '@/components/common/date-label';
 import { ErrorNotice } from '@/components/common/error-notice';
 import { HeaderActions } from '@/components/common/header-actions';
+import { HeaderPill } from '@/components/common/header-pill';
 import { useNoteText } from '@/components/common/note-text';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { CompletionStatus } from '@/components/goals/completion-status';
-import { GoalDot } from '@/components/goals/goal-dot';
+import { slotColor } from '@/components/goals/slot-color';
 import { MOOD_LABELS } from '@/components/logs/mood-labels';
 import { PeriodMood } from '@/components/logs/period-mood';
 import { ICON, SPACING, TEXT } from '@/constants/layout';
@@ -45,28 +46,13 @@ function whenLabel(note: DiaryNote, locale: AppLocale) {
 function ContextPill({ checkIn }: { checkIn: DiaryCheckIn | null }) {
   const { t } = useTranslations();
 
-  return (
-    <XStack
-      items="center"
-      gap="$1.5"
-      px="$3"
-      py="$1.5"
-      rounded={999}
-      bg="$muted"
-      maxW={220}
-      accessibilityRole="text"
-    >
-      {checkIn !== null && <GoalDot slot={checkIn.goal.colorSlot} size={8} />}
-      <SizableText
-        shrink={1}
-        size={TEXT.body}
-        fontWeight="600"
-        color="$color"
-        numberOfLines={1}
-      >
-        {checkIn === null ? t('diary.title') : checkIn.goal.name}
-      </SizableText>
-    </XStack>
+  return checkIn === null ? (
+    <HeaderPill label={t('diary.title')} />
+  ) : (
+    <HeaderPill
+      label={checkIn.goal.name}
+      dot={slotColor(checkIn.goal.colorSlot)}
+    />
   );
 }
 

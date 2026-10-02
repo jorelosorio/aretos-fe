@@ -1,7 +1,6 @@
 import { BadgeCheck } from '@tamagui/lucide-icons-2/icons/BadgeCheck';
 import { Languages } from '@tamagui/lucide-icons-2/icons/Languages';
 import { LayoutGrid } from '@tamagui/lucide-icons-2/icons/LayoutGrid';
-import { Tag } from '@tamagui/lucide-icons-2/icons/Tag';
 import { User } from '@tamagui/lucide-icons-2/icons/User';
 import { Users } from '@tamagui/lucide-icons-2/icons/Users';
 import { XStack, YStack } from 'tamagui';
@@ -18,24 +17,21 @@ import {
   type TemplateScope,
 } from '@/features/templates/types';
 import { useTranslations } from '@/lib/i18n';
-import { capitalize } from '@/utils/text';
 
 import { LANGUAGE_NAMES } from './template-labels';
 
 export function TemplateFilters({
   scope,
   language,
-  tag,
+  showLanguages,
   onScope,
   onLanguage,
-  onTag,
 }: {
   scope: TemplateScope;
   language: TemplateLanguage | null;
-  tag: string | null;
+  showLanguages: boolean;
   onScope: (scope: TemplateScope) => void;
   onLanguage: (language: TemplateLanguage | null) => void;
-  onTag: (tag: string | null) => void;
 }) {
   const { t } = useTranslations();
 
@@ -58,31 +54,24 @@ export function TemplateFilters({
     <YStack gap={SPACING.items}>
       <SegmentedControl segments={scopes} value={scope} onChange={onScope} />
 
-      <XStack flexWrap="wrap" items="center" gap="$1.5">
-        <Chip
-          label={t('templates.language.all')}
-          Icon={Languages}
-          selected={language === null}
-          onPress={() => onLanguage(null)}
-        />
-        {TEMPLATE_LANGUAGES.map((code) => (
+      {showLanguages && (
+        <XStack flexWrap="wrap" items="center" gap="$1.5">
           <Chip
-            key={code}
-            label={LANGUAGE_NAMES[code]}
-            selected={language === code}
-            onPress={() => onLanguage(language === code ? null : code)}
+            label={t('templates.language.all')}
+            Icon={Languages}
+            selected={language === null}
+            onPress={() => onLanguage(null)}
           />
-        ))}
-        {tag !== null && (
-          <Chip
-            label={capitalize(tag)}
-            Icon={Tag}
-            selected
-            onRemove={() => onTag(null)}
-            removeLabel={t('templates.removeTag', { name: capitalize(tag) })}
-          />
-        )}
-      </XStack>
+          {TEMPLATE_LANGUAGES.map((code) => (
+            <Chip
+              key={code}
+              label={LANGUAGE_NAMES[code]}
+              selected={language === code}
+              onPress={() => onLanguage(language === code ? null : code)}
+            />
+          ))}
+        </XStack>
+      )}
     </YStack>
   );
 }

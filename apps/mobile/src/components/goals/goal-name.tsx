@@ -28,7 +28,7 @@ export function GoalName({
   lines,
   archived = false,
 }: {
-  slot: number;
+  slot?: number;
   name: string;
   variant?: keyof typeof VARIANTS;
   lines?: number;
@@ -38,7 +38,7 @@ export function GoalName({
 
   return (
     <XStack grow={1} shrink={1} minW={0} items="center" gap={style.gap}>
-      <GoalDot slot={slot} size={style.dot} />
+      {slot !== undefined && <GoalDot slot={slot} size={style.dot} />}
       <SizableText
         shrink={1}
         size={style.size}
