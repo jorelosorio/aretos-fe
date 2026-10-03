@@ -8,6 +8,7 @@ import { Circle, SizableText, XStack, YStack } from 'tamagui';
 import { Card } from '@/components/common/card';
 import { CompletionStatus } from '@/components/goals/completion-status';
 import { FREQUENCY_LABELS } from '@/components/goals/frequency-labels';
+import { GoalMeta } from '@/components/goals/goal-meta';
 import { GoalName } from '@/components/goals/goal-name';
 import { PERIOD_STATUS_LABELS } from '@/components/goals/period-status';
 import { MOOD_LABELS } from '@/components/logs/mood-labels';
@@ -150,13 +151,10 @@ export const GoalStatusCard = memo(function GoalStatusCard({
             )} · ${cadence}`}
           />
         ) : (
-          <SizableText
-            size={TEXT.caption}
-            color="$mutedForeground"
-            numberOfLines={1}
-          >
-            {context}
-          </SizableText>
+          <GoalMeta
+            habitCount={goal.habitCount}
+            trackingFrequency={goal.trackingFrequency}
+          />
         )}
       </YStack>
 

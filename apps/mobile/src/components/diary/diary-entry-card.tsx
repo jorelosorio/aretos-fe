@@ -1,12 +1,13 @@
 import { memo } from 'react';
-import { Paragraph, XStack, YStack } from 'tamagui';
+import { XStack, YStack } from 'tamagui';
 
+import { BodyText } from '@/components/common/body-text';
 import { Card } from '@/components/common/card';
 import { GoalName } from '@/components/goals/goal-name';
 import { slotColor } from '@/components/goals/slot-color';
 import { MOOD_LABELS } from '@/components/logs/mood-labels';
 import { PeriodMood } from '@/components/logs/period-mood';
-import { SPACING, TEXT } from '@/constants/layout';
+import { SPACING } from '@/constants/layout';
 import type { DiaryNote } from '@/features/diary/types';
 import { useTranslations } from '@/lib/i18n';
 
@@ -86,14 +87,9 @@ export const DiaryEntryCard = memo(function DiaryEntryCard({
           </XStack>
         )}
 
-        <Paragraph
-          size={TEXT.body}
-          color="$cardForeground"
-          numberOfLines={NOTE_LINES}
-          ellipsizeMode="tail"
-        >
+        <BodyText numberOfLines={NOTE_LINES} ellipsizeMode="tail">
           {preview}
-        </Paragraph>
+        </BodyText>
 
         <NoteMeta caption={when} tags={note.tags} collapsed />
 

@@ -9,6 +9,12 @@ const WRAPPING_RADIUS = 14;
 const MARK_ICON = 11;
 const MARK_DOT = 8;
 
+export type ChipBadge = {
+  label: string;
+  Icon: IconComponent;
+  highlighted?: boolean;
+};
+
 export type ChipProps = {
   label: string;
   size?: 'small' | 'regular';

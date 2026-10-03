@@ -2,13 +2,14 @@ import { BadgeCheck } from '@tamagui/lucide-icons-2/icons/BadgeCheck';
 import { SizableText, XStack } from 'tamagui';
 
 import { ICON, TEXT } from '@/constants/layout';
-import type { Template } from '@/features/templates/types';
 import { useTranslations } from '@/lib/i18n';
 
-export function TemplatePublisher({
-  publisher,
+export function AuthorLabel({
+  name,
+  official,
 }: {
-  publisher: Template['publisher'];
+  name: string;
+  official: boolean;
 }) {
   const { t } = useTranslations();
 
@@ -17,21 +18,17 @@ export function TemplatePublisher({
       items="center"
       gap="$1"
       shrink={1}
-      accessibilityLabel={
-        publisher.official
-          ? t('templates.officialLabel', { name: publisher.name })
-          : publisher.name
-      }
+      accessibilityLabel={official ? t('author.official', { name }) : name}
     >
-      {publisher.official && <BadgeCheck size={ICON.inline} color="$primary" />}
+      {official && <BadgeCheck size={ICON.inline} color="$primary" />}
       <SizableText
         size={TEXT.caption}
         fontWeight="600"
-        color={publisher.official ? '$primary' : '$mutedForeground'}
+        color={official ? '$primary' : '$mutedForeground'}
         numberOfLines={1}
         shrink={1}
       >
-        {publisher.name}
+        {name}
       </SizableText>
     </XStack>
   );

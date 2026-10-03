@@ -1,15 +1,14 @@
-import { Paragraph, Separator, SizableText, XStack, YStack } from 'tamagui';
+import { Separator, SizableText, XStack, YStack } from 'tamagui';
 
 import { Card } from '@/components/common/card';
-import { Chip } from '@/components/common/chip';
-import type { IconComponent } from '@/components/common/icon-component';
+import { Chip, type ChipBadge } from '@/components/common/chip';
 import { TagChips } from '@/components/tags/tag-chips';
 import { SPACING, TEXT } from '@/constants/layout';
 import type { StreakRule, TrackingFrequency } from '@/features/goals/types';
 import { useTranslations } from '@/lib/i18n';
 
 import { FREQUENCY_LABELS } from './frequency-labels';
-import { GoalName } from './goal-name';
+import { GoalHeading } from './goal-heading';
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
@@ -38,11 +37,7 @@ export function GoalSummary({
 }: {
   name: string;
   slot?: number;
-  badges?: readonly {
-    label: string;
-    Icon: IconComponent;
-    highlighted?: boolean;
-  }[];
+  badges?: readonly ChipBadge[];
   caption?: string;
   description: string;
   tags?: readonly string[];
@@ -60,15 +55,7 @@ export function GoalSummary({
 
   return (
     <Card gap={SPACING.group}>
-      <YStack gap={SPACING.text}>
-        <GoalName slot={slot} name={name} />
-
-        {description !== '' && (
-          <Paragraph size={TEXT.body} color="$mutedForeground">
-            {description}
-          </Paragraph>
-        )}
-      </YStack>
+      <GoalHeading name={name} slot={slot} description={description} />
 
       {(badges.length > 0 || caption !== undefined) && (
         <XStack items="center" gap="$1.5" flexWrap="wrap">

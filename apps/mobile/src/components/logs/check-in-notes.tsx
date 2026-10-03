@@ -2,8 +2,8 @@ import { useRef, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { NotebookPen } from '@tamagui/lucide-icons-2/icons/NotebookPen';
 import { Plus } from '@tamagui/lucide-icons-2/icons/Plus';
-import { Paragraph } from 'tamagui';
 
+import { BodyText } from '@/components/common/body-text';
 import { Card } from '@/components/common/card';
 import { EmptySlot } from '@/components/common/empty-slot';
 import { FormSection } from '@/components/common/form-section';
@@ -11,7 +11,7 @@ import { NoteEditor } from '@/components/diary/note-editor';
 import type { NoteValue } from '@/components/diary/note-draft';
 import { notePreview } from '@/components/diary/note-preview';
 import { NoteMeta } from '@/components/diary/note-meta';
-import { SPACING, TEXT } from '@/constants/layout';
+import { SPACING } from '@/constants/layout';
 import { useAddCheckInNote, useNoteErrorMessage } from '@/features/diary/hooks';
 import { useAllowance } from '@/features/limits/hooks';
 import { useLog } from '@/features/logs/hooks';
@@ -59,14 +59,9 @@ function NoteRow({
       accessibilityState={{ disabled }}
       accessibilityLabel={`${preview}. ${caption}`}
     >
-      <Paragraph
-        size={TEXT.body}
-        color="$cardForeground"
-        numberOfLines={PREVIEW_LINES}
-        ellipsizeMode="tail"
-      >
+      <BodyText numberOfLines={PREVIEW_LINES} ellipsizeMode="tail">
         {preview}
-      </Paragraph>
+      </BodyText>
       <NoteMeta
         caption={caption}
         captionTone={captionColor}

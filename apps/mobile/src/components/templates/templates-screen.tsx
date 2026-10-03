@@ -121,22 +121,6 @@ export function TemplatesScreen() {
 
   return (
     <YStack flex={1} bg="$background">
-      <YStack
-        gap={SPACING.items}
-        px={SPACING.screen}
-        pt={SPACING.screen}
-        pb={SPACING.items}
-      >
-        <TemplateSearchField value={query} onChange={setQuery} />
-        <TemplateFilters
-          scope={scope}
-          language={language}
-          showLanguages={scope !== 'mine'}
-          onScope={setScope}
-          onLanguage={setLanguage}
-        />
-      </YStack>
-
       <FlatList
         style={{ flex: 1 }}
         contentContainerStyle={{ flexGrow: 1, paddingBottom: tabBarInset }}
@@ -161,8 +145,17 @@ export function TemplatesScreen() {
           <YStack
             gap={SPACING.items}
             px={SPACING.screen}
-            pb={scope === 'mine' || error ? SPACING.items : 0}
+            pt={SPACING.screen}
+            pb={SPACING.items}
           >
+            <TemplateSearchField value={query} onChange={setQuery} />
+            <TemplateFilters
+              scope={scope}
+              language={language}
+              showLanguages={scope !== 'mine'}
+              onScope={setScope}
+              onLanguage={setLanguage}
+            />
             {scope === 'mine' && (
               <PlanLimitNotice allowance={allowance} resource="template" />
             )}

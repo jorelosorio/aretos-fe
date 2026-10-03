@@ -704,6 +704,9 @@ export const en = {
       generic: 'Something went wrong. Please try again.',
     },
   },
+  author: {
+    official: '%{name}, official account',
+  },
   templates: {
     title: 'Templates',
     new: 'New template',
@@ -721,7 +724,6 @@ export const en = {
       title: 'Language',
       hint: 'People using the app in this language will be able to find it.',
     },
-    officialLabel: '%{name}, official account',
     yours: 'Yours',
     inUse: 'In use',
     usesOne: 'Used once',

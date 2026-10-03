@@ -708,6 +708,9 @@ export const es = {
       generic: 'Algo salió mal. Inténtalo de nuevo.',
     },
   },
+  author: {
+    official: '%{name}, cuenta oficial',
+  },
   templates: {
     title: 'Plantillas',
     new: 'Nueva plantilla',
@@ -725,7 +728,6 @@ export const es = {
       title: 'Idioma',
       hint: 'Quien use la app en este idioma podrá encontrarla.',
     },
-    officialLabel: '%{name}, cuenta oficial',
     yours: 'Tuya',
     inUse: 'En uso',
     usesOne: 'Usada 1 vez',

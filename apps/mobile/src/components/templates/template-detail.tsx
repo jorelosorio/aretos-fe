@@ -1,16 +1,11 @@
 import { FlatList } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { CircleAlert } from '@tamagui/lucide-icons-2/icons/CircleAlert';
 import { CircleCheck } from '@tamagui/lucide-icons-2/icons/CircleCheck';
-import { Hourglass } from '@tamagui/lucide-icons-2/icons/Hourglass';
 import { Languages } from '@tamagui/lucide-icons-2/icons/Languages';
 import { ListChecks } from '@tamagui/lucide-icons-2/icons/ListChecks';
-import { Lock } from '@tamagui/lucide-icons-2/icons/Lock';
-import { Users } from '@tamagui/lucide-icons-2/icons/Users';
 import { YStack } from 'tamagui';
 
 import { EmptySlot } from '@/components/common/empty-slot';
-import type { IconComponent } from '@/components/common/icon-component';
 import { Notice } from '@/components/common/notice';
 import { SectionTitle } from '@/components/common/section-title';
 import { GoalSummary } from '@/components/goals/goal-summary';
@@ -25,30 +20,27 @@ import { useTranslations, type TranslationKey } from '@/lib/i18n';
 import {
   LANGUAGE_NAMES,
   templateStatus,
+  STATUS_ICONS,
   type TemplateStatus,
 } from './template-labels';
 
 const STATUS_NOTICES: Record<
   TemplateStatus,
-  { Icon: IconComponent; title: TranslationKey; body: TranslationKey }
+  { title: TranslationKey; body: TranslationKey }
 > = {
   private: {
-    Icon: Lock,
     title: 'templates.notice.privateTitle',
     body: 'templates.notice.privateBody',
   },
   review: {
-    Icon: Hourglass,
     title: 'templates.notice.reviewTitle',
     body: 'templates.notice.reviewBody',
   },
   rejected: {
-    Icon: CircleAlert,
     title: 'templates.notice.rejectedTitle',
     body: 'templates.notice.rejectedBody',
   },
   shared: {
-    Icon: Users,
     title: 'templates.notice.sharedTitle',
     body: 'templates.notice.sharedBody',
   },
@@ -60,7 +52,7 @@ function StatusNotice({ template }: { template: Template }) {
 
   if (status === null || template.review === null) return null;
 
-  const { Icon, title, body } = STATUS_NOTICES[status];
+  const { title, body } = STATUS_NOTICES[status];
   const approved = template.review.status === 'approved';
   const guidance = t(
     status === 'private' && approved
@@ -71,7 +63,7 @@ function StatusNotice({ template }: { template: Template }) {
 
   return (
     <Notice
-      Icon={Icon}
+      Icon={STATUS_ICONS[status]}
       title={t(title)}
       body={note === '' ? guidance : `${note}\n\n${guidance}`}
     />

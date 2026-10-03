@@ -1,22 +1,18 @@
 import { memo } from 'react';
 import { CircleCheck } from '@tamagui/lucide-icons-2/icons/CircleCheck';
 import { Languages } from '@tamagui/lucide-icons-2/icons/Languages';
-import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
-import { Card } from '@/components/common/card';
-import { Chip } from '@/components/common/chip';
-import { FREQUENCY_LABELS } from '@/components/goals/frequency-labels';
-import { GoalName } from '@/components/goals/goal-name';
-import { SPACING, TEXT } from '@/constants/layout';
+import type { ChipBadge } from '@/components/common/chip';
+import { GoalCell } from '@/components/goals/goal-cell';
 import type { Template } from '@/features/templates/types';
 import { useTranslations } from '@/lib/i18n';
 
 import {
   LANGUAGE_NAMES,
+  STATUS_ICONS,
   STATUS_LABELS,
   templateStatus,
 } from './template-labels';
-import { TemplatePublisher } from './template-publisher';
 
 export const TemplateCard = memo(function TemplateCard({
   template,
@@ -35,57 +31,31 @@ export const TemplateCard = memo(function TemplateCard({
     { count: template.habits.length },
   );
 
+  const badges: ChipBadge[] = [
+    { label: LANGUAGE_NAMES[template.language], Icon: Languages },
+    ...(inUse
+      ? [{ label: t('templates.inUse'), Icon: CircleCheck, highlighted: true }]
+      : []),
+    ...(status === null
+      ? []
+      : [{ label: t(STATUS_LABELS[status]), Icon: STATUS_ICONS[status] }]),
+  ];
+
   return (
-    <Card
-      row
-      pressable
-      items="center"
+    <GoalCell
+      name={template.name}
+      author={template.publisher}
+      description={template.description}
+      badges={badges}
+      habitCount={template.habits.length}
+      trackingFrequency={template.trackingFrequency}
       onPress={() => onOpen(template)}
-      accessibilityRole="button"
       accessibilityLabel={[
         template.name,
         template.publisher.name,
         habits,
-        ...(inUse ? [t('templates.inUse')] : []),
+        ...badges.map((badge) => badge.label),
       ].join('. ')}
-    >
-      <YStack flex={1} gap={SPACING.group}>
-        <YStack gap={SPACING.text}>
-          <XStack items="flex-start" gap={SPACING.items}>
-            <GoalName name={template.name} lines={2} />
-            <XStack maxW="40%" pt="$0.5" justify="flex-end">
-              <TemplatePublisher publisher={template.publisher} />
-            </XStack>
-          </XStack>
-
-          {template.description !== '' && (
-            <Paragraph
-              size={TEXT.body}
-              color="$mutedForeground"
-              numberOfLines={2}
-            >
-              {template.description}
-            </Paragraph>
-          )}
-        </YStack>
-
-        <XStack items="center" gap="$2" flexWrap="wrap">
-          <Chip label={LANGUAGE_NAMES[template.language]} Icon={Languages} />
-          {inUse && (
-            <Chip label={t('templates.inUse')} Icon={CircleCheck} highlighted />
-          )}
-          {status !== null && <Chip label={t(STATUS_LABELS[status])} />}
-          <SizableText size={TEXT.caption} color="$primary" fontWeight="600">
-            {habits}
-          </SizableText>
-          <SizableText size={TEXT.caption} color="$mutedForeground">
-            ·
-          </SizableText>
-          <SizableText size={TEXT.caption} color="$mutedForeground">
-            {t(FREQUENCY_LABELS[template.trackingFrequency])}
-          </SizableText>
-        </XStack>
-      </YStack>
-    </Card>
+    />
   );
 });
