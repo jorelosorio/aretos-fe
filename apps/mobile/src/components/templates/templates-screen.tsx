@@ -124,7 +124,7 @@ export function TemplatesScreen() {
       <YStack
         gap={SPACING.items}
         px={SPACING.screen}
-        pt={SPACING.group}
+        pt={SPACING.screen}
         pb={SPACING.items}
       >
         <TemplateSearchField value={query} onChange={setQuery} />

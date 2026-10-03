@@ -59,27 +59,9 @@ export function GoalSummary({
       : t('goals.streak.loggedShort');
 
   return (
-    <Card>
+    <Card gap={SPACING.group}>
       <YStack gap={SPACING.text}>
         <GoalName slot={slot} name={name} />
-
-        {(badges.length > 0 || caption !== undefined) && (
-          <XStack items="center" gap="$2" flexWrap="wrap">
-            {badges.map((badge) => (
-              <Chip
-                key={badge.label}
-                label={badge.label}
-                Icon={badge.Icon}
-                highlighted={badge.highlighted}
-              />
-            ))}
-            {caption !== undefined && (
-              <SizableText size={TEXT.caption} color="$mutedForeground">
-                {caption}
-              </SizableText>
-            )}
-          </XStack>
-        )}
 
         {description !== '' && (
           <Paragraph size={TEXT.body} color="$mutedForeground">
@@ -87,6 +69,24 @@ export function GoalSummary({
           </Paragraph>
         )}
       </YStack>
+
+      {(badges.length > 0 || caption !== undefined) && (
+        <XStack items="center" gap="$1.5" flexWrap="wrap">
+          {badges.map((badge) => (
+            <Chip
+              key={badge.label}
+              label={badge.label}
+              Icon={badge.Icon}
+              highlighted={badge.highlighted}
+            />
+          ))}
+          {caption !== undefined && (
+            <SizableText size={TEXT.caption} color="$mutedForeground">
+              {caption}
+            </SizableText>
+          )}
+        </XStack>
+      )}
 
       <TagChips tags={tags} />
 

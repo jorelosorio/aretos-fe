@@ -14,7 +14,11 @@ export const SPACING = {
   screen: '$4',
   /** Between the top-level sections of a screen. */
   section: '$5',
-  /** Between a section's title and the card beneath it. */
+  /**
+   * Between a section's title and the card beneath it, and between the rows
+   * of a card: its text, its chips, its meta line. The lines of one block of
+   * text inside a card — a title and its description — are `text` apart.
+   */
   group: '$2',
   /** Between siblings: cards in a list, controls in a stack, a row's parts. */
   items: '$3',

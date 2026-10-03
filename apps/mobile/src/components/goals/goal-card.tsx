@@ -33,18 +33,20 @@ export const GoalCard = memo(function GoalCard({
       accessibilityRole="button"
       accessibilityLabel={`${goal.name}. ${actions}`}
     >
-      <YStack flex={1} gap={SPACING.text}>
-        <GoalName slot={goal.colorSlot} name={goal.name} />
+      <YStack flex={1} gap={SPACING.group}>
+        <YStack gap={SPACING.text}>
+          <GoalName slot={goal.colorSlot} name={goal.name} />
 
-        {goal.description !== '' && (
-          <Paragraph
-            size={TEXT.body}
-            color="$mutedForeground"
-            numberOfLines={2}
-          >
-            {goal.description}
-          </Paragraph>
-        )}
+          {goal.description !== '' && (
+            <Paragraph
+              size={TEXT.body}
+              color="$mutedForeground"
+              numberOfLines={2}
+            >
+              {goal.description}
+            </Paragraph>
+          )}
+        </YStack>
 
         <XStack items="center" gap="$2">
           <SizableText size={TEXT.caption} color="$primary" fontWeight="600">

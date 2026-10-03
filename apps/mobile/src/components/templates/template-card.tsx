@@ -6,6 +6,7 @@ import { Paragraph, SizableText, XStack, YStack } from 'tamagui';
 import { Card } from '@/components/common/card';
 import { Chip } from '@/components/common/chip';
 import { FREQUENCY_LABELS } from '@/components/goals/frequency-labels';
+import { GoalName } from '@/components/goals/goal-name';
 import { SPACING, TEXT } from '@/constants/layout';
 import type { Template } from '@/features/templates/types';
 import { useTranslations } from '@/lib/i18n';
@@ -36,8 +37,9 @@ export const TemplateCard = memo(function TemplateCard({
 
   return (
     <Card
+      row
       pressable
-      gap={SPACING.group}
+      items="center"
       onPress={() => onOpen(template)}
       accessibilityRole="button"
       accessibilityLabel={[
@@ -47,49 +49,43 @@ export const TemplateCard = memo(function TemplateCard({
         ...(inUse ? [t('templates.inUse')] : []),
       ].join('. ')}
     >
-      <YStack gap={SPACING.text}>
-        <XStack items="flex-start" gap={SPACING.items}>
-          <SizableText
-            flex={1}
-            size={TEXT.heading}
-            fontWeight="700"
-            color="$cardForeground"
-            numberOfLines={2}
-          >
-            {template.name}
-          </SizableText>
-          <XStack maxW="40%" pt="$1" justify="flex-end">
-            <TemplatePublisher publisher={template.publisher} />
+      <YStack flex={1} gap={SPACING.group}>
+        <YStack gap={SPACING.text}>
+          <XStack items="flex-start" gap={SPACING.items}>
+            <GoalName name={template.name} lines={2} />
+            <XStack maxW="40%" pt="$0.5" justify="flex-end">
+              <TemplatePublisher publisher={template.publisher} />
+            </XStack>
           </XStack>
+
+          {template.description !== '' && (
+            <Paragraph
+              size={TEXT.body}
+              color="$mutedForeground"
+              numberOfLines={2}
+            >
+              {template.description}
+            </Paragraph>
+          )}
+        </YStack>
+
+        <XStack items="center" gap="$2" flexWrap="wrap">
+          <Chip label={LANGUAGE_NAMES[template.language]} Icon={Languages} />
+          {inUse && (
+            <Chip label={t('templates.inUse')} Icon={CircleCheck} highlighted />
+          )}
+          {status !== null && <Chip label={t(STATUS_LABELS[status])} />}
+          <SizableText size={TEXT.caption} color="$primary" fontWeight="600">
+            {habits}
+          </SizableText>
+          <SizableText size={TEXT.caption} color="$mutedForeground">
+            ·
+          </SizableText>
+          <SizableText size={TEXT.caption} color="$mutedForeground">
+            {t(FREQUENCY_LABELS[template.trackingFrequency])}
+          </SizableText>
         </XStack>
-
-        {template.description !== '' && (
-          <Paragraph
-            size={TEXT.body}
-            color="$mutedForeground"
-            numberOfLines={2}
-          >
-            {template.description}
-          </Paragraph>
-        )}
       </YStack>
-
-      <XStack items="center" gap="$2" flexWrap="wrap">
-        <Chip label={LANGUAGE_NAMES[template.language]} Icon={Languages} />
-        {inUse && (
-          <Chip label={t('templates.inUse')} Icon={CircleCheck} highlighted />
-        )}
-        {status !== null && <Chip label={t(STATUS_LABELS[status])} />}
-        <SizableText size={TEXT.caption} color="$primary" fontWeight="600">
-          {habits}
-        </SizableText>
-        <SizableText size={TEXT.caption} color="$mutedForeground">
-          ·
-        </SizableText>
-        <SizableText size={TEXT.caption} color="$mutedForeground">
-          {t(FREQUENCY_LABELS[template.trackingFrequency])}
-        </SizableText>
-      </XStack>
     </Card>
   );
 });
